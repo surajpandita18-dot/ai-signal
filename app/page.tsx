@@ -35,7 +35,15 @@ export default function Home() {
     );
   };
 
-  const featuredArticle = articles[0];
+  const featuredArticle = useMemo(() => {
+  if (selectedCategory === "All") return articles[0];
+
+  const match = articles.find(
+    (article) => article.category === selectedCategory
+  );
+
+  return match || articles[0];
+}, [selectedCategory]);
   const query = search.trim().toLowerCase();
 
   const filteredArticles = useMemo(() => {
@@ -110,27 +118,48 @@ export default function Home() {
         </header>
 
         {/* Hero Section */}
-        <section className="relative mb-10 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-700/40 via-zinc-900 to-blue-700/30 p-8 shadow-2xl">
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(168,85,247,0.25),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(59,130,246,0.2),transparent_30%)]" />
+        <a
+  href={`/article/${featuredArticle.id}`}
+  className="group relative mb-10 block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-700/40 via-zinc-900 to-blue-700/30 shadow-2xl transition hover:border-white/20"
+>
+  <div className="absolute inset-0">
+    <img
+      src={featuredArticle.image}
+      alt={featuredArticle.title}
+      onError={(e) => {
+        e.currentTarget.src =
+          "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1400&auto=format&fit=crop";
+      }}
+      className="h-full w-full object-cover opacity-35 transition duration-500 group-hover:scale-105"
+    />
+  </div>
 
-          <div className="relative z-10 max-w-3xl">
-            <p className="mb-3 inline-block rounded-full border border-purple-400/30 bg-purple-500/10 px-3 py-1 text-xs font-medium text-purple-300">
-              Featured Story
-            </p>
+  <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
-            <h2 className="text-3xl font-semibold leading-tight md:text-5xl">
-              {featuredArticle.title}
-            </h2>
+  <div className="relative z-10 p-8 md:p-10">
+    <p className="mb-3 inline-block rounded-full border border-purple-400/30 bg-purple-500/10 px-3 py-1 text-xs font-medium text-purple-300">
+      Featured Story
+    </p>
 
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-300 md:text-base">
-              {featuredArticle.summary}
-            </p>
+    <h2 className="max-w-4xl text-3xl font-semibold leading-tight md:text-5xl text-white drop-shadow-[0_0_20px_rgba(168,85,247,0.4)]">
+      {featuredArticle.title}
+    </h2>
 
-            <p className="mt-6 text-sm text-cyan-300">
-              Why it matters: {featuredArticle.whyItMatters}
-            </p>
-          </div>
-        </section>
+    <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-300 md:text-base">
+      {featuredArticle.summary}
+    </p>
+
+    <div className="mt-6 flex flex-wrap items-center gap-4">
+      <p className="text-sm text-cyan-300">
+        Why it matters: {featuredArticle.whyItMatters}
+      </p>
+
+      <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition group-hover:bg-white/10">
+        Read full story →
+      </span>
+    </div>
+  </div>
+</a>
 
         {/* Section Heading */}
         <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
@@ -154,58 +183,76 @@ export default function Home() {
           {filteredArticles.length > 0 ? (
             filteredArticles.map((article) => (
               <article
-                key={article.id}
-                className="group relative rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-md transition duration-300 hover:-translate-y-2 hover:border-purple-400/30 hover:bg-white/[0.08]"
-              >
-                <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 transition group-hover:opacity-100" />
+  key={article.id}
+  className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-md transition duration-300 hover:-translate-y-2 hover:-translate-y-2 hover:border-purple-400/40 hover:shadow-[0_0_25px_rgba(168,85,247,0.25)] hover:bg-white/[0.08] hover:bg-white/[0.08]"
+>
+  <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 transition group-hover:opacity-100" />
 
-                <div className="mb-3 flex items-center justify-between">
-                  <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-                    {article.source}
-                  </p>
+  {/* Image */}
+  <div className="mb-4 overflow-hidden rounded-2xl">
+    <img
+      src={article.image}
+      alt={article.title}
+      onError={(e) => {
+        e.currentTarget.src =
+          "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1400&auto=format&fit=crop";
+      }}
+      className="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
+    />
+  </div>
 
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 text-[10px] font-medium text-cyan-300">
-                      {article.category}
-                    </span>
+  {/* Top Row */}
+  <div className="mb-3 flex items-center justify-between gap-3">
+    <p className="truncate text-xs uppercase tracking-[0.2em] text-gray-500">
+      {article.source}
+    </p>
 
-                    <button
-                      type="button"
-                      onClick={() => toggleBookmark(article.id)}
-                      className="cursor-pointer text-lg leading-none text-yellow-300 transition hover:scale-110"
-                      aria-label={
-                        bookmarks.includes(article.id)
-                          ? "Remove bookmark"
-                          : "Add bookmark"
-                      }
-                    >
-                      {bookmarks.includes(article.id) ? "★" : "☆"}
-                    </button>
-                  </div>
-                </div>
+    <div className="flex items-center gap-2">
+      <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 text-[10px] font-medium text-cyan-300">
+        {article.category}
+      </span>
 
-                <h4 className="mb-3 text-lg font-semibold leading-7 text-white transition duration-300 group-hover:text-purple-300">
-                  {article.title}
-                </h4>
+      <button
+        type="button"
+        onClick={() => toggleBookmark(article.id)}
+       className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-2 py-1 text-sm leading-none text-yellow-300 transition hover:scale-110 hover:border-yellow-400/40 hover:bg-yellow-500/10" 
+        aria-label={
+          bookmarks.includes(article.id)
+            ? "Remove bookmark"
+            : "Add bookmark"
+        }
+      >
+        {bookmarks.includes(article.id) ? "★" : "☆"}
+      </button>
+    </div>
+  </div>
 
-                <p className="mb-4 text-sm leading-6 text-gray-300">
-                  {article.summary}
-                </p>
+  {/* Title */}
+  <h4 className="mb-3 line-clamp-2 text-lg font-semibold leading-7 text-white transition duration-300 group-hover:text-purple-300">
+    {article.title}
+  </h4>
 
-                <p className="mb-4 text-sm text-purple-300">
-                  Why it matters: {article.whyItMatters}
-                </p>
+  {/* Summary */}
+  <p className="mb-4 line-clamp-3 text-sm leading-6 text-gray-300">
+    {article.summary}
+  </p>
 
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span>{article.date}</span>
-                  <a
-                    href={`/article/${article.id}`}
-                    className="transition group-hover:text-white"
-                  >
-                    Read more →
-                  </a>
-                </div>
-              </article>
+  {/* Why it matters */}
+  <p className="mb-5 line-clamp-2 text-sm text-purple-300">
+    Why it matters: {article.whyItMatters}
+  </p>
+
+  {/* Footer */}
+  <div className="flex items-center justify-between text-xs text-gray-500">
+    <span>{article.date}</span>
+    <a
+      href={`/article/${article.id}`}
+      className="font-medium transition group-hover:text-white"
+    >
+      Read more →
+    </a>
+  </div>
+</article>
             ))
           ) : (
             <div className="col-span-full rounded-3xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur-md">

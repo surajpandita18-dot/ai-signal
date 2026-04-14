@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { articles } from "@/lib/mockData";
 
 type ArticlePageProps = {
@@ -39,21 +39,24 @@ export default function ArticlePage({ params }: ArticlePageProps) {
     );
   };
 
+  const article = useMemo(() => {
+    if (articleId === null) return null;
+    return articles.find((a) => a.id === articleId) ?? null;
+  }, [articleId]);
+
   if (articleId === null) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white">
+      <main className="flex min-h-screen items-center justify-center bg-black text-white">
         <p className="text-sm text-gray-400">Loading article...</p>
-      </div>
+      </main>
     );
   }
 
-  const article = articles.find((a) => a.id === articleId);
-
   if (!article) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-black text-white">
-        <p>Article not found</p>
-      </div>
+      <main className="flex min-h-screen items-center justify-center bg-black text-white">
+        <p className="text-sm text-gray-400">Article not found</p>
+      </main>
     );
   }
 
@@ -61,12 +64,12 @@ export default function ArticlePage({ params }: ArticlePageProps) {
 
   return (
     <main className="min-h-screen bg-black text-white">
-      <div className="mx-auto max-w-5xl px-6 py-10">
+      <div className="mx-auto max-w-6xl px-6 py-8">
         {/* Top Actions */}
-        <div className="mb-8 flex items-center justify-between">
+        <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
           <a
             href="/"
-            className="inline-block text-sm text-gray-400 transition hover:text-white"
+            className="inline-flex items-center text-sm text-gray-400 transition hover:text-white"
           >
             ← Back to home
           </a>
@@ -74,14 +77,27 @@ export default function ArticlePage({ params }: ArticlePageProps) {
           <button
             type="button"
             onClick={() => toggleBookmark(article.id)}
-            className="rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+            className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
           >
             {isBookmarked ? "★ Saved" : "☆ Save article"}
           </button>
         </div>
 
-        {/* Hero Content */}
-        <section className="mb-8 rounded-3xl border border-white/10 bg-white/[0.03] p-8 backdrop-blur-md">
+        {/* Hero Image */}
+        <div className="mb-8 overflow-hidden rounded-3xl border border-white/10">
+          <img
+            src={article.image}
+            alt={article.title}
+            onError={(e) => {
+              e.currentTarget.src =
+                "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1400&auto=format&fit=crop";
+            }}
+            className="h-[280px] w-full object-cover md:h-[420px]"
+          />
+        </div>
+
+        {/* Meta + Title */}
+        <section className="mb-10">
           <div className="mb-4 flex flex-wrap items-center gap-3 text-xs uppercase tracking-[0.2em] text-gray-500">
             <span>{article.source}</span>
             <span>•</span>
@@ -90,52 +106,58 @@ export default function ArticlePage({ params }: ArticlePageProps) {
             <span className="text-purple-400">{article.category}</span>
           </div>
 
-          <h1 className="mb-6 max-w-4xl text-3xl font-semibold leading-tight md:text-6xl">
+          <h1 className="max-w-5xl text-3xl font-semibold leading-tight md:text-6xl">
             {article.title}
           </h1>
 
-          <p className="max-w-3xl text-base leading-8 text-gray-300 md:text-lg">
+          <p className="mt-6 max-w-3xl text-base leading-8 text-gray-300 md:text-lg">
             {article.summary}
           </p>
         </section>
 
         {/* Why it matters */}
-        <section className="mb-8 rounded-3xl border border-purple-400/20 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 p-6">
+        <section className="mb-8 rounded-3xl border border-purple-400/20 bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 p-6 md:p-8">
           <p className="mb-2 text-xs uppercase tracking-[0.2em] text-purple-300">
             Why it matters
           </p>
-          <p className="text-base leading-7 text-purple-100">
+          <p className="max-w-3xl text-base leading-7 text-purple-100 md:text-lg">
             {article.whyItMatters}
           </p>
         </section>
 
-        {/* Mock article body */}
-        <section className="rounded-3xl border border-white/10 bg-white/[0.03] p-8">
-          <h2 className="mb-4 text-xl font-semibold text-white">
+        {/* Article Body */}
+        <section className="rounded-3xl border border-white/10 bg-white/[0.03] p-6 md:p-10">
+          <h2 className="mb-5 text-xl font-semibold text-white md:text-2xl">
             Full Context
           </h2>
 
-          <div className="space-y-5 text-sm leading-7 text-gray-300 md:text-base">
+          <div className="space-y-6 text-sm leading-8 text-gray-300 md:text-base">
             <p>
-              This article highlights an important development in the AI
-              ecosystem. The update reflects how quickly the space is moving
-              across product launches, model capabilities, business adoption,
-              and infrastructure.
+              This article reflects an important shift in the AI landscape.
+              Beyond the headline itself, it signals how quickly the ecosystem
+              is evolving across model capabilities, product experience,
+              developer tooling, and commercial adoption.
             </p>
 
             <p>
-              For builders, operators, and product teams, the key takeaway is
-              not just the headline itself, but what it signals about where the
-              market is heading next. Stronger AI products are increasingly
-              combining usability, reliability, and integration into real
-              workflows.
+              For operators, founders, and product teams, the real value lies in
+              understanding what this update means in practice. It may influence
+              how new AI features are built, how workflows are automated, how
+              trust and usability are designed, and how users interact with AI
+              products day to day.
             </p>
 
             <p>
-              As this landscape evolves, teams that understand both the surface
-              narrative and the deeper product implications will be better
-              positioned to identify opportunities, build differentiated
-              experiences, and respond faster to changes in the ecosystem.
+              The strongest teams will not just track announcements. They will
+              connect them to user behavior, product opportunities, market
+              timing, and implementation quality. That is often where the real
+              edge comes from.
+            </p>
+
+            <p>
+              As the AI space matures, thoughtful execution will matter more
+              than novelty alone. Products that combine clarity, performance,
+              reliability, and strong UX will stand out in a crowded ecosystem.
             </p>
           </div>
         </section>
