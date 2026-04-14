@@ -1,36 +1,90 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Signal
 
-## Getting Started
+AI Signal is a modern AI news aggregation and summarization interface designed to surface high-quality signals from the noise in the fast-moving AI ecosystem.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 🚀 Live Demo
+(Add your Vercel link here after deployment)
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ✨ Features
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Dynamic featured story (changes with category)
+- Real-time search across articles
+- Category-based filtering (Models, Funding, Research, etc.)
+- Bookmark / Save articles (persistent via local storage)
+- Clean multi-page navigation (Home, Saved, Article detail)
+- Premium UI with dark theme, glow effects, and micro-interactions
+- Structured article view with “Why it matters” layer
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## 🧠 Product Thinking
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+AI Signal is built as a signal layer for AI operators, builders, and product teams.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Instead of flooding users with raw news, it focuses on:
+- Clarity over volume
+- Relevance over noise
+- Actionable insight over headlines
 
-## Deploy on Vercel
+Each article is structured to answer:
+- What happened?
+- Why it matters?
+- How it impacts real-world AI products
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🛠 Tech Stack
+
+- Next.js (App Router)
+- React + TypeScript
+- Tailwind CSS
+- Local Storage (state persistence)
+
+---
+
+## 📂 Project Structure
+
+app/
+  page.tsx              # Homepage (feed + filters + hero)
+  saved/page.tsx        # Saved articles view
+  article/[id]/page.tsx # Article detail page
+
+lib/
+  mockData.ts           # Data layer (API-ready structure)
+
+---
+
+## ⚡ Key Highlights
+
+- Built from scratch without component libraries
+- Focus on UX hierarchy and readability
+- Fully responsive layout
+- Scalable architecture (easy API integration later)
+- Product-first design (not just UI cloning)
+
+---
+
+## 🔮 Future Improvements
+
+- Live AI news ingestion (API / scraping)
+- AI-generated summaries (LLM pipeline)
+- Personalization layer (user interests)
+- Daily email digest
+- Trending signal detection
+- Bookmark sync (backend)
+
+---
+
+## 👨‍💻 Author
+
+Suraj Pandita
+
+---
+
+## 📌 Note
+
+This project is part of a broader vision to build tools that help users navigate and act on rapid AI advancements effectively.
