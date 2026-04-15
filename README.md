@@ -1,3 +1,6 @@
+## Preview
+
+![AI Signal Preview](public/preview.png)
 # AI Signal
 
 I built AI Signal because following AI news started feeling like a full-time job.
