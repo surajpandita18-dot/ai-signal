@@ -323,9 +323,9 @@ export default function Home() {
 
         {/* Hero */}
         <Link
-          href="/article/1"
-          className="group relative mb-10 block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-700/40 via-zinc-900 to-blue-700/30 shadow-2xl transition hover:border-white/20"
-        >
+  href={topSignals.length > 0 ? `/article/${topSignals[0].id}` : "/"}
+  className="group relative mb-10 block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-700/40 via-zinc-900 to-blue-700/30 shadow-2xl transition hover:border-white/20"
+>
           <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
 
           <div className="relative z-10 p-8 md:p-10">
@@ -399,15 +399,13 @@ export default function Home() {
                   </div>
                 </div>
 
-                <a
-                  href={article.link}
-                  target="_blank"
-                  rel="noreferrer"
-                  onClick={() => markAsRead(article.id)}
-                  className="shrink-0 text-xs text-gray-400 transition hover:text-white"
-                >
-                  Read →
-                </a>
+                <Link
+  href={`/article/${article.id}`}
+  onClick={() => markAsRead(article.id)}
+  className="shrink-0 text-xs text-gray-400 transition hover:text-white"
+>
+  Read →
+</Link>
               </div>
             ))}
           </div>
@@ -486,15 +484,13 @@ export default function Home() {
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>Live feed</span>
 
-                  <a
-                    href={article.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    onClick={() => markAsRead(article.id)}
-                    className="font-medium text-gray-400 transition hover:text-white"
-                  >
-                    Read →
-                  </a>
+                  <Link
+  href={`/article/${article.id}`}
+  onClick={() => markAsRead(article.id)}
+  className="font-medium text-gray-400 transition hover:text-white"
+>
+  Read →
+</Link>
                 </div>
               </article>
             ))

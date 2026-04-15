@@ -151,14 +151,12 @@ export default function SavedPage() {
 
                 <div className="flex items-center justify-between text-xs text-gray-500">
                   <span>Saved signal</span>
-                  <a
-                    href={article.link}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="font-medium text-gray-400 transition hover:text-white"
-                  >
-                    Read →
-                  </a>
+                  <Link
+  href={`/article/${article.id}`}
+  className="font-medium text-gray-400 transition hover:text-white"
+>
+  Read →
+</Link>
                 </div>
               </article>
             ))}
