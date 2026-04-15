@@ -1,43 +1,56 @@
 "use client";
 
+import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { articles } from "@/lib/mockData";
+import realNews from "@/lib/realNews.json";
+
+type RealArticle = {
+  id: string;
+  source: string;
+  title: string;
+  link: string;
+  date: string;
+  summary: string;
+  category?: string;
+};
+
+function truncateText(text: string, maxLength: number) {
+  if (!text) return "No summary available.";
+  const clean = text.replace(/\s+/g, " ").trim();
+  if (clean.length <= maxLength) return clean;
+  return clean.slice(0, maxLength).trim() + "…";
+}
 
 export default function SavedPage() {
-  const [bookmarks, setBookmarks] = useState<number[]>([]);
+  const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [search, setSearch] = useState("");
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const savedBookmarks = localStorage.getItem("bookmarks");
-
-    if (savedBookmarks) {
+    const saved = localStorage.getItem("bookmarks_real");
+    if (saved) {
       try {
-        const parsed = JSON.parse(savedBookmarks);
-        setBookmarks(Array.isArray(parsed) ? parsed : []);
+        setBookmarks(JSON.parse(saved));
       } catch {
         setBookmarks([]);
       }
-    } else {
-      setBookmarks([]);
     }
-
     setIsLoaded(true);
   }, []);
 
-  const toggleBookmark = (id: number) => {
-    const updatedBookmarks = bookmarks.includes(id)
+  const toggleBookmark = (id: string) => {
+    const updated = bookmarks.includes(id)
       ? bookmarks.filter((item) => item !== id)
       : [...bookmarks, id];
 
-    setBookmarks(updatedBookmarks);
-    localStorage.setItem("bookmarks", JSON.stringify(updatedBookmarks));
+    setBookmarks(updated);
+    localStorage.setItem("bookmarks_real", JSON.stringify(updated));
   };
 
   const query = search.trim().toLowerCase();
 
   const savedArticles = useMemo(() => {
-    return articles
+    return (realNews as RealArticle[])
       .filter((article) => bookmarks.includes(article.id))
       .filter((article) => {
         if (query === "") return true;
@@ -46,7 +59,7 @@ export default function SavedPage() {
           article.title.toLowerCase().includes(query) ||
           article.summary.toLowerCase().includes(query) ||
           article.source.toLowerCase().includes(query) ||
-          article.category.toLowerCase().includes(query)
+          (article.category || "").toLowerCase().includes(query)
         );
       });
   }, [bookmarks, query]);
@@ -64,7 +77,6 @@ export default function SavedPage() {
   return (
     <main className="min-h-screen bg-black text-white">
       <div className="mx-auto max-w-7xl px-6 py-8">
-        {/* Header */}
         <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div>
             <p className="text-sm uppercase tracking-[0.3em] text-gray-500">
@@ -80,12 +92,12 @@ export default function SavedPage() {
           </div>
 
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
-            <a
+            <Link
               href="/"
               className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
             >
               ← Back to Home
-            </a>
+            </Link>
 
             <input
               type="text"
@@ -101,72 +113,54 @@ export default function SavedPage() {
           <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
             {savedArticles.map((article) => (
               <article
-  key={article.id}
-  className="group relative overflow-hidden rounded-3xl border border-white/10 bg-white/5 p-5 backdrop-blur-md transition duration-300 hover:-translate-y-2 hover:-translate-y-2 hover:border-purple-400/40 hover:shadow-[0_0_25px_rgba(168,85,247,0.25)] hover:bg-white/[0.08] hover:bg-white/[0.08]"
->
-  <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 transition group-hover:opacity-100" />
+                key={article.id}
+                className="group relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] p-5 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-purple-400/40 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]"
+              >
+                <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 transition group-hover:opacity-100" />
 
-  {/* Image */}
-  <div className="mb-4 overflow-hidden rounded-2xl">
-    <img
-      src={article.image}
-      alt={article.title}
-      onError={(e) => {
-        e.currentTarget.src =
-          "https://images.unsplash.com/photo-1518770660439-4636190af475?q=80&w=1400&auto=format&fit=crop";
-      }}
-      className="h-44 w-full object-cover transition duration-500 group-hover:scale-105"
-    />
-  </div>
+                <div className="mb-4 flex items-center justify-between gap-3">
+                  <span className="rounded-full bg-purple-500/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-purple-300">
+                    {article.category || "AI News"}
+                  </span>
 
-  {/* Top Row */}
-  <div className="mb-3 flex items-center justify-between gap-3">
-    <p className="truncate text-xs uppercase tracking-[0.2em] text-gray-500">
-      {article.source}
-    </p>
+                  <div className="flex items-center gap-2">
+                    <span className="text-xs text-gray-500">{article.date}</span>
 
-    <div className="flex items-center gap-2">
-      <span className="rounded-full border border-cyan-400/20 bg-cyan-400/10 px-2 py-1 text-[10px] font-medium text-cyan-300">
-        {article.category}
-      </span>
+                    <button
+                      type="button"
+                      onClick={() => toggleBookmark(article.id)}
+                      className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-2 py-1 text-sm leading-none text-yellow-300 transition hover:scale-110 hover:border-yellow-400/40 hover:bg-yellow-500/10"
+                      aria-label="Remove bookmark"
+                    >
+                      ★
+                    </button>
+                  </div>
+                </div>
 
-      <button
-        type="button"
-        onClick={() => toggleBookmark(article.id)}
-       className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-2 py-1 text-sm leading-none text-yellow-300 transition hover:scale-110 hover:border-yellow-400/40 hover:bg-yellow-500/10"
-        aria-label="Remove bookmark"
-      >
-        ★
-      </button>
-    </div>
-  </div>
+                <p className="mb-2 text-xs uppercase tracking-[0.2em] text-gray-500">
+                  {article.source}
+                </p>
 
-  {/* Title */}
-  <h4 className="mb-3 line-clamp-2 text-lg font-semibold leading-7 text-white transition duration-300 group-hover:text-purple-300">
-    {article.title}
-  </h4>
+                <h2 className="mb-3 text-lg font-semibold leading-7 text-white transition duration-300 group-hover:text-purple-300">
+                  {article.title}
+                </h2>
 
-  {/* Summary */}
-  <p className="mb-4 line-clamp-3 text-sm leading-6 text-gray-300">
-    {article.summary}
-  </p>
+                <p className="mb-5 text-sm leading-6 text-gray-400">
+                  {truncateText(article.summary, 220)}
+                </p>
 
-  {/* Why it matters */}
-  <p className="mb-5 line-clamp-2 text-sm text-purple-300">
-    Why it matters: {article.whyItMatters}
-  </p>
-
-  {/* Footer */}
-  <div className="flex items-center justify-between text-xs text-gray-500">
-    <span>{article.date}</span>
-    <a
-      href={`/article/${article.id}`}
-      className="font-medium transition group-hover:text-white"
-    >
-      Read more →
-    </a>
-  </div>
-</article>
+                <div className="flex items-center justify-between text-xs text-gray-500">
+                  <span>Saved signal</span>
+                  <a
+                    href={article.link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="font-medium text-gray-400 transition hover:text-white"
+                  >
+                    Read →
+                  </a>
+                </div>
+              </article>
             ))}
           </section>
         ) : (
@@ -182,12 +176,12 @@ export default function SavedPage() {
                 : "Try another keyword or clear your search."}
             </p>
 
-            <a
+            <Link
               href="/"
               className="mt-6 inline-block rounded-full border border-purple-400/30 bg-purple-500/10 px-5 py-2 text-sm text-purple-200 transition hover:bg-purple-500/20"
             >
               Explore articles
-            </a>
+            </Link>
           </div>
         )}
       </div>
