@@ -2,6 +2,16 @@
   {
     "id": "Hugging Face-1",
     "source": "Hugging Face",
+    "title": "Meet HoloTab by HCompany. Your AI browser companion. ",
+    "link": "https://huggingface.co/blog/Hcompany/holotab",
+    "date": "Wed, 15 Apr 2026 09:25:20 GMT",
+    "summary": "No summary available",
+    "category": "AI News",
+    "image": ""
+  },
+  {
+    "id": "Hugging Face-2",
+    "source": "Hugging Face",
     "title": "Waypoint-1.5: Higher-Fidelity Interactive Worlds for Everyday GPUs",
     "link": "https://huggingface.co/blog/waypoint-1-5",
     "date": "Thu, 09 Apr 2026 00:00:00 GMT",
@@ -10,21 +20,11 @@
     "image": ""
   },
   {
-    "id": "Hugging Face-2",
+    "id": "Hugging Face-3",
     "source": "Hugging Face",
     "title": "Multimodal Embedding & Reranker Models with Sentence Transformers",
     "link": "https://huggingface.co/blog/multimodal-sentence-transformers",
     "date": "Thu, 09 Apr 2026 00:00:00 GMT",
-    "summary": "No summary available",
-    "category": "AI News",
-    "image": ""
-  },
-  {
-    "id": "Hugging Face-3",
-    "source": "Hugging Face",
-    "title": "ALTK‑Evolve: On‑the‑Job Learning for AI Agents",
-    "link": "https://huggingface.co/blog/ibm-research/altk-evolve",
-    "date": "Wed, 08 Apr 2026 14:27:42 GMT",
     "summary": "No summary available",
     "category": "AI News",
     "image": ""
@@ -102,6 +102,16 @@
   {
     "id": "MIT Technology Review AI-1",
     "source": "MIT Technology Review AI",
+    "title": "Building trust in the AI era with privacy-led UX",
+    "link": "https://www.technologyreview.com/2026/04/15/1135530/building-trust-in-the-ai-era-with-privacy-led-ux/",
+    "date": "Wed, 15 Apr 2026 06:00:00 +0000",
+    "summary": "The practice of privacy-led user experience (UX) is a design philosophy that treats transparency around data collection and usage as an integral part of the customer relationship. An undertapped opportunity in digital marketing, privacy-led UX treats user consent not as a tick-box compliance exercise, but rather as the first overture in an ongoing customer relationship.…",
+    "category": "AI News",
+    "image": ""
+  },
+  {
+    "id": "MIT Technology Review AI-2",
+    "source": "MIT Technology Review AI",
     "title": "Redefining the future of software engineering",
     "link": "https://www.technologyreview.com/2026/04/14/1134397/redefining-the-future-of-software-engineering/",
     "date": "Tue, 14 Apr 2026 18:00:00 +0000",
@@ -110,7 +120,7 @@
     "image": ""
   },
   {
-    "id": "MIT Technology Review AI-2",
+    "id": "MIT Technology Review AI-3",
     "source": "MIT Technology Review AI",
     "title": "Coming soon: 10 Things That Matter in AI Right Now",
     "link": "https://www.technologyreview.com/2026/04/14/1135298/coming-soon-10-things-that-matter-in-ai-right-now/",
@@ -120,7 +130,7 @@
     "image": ""
   },
   {
-    "id": "MIT Technology Review AI-3",
+    "id": "MIT Technology Review AI-4",
     "source": "MIT Technology Review AI",
     "title": "Why opinion on AI is so divided",
     "link": "https://www.technologyreview.com/2026/04/13/1135720/why-opinion-on-ai-is-so-divided/",
@@ -130,22 +140,12 @@
     "image": ""
   },
   {
-    "id": "MIT Technology Review AI-4",
+    "id": "MIT Technology Review AI-5",
     "source": "MIT Technology Review AI",
     "title": "Want to understand the current state of AI? Check out these charts.",
     "link": "https://www.technologyreview.com/2026/04/13/1135675/want-to-understand-the-current-state-of-ai-check-out-these-charts/",
     "date": "Mon, 13 Apr 2026 13:00:00 +0000",
     "summary": "If you’re following AI news, you’re probably getting whiplash. AI is a gold rush. AI is a bubble. AI is taking your job. AI can’t even read a clock. The 2026 AI Index from Stanford University’s Institute for Human-Centered Artificial Intelligence, AI’s annual report card, comes out today and cuts through some of that noise. …",
-    "category": "AI News",
-    "image": ""
-  },
-  {
-    "id": "MIT Technology Review AI-5",
-    "source": "MIT Technology Review AI",
-    "title": "Mustafa Suleyman: AI development won’t hit a wall anytime soon—here’s why",
-    "link": "https://www.technologyreview.com/2026/04/08/1135398/mustafa-suleyman-ai-future/",
-    "date": "Wed, 08 Apr 2026 14:00:00 +0000",
-    "summary": "We evolved for a linear world. If you walk for an hour, you cover a certain distance. Walk for two hours and you cover double that distance. This intuition served us well on the savannah. But it catastrophically fails when confronting AI and the core exponential trends at its heart. From the time I began…",
     "category": "AI News",
     "image": ""
   }
