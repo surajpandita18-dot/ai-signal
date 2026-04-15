@@ -2,6 +2,16 @@
   {
     "id": "Hugging Face-1",
     "source": "Hugging Face",
+    "title": "Inside VAKRA: Reasoning, Tool Use, and Failure Modes of Agents",
+    "link": "https://huggingface.co/blog/ibm-research/vakra-benchmark-analysis",
+    "date": "Wed, 15 Apr 2026 12:07:25 GMT",
+    "summary": "No summary available",
+    "category": "AI News",
+    "image": ""
+  },
+  {
+    "id": "Hugging Face-2",
+    "source": "Hugging Face",
     "title": "Meet HoloTab by HCompany. Your AI browser companion. ",
     "link": "https://huggingface.co/blog/Hcompany/holotab",
     "date": "Wed, 15 Apr 2026 09:25:20 GMT",
@@ -10,7 +20,7 @@
     "image": ""
   },
   {
-    "id": "Hugging Face-2",
+    "id": "Hugging Face-3",
     "source": "Hugging Face",
     "title": "Waypoint-1.5: Higher-Fidelity Interactive Worlds for Everyday GPUs",
     "link": "https://huggingface.co/blog/waypoint-1-5",
@@ -20,7 +30,7 @@
     "image": ""
   },
   {
-    "id": "Hugging Face-3",
+    "id": "Hugging Face-4",
     "source": "Hugging Face",
     "title": "Multimodal Embedding & Reranker Models with Sentence Transformers",
     "link": "https://huggingface.co/blog/multimodal-sentence-transformers",
@@ -30,21 +40,11 @@
     "image": ""
   },
   {
-    "id": "Hugging Face-4",
+    "id": "Hugging Face-5",
     "source": "Hugging Face",
     "title": "Safetensors is Joining the PyTorch Foundation",
     "link": "https://huggingface.co/blog/safetensors-joins-pytorch-foundation",
     "date": "Wed, 08 Apr 2026 00:00:00 GMT",
-    "summary": "No summary available",
-    "category": "AI News",
-    "image": ""
-  },
-  {
-    "id": "Hugging Face-5",
-    "source": "Hugging Face",
-    "title": "Welcome Gemma 4: Frontier multimodal intelligence on device",
-    "link": "https://huggingface.co/blog/gemma4",
-    "date": "Thu, 02 Apr 2026 00:00:00 GMT",
     "summary": "No summary available",
     "category": "AI News",
     "image": ""
