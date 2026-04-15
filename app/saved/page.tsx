@@ -66,26 +66,26 @@ export default function SavedPage() {
 
   if (!isLoaded) {
     return (
-      <main className="min-h-screen bg-black text-white">
+      <main className="min-h-screen">
         <div className="mx-auto flex max-w-7xl items-center justify-center px-6 py-20">
-          <p className="text-sm text-gray-400">Loading saved articles...</p>
+          <p className="text-sm text-stone-400">Loading saved articles...</p>
         </div>
       </main>
     );
   }
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-8">
         <div className="mb-10 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
           <div>
-            <p className="text-sm uppercase tracking-[0.3em] text-gray-500">
+            <p className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-stone-400">
               Your Collection
             </p>
-            <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+            <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-900 md:text-4xl">
               Saved Articles
             </h1>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-stone-500">
               {savedArticles.length} saved article
               {savedArticles.length !== 1 ? "s" : ""}
             </p>
@@ -94,7 +94,7 @@ export default function SavedPage() {
           <div className="flex flex-col gap-3 md:flex-row md:items-center">
             <Link
               href="/"
-              className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+              className="inline-flex items-center justify-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
             >
               ← Back to Home
             </Link>
@@ -104,71 +104,68 @@ export default function SavedPage() {
               placeholder="Search saved articles..."
               value={search}
               onChange={(e) => setSearch(e.target.value)}
-              className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 outline-none backdrop-blur-md md:w-80"
+              className="w-full rounded-2xl border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 outline-none focus:border-indigo-300 md:w-80"
             />
           </div>
         </div>
 
         {savedArticles.length > 0 ? (
-          <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
             {savedArticles.map((article) => (
               <article
                 key={article.id}
-                className="group relative rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] p-5 backdrop-blur-xl transition duration-300 hover:-translate-y-2 hover:border-purple-400/40 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]"
+                className="group rounded-2xl border border-[#E0D9CF] bg-white p-5 shadow-sm transition-[box-shadow,border-color] duration-150 hover:border-[#C8C0B5] hover:shadow-[0_8px_28px_rgba(0,0,0,0.09)]"
               >
-                <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 transition group-hover:opacity-100" />
-
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <span className="rounded-full bg-purple-500/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-purple-300">
-                    {article.category || "AI News"}
-                  </span>
-
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">{article.date}</span>
-
-                    <button
-                      type="button"
-                      onClick={() => toggleBookmark(article.id)}
-                      className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-2 py-1 text-sm leading-none text-yellow-300 transition hover:scale-110 hover:border-yellow-400/40 hover:bg-yellow-500/10"
-                      aria-label="Remove bookmark"
-                    >
-                      ★
-                    </button>
+                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-indigo-600">
+                      {article.category || "AI News"}
+                    </span>
+                    <span className="text-xs text-stone-400">{article.date}</span>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleBookmark(article.id)}
+                    className="cursor-pointer rounded-full border border-amber-300 bg-amber-50 px-2 py-1 text-sm leading-none text-amber-600 transition-colors duration-150 hover:bg-amber-100"
+                    aria-label="Remove bookmark"
+                  >
+                    ★
+                  </button>
                 </div>
 
-                <p className="mb-2 text-xs uppercase tracking-[0.2em] text-gray-500">
+                <p className="mb-1.5 text-xs uppercase tracking-[0.15em] text-stone-400">
                   {article.source}
                 </p>
 
-                <h2 className="mb-3 text-lg font-semibold leading-7 text-white transition duration-300 group-hover:text-purple-300">
+                <h2 className="mb-3 text-[0.9375rem] font-semibold leading-[1.5] text-stone-900 transition-colors duration-150 group-hover:text-indigo-700">
                   {article.title}
                 </h2>
 
-                <p className="mb-5 text-sm leading-6 text-gray-400">
+                <p className="mb-4 text-sm leading-6 text-stone-500">
                   {truncateText(article.summary, 220)}
                 </p>
 
-                <div className="flex items-center justify-between text-xs text-gray-500">
+                <div className="flex items-center justify-between border-t border-[#EDE8E2] pt-3 text-xs text-stone-400">
                   <span>Saved signal</span>
                   <Link
-  href={`/article/${article.id}`}
-  className="font-medium text-gray-400 transition hover:text-white"
->
-  Read →
-</Link>
+                    href={`/article/${article.id}`}
+                    className="font-medium transition-colors duration-150 hover:text-indigo-700"
+                  >
+                    Read →
+                  </Link>
                 </div>
               </article>
             ))}
           </section>
         ) : (
-          <div className="rounded-3xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur-md">
-            <p className="text-lg font-medium text-white">
+          <div className="rounded-2xl border border-[#E0D9CF] bg-[#F7F4F0] p-10 text-center">
+            <p className="text-lg font-medium text-stone-900">
               {search.trim() === ""
                 ? "No saved articles yet"
                 : "No matching saved articles"}
             </p>
-            <p className="mt-2 text-sm text-gray-400">
+            <p className="mt-2 text-sm text-stone-500">
               {search.trim() === ""
                 ? "Bookmark articles from the homepage and they will appear here."
                 : "Try another keyword or clear your search."}
@@ -176,7 +173,7 @@ export default function SavedPage() {
 
             <Link
               href="/"
-              className="mt-6 inline-block rounded-full border border-purple-400/30 bg-purple-500/10 px-5 py-2 text-sm text-purple-200 transition hover:bg-purple-500/20"
+              className="mt-6 inline-block rounded-full border border-indigo-600 bg-indigo-600 px-5 py-2 text-sm text-white transition-colors duration-150 hover:bg-indigo-700"
             >
               Explore articles
             </Link>

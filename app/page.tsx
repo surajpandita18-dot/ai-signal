@@ -153,7 +153,7 @@ function generateDailyBrief(articles: RealArticle[]) {
   if (hasFunding) themes.push("fresh capital flowing into AI infrastructure and applications");
 
   if (themes.length === 0) {
-    return "Today’s signal set suggests steady movement across the AI landscape, with incremental developments that matter for builders, operators, and product teams.";
+    return "Today's signal set suggests steady movement across the AI landscape, with incremental developments that matter for builders, operators, and product teams.";
   }
 
   const themeText =
@@ -163,7 +163,7 @@ function generateDailyBrief(articles: RealArticle[]) {
       ? `${themes[0]} and ${themes[1]}`
       : `${themes.slice(0, -1).join(", ")}, and ${themes[themes.length - 1]}`;
 
-  return `Today’s AI brief points to ${themeText}. The strongest signal is not any single headline, but the combined pace of ecosystem movement — where capability advances, productization, and commercialization are increasingly happening in parallel.`;
+  return `Today's AI brief points to ${themeText}. The strongest signal is not any single headline, but the combined pace of ecosystem movement — where capability advances, productization, and commercialization are increasingly happening in parallel.`;
 }
 
 export default function Home() {
@@ -250,16 +250,17 @@ export default function Home() {
   }, [topSignals]);
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-7xl px-6 py-8">
+
         {/* Header */}
         <header className="mb-10">
           <div className="mb-6 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
             <div>
-              <p className="text-sm uppercase tracking-[0.3em] text-gray-500">
+              <p className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-stone-400">
                 AI News Digest
               </p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight md:text-4xl">
+              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-900 md:text-4xl">
                 AI Signal
               </h1>
             </div>
@@ -267,10 +268,10 @@ export default function Home() {
             <div className="flex flex-col gap-3 md:flex-row md:items-center">
               <Link
                 href="/saved"
-                className="inline-flex items-center justify-center rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+                className="inline-flex items-center justify-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
               >
                 Saved
-                <span className="ml-2 rounded-full bg-purple-500/20 px-2 py-0.5 text-xs text-purple-200">
+                <span className="ml-2 rounded-full bg-indigo-50 px-2 py-0.5 text-xs text-indigo-600">
                   {bookmarks.length}
                 </span>
               </Link>
@@ -280,28 +281,28 @@ export default function Home() {
                 placeholder="Search AI news..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-2xl border border-white/10 bg-white/5 px-4 py-3 text-sm text-white placeholder:text-gray-500 outline-none backdrop-blur-md md:w-80"
+                className="w-full rounded-2xl border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 outline-none focus:border-indigo-300 md:w-80"
               />
 
               <button
                 onClick={() => window.location.reload()}
-                className="rounded-full border border-white/10 bg-white/5 px-4 py-3 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+                className="rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
               >
                 Refresh
               </button>
             </div>
           </div>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {categories.map((item) => (
               <button
                 key={item}
                 type="button"
                 onClick={() => setSelectedCategory(item)}
-                className={`rounded-full border px-4 py-2 text-sm transition ${
+                className={`rounded-full border px-4 py-1.5 text-sm transition-colors duration-150 ${
                   selectedCategory === item
-                    ? "border-purple-400/40 bg-purple-500/15 text-white"
-                    : "border-white/10 bg-white/5 text-gray-300 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                    ? "border-indigo-600 bg-indigo-600 text-white"
+                    : "border-[#D5CEC5] bg-white text-stone-600 hover:border-[#C8C0B5] hover:text-stone-800"
                 }`}
               >
                 {item}
@@ -310,10 +311,10 @@ export default function Home() {
 
             <button
               onClick={() => setShowUnreadOnly((prev) => !prev)}
-              className={`rounded-full border px-4 py-2 text-sm transition ${
+              className={`rounded-full border px-4 py-1.5 text-sm transition-colors duration-150 ${
                 showUnreadOnly
-                  ? "border-cyan-400/40 bg-cyan-500/15 text-white"
-                  : "border-white/10 bg-white/5 text-gray-300 hover:border-white/20 hover:bg-white/10 hover:text-white"
+                  ? "border-indigo-600 bg-indigo-600 text-white"
+                  : "border-[#D5CEC5] bg-white text-stone-600 hover:border-[#C8C0B5] hover:text-stone-800"
               }`}
             >
               {showUnreadOnly ? "Showing Unread" : "Unread Only"}
@@ -321,91 +322,91 @@ export default function Home() {
           </div>
         </header>
 
-        {/* Hero */}
+        {/* Hero — warm featured treatment */}
         <Link
-  href={topSignals.length > 0 ? `/article/${topSignals[0].id}` : "/"}
-  className="group relative mb-10 block overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-purple-700/40 via-zinc-900 to-blue-700/30 shadow-2xl transition hover:border-white/20"
->
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/60 to-transparent" />
-
-          <div className="relative z-10 p-8 md:p-10">
-            <p className="mb-3 inline-block rounded-full border border-purple-400/30 bg-purple-500/10 px-3 py-1 text-xs font-medium text-purple-300">
+          href={topSignals.length > 0 ? `/article/${topSignals[0].id}` : "/"}
+          className="group mb-10 block overflow-hidden rounded-2xl border border-[#C8C0B5] bg-gradient-to-br from-[#EDE8E0] via-[#F5F1EC] to-white shadow-[0_6px_32px_rgba(0,0,0,0.09)] transition-shadow duration-150 hover:shadow-[0_8px_36px_rgba(0,0,0,0.11)]"
+        >
+          <div className="p-10 md:p-14">
+            <p className="mb-4 inline-block rounded-full border border-indigo-200 bg-white px-3 py-1 text-xs font-medium text-indigo-600">
               Featured Story
             </p>
 
-            <h2 className="max-w-4xl text-3xl font-semibold leading-tight text-white drop-shadow-[0_0_20px_rgba(168,85,247,0.4)] md:text-5xl">
+            <h2 className="max-w-4xl text-4xl font-semibold leading-[1.12] tracking-tight text-stone-900 md:text-5xl">
               {featuredArticle.title}
             </h2>
 
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-gray-300 md:text-base">
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-stone-600 md:text-base">
               {featuredArticle.summary}
             </p>
 
-            <div className="mt-6 flex flex-wrap items-center gap-4">
-              <p className="text-sm text-cyan-300">
+            <div className="mt-7 flex flex-wrap items-center gap-4">
+              <p className="max-w-xl text-sm italic text-stone-500">
                 Why it matters: {featuredArticle.whyItMatters}
               </p>
 
-              <span className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-white transition group-hover:bg-white/10">
+              <span className="inline-flex items-center rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-150 group-hover:bg-indigo-700">
                 Read full story →
               </span>
             </div>
           </div>
         </Link>
 
-        {/* Daily Brief */}
-        <section className="mb-10 rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] p-6 backdrop-blur-xl">
+        {/* Daily Brief — memo block */}
+        <section className="mb-10 rounded-2xl border border-[#E0D9CF] border-l-[3px] border-l-indigo-300 bg-[#F2EDE5] p-6">
           <div className="mb-4">
-            <p className="mb-2 text-xs uppercase tracking-[0.2em] text-purple-300">
+            <p className="mb-2 text-[0.65rem] font-medium uppercase tracking-[0.3em] text-stone-400">
               Daily AI Brief
             </p>
-            <h3 className="text-xl font-semibold text-white">
+            <h3 className="text-xl font-semibold text-stone-900">
               What matters today
             </h3>
           </div>
 
-          <p className="max-w-4xl text-sm leading-7 text-gray-300 md:text-base">
+          <p className="max-w-4xl text-sm leading-7 text-stone-600 md:text-base">
             {dailyBrief}
           </p>
         </section>
 
-        {/* Top Signals */}
+        {/* Top Signals — unified ranked board */}
         <section className="mb-10">
           <div className="mb-4">
-            <h3 className="text-xl font-semibold text-white">Top Signals Today</h3>
-            <p className="text-sm text-gray-500">
+            <h3 className="text-xl font-semibold text-stone-900">Top Signals Today</h3>
+            <p className="text-sm text-stone-400">
               Most relevant developments across AI right now
             </p>
           </div>
 
-          <div className="space-y-4">
+          <div className="overflow-hidden rounded-2xl border border-[#E0D9CF] bg-[#F7F4F0]">
             {topSignals.map((article, index) => (
               <div
                 key={article.id}
-                className="group flex items-start justify-between gap-4 rounded-2xl border border-white/10 bg-white/[0.03] p-4 transition hover:border-purple-400/40 hover:bg-white/[0.05]"
+                className={`group flex items-start justify-between gap-4 p-4 transition-colors duration-150 hover:bg-white ${
+                  index > 0 ? "border-t border-[#E8E2DB]" : ""
+                }`}
               >
                 <div className="flex gap-4">
-                  <span className="text-lg font-semibold text-purple-300">
+                  <span className="text-lg font-semibold tabular-nums text-indigo-400">
                     {index + 1}
                   </span>
 
                   <div>
-                    <p className="mb-1 text-xs uppercase tracking-[0.2em] text-gray-500">
+                    <p className="mb-1 text-xs uppercase tracking-[0.15em] text-stone-400">
                       {article.source}
                     </p>
-                    <h4 className="text-sm font-medium leading-6 text-white transition group-hover:text-purple-300">
+                    <h4 className="text-sm font-medium leading-6 text-stone-900 transition-colors duration-150 group-hover:text-indigo-700">
                       {article.title}
                     </h4>
                   </div>
                 </div>
 
                 <Link
-  href={`/article/${article.id}`}
-  onClick={() => markAsRead(article.id)}
-  className="shrink-0 text-xs text-gray-400 transition hover:text-white"
->
-  Read →
-</Link>
+                  href={`/article/${article.id}`}
+                  onClick={() => markAsRead(article.id)}
+                  className="shrink-0 text-xs text-stone-400 transition-colors duration-150 hover:text-stone-900"
+                >
+                  Read →
+                </Link>
               </div>
             ))}
           </div>
@@ -414,90 +415,89 @@ export default function Home() {
         {/* Section header */}
         <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
           <div>
-            <h3 className="text-2xl font-semibold tracking-tight">
+            <h3 className="text-2xl font-semibold tracking-tight text-stone-900">
               Latest Signals
             </h3>
-            <p className="mt-1 text-sm text-gray-500">
+            <p className="mt-1 text-sm text-stone-400">
               Real AI news pulled from live feeds
             </p>
           </div>
 
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-stone-400">
             {filteredArticles.length} article
             {filteredArticles.length !== 1 ? "s" : ""} shown
           </p>
         </div>
 
-        {/* Cards */}
-        <section className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+        {/* Article cards */}
+        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
           {filteredArticles.length > 0 ? (
             filteredArticles.map((article) => (
               <article
                 key={article.id}
-                className={`group relative rounded-3xl border p-5 backdrop-blur-xl transition duration-300 ${
+                className={`group rounded-2xl border p-5 transition-[box-shadow,border-color] duration-150 ${
                   readArticles.includes(article.id)
-                    ? "border-white/5 bg-white/[0.02] opacity-60"
-                    : "border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] hover:-translate-y-2 hover:border-purple-400/40 hover:shadow-[0_0_40px_rgba(168,85,247,0.2)]"
+                    ? "border-[#E0D9CF] bg-[#F7F4F0] opacity-60"
+                    : "border-[#E0D9CF] bg-white shadow-sm hover:border-[#C8C0B5] hover:shadow-[0_8px_28px_rgba(0,0,0,0.09)]"
                 }`}
               >
-                <div className="pointer-events-none absolute inset-0 rounded-3xl bg-gradient-to-br from-purple-500/10 via-transparent to-blue-500/10 opacity-0 transition group-hover:opacity-100" />
-
                 <div className="mb-4 flex items-center justify-between gap-3">
-                  <span className="rounded-full bg-purple-500/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-purple-300">
-                    {article.category || "AI News"}
-                  </span>
-
                   <div className="flex items-center gap-2">
-                    <span className="text-xs text-gray-500">{article.date}</span>
-
-                    <button
-                      type="button"
-                      onClick={() => toggleBookmark(article.id)}
-                      className="cursor-pointer rounded-full border border-white/10 bg-white/5 px-2 py-1 text-sm leading-none text-yellow-300 transition hover:scale-110 hover:border-yellow-400/40 hover:bg-yellow-500/10"
-                      aria-label={
-                        bookmarks.includes(article.id)
-                          ? "Remove bookmark"
-                          : "Add bookmark"
-                      }
-                    >
-                      {bookmarks.includes(article.id) ? "★" : "☆"}
-                    </button>
+                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-indigo-600">
+                      {article.category || "AI News"}
+                    </span>
+                    <span className="text-xs text-stone-400">{article.date}</span>
                   </div>
+
+                  <button
+                    type="button"
+                    onClick={() => toggleBookmark(article.id)}
+                    className={`cursor-pointer rounded-full border px-2 py-1 text-sm leading-none transition-colors duration-150 ${
+                      bookmarks.includes(article.id)
+                        ? "border-amber-300 bg-amber-50 text-amber-600"
+                        : "border-[#E0D9CF] bg-[#F7F4F0] text-stone-300 hover:border-amber-200 hover:text-amber-400"
+                    }`}
+                    aria-label={
+                      bookmarks.includes(article.id)
+                        ? "Remove bookmark"
+                        : "Add bookmark"
+                    }
+                  >
+                    {bookmarks.includes(article.id) ? "★" : "☆"}
+                  </button>
                 </div>
 
-                <p className="mb-2 text-xs uppercase tracking-[0.2em] text-gray-500">
+                <p className="mb-1.5 text-xs uppercase tracking-[0.15em] text-stone-400">
                   {article.source}
                 </p>
 
-                <h4 className="mb-3 text-lg font-semibold leading-7 text-white transition duration-300 group-hover:text-purple-300">
+                <h4 className="mb-3 text-[0.9375rem] font-semibold leading-[1.5] text-stone-900 transition-colors duration-150 group-hover:text-indigo-700">
                   {article.title}
                 </h4>
 
-                <p className="mb-4 text-sm leading-6 text-gray-400">
+                <p className="mb-4 text-sm leading-6 text-stone-500">
                   {truncateText(article.summary, 220)}
                 </p>
 
-                <p className="mb-5 text-xs leading-5 text-cyan-300">
-                  Why it matters: {getWhyItMatters(article.title)}
-                </p>
-
-                <div className="flex items-center justify-between text-xs text-gray-500">
-                  <span>Live feed</span>
+                <div className="flex items-start justify-between gap-3 border-t border-[#EDE8E2] pt-3">
+                  <p className="text-xs leading-5 text-stone-400">
+                    {getWhyItMatters(article.title)}
+                  </p>
 
                   <Link
-  href={`/article/${article.id}`}
-  onClick={() => markAsRead(article.id)}
-  className="font-medium text-gray-400 transition hover:text-white"
->
-  Read →
-</Link>
+                    href={`/article/${article.id}`}
+                    onClick={() => markAsRead(article.id)}
+                    className="shrink-0 text-xs font-medium text-stone-400 transition-colors duration-150 hover:text-indigo-700"
+                  >
+                    Read →
+                  </Link>
                 </div>
               </article>
             ))
           ) : (
-            <div className="col-span-full rounded-3xl border border-white/10 bg-white/5 p-10 text-center backdrop-blur-md">
-              <p className="text-lg font-medium text-white">No results found</p>
-              <p className="mt-2 text-sm text-gray-400">
+            <div className="col-span-full rounded-2xl border border-[#E0D9CF] bg-white p-10 text-center">
+              <p className="text-lg font-medium text-stone-900">No results found</p>
+              <p className="mt-2 text-sm text-stone-500">
                 Try another keyword, company name, topic, or source.
               </p>
             </div>

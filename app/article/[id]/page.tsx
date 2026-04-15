@@ -92,9 +92,11 @@ function splitSummary(summary: string) {
 
   return paragraphs;
 }
+
 function getFallbackArticleNote(article: RealArticle) {
   return `This signal was pulled from ${article.source}. A full summary was not available in the feed, but the headline suggests a development worth tracking under ${article.category || "AI News"}. Use the original source link below to read the complete piece.`;
 }
+
 function normalizeId(value: string) {
   return decodeURIComponent(value).trim().toLowerCase();
 }
@@ -114,20 +116,20 @@ export default async function ArticlePage({
 
   if (!article) {
     return (
-      <main className="min-h-screen bg-black text-white">
+      <main className="min-h-screen">
         <div className="mx-auto max-w-4xl px-6 py-12">
           <Link
             href="/"
-            className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+            className="inline-flex items-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
           >
             ← Back to home
           </Link>
 
-          <div className="mt-10 rounded-3xl border border-white/10 bg-white/[0.03] p-10 text-center backdrop-blur-xl">
-            <h1 className="text-2xl font-semibold text-white">
+          <div className="mt-10 rounded-2xl border border-[#E0D9CF] bg-white p-10 text-center">
+            <h1 className="text-2xl font-semibold text-stone-900">
               Article not found
             </h1>
-            <p className="mt-3 text-sm text-gray-400">
+            <p className="mt-3 text-sm text-stone-500">
               This signal may have been removed, refreshed, or the route id may no longer match the latest feed.
             </p>
           </div>
@@ -140,80 +142,81 @@ export default async function ArticlePage({
   const whyItMatters = getWhyItMatters(article.title);
 
   return (
-    <main className="min-h-screen bg-black text-white">
+    <main className="min-h-screen">
       <div className="mx-auto max-w-4xl px-6 py-12">
         <Link
           href="/"
-          className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-4 py-2 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+          className="inline-flex items-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
         >
           ← Back to home
         </Link>
 
-        <article className="mt-8 overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br from-white/[0.04] to-white/[0.02] backdrop-blur-xl">
-          <div className="border-b border-white/10 bg-gradient-to-br from-purple-700/20 via-transparent to-blue-700/20 p-8 md:p-10">
+        <article className="mt-8 overflow-hidden rounded-2xl border border-[#E0D9CF] bg-white shadow-sm">
+          {/* Warm header zone — matches hero surface */}
+          <div className="bg-gradient-to-br from-[#EDE8E0] via-[#F5F1EC] to-white border-b border-[#E8E1D8] p-8 md:p-10">
             <div className="mb-4 flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-purple-500/10 px-3 py-1 text-xs uppercase tracking-[0.2em] text-purple-300">
+              <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-indigo-600">
                 {article.category || "AI News"}
               </span>
-              <span className="text-xs uppercase tracking-[0.2em] text-gray-500">
+              <span className="text-xs uppercase tracking-[0.15em] text-stone-400">
                 {article.source}
               </span>
-              <span className="text-xs text-gray-500">{article.date}</span>
+              <span className="text-xs text-stone-400">{article.date}</span>
             </div>
 
-            <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-white md:text-5xl">
+            <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-stone-900 md:text-5xl">
               {article.title}
             </h1>
 
-            <p className="mt-6 max-w-3xl text-sm leading-7 text-cyan-300 md:text-base">
+            <p className="mt-6 max-w-3xl text-sm italic leading-7 text-stone-500 md:text-base">
               Why it matters: {whyItMatters}
             </p>
           </div>
 
           <div className="p-8 md:p-10">
-            <div className="mb-8 rounded-2xl border border-white/10 bg-white/[0.03] p-5">
-  <p className="text-xs uppercase tracking-[0.2em] text-gray-500">
-    Signal Summary
-  </p>
-  <p className="mt-3 text-sm leading-7 text-gray-300">
-    {paragraphs.length > 0
-      ? article.summary
-      : "A detailed summary was not available in the source feed for this article."}
-  </p>
-</div>
+            <div className="mb-8 rounded-2xl border border-[#E8E1D8] bg-[#F7F4F0] p-5">
+              <p className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-stone-400">
+                Signal Summary
+              </p>
+              <p className="mt-3 text-sm leading-7 text-stone-600">
+                {paragraphs.length > 0
+                  ? article.summary
+                  : "A detailed summary was not available in the source feed for this article."}
+              </p>
+            </div>
 
             <div className="space-y-6">
-  {paragraphs.length > 0 ? (
-    paragraphs.map((paragraph, index) => (
-      <p
-        key={index}
-        className="text-base leading-8 text-gray-300 md:text-lg"
-      >
-        {paragraph}
-      </p>
-    ))
-  ) : (
-    <div className="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
-      <p className="text-base leading-8 text-gray-300 md:text-lg">
-        {getFallbackArticleNote(article)}
-      </p>
-    </div>
-  )}
-</div>
+              {paragraphs.length > 0 ? (
+                paragraphs.map((paragraph, index) => (
+                  <p
+                    key={index}
+                    className="text-base leading-8 text-stone-700 md:text-lg"
+                  >
+                    {paragraph}
+                  </p>
+                ))
+              ) : (
+                <div className="rounded-2xl border border-[#E8E1D8] bg-[#F7F4F0] p-5">
+                  <p className="text-base leading-8 text-stone-600 md:text-lg">
+                    {getFallbackArticleNote(article)}
+                  </p>
+                </div>
+              )}
+            </div>
 
             <div className="mt-10 flex flex-wrap items-center gap-4">
               <a
                 href={article.link}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-white transition hover:border-white/20 hover:bg-white/10"
+                className="inline-flex items-center rounded-full border border-indigo-600 bg-indigo-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-indigo-700"
               >
                 Open original source →
               </a>
 
               <Link
                 href="/saved"
-                className="inline-flex items-center rounded-full border border-white/10 bg-white/5 px-5 py-3 text-sm text-gray-300 transition hover:border-white/20 hover:bg-white/10 hover:text-white"
+                className="inline-flex items-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-5 py-3 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
               >
                 Go to saved articles
               </Link>
