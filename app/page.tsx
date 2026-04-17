@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
+import { Brain, Cpu, DollarSign, RefreshCw, TrendingUp } from "lucide-react";
 import { articles as mockArticles } from "@/lib/mockData";
 import realNews from "@/lib/realNews.json";
 
@@ -16,63 +17,64 @@ type RealArticle = {
   image?: string;
 };
 
+/* ─── Utilities ─────────────────────────────────────────────────────────── */
+
 function truncateText(text: string, maxLength: number) {
-  if (!text) return "No summary available.";
+  if (!text) return "";
   const clean = text.replace(/\s+/g, " ").trim();
   if (clean.length <= maxLength) return clean;
   return clean.slice(0, maxLength).trim() + "…";
 }
 
+function isSummaryEmpty(summary: string) {
+  if (!summary) return true;
+  const clean = summary.replace(/\s+/g, " ").trim().toLowerCase();
+  return (
+    clean === "" ||
+    clean === "no summary available" ||
+    clean === "no summary available."
+  );
+}
+
 function getWhyItMatters(title: string) {
-  const text = title.toLowerCase();
-
+  const t = title.toLowerCase();
   if (
-    text.includes("funding") ||
-    text.includes("raise") ||
-    text.includes("million") ||
-    text.includes("billion") ||
-    text.includes("secures")
-  ) {
+    t.includes("funding") ||
+    t.includes("raise") ||
+    t.includes("million") ||
+    t.includes("billion") ||
+    t.includes("secures")
+  )
     return "Signals capital conviction and rising competitive intensity in this AI segment.";
-  }
-
   if (
-    text.includes("launch") ||
-    text.includes("release") ||
-    text.includes("rolls out") ||
-    text.includes("introduces")
-  ) {
+    t.includes("launch") ||
+    t.includes("release") ||
+    t.includes("rolls out") ||
+    t.includes("introduces")
+  )
     return "Shows product velocity — teams are racing to translate AI capability into user-facing experiences.";
-  }
-
   if (
-    text.includes("model") ||
-    text.includes("research") ||
-    text.includes("embedding") ||
-    text.includes("benchmark") ||
-    text.includes("safety")
-  ) {
+    t.includes("model") ||
+    t.includes("research") ||
+    t.includes("embedding") ||
+    t.includes("benchmark") ||
+    t.includes("safety")
+  )
     return "Highlights movement in core model capability, evaluation, or reliability.";
-  }
-
   if (
-    text.includes("open source") ||
-    text.includes("developer") ||
-    text.includes("tool") ||
-    text.includes("code") ||
-    text.includes("sdk")
-  ) {
+    t.includes("open source") ||
+    t.includes("developer") ||
+    t.includes("tool") ||
+    t.includes("code") ||
+    t.includes("sdk")
+  )
     return "Points to momentum in the AI tooling stack that shapes how products get built and shipped.";
-  }
-
   if (
-    text.includes("enterprise") ||
-    text.includes("workplace") ||
-    text.includes("business")
-  ) {
+    t.includes("enterprise") ||
+    t.includes("workplace") ||
+    t.includes("business")
+  )
     return "Reflects growing enterprise adoption and clearer paths from experimentation to operational value.";
-  }
-
   return "Represents a meaningful shift in the AI landscape that operators and builders should track.";
 }
 
@@ -82,89 +84,258 @@ function getPersonalizedScore(
   readArticles: string[]
 ) {
   let score = 0;
-
   if (bookmarks.includes(article.id)) score += 5;
   if (!readArticles.includes(article.id)) score += 2;
-
-  const title = article.title.toLowerCase();
-
-  if (title.includes("model")) score += 1;
-  if (title.includes("open source")) score += 1;
-  if (title.includes("enterprise")) score += 1;
-
+  const t = article.title.toLowerCase();
+  if (t.includes("model")) score += 1;
+  if (t.includes("open source")) score += 1;
+  if (t.includes("enterprise")) score += 1;
   return score;
 }
 
+function getSignalScore(article: RealArticle): number {
+  const t = article.title.toLowerCase();
+  let score = 3.2;
+  if (
+    t.includes("model") ||
+    t.includes("research") ||
+    t.includes("benchmark") ||
+    t.includes("safety")
+  )
+    score += 0.8;
+  if (
+    t.includes("funding") ||
+    t.includes("million") ||
+    t.includes("billion") ||
+    t.includes("secures")
+  )
+    score += 0.6;
+  if (t.includes("open source") || t.includes("sdk") || t.includes("developer"))
+    score += 0.4;
+  if (t.includes("launch") || t.includes("release") || t.includes("introduces"))
+    score += 0.3;
+  if (article.source === "MIT Technology Review AI") score += 0.2;
+  return Math.min(score, 5.0);
+}
+
+function getSignalScoreStr(article: RealArticle): string {
+  return getSignalScore(article).toFixed(1);
+}
+
+function getContentType(
+  article: RealArticle
+): "Research" | "Product" | "Funding" | "Infra" {
+  const t = article.title.toLowerCase();
+  if (
+    t.includes("funding") ||
+    t.includes("raise") ||
+    t.includes("million") ||
+    t.includes("billion") ||
+    t.includes("secures")
+  )
+    return "Funding";
+  if (
+    t.includes("model") ||
+    t.includes("research") ||
+    t.includes("benchmark") ||
+    t.includes("safety") ||
+    t.includes("embedding")
+  )
+    return "Research";
+  if (
+    t.includes("open source") ||
+    t.includes("developer") ||
+    t.includes("sdk") ||
+    t.includes("api") ||
+    t.includes("infrastructure")
+  )
+    return "Infra";
+  return "Product";
+}
+
+function getPillClass(type: string): string {
+  if (type === "Research") return "pill pill-research";
+  if (type === "Funding") return "pill pill-funding";
+  if (type === "Infra") return "pill pill-infra";
+  if (type === "Policy") return "pill pill-policy";
+  return "pill pill-product";
+}
+
+function getBarClass(score: number): string {
+  if (score >= 4.0) return "sig-bar sig-bar-green";
+  if (score >= 3.5) return "sig-bar sig-bar-violet";
+  return "sig-bar sig-bar-indigo";
+}
+
+function getBarWidth(score: number): number {
+  if (score >= 4.0) return 32;
+  if (score >= 3.7) return 29;
+  if (score >= 3.4) return 26;
+  if (score >= 3.1) return 24;
+  return 22;
+}
+
+function getSourceDotColor(source: string): string {
+  if (source.toLowerCase().includes("hugging")) return "#3b82f6";
+  if (source.toLowerCase().includes("venturebeat")) return "#8b5cf6";
+  if (source.toLowerCase().includes("mit")) return "#06b6d4";
+  return "#4b5563";
+}
+
+function ContentTypeIcon({ type }: { type: string }) {
+  if (type === "Research") return <Brain className="h-3 w-3" />;
+  if (type === "Funding") return <DollarSign className="h-3 w-3" />;
+  if (type === "Infra") return <Cpu className="h-3 w-3" />;
+  return <TrendingUp className="h-3 w-3" />;
+}
+
 function generateDailyBrief(articles: RealArticle[]) {
-  if (articles.length === 0) {
+  if (articles.length === 0)
     return "No major signals available right now. Try refreshing to pull the latest AI developments.";
-  }
-
-  const titles = articles.map((article) => article.title.toLowerCase());
-
+  const titles = articles.map((a) => a.title.toLowerCase());
   const hasFunding = titles.some(
-    (title) =>
-      title.includes("funding") ||
-      title.includes("raise") ||
-      title.includes("million") ||
-      title.includes("billion") ||
-      title.includes("secures")
+    (t) =>
+      t.includes("funding") ||
+      t.includes("raise") ||
+      t.includes("million") ||
+      t.includes("billion") ||
+      t.includes("secures")
   );
-
   const hasLaunches = titles.some(
-    (title) =>
-      title.includes("launch") ||
-      title.includes("release") ||
-      title.includes("introduces") ||
-      title.includes("rolls out")
+    (t) =>
+      t.includes("launch") ||
+      t.includes("release") ||
+      t.includes("introduces") ||
+      t.includes("rolls out")
   );
-
   const hasResearch = titles.some(
-    (title) =>
-      title.includes("model") ||
-      title.includes("research") ||
-      title.includes("embedding") ||
-      title.includes("benchmark") ||
-      title.includes("safety")
+    (t) =>
+      t.includes("model") ||
+      t.includes("research") ||
+      t.includes("embedding") ||
+      t.includes("benchmark") ||
+      t.includes("safety")
   );
-
   const hasEnterprise = titles.some(
-    (title) =>
-      title.includes("enterprise") ||
-      title.includes("workplace") ||
-      title.includes("business")
+    (t) =>
+      t.includes("enterprise") || t.includes("workplace") || t.includes("business")
   );
-
   const hasOpenSource = titles.some(
-    (title) =>
-      title.includes("open source") ||
-      title.includes("developer") ||
-      title.includes("tool") ||
-      title.includes("code") ||
-      title.includes("sdk")
+    (t) =>
+      t.includes("open source") ||
+      t.includes("developer") ||
+      t.includes("tool") ||
+      t.includes("code") ||
+      t.includes("sdk")
   );
-
   const themes: string[] = [];
-
   if (hasLaunches) themes.push("rapid product shipping");
   if (hasResearch) themes.push("continued model and research progress");
   if (hasEnterprise) themes.push("stronger enterprise adoption");
   if (hasOpenSource) themes.push("momentum in the tooling and open ecosystem");
   if (hasFunding) themes.push("fresh capital flowing into AI infrastructure and applications");
-
-  if (themes.length === 0) {
+  if (themes.length === 0)
     return "Today's signal set suggests steady movement across the AI landscape, with incremental developments that matter for builders, operators, and product teams.";
-  }
-
   const themeText =
     themes.length === 1
       ? themes[0]
       : themes.length === 2
       ? `${themes[0]} and ${themes[1]}`
       : `${themes.slice(0, -1).join(", ")}, and ${themes[themes.length - 1]}`;
-
   return `Today's AI brief points to ${themeText}. The strongest signal is not any single headline, but the combined pace of ecosystem movement — where capability advances, productization, and commercialization are increasingly happening in parallel.`;
 }
+
+/* ─── News Card ──────────────────────────────────────────────────────────── */
+
+function NewsCard({
+  article,
+  isRead,
+  isBookmarked,
+  onRead,
+  onBookmark,
+}: {
+  article: RealArticle;
+  isRead: boolean;
+  isBookmarked: boolean;
+  onRead: () => void;
+  onBookmark: () => void;
+}) {
+  const type = getContentType(article);
+  const score = getSignalScore(article);
+  const noSummary = isSummaryEmpty(article.summary);
+
+  return (
+    <article className={`news-card${isRead ? " read" : ""}`}>
+      <div className="news-card-glow" aria-hidden="true" />
+
+      <div style={{ position: "relative" }}>
+        {/* Top row: badge + source + score bar */}
+        <div className="card-top-row">
+          <div className="card-meta-left">
+            <span className={getPillClass(type)}>
+              <ContentTypeIcon type={type} />
+              {type}
+            </span>
+            <span className="card-source-name">
+              <span
+                className="source-dot"
+                style={{ background: getSourceDotColor(article.source) }}
+              />
+              {article.source}
+            </span>
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "5px", flexShrink: 0 }}>
+            <span
+              className={getBarClass(score)}
+              style={{ width: `${getBarWidth(score)}px` }}
+            />
+            <span className="sig-num">{score.toFixed(1)}</span>
+          </div>
+        </div>
+
+        {/* Title */}
+        <h4 className="card-title">{article.title}</h4>
+
+        {/* Summary */}
+        {noSummary ? (
+          <p className="card-no-summary">Summary not available</p>
+        ) : (
+          <p className="card-summary">{truncateText(article.summary, 160)}</p>
+        )}
+
+        {/* WHY IT MATTERS */}
+        <div className="why-block">
+          <span className="why-label">Why it matters</span>
+          <p className="why-text">{getWhyItMatters(article.title)}</p>
+        </div>
+
+        {/* Footer */}
+        <div className="card-footer">
+          <Link
+            href={`/article/${article.id}`}
+            onClick={onRead}
+            className="card-read-link"
+          >
+            Read →
+          </Link>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.preventDefault();
+              onBookmark();
+            }}
+            className={`card-star${isBookmarked ? " saved" : ""}`}
+            aria-label={isBookmarked ? "Remove bookmark" : "Add bookmark"}
+          >
+            {isBookmarked ? "★" : "☆"}
+          </button>
+        </div>
+      </div>
+    </article>
+  );
+}
+
+/* ─── Page ───────────────────────────────────────────────────────────────── */
 
 export default function Home() {
   const [search, setSearch] = useState("");
@@ -172,6 +343,7 @@ export default function Home() {
   const [bookmarks, setBookmarks] = useState<string[]>([]);
   const [readArticles, setReadArticles] = useState<string[]>([]);
   const [showUnreadOnly, setShowUnreadOnly] = useState(false);
+  const [isRefreshing, setIsRefreshing] = useState(false);
 
   const categories = [
     "All",
@@ -183,7 +355,6 @@ export default function Home() {
   useEffect(() => {
     const saved = localStorage.getItem("bookmarks_real");
     const read = localStorage.getItem("read_articles");
-
     try {
       if (saved) setBookmarks(JSON.parse(saved));
       if (read) setReadArticles(JSON.parse(read));
@@ -203,14 +374,17 @@ export default function Home() {
 
   const toggleBookmark = (id: string) => {
     setBookmarks((prev) =>
-      prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   };
 
   const markAsRead = (id: string) => {
-    if (!readArticles.includes(id)) {
-      setReadArticles((prev) => [...prev, id]);
-    }
+    if (!readArticles.includes(id)) setReadArticles((prev) => [...prev, id]);
+  };
+
+  const handleRefresh = () => {
+    setIsRefreshing(true);
+    setTimeout(() => window.location.reload(), 600);
   };
 
   const featuredArticle = mockArticles[0];
@@ -225,13 +399,10 @@ export default function Home() {
           article.summary.toLowerCase().includes(query) ||
           article.source.toLowerCase().includes(query) ||
           (article.category || "").toLowerCase().includes(query);
-
         const matchesCategory =
           selectedCategory === "All" || article.source === selectedCategory;
-
         const matchesReadFilter =
           !showUnreadOnly || !readArticles.includes(article.id);
-
         return matchesSearch && matchesCategory && matchesReadFilter;
       })
       .sort(
@@ -241,269 +412,251 @@ export default function Home() {
       );
   }, [query, selectedCategory, showUnreadOnly, readArticles, bookmarks]);
 
-  const topSignals = useMemo(() => {
-    return filteredArticles.slice(0, 5);
-  }, [filteredArticles]);
-
-  const dailyBrief = useMemo(() => {
-    return generateDailyBrief(topSignals);
-  }, [topSignals]);
+  const topSignals = useMemo(() => filteredArticles.slice(0, 5), [filteredArticles]);
+  const dailyBrief = useMemo(() => generateDailyBrief(topSignals), [topSignals]);
 
   return (
-    <main className="min-h-screen">
-      <div className="mx-auto max-w-7xl px-6 py-8">
+    <>
+      {/* ── Sticky Navbar ── */}
+      <nav className="nav-wrapper">
+        {/* Brand */}
+        <div style={{ flex: 1 }}>
+          <p className="nav-eyebrow">
+            <span className="nav-eyebrow-dot" aria-hidden="true" />
+            AI Intelligence Feed
+          </p>
+          <span className="nav-logo">AI Signal</span>
+        </div>
 
-        {/* Header */}
-        <header className="mb-10">
-          <div className="mb-6 flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
-            <div>
-              <p className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-stone-400">
-                AI News Digest
-              </p>
-              <h1 className="mt-2 text-3xl font-semibold tracking-tight text-stone-900 md:text-4xl">
-                AI Signal
-              </h1>
-            </div>
+        {/* Actions */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+          <input
+            type="text"
+            placeholder="Search signals..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="nav-search"
+          />
 
-            <div className="flex flex-col gap-3 md:flex-row md:items-center">
-              <Link
-                href="/saved"
-                className="inline-flex items-center justify-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
-              >
-                Saved
-                <span className="ml-2 rounded-full bg-indigo-50 px-2 py-0.5 text-xs text-indigo-600">
-                  {bookmarks.length}
-                </span>
-              </Link>
+          <Link href="/saved" className="nav-btn">
+            Saved
+            {bookmarks.length > 0 && (
+              <span className="saved-badge">{bookmarks.length}</span>
+            )}
+          </Link>
 
-              <input
-                type="text"
-                placeholder="Search AI news..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full rounded-2xl border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-900 placeholder:text-stone-400 outline-none focus:border-indigo-300 md:w-80"
-              />
+          <button onClick={handleRefresh} className="nav-btn">
+            <RefreshCw
+              style={{ width: "12px", height: "12px" }}
+              className={isRefreshing ? "animate-spin" : ""}
+            />
+            Refresh
+          </button>
+        </div>
+      </nav>
 
-              <button
-                onClick={() => window.location.reload()}
-                className="rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2.5 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
-              >
-                Refresh
-              </button>
-            </div>
-          </div>
+      {/* ── Filter Pills ── */}
+      <div className="filters-bar">
+        {categories.map((item) => (
+          <button
+            key={item}
+            type="button"
+            onClick={() => setSelectedCategory(item)}
+            className={`filter-pill${selectedCategory === item ? " active" : ""}`}
+          >
+            {item}
+          </button>
+        ))}
 
-          <div className="flex flex-wrap gap-2">
-            {categories.map((item) => (
-              <button
-                key={item}
-                type="button"
-                onClick={() => setSelectedCategory(item)}
-                className={`rounded-full border px-4 py-1.5 text-sm transition-colors duration-150 ${
-                  selectedCategory === item
-                    ? "border-indigo-600 bg-indigo-600 text-white"
-                    : "border-[#D5CEC5] bg-white text-stone-600 hover:border-[#C8C0B5] hover:text-stone-800"
-                }`}
-              >
-                {item}
-              </button>
-            ))}
+        <button
+          onClick={() => setShowUnreadOnly((prev) => !prev)}
+          className={`filter-pill${showUnreadOnly ? " active" : ""}`}
+        >
+          {showUnreadOnly ? "Showing Unread" : "Unread Only"}
+        </button>
+      </div>
 
-            <button
-              onClick={() => setShowUnreadOnly((prev) => !prev)}
-              className={`rounded-full border px-4 py-1.5 text-sm transition-colors duration-150 ${
-                showUnreadOnly
-                  ? "border-indigo-600 bg-indigo-600 text-white"
-                  : "border-[#D5CEC5] bg-white text-stone-600 hover:border-[#C8C0B5] hover:text-stone-800"
-              }`}
-            >
-              {showUnreadOnly ? "Showing Unread" : "Unread Only"}
-            </button>
-          </div>
-        </header>
-
-        {/* Hero — warm featured treatment */}
+      <main>
+        {/* ── Hero Featured Card ── */}
         <Link
           href={topSignals.length > 0 ? `/article/${topSignals[0].id}` : "/"}
-          className="group mb-10 block overflow-hidden rounded-2xl border border-[#C8C0B5] bg-gradient-to-br from-[#EDE8E0] via-[#F5F1EC] to-white shadow-[0_6px_32px_rgba(0,0,0,0.09)] transition-shadow duration-150 hover:shadow-[0_8px_36px_rgba(0,0,0,0.11)]"
+          className="hero-wrapper"
         >
-          <div className="p-10 md:p-14">
-            <p className="mb-4 inline-block rounded-full border border-indigo-200 bg-white px-3 py-1 text-xs font-medium text-indigo-600">
-              Featured Story
-            </p>
+          <div className="hero-mesh" aria-hidden="true" />
+          <div className="hero-orb-1" aria-hidden="true" />
+          <div className="hero-orb-2" aria-hidden="true" />
 
-            <h2 className="max-w-4xl text-4xl font-semibold leading-[1.12] tracking-tight text-stone-900 md:text-5xl">
-              {featuredArticle.title}
-            </h2>
+          <div className="hero-content">
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "8px", marginBottom: "18px" }}>
+              <span className="hero-badge-frosted">Featured Signal</span>
+              {topSignals.length > 0 && (
+                <span className="hero-badge-score">
+                  {getSignalScoreStr(topSignals[0])} Signal
+                </span>
+              )}
+              {topSignals.length > 0 && (
+                <span className="hero-source-label">{topSignals[0].source}</span>
+              )}
+            </div>
 
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-stone-600 md:text-base">
-              {featuredArticle.summary}
-            </p>
+            <h2 className="hero-title">{featuredArticle.title}</h2>
+            <p className="hero-summary">{featuredArticle.summary}</p>
 
-            <div className="mt-7 flex flex-wrap items-center gap-4">
-              <p className="max-w-xl text-sm italic text-stone-500">
-                Why it matters: {featuredArticle.whyItMatters}
-              </p>
-
-              <span className="inline-flex items-center rounded-full bg-indigo-600 px-4 py-2 text-sm font-medium text-white transition-colors duration-150 group-hover:bg-indigo-700">
-                Read full story →
-              </span>
+            <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "16px" }}>
+              <button className="hero-cta">Read full story →</button>
+              <p className="hero-insight">{featuredArticle.whyItMatters}</p>
             </div>
           </div>
         </Link>
 
-        {/* Daily Brief — memo block */}
-        <section className="mb-10 rounded-2xl border border-[#E0D9CF] border-l-[3px] border-l-indigo-300 bg-[#F2EDE5] p-6">
-          <div className="mb-4">
-            <p className="mb-2 text-[0.65rem] font-medium uppercase tracking-[0.3em] text-stone-400">
-              Daily AI Brief
-            </p>
-            <h3 className="text-xl font-semibold text-stone-900">
-              What matters today
-            </h3>
+        {/* ── Daily AI Brief ── */}
+        <div className="brief-wrapper">
+          <div className="brief-orb" aria-hidden="true" />
+          <div style={{ position: "relative", zIndex: 1 }}>
+            <div className="brief-eyebrow">
+              <span className="brief-pulse" />
+              DAILY AI BRIEF
+            </div>
+            <h3 className="brief-title">What matters today</h3>
+            <p className="brief-body">{dailyBrief}</p>
           </div>
-
-          <p className="max-w-4xl text-sm leading-7 text-stone-600 md:text-base">
-            {dailyBrief}
-          </p>
-        </section>
-
-        {/* Top Signals — unified ranked board */}
-        <section className="mb-10">
-          <div className="mb-4">
-            <h3 className="text-xl font-semibold text-stone-900">Top Signals Today</h3>
-            <p className="text-sm text-stone-400">
-              Most relevant developments across AI right now
-            </p>
-          </div>
-
-          <div className="overflow-hidden rounded-2xl border border-[#E0D9CF] bg-[#F7F4F0]">
-            {topSignals.map((article, index) => (
-              <div
-                key={article.id}
-                className={`group flex items-start justify-between gap-4 p-4 transition-colors duration-150 hover:bg-white ${
-                  index > 0 ? "border-t border-[#E8E2DB]" : ""
-                }`}
-              >
-                <div className="flex gap-4">
-                  <span className="text-lg font-semibold tabular-nums text-indigo-400">
-                    {index + 1}
-                  </span>
-
-                  <div>
-                    <p className="mb-1 text-xs uppercase tracking-[0.15em] text-stone-400">
-                      {article.source}
-                    </p>
-                    <h4 className="text-sm font-medium leading-6 text-stone-900 transition-colors duration-150 group-hover:text-indigo-700">
-                      {article.title}
-                    </h4>
-                  </div>
-                </div>
-
-                <Link
-                  href={`/article/${article.id}`}
-                  onClick={() => markAsRead(article.id)}
-                  className="shrink-0 text-xs text-stone-400 transition-colors duration-150 hover:text-stone-900"
-                >
-                  Read →
-                </Link>
-              </div>
-            ))}
-          </div>
-        </section>
-
-        {/* Section header */}
-        <div className="mb-6 flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
-          <div>
-            <h3 className="text-2xl font-semibold tracking-tight text-stone-900">
-              Latest Signals
-            </h3>
-            <p className="mt-1 text-sm text-stone-400">
-              Real AI news pulled from live feeds
-            </p>
-          </div>
-
-          <p className="text-sm text-stone-400">
-            {filteredArticles.length} article
-            {filteredArticles.length !== 1 ? "s" : ""} shown
-          </p>
         </div>
 
-        {/* Article cards */}
-        <section className="grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          {filteredArticles.length > 0 ? (
-            filteredArticles.map((article) => (
-              <article
-                key={article.id}
-                className={`group rounded-2xl border p-5 transition-[box-shadow,border-color] duration-150 ${
-                  readArticles.includes(article.id)
-                    ? "border-[#E0D9CF] bg-[#F7F4F0] opacity-60"
-                    : "border-[#E0D9CF] bg-white shadow-sm hover:border-[#C8C0B5] hover:shadow-[0_8px_28px_rgba(0,0,0,0.09)]"
-                }`}
-              >
-                <div className="mb-4 flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-2">
-                    <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-indigo-600">
-                      {article.category || "AI News"}
-                    </span>
-                    <span className="text-xs text-stone-400">{article.date}</span>
-                  </div>
+        {/* ── Top Signals Section Header ── */}
+        <div className="section-header">
+          <div>
+            <h3 className="section-title">Top Signals Today</h3>
+            <div className="section-rule" />
+            <p className="section-sub">Most relevant developments right now</p>
+          </div>
+          <span className="section-badge">{topSignals.length} signals</span>
+        </div>
 
-                  <button
-                    type="button"
-                    onClick={() => toggleBookmark(article.id)}
-                    className={`cursor-pointer rounded-full border px-2 py-1 text-sm leading-none transition-colors duration-150 ${
-                      bookmarks.includes(article.id)
-                        ? "border-amber-300 bg-amber-50 text-amber-600"
-                        : "border-[#E0D9CF] bg-[#F7F4F0] text-stone-300 hover:border-amber-200 hover:text-amber-400"
-                    }`}
-                    aria-label={
-                      bookmarks.includes(article.id)
-                        ? "Remove bookmark"
-                        : "Add bookmark"
-                    }
-                  >
-                    {bookmarks.includes(article.id) ? "★" : "☆"}
-                  </button>
+        {/* ── Top Signals List ── */}
+        <div className="top-list">
+          {topSignals.map((article, index) => {
+            const score = getSignalScore(article);
+            return (
+              <div key={article.id} className="top-row">
+                <span className="top-num">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
+
+                <div>
+                  <div className="top-source">
+                    <span
+                      className="source-dot"
+                      style={{ background: getSourceDotColor(article.source) }}
+                    />
+                    {article.source}
+                  </div>
+                  <h4 className="top-title">{article.title}</h4>
                 </div>
 
-                <p className="mb-1.5 text-xs uppercase tracking-[0.15em] text-stone-400">
-                  {article.source}
-                </p>
-
-                <h4 className="mb-3 text-[0.9375rem] font-semibold leading-[1.5] text-stone-900 transition-colors duration-150 group-hover:text-indigo-700">
-                  {article.title}
-                </h4>
-
-                <p className="mb-4 text-sm leading-6 text-stone-500">
-                  {truncateText(article.summary, 220)}
-                </p>
-
-                <div className="flex items-start justify-between gap-3 border-t border-[#EDE8E2] pt-3">
-                  <p className="text-xs leading-5 text-stone-400">
-                    {getWhyItMatters(article.title)}
-                  </p>
-
+                <div className="top-right">
+                  <span
+                    className={getBarClass(score)}
+                    style={{ width: `${getBarWidth(score)}px` }}
+                  />
+                  <span className="sig-num">{score.toFixed(1)}</span>
+                  <span className="sig-label">SIGNAL</span>
                   <Link
                     href={`/article/${article.id}`}
                     onClick={() => markAsRead(article.id)}
-                    className="shrink-0 text-xs font-medium text-stone-400 transition-colors duration-150 hover:text-indigo-700"
+                    className="top-read"
                   >
                     Read →
                   </Link>
                 </div>
-              </article>
-            ))
-          ) : (
-            <div className="col-span-full rounded-2xl border border-[#E0D9CF] bg-white p-10 text-center">
-              <p className="text-lg font-medium text-stone-900">No results found</p>
-              <p className="mt-2 text-sm text-stone-500">
-                Try another keyword, company name, topic, or source.
+              </div>
+            );
+          })}
+        </div>
+
+        {/* ── Latest Signals Header ── */}
+        <div className="section-header">
+          <div>
+            <h3 className="section-title">Latest Signals</h3>
+            <div className="section-rule" />
+            <p className="section-sub">Real AI news pulled from live feeds</p>
+          </div>
+          <span className="section-badge">
+            {filteredArticles.length} article{filteredArticles.length !== 1 ? "s" : ""}
+          </span>
+        </div>
+
+        {/* ── Article Feed ── */}
+        {filteredArticles.length > 0 ? (
+          <>
+            {filteredArticles.slice(0, 2).length > 0 && (
+              <div className="cards-grid-2">
+                {filteredArticles.slice(0, 2).map((article) => (
+                  <NewsCard
+                    key={article.id}
+                    article={article}
+                    isRead={readArticles.includes(article.id)}
+                    isBookmarked={bookmarks.includes(article.id)}
+                    onRead={() => markAsRead(article.id)}
+                    onBookmark={() => toggleBookmark(article.id)}
+                  />
+                ))}
+              </div>
+            )}
+            {filteredArticles.slice(2).length > 0 && (
+              <div className="cards-grid-3">
+                {filteredArticles.slice(2).map((article) => (
+                  <NewsCard
+                    key={article.id}
+                    article={article}
+                    isRead={readArticles.includes(article.id)}
+                    isBookmarked={bookmarks.includes(article.id)}
+                    onRead={() => markAsRead(article.id)}
+                    onBookmark={() => toggleBookmark(article.id)}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        ) : (
+          <div
+            style={{
+              margin: "0 32px",
+              background: "#0d0e17",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: "13px",
+              padding: "40px",
+              textAlign: "center",
+            }}
+          >
+            <p style={{ fontSize: "15px", fontWeight: 600, color: "#f0f2ff" }}>
+              No results found
+            </p>
+            <p style={{ fontSize: "12px", color: "#374151", marginTop: "6px" }}>
+              Try another keyword, company name, topic, or source.
+            </p>
+          </div>
+        )}
+
+        {/* ── Footer ── */}
+        <footer style={{ marginTop: "48px" }}>
+          <div className="page-footer">
+            <div>
+              <p className="footer-logo">AI Signal</p>
+              <p className="footer-sub">
+                {filteredArticles.length} signals tracked · updated daily
               </p>
             </div>
-          )}
-        </section>
-      </div>
-    </main>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+              <Link href="/saved" className="footer-link">
+                Saved articles ({bookmarks.length})
+              </Link>
+              <button onClick={handleRefresh} className="footer-link">
+                Refresh feed
+              </button>
+            </div>
+          </div>
+        </footer>
+      </main>
+    </>
   );
 }

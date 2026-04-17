@@ -13,72 +13,57 @@ type RealArticle = {
 
 function getWhyItMatters(title: string) {
   const text = title.toLowerCase();
-
   if (
     text.includes("funding") ||
     text.includes("raise") ||
     text.includes("million") ||
     text.includes("billion") ||
     text.includes("secures")
-  ) {
+  )
     return "Signals capital conviction and rising competitive intensity in this AI segment.";
-  }
-
   if (
     text.includes("launch") ||
     text.includes("release") ||
     text.includes("rolls out") ||
     text.includes("introduces")
-  ) {
+  )
     return "Shows product velocity — teams are racing to translate AI capability into user-facing experiences.";
-  }
-
   if (
     text.includes("model") ||
     text.includes("research") ||
     text.includes("embedding") ||
     text.includes("benchmark") ||
     text.includes("safety")
-  ) {
+  )
     return "Highlights movement in core model capability, evaluation, or reliability.";
-  }
-
   if (
     text.includes("open source") ||
     text.includes("developer") ||
     text.includes("tool") ||
     text.includes("code") ||
     text.includes("sdk")
-  ) {
+  )
     return "Points to momentum in the AI tooling stack that shapes how products get built and shipped.";
-  }
-
   if (
     text.includes("enterprise") ||
     text.includes("workplace") ||
     text.includes("business")
-  ) {
+  )
     return "Reflects growing enterprise adoption and clearer paths from experimentation to operational value.";
-  }
-
   return "Represents a meaningful shift in the AI landscape that operators and builders should track.";
 }
 
 function splitSummary(summary: string) {
   const clean = summary.replace(/\s+/g, " ").trim();
-
   if (
     !clean ||
     clean.toLowerCase() === "no summary available" ||
     clean.toLowerCase() === "no summary available."
-  ) {
+  )
     return [];
-  }
-
   const sentences = clean.split(/(?<=[.!?])\s+/);
   const paragraphs: string[] = [];
   let current = "";
-
   for (const sentence of sentences) {
     if ((current + " " + sentence).trim().length > 260) {
       if (current.trim()) paragraphs.push(current.trim());
@@ -87,14 +72,14 @@ function splitSummary(summary: string) {
       current = `${current} ${sentence}`.trim();
     }
   }
-
   if (current.trim()) paragraphs.push(current.trim());
-
   return paragraphs;
 }
 
 function getFallbackArticleNote(article: RealArticle) {
-  return `This signal was pulled from ${article.source}. A full summary was not available in the feed, but the headline suggests a development worth tracking under ${article.category || "AI News"}. Use the original source link below to read the complete piece.`;
+  return `This signal was pulled from ${article.source}. A full summary was not available in the feed, but the headline suggests a development worth tracking under ${
+    article.category || "AI News"
+  }. Use the original source link below to read the complete piece.`;
 }
 
 function normalizeId(value: string) {
@@ -107,30 +92,48 @@ export default async function ArticlePage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-
   const normalizedRouteId = normalizeId(id);
-
   const article = (realNews as RealArticle[]).find(
     (item) => normalizeId(item.id) === normalizedRouteId
   );
 
   if (!article) {
     return (
-      <main className="min-h-screen">
-        <div className="mx-auto max-w-4xl px-6 py-12">
+      <main style={{ minHeight: "100vh" }}>
+        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "48px 28px" }}>
           <Link
             href="/"
-            className="inline-flex items-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              background: "rgba(255,255,255,0.04)",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: "7px",
+              color: "#6b7a99",
+              fontSize: "11px",
+              fontWeight: 500,
+              padding: "7px 13px",
+              textDecoration: "none",
+              marginBottom: "32px",
+            }}
           >
             ← Back to home
           </Link>
-
-          <div className="mt-10 rounded-2xl border border-[#E0D9CF] bg-white p-10 text-center">
-            <h1 className="text-2xl font-semibold text-stone-900">
+          <div
+            style={{
+              background: "#0d0e17",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: "13px",
+              padding: "60px 40px",
+              textAlign: "center",
+            }}
+          >
+            <h1 style={{ fontSize: "18px", fontWeight: 600, color: "#f0f2ff" }}>
               Article not found
             </h1>
-            <p className="mt-3 text-sm text-stone-500">
-              This signal may have been removed, refreshed, or the route id may no longer match the latest feed.
+            <p style={{ fontSize: "12px", color: "#374151", marginTop: "8px" }}>
+              This signal may have been removed, refreshed, or the route id may no longer
+              match the latest feed.
             </p>
           </div>
         </div>
@@ -142,81 +145,260 @@ export default async function ArticlePage({
   const whyItMatters = getWhyItMatters(article.title);
 
   return (
-    <main className="min-h-screen">
-      <div className="mx-auto max-w-4xl px-6 py-12">
+    <main style={{ minHeight: "100vh" }}>
+      {/* Navbar */}
+      <nav
+        style={{
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
+          background: "rgba(8,9,15,0.94)",
+          backdropFilter: "blur(20px)",
+          WebkitBackdropFilter: "blur(20px)",
+          borderBottom: "1px solid rgba(255,255,255,0.05)",
+          height: "60px",
+          padding: "0 28px",
+          display: "flex",
+          alignItems: "center",
+          gap: "16px",
+        }}
+      >
         <Link
           href="/"
-          className="inline-flex items-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-4 py-2 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
+          style={{
+            background: "rgba(255,255,255,0.04)",
+            border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: "7px",
+            color: "#6b7a99",
+            fontSize: "11px",
+            fontWeight: 500,
+            padding: "7px 13px",
+            textDecoration: "none",
+          }}
         >
-          ← Back to home
+          ← Back
         </Link>
+        <span
+          style={{
+            fontSize: "9px",
+            letterSpacing: ".2em",
+            color: "#374151",
+            fontWeight: 600,
+            textTransform: "uppercase",
+          }}
+        >
+          {article.source}
+        </span>
+      </nav>
 
-        <article className="mt-8 overflow-hidden rounded-2xl border border-[#E0D9CF] bg-white shadow-sm">
-          {/* Warm header zone — matches hero surface */}
-          <div className="bg-gradient-to-br from-[#EDE8E0] via-[#F5F1EC] to-white border-b border-[#E8E1D8] p-8 md:p-10">
-            <div className="mb-4 flex flex-wrap items-center gap-3">
-              <span className="rounded-full bg-indigo-50 px-3 py-1 text-xs font-medium uppercase tracking-[0.15em] text-indigo-600">
-                {article.category || "AI News"}
-              </span>
-              <span className="text-xs uppercase tracking-[0.15em] text-stone-400">
-                {article.source}
-              </span>
-              <span className="text-xs text-stone-400">{article.date}</span>
+      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "32px 28px" }}>
+        <article>
+          {/* Article header */}
+          <div
+            style={{
+              background:
+                "linear-gradient(145deg,#0f0720 0%,#1a0b3d 40%,#111330 100%)",
+              border: "1px solid rgba(139,92,246,0.15)",
+              borderRadius: "16px",
+              padding: "36px 40px",
+              marginBottom: "20px",
+              position: "relative",
+              overflow: "hidden",
+            }}
+          >
+            {/* Orb */}
+            <div
+              aria-hidden="true"
+              style={{
+                position: "absolute",
+                top: "-80px",
+                right: "-60px",
+                width: "300px",
+                height: "300px",
+                borderRadius: "50%",
+                background:
+                  "radial-gradient(circle,rgba(139,92,246,0.12) 0%,transparent 65%)",
+                pointerEvents: "none",
+              }}
+            />
+
+            <div style={{ position: "relative" }}>
+              <div
+                style={{
+                  display: "flex",
+                  flexWrap: "wrap",
+                  alignItems: "center",
+                  gap: "10px",
+                  marginBottom: "16px",
+                }}
+              >
+                <span
+                  style={{
+                    background: "rgba(139,92,246,0.15)",
+                    border: "1px solid rgba(139,92,246,0.25)",
+                    borderRadius: "20px",
+                    color: "#c4b5fd",
+                    fontSize: "9px",
+                    fontWeight: 600,
+                    padding: "3px 10px",
+                    textTransform: "uppercase",
+                    letterSpacing: ".1em",
+                  }}
+                >
+                  {article.category || "AI News"}
+                </span>
+                <span
+                  style={{
+                    fontSize: "9px",
+                    color: "#374151",
+                    letterSpacing: ".1em",
+                    textTransform: "uppercase",
+                    fontWeight: 600,
+                  }}
+                >
+                  {article.source}
+                </span>
+                <span style={{ fontSize: "9px", color: "#2d3748" }}>{article.date}</span>
+              </div>
+
+              <h1
+                style={{
+                  fontSize: "24px",
+                  fontWeight: 800,
+                  color: "#fff",
+                  lineHeight: 1.2,
+                  letterSpacing: "-.02em",
+                  maxWidth: "680px",
+                  marginBottom: "16px",
+                }}
+              >
+                {article.title}
+              </h1>
+
+              <p
+                style={{
+                  fontSize: "12px",
+                  color: "rgba(255,255,255,0.45)",
+                  fontStyle: "italic",
+                  lineHeight: 1.65,
+                  borderLeft: "2px solid rgba(255,255,255,0.2)",
+                  paddingLeft: "12px",
+                  maxWidth: "560px",
+                }}
+              >
+                Why it matters: {whyItMatters}
+              </p>
             </div>
-
-            <h1 className="max-w-3xl text-3xl font-semibold leading-tight text-stone-900 md:text-5xl">
-              {article.title}
-            </h1>
-
-            <p className="mt-6 max-w-3xl text-sm italic leading-7 text-stone-500 md:text-base">
-              Why it matters: {whyItMatters}
-            </p>
           </div>
 
-          <div className="p-8 md:p-10">
-            <div className="mb-8 rounded-2xl border border-[#E8E1D8] bg-[#F7F4F0] p-5">
-              <p className="text-[0.65rem] font-medium uppercase tracking-[0.3em] text-stone-400">
+          {/* Article body */}
+          <div
+            style={{
+              background: "#0d0e17",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: "13px",
+              padding: "32px 36px",
+            }}
+          >
+            {/* Signal Summary block */}
+            <div
+              style={{
+                background: "#13152a",
+                border: "1px solid rgba(255,255,255,0.07)",
+                borderLeft: "3px solid #7c3aed",
+                borderRadius: "8px",
+                padding: "16px 18px",
+                marginBottom: "28px",
+              }}
+            >
+              <p
+                style={{
+                  fontSize: "8px",
+                  letterSpacing: ".2em",
+                  color: "#a78bfa",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  marginBottom: "8px",
+                }}
+              >
                 Signal Summary
               </p>
-              <p className="mt-3 text-sm leading-7 text-stone-600">
+              <p style={{ fontSize: "13px", color: "#8892b0", lineHeight: 1.75 }}>
                 {paragraphs.length > 0
                   ? article.summary
                   : "A detailed summary was not available in the source feed for this article."}
               </p>
             </div>
 
-            <div className="space-y-6">
+            {/* Paragraphs */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "18px" }}>
               {paragraphs.length > 0 ? (
                 paragraphs.map((paragraph, index) => (
                   <p
                     key={index}
-                    className="text-base leading-8 text-stone-700 md:text-lg"
+                    style={{ fontSize: "14px", color: "#8892b0", lineHeight: 1.8 }}
                   >
                     {paragraph}
                   </p>
                 ))
               ) : (
-                <div className="rounded-2xl border border-[#E8E1D8] bg-[#F7F4F0] p-5">
-                  <p className="text-base leading-8 text-stone-600 md:text-lg">
+                <div
+                  style={{
+                    background: "#13152a",
+                    border: "1px solid rgba(255,255,255,0.07)",
+                    borderRadius: "8px",
+                    padding: "16px 18px",
+                  }}
+                >
+                  <p style={{ fontSize: "14px", color: "#8892b0", lineHeight: 1.8 }}>
                     {getFallbackArticleNote(article)}
                   </p>
                 </div>
               )}
             </div>
 
-            <div className="mt-10 flex flex-wrap items-center gap-4">
+            {/* CTA */}
+            <div
+              style={{
+                display: "flex",
+                flexWrap: "wrap",
+                alignItems: "center",
+                gap: "12px",
+                marginTop: "36px",
+                paddingTop: "24px",
+                borderTop: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
               <a
                 href={article.link}
                 target="_blank"
                 rel="noreferrer"
-                className="inline-flex items-center rounded-full border border-indigo-600 bg-indigo-600 px-5 py-3 text-sm text-white transition-colors duration-150 hover:bg-indigo-700"
+                style={{
+                  display: "inline-block",
+                  background: "#7c3aed",
+                  color: "#fff",
+                  borderRadius: "22px",
+                  fontSize: "12px",
+                  fontWeight: 700,
+                  padding: "10px 22px",
+                  textDecoration: "none",
+                }}
               >
                 Open original source →
               </a>
-
               <Link
                 href="/saved"
-                className="inline-flex items-center rounded-full border border-[#D5CEC5] bg-[#F7F4F0] px-5 py-3 text-sm text-stone-600 transition-colors duration-150 hover:border-[#C8C0B5] hover:text-stone-900"
+                style={{
+                  display: "inline-block",
+                  background: "rgba(255,255,255,0.04)",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  borderRadius: "22px",
+                  color: "#6b7a99",
+                  fontSize: "12px",
+                  fontWeight: 500,
+                  padding: "10px 22px",
+                  textDecoration: "none",
+                }}
               >
                 Go to saved articles
               </Link>
