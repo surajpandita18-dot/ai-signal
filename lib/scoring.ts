@@ -37,7 +37,7 @@ const OBSOLESCENCE_KW       = ["built-in","native support","no longer need","rep
 const CAPABILITY_JUMP_KW    = ["10x","100x","state of the art","beats","surpasses","new record","outperforms","best in class"];
 const MARKET_DISPLACEMENT_KW= ["acquires","shuts down","pivots away from","drops support","price cut","free for","launches competing"];
 
-function competitiveThreat(title: string, sourceAuthority: number): number {
+function competitiveThreat(title: string, authority: number): number {
   const t = title.toLowerCase();
   let raw = 0;
   raw += OBSOLESCENCE_KW.filter((kw) => t.includes(kw)).length * 0.3;
@@ -46,7 +46,7 @@ function competitiveThreat(title: string, sourceAuthority: number): number {
   raw = Math.min(raw, 1.0);
 
   // Confidence modifier: low-authority source claims discounted
-  if (sourceAuthority < 0.7 && raw > 0) {
+  if (authority < 0.7 && raw > 0) {
     raw = raw * 0.7;
   }
   return raw;
@@ -83,7 +83,7 @@ export function sourceAuthority(sourceName: string): number {
 
 export function recencyScore(dateStr: string): number {
   const published = new Date(dateStr).getTime();
-  if (isNaN(published)) return 0.2;
+  if (isNaN(published)) return 0.05; // treat unparseable dates as oldest bucket
   const ageHours = (Date.now() - published) / (1000 * 60 * 60);
   if (ageHours < 6)    return 1.0;
   if (ageHours < 24)   return 0.85;
