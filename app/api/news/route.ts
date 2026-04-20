@@ -3,6 +3,8 @@
 // If processedSignals.json exists (written by process-signals.mjs),
 // merges what/why/takeaway from it.
 
+export const dynamic = "force-dynamic";
+
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import type { Signal } from "@/lib/types";
@@ -62,5 +64,3 @@ export async function GET(req: Request) {
     return Response.json(CACHE.length > 0 ? CACHE : []);
   }
 }
-
-export const dynamic = "force-dynamic";
