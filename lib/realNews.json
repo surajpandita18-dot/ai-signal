@@ -27,6 +27,34 @@
     "summary": "Cloudflare brings OpenAI’s GPT-5.4 and Codex to Agent Cloud, enabling enterprises to build, deploy, and scale AI agents for real-world tasks with speed and security."
   },
   {
+    "id": "fc2ae7c68319ae888d1fe87d7c8fc867",
+    "title": "Training and Finetuning Multimodal Embedding & Reranker Models with Sentence Transformers",
+    "source": "Hugging Face",
+    "sourceType": "rss",
+    "sourceCategory": "research",
+    "link": "https://huggingface.co/blog/train-multimodal-sentence-transformers",
+    "date": "Thu, 16 Apr 2026 00:00:00 GMT",
+    "signalScore": 3.34,
+    "impactLevel": "medium",
+    "tags": [
+      "LLM",
+      "Research",
+      "Vision"
+    ],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": ""
+  },
+  {
     "id": "4b7acb24964fa61f4ec9c4786fd4d8cf",
     "title": "Inside VAKRA: Reasoning, Tool Use, and Failure Modes of Agents",
     "source": "Hugging Face",
@@ -39,6 +67,34 @@
     "tags": [
       "Agents",
       "Research"
+    ],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": ""
+  },
+  {
+    "id": "c770eae11ee06da583593e49e26da47b",
+    "title": "Multimodal Embedding & Reranker Models with Sentence Transformers",
+    "source": "Hugging Face",
+    "sourceType": "rss",
+    "sourceCategory": "research",
+    "link": "https://huggingface.co/blog/multimodal-sentence-transformers",
+    "date": "Thu, 09 Apr 2026 00:00:00 GMT",
+    "signalScore": 3.26,
+    "impactLevel": "medium",
+    "tags": [
+      "LLM",
+      "Research",
+      "Vision"
     ],
     "what": null,
     "why": null,
@@ -144,7 +200,8 @@
     "signalScore": 2.99,
     "impactLevel": "low",
     "tags": [
-      "LLM"
+      "LLM",
+      "Vision"
     ],
     "what": null,
     "why": null,
@@ -274,7 +331,8 @@
     "signalScore": 2.81,
     "impactLevel": "low",
     "tags": [
-      "Research"
+      "Research",
+      "Vision"
     ],
     "what": null,
     "why": null,
@@ -475,6 +533,32 @@
     "summary": "Every week there’s a better AI model that gives better answers. But a lot \r\nof questions don’t have better answers, only ‘right’ answers, and these \r\nmodels can’t do that. So what does ‘better’ mean, how do we manage these \r\nthings, and should we change what we expect from computers?"
   },
   {
+    "id": "f7c307c7abcc36f72a83aa36aae06829",
+    "title": "Salesforce Announces AI Initiative and Calls It 'Headless 360'",
+    "source": "Hacker News (AI)",
+    "sourceType": "rss",
+    "sourceCategory": "community",
+    "link": "https://gizmodo.com/salesforce-announces-huge-ai-initiative-and-calls-it-headless-360-2000748243",
+    "date": "Mon, 20 Apr 2026 01:58:44 +0000",
+    "signalScore": 2.28,
+    "impactLevel": "low",
+    "tags": [
+      "Product"
+    ],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": "Article URL: https://gizmodo.com/salesforce-announces-huge-ai-initiative-and-calls-it-headless-360-2000748243\nComments URL: https://news.ycombinator.com/item?id=47829523\nPoints: 1\n# Comments: 0"
+  },
+  {
     "id": "a2bcf9ad451ed9ef59093ce44ac78ef0",
     "title": "Show HN: Modular – drop AI features into your app with two function calls",
     "source": "Hacker News (AI)",
@@ -520,7 +604,7 @@
     "dismissCount": 0,
     "clickCount": 0,
     "saveRate": 0,
-    "summary": "Article URL: https://localscribe.co/posts/uncanny-valley-and-rising-power-of-anti-ai-sentiment/\nComments URL: https://news.ycombinator.com/item?id=47829058\nPoints: 3\n# Comments: 0"
+    "summary": "Article URL: https://localscribe.co/posts/uncanny-valley-and-rising-power-of-anti-ai-sentiment/\nComments URL: https://news.ycombinator.com/item?id=47829058\nPoints: 4\n# Comments: 0"
   },
   {
     "id": "55b147dfd8e2ff828553d42c12c090b5",
@@ -533,7 +617,8 @@
     "signalScore": 2.28,
     "impactLevel": "low",
     "tags": [
-      "Agents"
+      "Agents",
+      "Vision"
     ],
     "what": null,
     "why": null,
@@ -570,7 +655,7 @@
     "dismissCount": 0,
     "clickCount": 0,
     "saveRate": 0,
-    "summary": "Article URL: https://www.swiss-ai.org\nComments URL: https://news.ycombinator.com/item?id=47828444\nPoints: 13\n# Comments: 3"
+    "summary": "Article URL: https://www.swiss-ai.org\nComments URL: https://news.ycombinator.com/item?id=47828444\nPoints: 16\n# Comments: 3"
   },
   {
     "id": "d28ef9cfa79bc226d35bbe0fe8526c25",
@@ -618,7 +703,7 @@
     "dismissCount": 0,
     "clickCount": 0,
     "saveRate": 0,
-    "summary": "Article URL: https://www.reuters.com/legal/government/ex-ceo-ex-cfo-bankrupt-ai-company-charged-with-fraud-2026-04-17/\nComments URL: https://news.ycombinator.com/item?id=47828225\nPoints: 91\n# Comments: 39"
+    "summary": "Article URL: https://www.reuters.com/legal/government/ex-ceo-ex-cfo-bankrupt-ai-company-charged-with-fraud-2026-04-17/\nComments URL: https://news.ycombinator.com/item?id=47828225\nPoints: 98\n# Comments: 43"
   },
   {
     "id": "c72b36f465a9b77ec8140adae30da27f",
@@ -691,30 +776,6 @@
     "clickCount": 0,
     "saveRate": 0,
     "summary": "Article URL: https://www.economist.com/business/2026/04/19/why-your-ai-assistant-is-suddenly-selling-to-you\nComments URL: https://news.ycombinator.com/item?id=47827950\nPoints: 2\n# Comments: 0"
-  },
-  {
-    "id": "98b4f6281cc3de4ecdfa95f64899db8d",
-    "title": "Show HN: Auxx.ai – Customer Support CRM (Mix of Attio and N8n)",
-    "source": "Hacker News (AI)",
-    "sourceType": "rss",
-    "sourceCategory": "community",
-    "link": "https://auxx.ai",
-    "date": "Sun, 19 Apr 2026 21:49:38 +0000",
-    "signalScore": 2.28,
-    "impactLevel": "low",
-    "tags": [],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": "Hey HN! Markus here. I have been building a Customer Support CRM for the last 12 months to help my dad's business.\nHe was drowning in support messages (dealing with returns, product questions, sales, etc) and didn’t have a good way to organize and attack them, often forgetting to respond.\nWe tried attio, freshworks, n8n for some automations. I liked n8n a lot but I didn’t want to leave to another app to view messages and customer info. Tried to build bridges via Google Sheets and Airtable and then went deep down the rabbit hole and tried building my own solution.\nAt that time I hadn’t programmed in 10 years. I stopped pretty much when Backbone.js and underscore became popular and went on to work in commercial concrete, building many of the high rises in San Francisco and Downtown Los Angeles (including the one with lots of graffiti on it).\nThe goal of the app is to automate as much of customer support as possible, from triage to drafting responses to keeping track of history.\nFeatures include:\n- Omnichannel Inbox — Handle email, chat, SMS, and social conversations from one unified inbox.\n- Email integrations — Connect Gmail and Outlook to sync conversations both ways.\n- Ticketing — Full ticket lifecycle with priorities, statuses, types, and assignment.\n- AI-suggested replies — Draft answers generated from conversation context.\n- Workflow builder: No-code drag-and-drop automation for tickets, contacts, and messages (you can create your own apps too)\n- Knowledge Base\n- Data import — Bulk import historical contacts and tickets.\n- Call recordings & transcripts — AI-transcribed and analyzed voice conversations. (Beta)\n- AI: Kopilot — Conversational AI assistant that answers questions using your customer data.\n- AI providers — Bring your own OpenAI, Anthropic, or other model keys.\nThe homepage is https://auxx.ai and you can play with a demo here: https://auxx.ai/demo. It's open source. You can find the repo here: https://github.com/Auxx-Ai/auxx-ai. (Stars are appreciated)\nComments URL: https://news.ycombinator.com/item?id=47827928\nPoints: 2\n# Comments: 0"
   },
   {
     "id": "b190f3d53f6a8e8821f8fba8894ccbd1",
@@ -811,33 +872,6 @@
     "clickCount": 0,
     "saveRate": 0,
     "summary": "Welcome back to TechCrunch Mobility, your hub for the future of transportation and now, more than ever, how AI is playing a part."
-  },
-  {
-    "id": "fc2ae7c68319ae888d1fe87d7c8fc867",
-    "title": "Training and Finetuning Multimodal Embedding & Reranker Models with Sentence Transformers",
-    "source": "Hugging Face",
-    "sourceType": "rss",
-    "sourceCategory": "research",
-    "link": "https://huggingface.co/blog/train-multimodal-sentence-transformers",
-    "date": "Thu, 16 Apr 2026 00:00:00 GMT",
-    "signalScore": 2.15,
-    "impactLevel": "low",
-    "tags": [
-      "LLM",
-      "Research"
-    ],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": ""
   },
   {
     "id": "20e34cbfb714919ccbb0f11103e3ca1e",
@@ -948,6 +982,7 @@
     "signalScore": 2.1,
     "impactLevel": "low",
     "tags": [
+      "Voice",
       "LLM"
     ],
     "what": null,
@@ -962,33 +997,6 @@
     "clickCount": 0,
     "saveRate": 0,
     "summary": "Our newest audio model introduces granular audio tags that give you precise control to direct AI speech for expressive audio generation."
-  },
-  {
-    "id": "c770eae11ee06da583593e49e26da47b",
-    "title": "Multimodal Embedding & Reranker Models with Sentence Transformers",
-    "source": "Hugging Face",
-    "sourceType": "rss",
-    "sourceCategory": "research",
-    "link": "https://huggingface.co/blog/multimodal-sentence-transformers",
-    "date": "Thu, 09 Apr 2026 00:00:00 GMT",
-    "signalScore": 2.08,
-    "impactLevel": "low",
-    "tags": [
-      "LLM",
-      "Research"
-    ],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": ""
   },
   {
     "id": "d18e02283c0efa07b583cdca097b253a",
@@ -1087,6 +1095,59 @@
     "summary": "New data from Appfigures shows a swell of new app launches in 2026, suggesting AI tools could be fueling a mobile software boom."
   },
   {
+    "id": "4c04529d4e0b4d640b1fa712d8a68266",
+    "title": "Creating images with ChatGPT",
+    "source": "OpenAI",
+    "sourceType": "rss",
+    "sourceCategory": "official",
+    "link": "https://openai.com/academy/image-generation",
+    "date": "Fri, 10 Apr 2026 00:00:00 GMT",
+    "signalScore": 2.03,
+    "impactLevel": "low",
+    "tags": [
+      "LLM",
+      "Vision"
+    ],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": "Learn how to create and refine images with ChatGPT using clear prompts, iterate on designs, and generate high-quality visuals in minutes."
+  },
+  {
+    "id": "62379661ee74ac358b96f81d0c7b0565",
+    "title": "ChatGPT for research",
+    "source": "OpenAI",
+    "sourceType": "rss",
+    "sourceCategory": "official",
+    "link": "https://openai.com/academy/research",
+    "date": "Fri, 10 Apr 2026 00:00:00 GMT",
+    "signalScore": 2.03,
+    "impactLevel": "low",
+    "tags": [
+      "LLM"
+    ],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": "Learn how to use ChatGPT for research to gather sources, analyze information, and create structured, citation-backed insights."
+  },
+  {
     "id": "66439e0ac0aedcb0a787347cb94b1e85",
     "title": "Healthcare",
     "source": "OpenAI",
@@ -1145,7 +1206,8 @@
     "signalScore": 2.03,
     "impactLevel": "low",
     "tags": [
-      "LLM"
+      "LLM",
+      "Voice"
     ],
     "what": null,
     "why": null,
@@ -1800,7 +1862,9 @@
     "date": "Mon, 13 Apr 2026 13:00:00 +0000",
     "signalScore": 1.91,
     "impactLevel": "low",
-    "tags": [],
+    "tags": [
+      "Vision"
+    ],
     "what": null,
     "why": null,
     "takeaway": null,
@@ -1865,6 +1929,30 @@
     "summary": "The new SOTA model asserts its dominance."
   },
   {
+    "id": "dd369e87fb89c2abe91b6bc5020090e1",
+    "title": "[AINews] RIP Pull Requests (2005-2026)",
+    "source": "Latent Space",
+    "sourceType": "rss",
+    "sourceCategory": "substack",
+    "link": "https://www.latent.space/p/ainews-rip-pull-requests-2005-2026",
+    "date": "Thu, 16 Apr 2026 06:41:12 GMT",
+    "signalScore": 1.8,
+    "impactLevel": "low",
+    "tags": [],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": "a quiet day lets us report on the death of the pull requests"
+  },
+  {
     "id": "e67ac64ca9fec3d40310a6661c191839",
     "title": "[AINews] Humanity's Last Gasp",
     "source": "Latent Space",
@@ -1913,6 +2001,30 @@
     "clickCount": 0,
     "saveRate": 0,
     "summary": "Notion's cofounder and head of AI peel back the curtains to talk about finally shipping the Knowledge Work AI agents the world has been waiting for."
+  },
+  {
+    "id": "5619592af44b7bca56fa03e026e7f2e4",
+    "title": "[AINews] AI Engineer Europe 2026",
+    "source": "Latent Space",
+    "sourceType": "rss",
+    "sourceCategory": "substack",
+    "link": "https://www.latent.space/p/ainews-ai-engineer-europe-2026",
+    "date": "Fri, 10 Apr 2026 23:30:58 GMT",
+    "signalScore": 1.73,
+    "impactLevel": "low",
+    "tags": [],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": "Two quiet days in a row let us reflect on the first AIE in London."
   },
   {
     "id": "e8c3c466ef0704ad7ab3b9d4528bed5c",
@@ -2059,6 +2171,30 @@
     "summary": "It matters that Apple’s new Siri will be late, and it matters more that \r\nApple didn’t realise. Is it more than that?"
   },
   {
+    "id": "27e02fc5c7ac4d82d11fe9fbdf8f8a5c",
+    "title": "The Deep Research problem",
+    "source": "Ben Evans",
+    "sourceType": "rss",
+    "sourceCategory": "substack",
+    "link": "https://www.ben-evans.com/benedictevans/2025/2/17/the-deep-research-problem",
+    "date": "Tue, 18 Feb 2025 14:51:22 +0000",
+    "signalScore": 1.73,
+    "impactLevel": "low",
+    "tags": [],
+    "what": null,
+    "why": null,
+    "takeaway": null,
+    "processed": false,
+    "processedAt": null,
+    "zone1EligibleUntil": null,
+    "developingStory": false,
+    "saveCount": 0,
+    "dismissCount": 0,
+    "clickCount": 0,
+    "saveRate": 0,
+    "summary": "OpenAI’s Deep Research is built for me, and I can’t use it. It’s another \r\namazing demo, until it breaks. But it breaks in really interesting ways."
+  },
+  {
     "id": "03624ff529f31cd6fc4bb847e099efef",
     "title": "Competing in search",
     "source": "Ben Evans",
@@ -2105,129 +2241,5 @@
     "clickCount": 0,
     "saveRate": 0,
     "summary": "Hundreds of millions of people have tried ChatGPT, but most of them haven’t \r\nbeen back. Every big company has done a pilot, but far fewer are in \r\ndeployment. Some of this is just a matter of time. But LLMs might also be a \r\ntrap: they look like products and they look magic, but they aren’t. Maybe \r\nwe have to go through the slow, boring hunt for product-market fit after \r\nall."
-  },
-  {
-    "id": "4c04529d4e0b4d640b1fa712d8a68266",
-    "title": "Creating images with ChatGPT",
-    "source": "OpenAI",
-    "sourceType": "rss",
-    "sourceCategory": "official",
-    "link": "https://openai.com/academy/image-generation",
-    "date": "Fri, 10 Apr 2026 00:00:00 GMT",
-    "signalScore": 1.65,
-    "impactLevel": "low",
-    "tags": [
-      "LLM"
-    ],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": "Learn how to create and refine images with ChatGPT using clear prompts, iterate on designs, and generate high-quality visuals in minutes."
-  },
-  {
-    "id": "62379661ee74ac358b96f81d0c7b0565",
-    "title": "ChatGPT for research",
-    "source": "OpenAI",
-    "sourceType": "rss",
-    "sourceCategory": "official",
-    "link": "https://openai.com/academy/research",
-    "date": "Fri, 10 Apr 2026 00:00:00 GMT",
-    "signalScore": 1.65,
-    "impactLevel": "low",
-    "tags": [
-      "LLM"
-    ],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": "Learn how to use ChatGPT for research to gather sources, analyze information, and create structured, citation-backed insights."
-  },
-  {
-    "id": "dd369e87fb89c2abe91b6bc5020090e1",
-    "title": "[AINews] RIP Pull Requests (2005-2026)",
-    "source": "Latent Space",
-    "sourceType": "rss",
-    "sourceCategory": "substack",
-    "link": "https://www.latent.space/p/ainews-rip-pull-requests-2005-2026",
-    "date": "Thu, 16 Apr 2026 06:41:12 GMT",
-    "signalScore": 1.43,
-    "impactLevel": "low",
-    "tags": [],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": "a quiet day lets us report on the death of the pull requests"
-  },
-  {
-    "id": "5619592af44b7bca56fa03e026e7f2e4",
-    "title": "[AINews] AI Engineer Europe 2026",
-    "source": "Latent Space",
-    "sourceType": "rss",
-    "sourceCategory": "substack",
-    "link": "https://www.latent.space/p/ainews-ai-engineer-europe-2026",
-    "date": "Fri, 10 Apr 2026 23:30:58 GMT",
-    "signalScore": 1.35,
-    "impactLevel": "low",
-    "tags": [],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": "Two quiet days in a row let us reflect on the first AIE in London."
-  },
-  {
-    "id": "27e02fc5c7ac4d82d11fe9fbdf8f8a5c",
-    "title": "The Deep Research problem",
-    "source": "Ben Evans",
-    "sourceType": "rss",
-    "sourceCategory": "substack",
-    "link": "https://www.ben-evans.com/benedictevans/2025/2/17/the-deep-research-problem",
-    "date": "Tue, 18 Feb 2025 14:51:22 +0000",
-    "signalScore": 1.35,
-    "impactLevel": "low",
-    "tags": [],
-    "what": null,
-    "why": null,
-    "takeaway": null,
-    "processed": false,
-    "processedAt": null,
-    "zone1EligibleUntil": null,
-    "developingStory": false,
-    "saveCount": 0,
-    "dismissCount": 0,
-    "clickCount": 0,
-    "saveRate": 0,
-    "summary": "OpenAI’s Deep Research is built for me, and I can’t use it. It’s another \r\namazing demo, until it breaks. But it breaks in really interesting ways."
   }
 ]

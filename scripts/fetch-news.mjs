@@ -34,12 +34,12 @@ const FEED_SOURCES = [
 // ── Inline scoring (mirrors lib/scoring.ts — keep in sync) ───────
 
 const AUTHORITY_MAP = {
-  "openai": 1.0, "anthropic": 1.0, "google deepmind": 1.0, "meta ai": 1.0,
+  "openai": 1.0, "anthropic": 1.0, "google deepmind": 1.0, "meta ai": 1.0, "mistral": 1.0,
   "arxiv ai": 0.90, "arxiv ml": 0.90, "arxiv nlp": 0.90,
   "hugging face": 0.85, "google research": 0.85,
   "mit tech review ai": 0.75, "the verge ai": 0.75,
   "hacker news (ai)": 0.70,
-  "venturebeat ai": 0.65, "techcrunch ai": 0.65,
+  "venturebeat ai": 0.65, "techcrunch ai": 0.65, "replicate": 0.65, "langchain": 0.65,
   "latent space": 0.60, "ben evans": 0.60,
 };
 
@@ -94,7 +94,7 @@ function getCompetitiveThreat(title, authority) {
   return raw;
 }
 
-const STOP = new Set(["a","an","the","and","or","but","in","on","at","to","for","of","with","is","are","was","were","be","been","have","has","had","do","does","did","will","would","could","should","may","might","this","that","it","its","as","by","from","about","how","what","when","where","who","which","why","not","no","new","ai"]);
+const STOP = new Set(["a","an","the","and","or","but","in","on","at","to","for","of","with","is","are","was","were","be","been","being","have","has","had","do","does","did","will","would","could","should","may","might","shall","can","need","this","that","these","those","it","its","as","by","from","into","about","how","what","when","where","who","which","why","not","no","new","ai"]);
 
 function tokenize(title) {
   return new Set(
@@ -142,6 +142,8 @@ const TAG_RULES = [
   { tag: "Funding",  kws: ["raises","funding","series","billion","million","acquires","enterprise"] },
   { tag: "Product",  kws: ["launch","release","introduces","ships","announces","available","beta"] },
   { tag: "Pricing",  kws: ["pricing","price cut","free tier","cost","cheaper"] },
+  { tag: "Vision",   kws: ["image","video","vision","multimodal","ocr","screenshot","diagram","chart"] },
+  { tag: "Voice",    kws: ["audio","speech","tts","stt","voice","transcription","whisper"] },
 ];
 
 function generateTags(title, max = 3) {
@@ -195,12 +197,17 @@ async function main() {
   }
   const unique = [...seen.values()];
 
-  // Collect all titles for novelty computation (each article compared against all others)
-  const allTitles = unique.map((i) => i.title);
+  // Collect titles from the last 72hr for novelty computation (per spec)
+  const now72 = Date.now() - 72 * 60 * 60 * 1000;
+  const recentItems = unique.filter((i) => {
+    const t = new Date(i.date).getTime();
+    return !isNaN(t) && t >= now72;
+  });
+  const recentTitlesPool = recentItems.map((i) => i.title);
 
   // Score everything
   const scored = unique.map((item) => {
-    const recentTitles = allTitles.filter((t) => t !== item.title);
+    const recentTitles = recentTitlesPool.filter((t) => t !== item.title);
     const score = computeScore(item.title, item._source, item.date, recentTitles);
     return {
       id:                 makeId(item.link),
