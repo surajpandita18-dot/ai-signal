@@ -12,6 +12,7 @@ export function tokenize(title: string): Set<string> {
   return new Set(
     title
       .toLowerCase()
+      .replace(/-/g, " ")
       .replace(/[^\w\s]/g, "")
       .split(/\s+/)
       .filter((t) => t.length > 2 && !STOP_WORDS.has(t))
