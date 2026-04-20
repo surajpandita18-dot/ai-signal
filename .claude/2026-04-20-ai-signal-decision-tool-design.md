@@ -489,13 +489,13 @@ free:
   Zone 2: title + source only beyond #3
   Email: what + why, upgrade CTA
 
-pro ($39/month):
+pro ($49/month):
   Zone 1 #1–5: full 3-part
   Zone 2: full cards
   Email: full 3-part incl. takeaway
   Personalized ordering
 
-team ($149/month, 5 seats):
+team ($179/month, 5 seats):
   Everything in pro + shared saved signals + weekly team digest
 
 api (v2): JSON feed, webhooks, custom source filters
@@ -505,59 +505,84 @@ api (v2): JSON feed, webhooks, custom source filters
 
 ## 11. Phased Implementation Roadmap
 
-### Phase 1 — Foundation (Week 1–2)
-- [ ] Weighted scoring formula replacing keyword heuristics
-- [ ] Signal data shape: add `tags`, `impactLevel`, `zone1EligibleUntil`, `developingStory`, feedback counters
-- [ ] 48hr summary cache (URL-hash key)
-- [ ] Source-agnostic input normalization layer
-- [ ] Zone 1 age-out logic (24hr hard limit, developingStory extension)
+### Phase 1 — Foundation + Analytics Instrumentation (Week 1–2)
+*Unblocks everything. No user-visible changes except data shape.*
+
+- [ ] Weighted scoring formula (§5) replacing keyword heuristics
+- [ ] Signal data shape: add `tags`, `impactLevel`, `zone1EligibleUntil`, `developingStory`, `saveCount`, `dismissCount`, `clickCount`, `saveRate`
+- [ ] 48hr summary cache (sha256 URL-hash key, Vercel KV or JSON file)
+- [ ] Source-agnostic input normalization layer (§7 Stage 1)
+- [ ] Zone 1 age-out logic (24hr hard limit, developingStory extends by 24hr)
+- [ ] Analytics event logging from day one: save / dismiss / click per signal
+  - Store in Supabase `signal_events` table: `{signalId, eventType, userId, timestamp}`
+  - Weekly `saveRate` computation job (runs every Sunday)
+- [ ] Developing story detection (Jaccard similarity > 0.5, 3+ follow-ups in 48hr)
 
 ### Phase 2 — LLM Pipeline (Week 2–3)
-- [ ] Selection gate (top 15%, min 5, max 25)
-- [ ] System prompt + output validation + blocked phrases gate
-- [ ] Model routing: Sonnet #1–3, Haiku #4–25
-- [ ] GitHub Actions cron 05:00am UTC
-- [ ] Admin manual trigger endpoint
+*Core product differentiator. No user-visible changes yet.*
 
-### Phase 3 — Homepage Redesign (Week 3–4)
-- [ ] Zone 1 editorial list (numbered, full-width, not card grid)
-- [ ] Signal row hierarchy: number → title → what/why/takeaway
-- [ ] Amber accent system (amber-200 for #1, amber-100 for #2–3)
-- [ ] Low-signal-day honest empty state
-- [ ] Zone 1→2 divider with count
-- [ ] Zone 2 compact cards (score bar + title + tags only, no summaries)
-- [ ] Paid gate UI (solid overlay + single CTA)
-- [ ] Dismiss `✕` event logging
+- [ ] Selection gate: top 15%, min 5, max 25 signals per run
+- [ ] System prompt (§7 Stage 4) + output parser + blocked phrases quality gate
+- [ ] Model routing: Sonnet for signals #1–3, Haiku for #4–25
+- [ ] Output validation + retry logic + SKIP handling
+- [ ] GitHub Actions cron at 05:00am UTC
+- [ ] Admin manual trigger: `POST /api/process?force=true&secret={ADMIN_SECRET}`
+- [ ] Cache write on successful LLM output (48hr TTL)
 
-### Phase 4 — Auth & Monetization (Week 4–5)
-- [ ] GitHub OAuth (NextAuth/Auth.js)
-- [ ] Users table (Supabase)
-- [ ] Onboarding 2-question form + preference storage
-- [ ] Server-side plan gating (`takeaway` never sent to free/unauthed)
-- [ ] Stripe integration ($39/month pro)
-- [ ] Upgrade flow from gate UI
+### Phase 3 — Auth + Monetization Gate (Week 3–4)
+*Gate must exist before homepage redesign goes live.*
+
+- [ ] GitHub OAuth via NextAuth/Auth.js
+- [ ] Supabase `users` table: `{githubId, email, login, plan, preferences, createdAt}`
+- [ ] Onboarding flow: 2-question preference form post-signup
+- [ ] Server-side plan gating: `takeaway` never sent to free/unauthed users in API response
+- [ ] Stripe integration: $49/month pro plan, $179/month team (5 seats)
+- [ ] Stripe webhook: update `users.plan` on subscription change
+- [ ] Session middleware: inject `user.plan` into every API response
+- [ ] Upgrade CTA endpoint: redirect to Stripe checkout
+
+### Phase 4 — Homepage Redesign (Week 4–5)
+*Gate exists. Safe to ship Zone 1 UI with real plan enforcement.*
+
+- [ ] Zone 1 editorial list: numbered rows, full-width, not card grid
+- [ ] Signal row hierarchy: `01` number → title → source/date → WHAT/WHY/TAKEAWAY
+- [ ] Amber accent: amber-200 for signal #1, amber-100 for signals #2–3, TAKEAWAY row only
+- [ ] Low-signal-day honest empty state: "No high-impact signals today. Check back tomorrow or browse the archive."
+- [ ] Zone 1 → Zone 2 divider: "More signals · {n} today"
+- [ ] Zone 2 compact cards: score bar + title + 2 tags + `Read →` (no summaries)
+- [ ] Paid gate UI for signals #4–5: solid surface overlay + "Unlock with Pro →" (no blur)
+- [ ] Dismiss `✕` on Zone 1 signals → logs dismiss event to `signal_events`
+- [ ] Navbar: "Sign in with GitHub" / "Upgrade" CTA slot
 
 ### Phase 5 — Email Digest (Week 5–6)
-- [ ] Resend integration
-- [ ] Digest email template (plain text + HTML)
-- [ ] `/digest/{date}` static page
-- [ ] 06:55am UTC GitHub Actions send trigger
-- [ ] Free vs paid content gating in email
-- [ ] Personalized signal ordering by preferences
+*Acquisition channel. Habit driver.*
 
-### Phase 6 — Feedback Loop (Week 6–7)
-- [ ] Save/dismiss/click event logging
-- [ ] Weekly saveRate computation
-- [ ] Manual review dashboard
-- [ ] First scoring recalibration after 4 weeks of data
+- [ ] Resend integration (free tier: 3,000 emails/month)
+- [ ] Email template: plain text + HTML, memo aesthetic
+- [ ] Free vs paid content gating in email (server omits `takeaway` for free)
+- [ ] Personalized signal ordering by `preferences.stack` + `preferences.concern`
+- [ ] `/digest/{YYYY-MM-DD}` static web page (shareable, SEO-indexed)
+- [ ] GitHub Actions cron at 06:55am UTC → `POST /api/send-digest`
+- [ ] Unsubscribe + preferences management endpoints
 
-### Phase 7 — Pre-publication Sources (v2)
-- [ ] GitHub Trending scraper
-- [ ] HuggingFace model upload watcher
-- [ ] arXiv full integration with scoring
-- [ ] Twitter/X curated list reader
-- [ ] Embedding-based semantic deduplication
-- [ ] LLM-based competitive threat scoring
+### Phase 6 — Feedback Loop Activation (Week 6–7)
+*Quality compounding. First recalibration.*
+
+- [ ] Dismiss UI confirmed working end-to-end with event logging
+- [ ] Weekly `saveRate` dashboard: top 10 / bottom 10 signals by save rate
+- [ ] Upgrade conversion tracking per signal category (which categories drive upgrades?)
+- [ ] First manual scoring recalibration after 4 weeks of data
+- [ ] Adjust keyword lists and dimension weights based on observed patterns
+
+### Phase 7 — Pre-publication Sources (v2 moat)
+*Signals 24–72hr before media coverage.*
+
+- [ ] GitHub Trending scraper (daily, AI/ML filter)
+- [ ] HuggingFace new model upload watcher
+- [ ] arXiv cs.AI / cs.LG / cs.CL full scoring integration
+- [ ] Twitter/X curated list reader (API or scraper)
+- [ ] Embedding-based semantic deduplication (replaces Jaccard)
+- [ ] LLM-based competitive threat scoring (replaces keyword heuristics)
 
 ---
 
