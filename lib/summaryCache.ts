@@ -58,7 +58,7 @@ export function purgeStaleCacheEntries(): number {
   let purged = 0;
   for (const key of Object.keys(store)) {
     const age = now - new Date(store[key].cachedAt).getTime();
-    if (age > TTL_MS) {
+    if (age >= TTL_MS) {
       delete store[key];
       purged++;
     }
