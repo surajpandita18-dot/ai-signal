@@ -42,3 +42,4 @@ next-env.d.ts
 
 # summary cache
 lib/.summaryCache.json
+lib/processedSignals.json
