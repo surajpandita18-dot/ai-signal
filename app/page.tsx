@@ -10,8 +10,10 @@ import { useUserPlan } from "@/lib/useUserPlan";
 import { trackUpgradeClicked } from "@/lib/analytics";
 import type { Signal } from "@/lib/types";
 
-const ZONE1_COUNT = 5;      // Total Zone 1 slots
-const ZONE1_FREE_COUNT = 3; // Free users see unblurred cards for first 3
+const ZONE1_COUNT = 5;       // Total Zone 1 slots
+const ZONE1_FREE_COUNT = 3;  // Free users see unblurred cards for first 3
+const ZONE1_MIN_SCORE = 2.8; // Lowered from 3.5 — calibrated to real score distribution
+const ZONE1_MIN_SHOW = 3;    // Always show at least this many when processed signals exist
 
 export default function Home() {
   const [signals, setSignals] = useState<Signal[]>([]);
@@ -44,15 +46,26 @@ export default function Home() {
 
   const visibleSignals = signals.filter((s) => !dismissed.has(s.id));
 
-  // Zone 1: processed signals with score >= 3.5 still within 24hr window
-  const zone1 = visibleSignals
-    .filter((s) => {
-      if (!s.processed) return false;
-      if (s.signalScore < 3.5) return false;
-      if (s.zone1EligibleUntil && new Date(s.zone1EligibleUntil) < new Date()) return false;
-      return true;
-    })
-    .slice(0, ZONE1_COUNT);
+  // Zone 1: processed signals within 24hr window, score >= ZONE1_MIN_SCORE
+  const zone1Qualified = visibleSignals.filter((s) => {
+    if (!s.processed) return false;
+    if (s.signalScore < ZONE1_MIN_SCORE) return false;
+    if (s.zone1EligibleUntil && new Date(s.zone1EligibleUntil) < new Date()) return false;
+    return true;
+  });
+
+  // Fallback: if fewer than ZONE1_MIN_SHOW qualify, top up with best processed signals
+  // (regardless of score threshold — the pipeline ran, use what we have)
+  let zone1: Signal[];
+  if (zone1Qualified.length >= ZONE1_MIN_SHOW) {
+    zone1 = zone1Qualified.slice(0, ZONE1_COUNT);
+  } else {
+    const qualifiedIds = new Set(zone1Qualified.map((s) => s.id));
+    const fallback = visibleSignals
+      .filter((s) => s.processed && s.takeaway && !qualifiedIds.has(s.id))
+      .slice(0, ZONE1_MIN_SHOW - zone1Qualified.length);
+    zone1 = [...zone1Qualified, ...fallback].slice(0, ZONE1_COUNT);
+  }
 
   const zone1Ids = new Set(zone1.map((s) => s.id));
   const zone2 = visibleSignals.filter((s) => !zone1Ids.has(s.id)).slice(0, 50);
