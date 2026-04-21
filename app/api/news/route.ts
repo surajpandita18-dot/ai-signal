@@ -77,10 +77,17 @@ export async function GET(req: Request) {
   }
 
   // Server-side gate: strip takeaway for free/unauthenticated users.
-  // The field is set to null — it never reaches the client DOM.
+  // takeaway is set to null — never reaches the client DOM.
+  // takeawayGated=true is added when a real takeaway exists but is withheld,
+  // so the client can show an upgrade CTA. Signals where LLM returned SKIP
+  // have takeaway=null + no takeawayGated flag — no false upgrade prompt.
   const gated = isPaid
     ? signals
-    : signals.map((s) => ({ ...s, takeaway: null }));
+    : signals.map((s) => ({
+        ...s,
+        takeaway: null,
+        ...(s.takeaway ? { takeawayGated: true } : {}),
+      }));
 
   return Response.json(gated);
 }

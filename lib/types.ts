@@ -24,6 +24,9 @@ export interface Signal {
   what: string | null;
   why: string | null;
   takeaway: string | null;
+  // Set to true by API when takeaway exists but was stripped for non-paid users.
+  // Distinguishes "server gated" (takeawayGated=true) from "LLM returned SKIP" (takeawayGated absent).
+  takeawayGated?: boolean;
   processed: boolean;
   processedAt: string | null;
 

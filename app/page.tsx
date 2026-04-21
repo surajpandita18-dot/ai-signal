@@ -49,25 +49,29 @@ export default function Home() {
 
   const visibleSignals = signals.filter((s) => !dismissed.has(s.id));
 
-  // Zone 1: processed signals within 24hr window, score >= ZONE1_MIN_SCORE
-  const zone1Qualified = visibleSignals.filter((s) => {
-    if (!s.processed) return false;
+  // Zone 1: signals that have real LLM takeaway content (either present or server-gated).
+  // LLM-SKIP'd signals (processed=true, takeaway=null, takeawayGated absent) go to Zone 2.
+  const hasEnrichedContent = (s: Signal) =>
+    s.processed && (!!s.takeaway || !!s.takeawayGated);
+
+  const zone1Primary = visibleSignals.filter((s) => {
+    if (!hasEnrichedContent(s)) return false;
     if (s.signalScore < ZONE1_MIN_SCORE) return false;
     if (s.zone1EligibleUntil && new Date(s.zone1EligibleUntil) < new Date()) return false;
     return true;
   });
 
-  // Fallback: if fewer than ZONE1_MIN_SHOW qualify, top up with best processed signals
-  // (regardless of score threshold — the pipeline ran, use what we have)
+  // Fallback: if fewer than ZONE1_MIN_SHOW have enriched content + qualify by score,
+  // top up with any enriched signal regardless of threshold (pipeline ran, use what we have)
   let zone1: Signal[];
-  if (zone1Qualified.length >= ZONE1_MIN_SHOW) {
-    zone1 = zone1Qualified.slice(0, ZONE1_COUNT);
+  if (zone1Primary.length >= ZONE1_MIN_SHOW) {
+    zone1 = zone1Primary.slice(0, ZONE1_COUNT);
   } else {
-    const qualifiedIds = new Set(zone1Qualified.map((s) => s.id));
+    const primaryIds = new Set(zone1Primary.map((s) => s.id));
     const fallback = visibleSignals
-      .filter((s) => s.processed && s.takeaway && !qualifiedIds.has(s.id))
-      .slice(0, ZONE1_MIN_SHOW - zone1Qualified.length);
-    zone1 = [...zone1Qualified, ...fallback].slice(0, ZONE1_COUNT);
+      .filter((s) => hasEnrichedContent(s) && !primaryIds.has(s.id))
+      .slice(0, ZONE1_MIN_SHOW - zone1Primary.length);
+    zone1 = [...zone1Primary, ...fallback].slice(0, ZONE1_COUNT);
   }
 
   const zone1Ids = new Set(zone1.map((s) => s.id));

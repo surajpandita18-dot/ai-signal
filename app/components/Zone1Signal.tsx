@@ -45,10 +45,11 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
   }
 
   const rankStr = String(rank).padStart(2, "0");
-  // takeaway is null when: (a) not yet processed, or (b) server stripped it (free/unauthed)
+  // takeaway is populated when paid (server sends it) or null when stripped/skipped
   const hasLLM = signal.processed && !!signal.takeaway;
-  // Server gated: processed but takeaway was stripped — show solid upgrade surface
-  const isGated = signal.processed && !signal.takeaway;
+  // takeawayGated=true means server withheld a real takeaway (free/unauthed user)
+  // This is distinct from takeaway=null because LLM returned SKIP (no gate shown)
+  const isGated = !!signal.takeawayGated;
   // Signal #1 gets amber-primary, #2-3 get amber-secondary
   const amberColor = rank === 1 ? "#f59e0b" : "#d97706";
 
