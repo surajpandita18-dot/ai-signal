@@ -2,12 +2,17 @@
 // Serves Signal[] from lib/realNews.json with in-memory cache.
 // If processedSignals.json exists (written by process-signals.mjs),
 // merges what/why/takeaway from it.
+//
+// Server-side TAKEAWAY gate: takeaway is stripped from the response for
+// free/unauthenticated users — never sent to the client, never in the DOM.
+// This is the real gate; client-side blur has been removed.
 
 export const dynamic = "force-dynamic";
 
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import type { Signal } from "@/lib/types";
+import { auth } from "@/lib/auth";
 
 let CACHE: Signal[] = [];
 let LAST_FETCH = 0;
@@ -49,18 +54,33 @@ export async function GET(req: Request) {
   const force = searchParams.get("force") === "true";
   const now = Date.now();
 
+  // Check plan — TAKEAWAY is only sent to paid users
+  const session = await auth();
+  const isPaid =
+    (session?.user as { plan?: string } | undefined)?.plan === "paid";
+
+  let signals: Signal[];
+
   if (!force && CACHE.length > 0 && now - LAST_FETCH < CACHE_TTL) {
-    return Response.json(CACHE);
+    signals = CACHE;
+  } else {
+    try {
+      const loaded = loadSignals();
+      const sorted = loaded.sort((a, b) => b.signalScore - a.signalScore);
+      CACHE = sorted;
+      LAST_FETCH = now;
+      signals = sorted;
+    } catch (err) {
+      console.error("Failed to load signals:", err);
+      signals = CACHE.length > 0 ? CACHE : [];
+    }
   }
 
-  try {
-    const signals = loadSignals();
-    const sorted = signals.sort((a, b) => b.signalScore - a.signalScore);
-    CACHE = sorted;
-    LAST_FETCH = now;
-    return Response.json(sorted);
-  } catch (err) {
-    console.error("Failed to load signals:", err);
-    return Response.json(CACHE.length > 0 ? CACHE : []);
-  }
+  // Server-side gate: strip takeaway for free/unauthenticated users.
+  // The field is set to null — it never reaches the client DOM.
+  const gated = isPaid
+    ? signals
+    : signals.map((s) => ({ ...s, takeaway: null }));
+
+  return Response.json(gated);
 }

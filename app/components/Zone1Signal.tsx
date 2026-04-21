@@ -1,12 +1,15 @@
 // app/components/Zone1Signal.tsx
-// Editorial row: rank number + title + TAKEAWAY (amber, blurred if free)
+// Editorial row: rank number + title + TAKEAWAY (server-gated — null if not paid)
 // Save ♡ (logs signal_saved) + Dismiss ✕ (logs signal_dismissed)
+//
+// TAKEAWAY gate is server-side: the API never sends takeaway to free/unauthed users.
+// No client-side blur. When takeaway is null but signal is processed, a solid
+// upgrade surface is shown instead.
 "use client";
 
 import { useState } from "react";
 import Link from "next/link";
 import type { Signal } from "@/lib/types";
-import { useUserPlan } from "@/lib/useUserPlan";
 import { trackSignalSaved, trackSignalDismissed, trackUpgradeClicked } from "@/lib/analytics";
 
 interface Props {
@@ -16,9 +19,6 @@ interface Props {
 }
 
 export function Zone1Signal({ signal, rank, onDismiss }: Props) {
-  const plan = useUserPlan();
-  const isPaid = plan === "paid";
-
   const [saved, setSaved] = useState(() => {
     if (typeof window === "undefined") return false;
     const saves: string[] = JSON.parse(localStorage.getItem("aiSignal_saves") ?? "[]");
@@ -45,7 +45,10 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
   }
 
   const rankStr = String(rank).padStart(2, "0");
-  const hasLLM = signal.processed && signal.takeaway;
+  // takeaway is null when: (a) not yet processed, or (b) server stripped it (free/unauthed)
+  const hasLLM = signal.processed && !!signal.takeaway;
+  // Server gated: processed but takeaway was stripped — show solid upgrade surface
+  const isGated = signal.processed && !signal.takeaway;
   // Signal #1 gets amber-primary, #2-3 get amber-secondary
   const amberColor = rank === 1 ? "#f59e0b" : "#d97706";
 
@@ -120,7 +123,7 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
           {signal.title}
         </Link>
 
-        {/* TAKEAWAY — the WOW element */}
+        {/* TAKEAWAY — visible only when server sent it (paid users) */}
         {hasLLM && (
           <div
             style={{
@@ -147,16 +150,52 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
                 fontSize: "15px",
                 color: amberColor,
                 lineHeight: 1.6,
-                filter: isPaid ? "none" : "blur(4px)",
-                userSelect: isPaid ? "auto" : "none",
-                cursor: isPaid ? "auto" : "pointer",
                 display: "block",
               }}
-              onClick={isPaid ? undefined : () => trackUpgradeClicked("zone1_gate")}
-              title={isPaid ? undefined : "Upgrade to read takeaway"}
             >
               {signal.takeaway}
             </span>
+          </div>
+        )}
+
+        {/* TAKEAWAY gate — solid surface, no blur (server stripped takeaway) */}
+        {isGated && (
+          <div
+            style={{
+              borderLeft: "2px solid rgba(245,158,11,0.2)",
+              paddingLeft: "12px",
+              marginTop: "8px",
+            }}
+          >
+            <span
+              style={{
+                display: "block",
+                fontSize: "11px",
+                fontWeight: 500,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "#52525b",
+                marginBottom: "6px",
+              }}
+            >
+              Takeaway
+            </span>
+            <button
+              onClick={() => trackUpgradeClicked("zone1_gate")}
+              style={{
+                background: "rgba(245,158,11,0.06)",
+                border: "1px solid rgba(245,158,11,0.2)",
+                borderRadius: "6px",
+                color: "#d97706",
+                fontSize: "12px",
+                fontWeight: 600,
+                padding: "6px 14px",
+                cursor: "pointer",
+                letterSpacing: "0.02em",
+              }}
+            >
+              Unlock takeaway →
+            </button>
           </div>
         )}
 
