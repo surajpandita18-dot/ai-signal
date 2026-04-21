@@ -3,6 +3,7 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
 import { Zone1Signal } from "@/app/components/Zone1Signal";
 import { Zone2Card } from "@/app/components/Zone2Card";
 import { FirstVisitTooltip } from "@/app/components/FirstVisitTooltip";
@@ -21,6 +22,8 @@ export default function Home() {
   const [loading, setLoading] = useState(true);
   const plan = useUserPlan();
   const isPaid = plan === "paid";
+  const { status: authStatus } = useSession();
+  const isAuthenticated = authStatus === "authenticated";
 
   useEffect(() => {
     const d: string[] = JSON.parse(localStorage.getItem("aiSignal_dismissed") ?? "[]");
@@ -206,9 +209,76 @@ export default function Home() {
         <section>
           {zone1.map((signal, i) => {
             const rank = i + 1;
-            const isGated = !isPaid && rank > ZONE1_FREE_COUNT;
 
-            if (isGated) {
+            // Unauthenticated: signal #1 renders normally (title + source, no TAKEAWAY
+            // since server strips it). Signals #2+ show a single auth gate row.
+            if (authStatus === "unauthenticated" && rank > 1) {
+              if (rank === 2) {
+                // Render auth gate once, spanning remaining slots
+                return (
+                  <div
+                    key="auth-gate"
+                    style={{
+                      display: "flex",
+                      gap: "24px",
+                      padding: "32px 16px",
+                      borderBottom: "1px solid rgba(255,255,255,0.04)",
+                      alignItems: "center",
+                    }}
+                  >
+                    <span
+                      style={{
+                        fontSize: "48px",
+                        fontWeight: 800,
+                        color: "rgba(124,58,237,0.06)",
+                        lineHeight: 1,
+                        minWidth: "48px",
+                        flexShrink: 0,
+                        letterSpacing: "-0.02em",
+                        fontVariantNumeric: "tabular-nums",
+                      }}
+                    >
+                      02
+                    </span>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <p
+                        style={{
+                          fontSize: "13px",
+                          color: "#52525b",
+                          marginBottom: "14px",
+                          lineHeight: 1.5,
+                        }}
+                      >
+                        Sign in to see today&apos;s signals — takes 10 seconds.
+                      </p>
+                      <Link
+                        href="/api/auth/signin"
+                        style={{
+                          display: "inline-block",
+                          background: "rgba(255,255,255,0.04)",
+                          border: "1px solid rgba(255,255,255,0.1)",
+                          borderRadius: "6px",
+                          color: "#fafafa",
+                          fontSize: "13px",
+                          fontWeight: 600,
+                          padding: "8px 18px",
+                          textDecoration: "none",
+                          letterSpacing: "0.01em",
+                        }}
+                      >
+                        Sign in with GitHub →
+                      </Link>
+                    </div>
+                  </div>
+                );
+              }
+              // rank 3+ are hidden behind the single auth gate above
+              return null;
+            }
+
+            // Authenticated but not paid: signals beyond ZONE1_FREE_COUNT show upgrade gate
+            const isPaidGate = !isPaid && rank > ZONE1_FREE_COUNT;
+            if (isPaidGate) {
               return (
                 <div
                   key={signal.id}
@@ -224,7 +294,7 @@ export default function Home() {
                     style={{
                       fontSize: "48px",
                       fontWeight: 800,
-                      color: "rgba(124,58,237,0.08)",
+                      color: "rgba(124,58,237,0.06)",
                       lineHeight: 1,
                       minWidth: "48px",
                       flexShrink: 0,
@@ -240,9 +310,7 @@ export default function Home() {
                       style={{
                         fontSize: "20px",
                         fontWeight: 600,
-                        color: "#a1a1aa",
-                        filter: "blur(4px)",
-                        userSelect: "none",
+                        color: "#3f3f46",
                         marginBottom: "16px",
                         lineHeight: 1.3,
                       }}
