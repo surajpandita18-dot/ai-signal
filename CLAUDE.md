@@ -143,6 +143,33 @@ Tailwind `shadow-*` defaults, light backgrounds of any kind,
 
 ---
 
+## Memory Rules
+
+**SESSION START — always run:**
+```bash
+/Users/surajpandita/Library/Python/3.9/bin/mempalace wake-up --wing ai-signal
+```
+
+**SESSION END — always run:**
+```bash
+bash scripts/hooks/post-session.sh
+```
+
+**NEVER load these files directly** (token killers):
+- `~/lennys-podcast-transcripts/` (8.73 MB) → `mempalace search "[query]" --wing lenny-index`
+- `.claude/intelligence/` full folder → `mempalace search "[topic]" --wing ai-signal`
+- `.claude/2026-04-20-ai-signal-mvp-plan.md` (large) → `mempalace search "[task]" --wing ai-signal`
+- `node_modules/`, `.next/` → never
+
+**TOKEN BUDGET: 15,000 per session max**
+
+Wing map:
+- `--wing ai-signal` ← product decisions, personas, intelligence, assumptions
+- `--wing lenny-index` ← 89 Lenny episodes (growth, retention, pricing, habit formation)
+- `--wing ai-signal-code` ← scripts/, lib/ code decisions and fixes
+
+---
+
 ## Core Features (never break)
 
 RSS feed · search · source filter · daily brief · top signals · bookmarks · read state · unread toggle · saved page · article pages · auto-refresh workflow

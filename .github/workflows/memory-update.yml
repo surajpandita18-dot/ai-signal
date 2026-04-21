@@ -1,0 +1,42 @@
+name: Update Memory Palace
+
+on:
+  push:
+    paths:
+      - '.claude/**'
+      - 'scripts/**'
+      - 'lib/**'
+  schedule:
+    # Every Monday at 05:00 UTC (before the signal pipeline at 05:00)
+    - cron: '0 4 * * 1'
+
+jobs:
+  update-memory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+
+      - name: Install MemPalace
+        run: pip install mempalace
+
+      - name: Mine .claude/ → ai-signal wing
+        run: mempalace mine .claude/ --wing ai-signal
+
+      - name: Mine scripts/ + lib/ → ai-signal-code wing
+        run: |
+          mempalace mine scripts/ --wing ai-signal-code
+          mempalace mine lib/ --wing ai-signal-code
+
+      - name: Generate morning brief
+        run: mempalace wake-up --wing ai-signal > .claude/MORNING_BRIEF.md
+
+      - name: Commit MORNING_BRIEF.md if changed
+        uses: stefanzweifel/git-auto-commit-action@v4
+        with:
+          commit_message: 'auto: memory palace update [skip ci]'
+          file_pattern: '.claude/MORNING_BRIEF.md'
