@@ -116,6 +116,53 @@
 
 ---
 
+---
+
+## Assumptions Added from Product Intelligence Session (2026-04-22)
+
+*Source: `.claude/intelligence/product-intelligence-2026-04-21.md` — top 3 gaps converted to testable assumptions.*
+
+---
+
+### A9 — Zone 1 scoring threshold is correctly calibrated to real signal quality
+
+**Statement:** The Zone 1 threshold of `signalScore >= 3.5` reliably identifies signals that a technical founder would consider "high-impact" — i.e., not miscalibrated to the point where zero signals qualify on most days.
+
+**Risk level:** CRITICAL (product promise breaks on empty Zone 1)
+
+**Status:** `INVALIDATED`
+
+**Evidence log:**
+- **2026-04-22 — Product Intelligence Session (Agent 2 empirical finding):** `processedSignals.json` examined directly. Maximum signal score in dataset = 3.38. Zone 1 threshold = 3.5. Nine processed signals have valid TAKEAWAYs and current `zone1EligibleUntil` timestamps — all suppressed by the threshold constant. Zone 1 has been empty for every user since launch. Threshold must be lowered to ≤2.8 or Zone 1 logic changed to surface top 3 processed signals when fewer than 3 meet threshold. Status → INVALIDATED.
+
+---
+
+### A10 — Client-side TAKEAWAY blur is sufficient to drive upgrade intent in the technical founder cohort
+
+**Statement:** Blurring the TAKEAWAY via `filter: blur(4px)` with `userSelect: none` creates meaningful upgrade friction for technical founders, and the blur-to-upgrade conversion is measurable.
+
+**Risk level:** HIGH
+
+**Status:** `INVALIDATED`
+
+**Evidence log:**
+- **2026-04-22 — Product Intelligence Session (Agent 2 + Agent 3 finding):** TAKEAWAY text is always present in the DOM. Any technical founder — the exact target customer — can remove the blur via browser DevTools in under 10 seconds. This is not a theoretical bypass; `inspect element → remove style attribute` is muscle memory for this cohort. Upgrade CTA built on a bypassable gate is theater, not a product decision. Server-side gate (TAKEAWAY never in API response for free/unauthenticated users) is required. This matches the existing spec in `decision-tool-design.md §3` which states: "takeaway is never sent in the API response to free or unauthed users — not blurred client-side, not sent at all." Status → INVALIDATED. Spec must be implemented.
+
+---
+
+### A11 — The investment mechanic (decision log / signal history) is a post-PMF feature
+
+**Statement:** Users will form a durable daily habit with AI Signal without any investment mechanic — no decision log, no signal history, no personalization accumulation — relying solely on editorial signal quality to re-earn the open each morning.
+
+**Risk level:** HIGH
+
+**Status:** `UNTESTED`
+
+**Evidence log:**
+- **2026-04-22 — Product Intelligence Session (Agent 1 Hooked model analysis):** Nir Eyal's Hooked model (trigger → action → variable reward → investment) identifies investment as the phase that creates escalating switching cost and habit durability. Currently the product has zero investment mechanics: no decision log, no signal history, no personalization from GitHub repo data. A user on day 29 has the same product experience as day 1. The Hooked model predicts: without investment, retention after day 7 is governed entirely by daily editorial quality re-earning the open from scratch. This assumption is testable with first cohort: if day 7 retention is below 10% with strong editorial quality, investment mechanics are required. If above 20%, editorial quality alone may be sufficient.
+
+---
+
 ## Invalidated Assumptions Archive
 
 *(Moved here when status = INVALIDATED — preserved as learning)*
