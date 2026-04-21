@@ -7,6 +7,7 @@ import { useSession } from "next-auth/react";
 import { Zone1Signal } from "@/app/components/Zone1Signal";
 import { Zone2Card } from "@/app/components/Zone2Card";
 import { FirstVisitTooltip } from "@/app/components/FirstVisitTooltip";
+import { LandingPage } from "@/app/components/LandingPage";
 import { useUserPlan } from "@/lib/useUserPlan";
 import { trackUpgradeClicked } from "@/lib/analytics";
 import type { Signal } from "@/lib/types";
@@ -76,6 +77,11 @@ export default function Home() {
 
   const zone1Ids = new Set(zone1.map((s) => s.id));
   const zone2 = visibleSignals.filter((s) => !zone1Ids.has(s.id)).slice(0, 50);
+
+  // Unauthenticated: show landing page instead of dashboard
+  if (authStatus === "unauthenticated") {
+    return <LandingPage />;
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#09090b", color: "#fafafa" }}>
