@@ -3,11 +3,13 @@
 // 1. Reads lib/realNews.json (scored signals from fetch-news.mjs)
 // 2. Selects top 15% by score (min 5, max 25)
 // 3. Cache check per signal (48hr TTL)
-// 4. Calls Claude Sonnet for #1–3, Haiku for #4–25
+// 4. Routes to LLM provider by priority:
+//      Priority 1: ANTHROPIC_API_KEY → Claude (Sonnet #1-3, Haiku #4-25)
+//      Priority 2: GEMINI_API_KEY    → Gemini 1.5 Flash (all ranks)
+//      Priority 3: Neither set       → error, skip processing
 // 5. Validates output (blocked phrases, SKIP handling)
 // 6. Writes lib/processedSignals.json
 
-import Anthropic from "@anthropic-ai/sdk";
 import { readFileSync, writeFileSync, existsSync } from "fs";
 import { createHash } from "crypto";
 import { fileURLToPath } from "url";
@@ -16,7 +18,31 @@ import { dirname, join } from "path";
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(__dirname, "..");
 
-const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+// ── Provider detection ────────────────────────────────────────────
+
+const HAS_ANTHROPIC = !!process.env.ANTHROPIC_API_KEY;
+const HAS_GEMINI    = !!process.env.GEMINI_API_KEY;
+
+let anthropicClient = null;
+let geminiModel     = null;
+
+if (HAS_ANTHROPIC) {
+  const { default: Anthropic } = await import("@anthropic-ai/sdk");
+  anthropicClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });
+  console.log("Provider: Anthropic (Claude Sonnet #1-3, Haiku #4-25)");
+} else if (HAS_GEMINI) {
+  const { GoogleGenerativeAI } = await import("@google/generative-ai");
+  const genai = new GoogleGenerativeAI(process.env.GEMINI_API_KEY);
+  geminiModel = genai.getGenerativeModel({
+    model: "gemini-1.5-flash",
+    systemInstruction: undefined, // set per-call below
+  });
+  console.log("Provider: Google Gemini (gemini-1.5-flash, all ranks)");
+} else {
+  console.error("ERROR: Neither ANTHROPIC_API_KEY nor GEMINI_API_KEY is set.");
+  console.error("Set at least one in .env.local to run the pipeline.");
+  process.exit(1);
+}
 
 // ── Cache ─────────────────────────────────────────────────────────
 
@@ -47,7 +73,7 @@ function setCached(cache, link, entry) {
   cache[makeCacheKey(link)] = { ...entry, cachedAt: new Date().toISOString() };
 }
 
-// ── System prompt ────────────────────────────────────────────────
+// ── Prompt ────────────────────────────────────────────────────────
 
 const SYSTEM_PROMPT = `You are an intelligence analyst writing for technical founders at early-stage AI startups.
 Produce exactly three sentences — no more, no less.
@@ -90,17 +116,21 @@ function parseResponse(text) {
   };
 }
 
-// ── LLM call (with one retry) ─────────────────────────────────────
-
-async function callClaude(title, summary, source, date, model) {
-  const userPrompt = `Source: ${source}
+function buildUserPrompt(title, summary, source, date) {
+  return `Source: ${source}
 Date: ${date}
 Title: ${title}
 Body: ${(summary || "").slice(0, 800)}`;
+}
+
+// ── LLM callers ───────────────────────────────────────────────────
+
+async function callClaude(title, summary, source, date, model) {
+  const userPrompt = buildUserPrompt(title, summary, source, date);
 
   for (let attempt = 0; attempt < 2; attempt++) {
     try {
-      const msg = await client.messages.create({
+      const msg = await anthropicClient.messages.create({
         model,
         max_tokens: 256,
         system: SYSTEM_PROMPT,
@@ -111,20 +141,46 @@ Body: ${(summary || "").slice(0, 800)}`;
       if (parsed || attempt === 1) return parsed;
       console.log(`  Retry for: ${title.slice(0, 60)}`);
     } catch (err) {
-      console.error(`  Claude error: ${err.message}`);
+      console.error(`  Claude error (attempt ${attempt + 1}): ${err.message}`);
       if (attempt === 1) return null;
     }
   }
   return null;
 }
 
+async function callGemini(title, summary, source, date) {
+  const userPrompt = buildUserPrompt(title, summary, source, date);
+  const fullPrompt = `${SYSTEM_PROMPT}\n\n${userPrompt}`;
+
+  for (let attempt = 0; attempt < 2; attempt++) {
+    try {
+      const result = await geminiModel.generateContent(fullPrompt);
+      const text = result.response.text().trim();
+      const parsed = parseResponse(text);
+      if (parsed || attempt === 1) return parsed;
+      console.log(`  Retry for: ${title.slice(0, 60)}`);
+    } catch (err) {
+      console.error(`  Gemini error (attempt ${attempt + 1}): ${err.message}`);
+      if (attempt === 1) return null;
+    }
+  }
+  return null;
+}
+
+// ── Unified LLM dispatch ─────────────────────────────────────────
+
+async function callLLM(title, summary, source, date, rank) {
+  if (HAS_ANTHROPIC) {
+    const model = rank <= 3 ? "claude-sonnet-4-5" : "claude-haiku-4-5";
+    return callClaude(title, summary, source, date, model);
+  }
+  // Gemini fallback — same quality prompt, same validation
+  return callGemini(title, summary, source, date);
+}
+
 // ── Main ─────────────────────────────────────────────────────────
 
 async function main() {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    throw new Error("ANTHROPIC_API_KEY is not set");
-  }
-
   const rawPath = join(ROOT, "lib", "realNews.json");
   if (!existsSync(rawPath)) {
     throw new Error("lib/realNews.json not found — run fetch-news.mjs first");
@@ -139,7 +195,7 @@ async function main() {
   const candidates = sorted.filter((s) => s.signalScore >= threshold).slice(0, 25);
   const selected = candidates.length < 5 ? sorted.slice(0, 5) : candidates;
 
-  console.log(`Selected ${selected.length} signals for LLM processing (threshold: ${threshold})`);
+  console.log(`Selected ${selected.length} signals (threshold: ${threshold.toFixed(2)})`);
 
   const cache = readCache();
   const now = new Date().toISOString();
@@ -148,13 +204,13 @@ async function main() {
   for (let i = 0; i < selected.length; i++) {
     const signal = selected[i];
     const rank = i + 1;
-    const model = rank <= 3
-      ? "claude-sonnet-4-5"
-      : "claude-haiku-4-5";
+    const provider = HAS_ANTHROPIC
+      ? (rank <= 3 ? "sonnet" : "haiku")
+      : "gemini-flash";
 
-    console.log(`[${rank}/${selected.length}] ${model} → ${signal.title.slice(0, 70)}`);
+    console.log(`[${rank}/${selected.length}] ${provider} → ${signal.title.slice(0, 70)}`);
 
-    // Cache check
+    // Cache check — unchanged
     const cached = getCached(cache, signal.link);
     if (cached) {
       console.log("  ↳ cache hit");
@@ -171,12 +227,21 @@ async function main() {
       continue;
     }
 
-    // Call Claude
-    const result = await callClaude(signal.title, signal.summary, signal.source, signal.date, model);
+    // LLM call
+    const result = await callLLM(signal.title, signal.summary, signal.source, signal.date, rank);
 
     if (!result) {
       console.log("  ↳ SKIP or validation failed");
-      results.push({ ...signal, processed: true, processedAt: now, what: null, why: null, takeaway: null, zone1EligibleUntil: null, developingStory: false });
+      results.push({
+        ...signal,
+        processed: true,
+        processedAt: now,
+        what: null,
+        why: null,
+        takeaway: null,
+        zone1EligibleUntil: null,
+        developingStory: false,
+      });
       continue;
     }
 
