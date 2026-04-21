@@ -1,57 +1,145 @@
-# AI Signal — Dark Theme Design System
+# AI Signal — Design System
 
-Target feel: Linear.app + Vercel dashboard + Bloomberg terminal.
-NOT: light SaaS, warm editorial, white cards.
+**Hero principle: DECISIVE**
+AI Signal feels like a tool that has already made up its mind. Certainty in every element. No decorative chrome. Information that demands action.
+
+Target feel: Bloomberg Terminal × Linear. Dense enough to trust. Clean enough to act.
+NOT: light SaaS, warm editorial, white cards, marketing gradients.
+
+---
+
+## Inspiration References
+
+- **Linear** — calm density, Inter font, minimal accent usage. Trust through restraint.
+- **Vercel** — confident minimalism, typography as hierarchy. Every element earns its weight.
+- **Bloomberg Terminal** — amber for action, density as trust signal. Information is the design.
 
 ---
 
 ## Color tokens (use these everywhere)
 
 ```
---bg: #08090f           (page background)
---bg-card: #0d0e17      (card background)
---bg-card-hover: #101220
---bg-elevated: #13152a
---border: rgba(255,255,255,0.07)
---border-hover: rgba(139,92,246,0.4)
+--bg: #09090b
+--bg-card: #0f0f12
+--bg-card-hover: #141418
+--bg-elevated: #1a1a20
+--border: rgba(255,255,255,0.06)
+--border-hover: rgba(139,92,246,0.35)
 --purple: #7c3aed
 --purple-light: #a78bfa
---indigo: #4f46e5
---emerald: #10b981
---text-1: #f0f2ff       (headings, titles)
---text-2: #8892b0       (body, summaries)
---text-3: #4a5568       (muted, labels)
---text-4: #2d3748       (very muted)
+--amber-primary: #f59e0b
+--amber-secondary: #d97706
+--amber-border: rgba(245,158,11,0.4)
+--text-1: #fafafa
+--text-2: #a1a1aa
+--text-3: #52525b
+--text-4: #27272a
+```
+
+**Amber is action. Purple is chrome. Never swap them.**
+
+---
+
+## Typography system
+
+```
+Font: Inter (variable) — Google Fonts
+Headings: Inter Display 600–700
+Body: Inter 400
+Labels: Inter 500, uppercase, letter-spacing: 0.08em
+
+Scale:
+--text-xs:   11px
+--text-sm:   13px
+--text-base: 15px
+--text-lg:   17px
+--text-xl:   20px
+--text-2xl:  24px
+--text-3xl:  30px
+```
+
+Spacing: base 8px. All spacing is multiples of 8.
+
+---
+
+## Zone 1 — editorial signal list
+
+Zone 1 is a numbered editorial list. NOT cards. Full-width rows.
+
+- **Signal number** (01, 02, 03): 48px, `rgba(124,58,237,0.15)` — large, dim, editorial. Not decorative.
+- **Title**: `--text-xl`, weight 600, `--text-1`
+- **WHAT / WHY labels**: `--text-xs`, uppercase, letter-spacing 0.08em, `--text-3`
+- **TAKEAWAY label**: `--text-xs`, uppercase, `--amber-primary`
+- **TAKEAWAY content**: `--text-base`, `--amber-primary`, `border-left: 2px solid var(--amber-border)`, `padding-left: 12px`
+- **Signal #1**: amber-primary accent. Signals #2–3: amber-secondary accent.
+- **Row divider**: `1px solid rgba(255,255,255,0.04)` — barely visible
+- **Hover**: `--bg-card-hover` background only. No translateY. No glow.
+
+### WOW element — the TAKEAWAY pull quote
+
+The single screenshottable moment: the TAKEAWAY line with amber left border.
+
+```tsx
+// Inside Zone1Signal.tsx — TAKEAWAY block
+<div style={{
+  borderLeft: "2px solid var(--amber-border)",
+  paddingLeft: "12px",
+  marginTop: "8px",
+}}>
+  <span style={{
+    display: "block",
+    fontSize: "11px",
+    fontWeight: 500,
+    textTransform: "uppercase",
+    letterSpacing: "0.08em",
+    color: "var(--amber-primary)",
+    marginBottom: "4px",
+  }}>
+    Takeaway
+  </span>
+  <span style={{
+    fontSize: "15px",
+    color: isBlurred ? "transparent" : "var(--amber-primary)",
+    filter: isBlurred ? "blur(4px)" : "none",
+    userSelect: isBlurred ? "none" : "auto",
+  }}>
+    {signal.takeaway}
+  </span>
+</div>
 ```
 
 ---
 
-## Card tiers (all dark)
+## Zone 2 — compact signal grid
 
-- Featured/Tier1: bg `#0d0e17`, border `rgba(139,92,246,0.18)`, hover glow
-- Standard: bg `#0d0e17`, border `rgba(255,255,255,0.07)`
-- All cards: border-radius 13px, hover `translateY(-3px)` + purple glow shadow
+Zone 2 shows the broader signal set. Title + score bar only.
+
+- Background: `--bg-card`, border `1px solid var(--border)`
+- Border radius: **6px** (not 13px)
+- **Score bar**: 3px height. Purple (`--purple`) for high-impact. Indigo (`#4f46e5`) for medium.
+- **Hover**: `translateY(-2px)` only. No glow shadow.
+- `transition: transform 150ms ease` — targeted, not `transition: all`
 
 ---
 
 ## Never use
 
 `bg-white`, `bg-slate-*`, `bg-gray-*`, `bg-indigo-50`, `text-slate-*`,
-`shadow-*` Tailwind defaults, light backgrounds of any kind.
-
-## Always use
-
-Dark surfaces only. Purple (`#7c3aed`) as sole accent.
-Emerald (`#10b981`) for score 4.0+. Indigo (`#4f46e5`) for score 3.0–3.4.
+Tailwind `shadow-*` defaults, light backgrounds of any kind,
+`border-radius: 13px`, `translateY(-3px)`, purple glow shadow on Zone 2 cards,
+`transition: all`.
 
 ---
 
 ## Engineering rules
 
+- Read this file before touching any UI component
 - Preserve all functionality, routing, state, localStorage
-- No breaking changes to RSS feed, search, filters, bookmarks, read state, unread toggle, saved page, article pages, auto-refresh
-- No `* { transition: all }` — use targeted transitions
+- No breaking changes to: RSS feed, search, filters, bookmarks, read state, unread toggle, saved page, article pages, auto-refresh
+- No `* { transition: all }` — use targeted transitions only
 - Full-file replace when >8 class changes touch a file
+- Inter font: import from Google Fonts via `next/font/google`
+- Inter font loading: use `next/font/google` — `const inter = Inter({ subsets: ['latin'], variable: '--font-inter' })` — apply to root layout only
 
 ---
 
