@@ -2,6 +2,16 @@
   {
     "id": "Hugging Face-1",
     "source": "Hugging Face",
+    "title": "QIMMA قِمّة ⛰: A Quality-First Arabic LLM Leaderboard",
+    "link": "https://huggingface.co/blog/tiiuae/qimma-arabic-leaderboard",
+    "date": "Tue, 21 Apr 2026 10:09:58 GMT",
+    "summary": "No summary available",
+    "category": "AI News",
+    "image": ""
+  },
+  {
+    "id": "Hugging Face-2",
+    "source": "Hugging Face",
     "title": "How to Ground a Korean AI Agent in Real Demographics with Synthetic Personas",
     "link": "https://huggingface.co/blog/nvidia/build-korean-agents-with-nemotron-personas",
     "date": "Tue, 21 Apr 2026 00:40:10 GMT",
@@ -10,7 +20,7 @@
     "image": ""
   },
   {
-    "id": "Hugging Face-2",
+    "id": "Hugging Face-3",
     "source": "Hugging Face",
     "title": "Ecom-RLVE: Adaptive Verifiable Environments for E-Commerce Conversational Agents",
     "link": "https://huggingface.co/blog/ecom-rlve",
@@ -20,7 +30,7 @@
     "image": ""
   },
   {
-    "id": "Hugging Face-3",
+    "id": "Hugging Face-4",
     "source": "Hugging Face",
     "title": "The PR you would have opened yourself",
     "link": "https://huggingface.co/blog/transformers-to-mlx",
@@ -30,21 +40,11 @@
     "image": ""
   },
   {
-    "id": "Hugging Face-4",
+    "id": "Hugging Face-5",
     "source": "Hugging Face",
     "title": "Training and Finetuning Multimodal Embedding & Reranker Models with Sentence Transformers",
     "link": "https://huggingface.co/blog/train-multimodal-sentence-transformers",
     "date": "Thu, 16 Apr 2026 00:00:00 GMT",
-    "summary": "No summary available",
-    "category": "AI News",
-    "image": ""
-  },
-  {
-    "id": "Hugging Face-5",
-    "source": "Hugging Face",
-    "title": "Inside VAKRA: Reasoning, Tool Use, and Failure Modes of Agents",
-    "link": "https://huggingface.co/blog/ibm-research/vakra-benchmark-analysis",
-    "date": "Wed, 15 Apr 2026 12:07:25 GMT",
     "summary": "No summary available",
     "category": "AI News",
     "image": ""
