@@ -28,6 +28,37 @@ Generic takeaways are worse than no takeaway. The quality bar: if a senior engin
 
 ---
 
+## 1a. Product Positioning
+
+*Validated via Lenny's Podcast transcript — 2026-04-21*
+
+### Tagline
+
+> **"AI changed overnight. Here's what to build."**
+
+### Tooltip (Zone 1 first-visit)
+
+> **"3 signals. Every morning. Everything else is noise."**
+
+### Core mechanic framing
+
+AI Signal is a **forcing function, not a feed.**
+
+A feed is passive — you open it when you remember. A forcing function is structural — it changes what you do at the start of the day before you open anything else. The product earns its place in the morning routine by making the cost of skipping it visible: missing a signal that makes your current technical approach obsolete.
+
+### Positioning in founder language (Belsky description)
+
+> "There's a high velocity of new AI capabilities every day — AI Signal does the forcing function for you, surfacing what changed overnight and what it means for your decisions."
+
+### Implications for copy and UI
+
+- All CTAs should reference the morning routine: "Start your day" not "Read more"
+- Zone 1 heading should reinforce forcing-function framing: "Today's signals" not "Latest AI news"
+- Upgrade copy should reference decision cost: "Never miss a signal that changes what to build" not generic "Get full access"
+- The blur gate is not a paywall — it is friction that makes the cost of not having the takeaway tangible
+
+---
+
 ## 2. Target User
 
 **Primary:** Technical founder (solo CTO or technical co-founder) at a seed-to-Series A AI startup. Actively building. Makes daily decisions about model choice, infrastructure, and product direction. Expenses tools without friction.
