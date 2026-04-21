@@ -3,7 +3,9 @@
 
 import posthog from "posthog-js";
 import { PostHogProvider } from "posthog-js/react";
-import { useEffect, type ReactNode } from "react";
+import { SessionProvider } from "next-auth/react";
+import { useEffect } from "react";
+import { type ReactNode } from "react";
 
 export function Providers({ children }: { children: ReactNode }) {
   useEffect(() => {
@@ -12,14 +14,18 @@ export function Providers({ children }: { children: ReactNode }) {
     if (key) {
       posthog.init(key, {
         api_host: host,
-        capture_pageview: false,   // manual only
+        capture_pageview: false,
         capture_pageleave: false,
-        autocapture: false,        // NO autocapture — only our 3 events
+        autocapture: false,
         disable_session_recording: true,
         persistence: "localStorage",
       });
     }
   }, []);
 
-  return <PostHogProvider client={posthog}>{children}</PostHogProvider>;
+  return (
+    <SessionProvider>
+      <PostHogProvider client={posthog}>{children}</PostHogProvider>
+    </SessionProvider>
+  );
 }

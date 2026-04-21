@@ -24,6 +24,16 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 # Anthropic — https://console.anthropic.com → API Keys
 # Also add as GitHub Actions secret named ANTHROPIC_API_KEY
 ANTHROPIC_API_KEY=sk-ant-REPLACE_WITH_YOUR_KEY
+
+# NextAuth — https://next-auth.js.org
+# Generate secret: openssl rand -base64 32
+NEXTAUTH_SECRET=GENERATE_WITH_openssl_rand_-base64_32
+NEXTAUTH_URL=http://localhost:3000
+
+# GitHub OAuth App — https://github.com/settings/applications/new
+# Authorization callback URL: http://localhost:3000/api/auth/callback/github
+GITHUB_CLIENT_ID=YOUR_GITHUB_OAUTH_APP_CLIENT_ID
+GITHUB_CLIENT_SECRET=YOUR_GITHUB_OAUTH_APP_CLIENT_SECRET
 '
 
 # ── Already exists ───────────────────────────────────────────────
@@ -70,6 +80,15 @@ NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
 
 # Anthropic — https://console.anthropic.com → API Keys
 ANTHROPIC_API_KEY=sk-ant-REPLACE_WITH_YOUR_KEY
+
+# NextAuth — generate secret: openssl rand -base64 32
+NEXTAUTH_SECRET=GENERATE_WITH_openssl_rand_-base64_32
+NEXTAUTH_URL=http://localhost:3000
+
+# GitHub OAuth App — https://github.com/settings/applications/new
+# Authorization callback URL: http://localhost:3000/api/auth/callback/github
+GITHUB_CLIENT_ID=YOUR_GITHUB_OAUTH_APP_CLIENT_ID
+GITHUB_CLIENT_SECRET=YOUR_GITHUB_OAUTH_APP_CLIENT_SECRET
 EOF
 MANUAL
 echo "─────────────────────────────────────────────────────────────"
