@@ -24,7 +24,7 @@ html {
 }
 
 body {
-  background: #08090f;
+  background: #09090b;
   color: #f0f2ff;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -51,7 +51,7 @@ body::before {
 }
 
 ::-webkit-scrollbar { width: 5px; }
-::-webkit-scrollbar-track { background: #08090f; }
+::-webkit-scrollbar-track { background: #09090b; }
 ::-webkit-scrollbar-thumb { background: #2a1f5e; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #7c3aed; }
 
