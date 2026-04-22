@@ -395,39 +395,57 @@ export default function SavedPage() {
           ) : (
             <div
               style={{
-                background: "#0d0e17",
-                border: "1px solid rgba(255,255,255,0.07)",
-                borderRadius: "13px",
-                padding: "60px 40px",
-                textAlign: "center",
+                padding: "64px 0",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "flex-start",
+                gap: "12px",
               }}
             >
-              <p style={{ fontSize: "15px", fontWeight: 600, color: "#f0f2ff" }}>
-                {search.trim() === ""
-                  ? "No saved articles yet"
-                  : "No matching saved articles"}
-              </p>
-              <p style={{ fontSize: "12px", color: "#374151", marginTop: "6px" }}>
-                {search.trim() === ""
-                  ? "Bookmark articles from the homepage and they will appear here."
-                  : "Try another keyword or clear your search."}
-              </p>
-              <Link
-                href="/"
+              <span style={{ fontSize: "28px", opacity: 0.25 }}>🔖</span>
+              <p
                 style={{
-                  display: "inline-block",
-                  marginTop: "20px",
-                  background: "#7c3aed",
-                  color: "#fff",
-                  borderRadius: "22px",
-                  fontSize: "12px",
-                  fontWeight: 700,
-                  padding: "10px 22px",
-                  textDecoration: "none",
+                  fontSize: "15px",
+                  fontWeight: 600,
+                  color: "#fafafa",
+                  margin: 0,
                 }}
               >
-                Explore articles
-              </Link>
+                {search.trim() === ""
+                  ? "Your signal library is empty"
+                  : "No matching saved signals"}
+              </p>
+              <p
+                style={{
+                  fontSize: "13px",
+                  color: "#52525b",
+                  margin: 0,
+                  lineHeight: 1.6,
+                  maxWidth: "360px",
+                }}
+              >
+                {search.trim() === ""
+                  ? "Save signals from the dashboard by clicking ♡ — they appear here."
+                  : "Try a different keyword or clear your search."}
+              </p>
+              {search.trim() === "" && (
+                <Link
+                  href="/"
+                  style={{
+                    display: "inline-block",
+                    marginTop: "8px",
+                    border: "1px solid rgba(255,255,255,0.1)",
+                    borderRadius: "6px",
+                    color: "#a1a1aa",
+                    fontSize: "13px",
+                    fontWeight: 600,
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Browse today&apos;s signals →
+                </Link>
+              )}
             </div>
           )}
         </div>

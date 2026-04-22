@@ -21,22 +21,35 @@ export default function Home() {
   const [signals, setSignals] = useState<Signal[]>([]);
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
+  const [fetchError, setFetchError] = useState(false);
   const plan = useUserPlan();
   const isPaid = plan === "paid";
   const { status: authStatus } = useSession();
   const isAuthenticated = authStatus === "authenticated";
 
-  useEffect(() => {
-    const d: string[] = JSON.parse(localStorage.getItem("aiSignal_dismissed") ?? "[]");
-    setDismissed(new Set(d));
-
+  function loadSignals() {
+    setLoading(true);
+    setFetchError(false);
     fetch("/api/news")
-      .then((r) => r.json())
+      .then((r) => {
+        if (!r.ok) throw new Error("non-ok");
+        return r.json();
+      })
       .then((data: Signal[]) => {
         setSignals(data);
         setLoading(false);
       })
-      .catch(() => setLoading(false));
+      .catch(() => {
+        setFetchError(true);
+        setLoading(false);
+      });
+  }
+
+  useEffect(() => {
+    const d: string[] = JSON.parse(localStorage.getItem("aiSignal_dismissed") ?? "[]");
+    setDismissed(new Set(d));
+    loadSignals();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   function handleDismiss(id: string) {
@@ -201,17 +214,75 @@ export default function Home() {
           </div>
         )}
 
-        {/* ── Empty state ───────────────────────────────────────── */}
-        {!loading && zone1.length === 0 && (
+        {/* ── API error state ───────────────────────────────────── */}
+        {!loading && fetchError && (
           <div
             style={{
-              color: "#52525b",
               padding: "48px 0",
-              fontSize: "15px",
-              lineHeight: 1.6,
+              display: "flex",
+              flexDirection: "column",
+              gap: "16px",
             }}
           >
-            No high-impact signals today. Check back tomorrow or browse the archive below.
+            <p
+              style={{
+                fontSize: "15px",
+                color: "#52525b",
+                lineHeight: 1.6,
+              }}
+            >
+              Having trouble loading signals. Check your connection and try again.
+            </p>
+            <button
+              onClick={loadSignals}
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "6px",
+                background: "none",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "6px",
+                color: "#a1a1aa",
+                fontSize: "13px",
+                fontWeight: 600,
+                padding: "8px 16px",
+                cursor: "pointer",
+                alignSelf: "flex-start",
+                transition: "border-color 150ms ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.25)";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(255,255,255,0.1)";
+              }}
+            >
+              ↺ Retry
+            </button>
+          </div>
+        )}
+
+        {/* ── Zone 1 empty state (signals processing) ───────────── */}
+        {!loading && !fetchError && zone1.length === 0 && (
+          <div
+            style={{
+              padding: "48px 0",
+              display: "flex",
+              flexDirection: "column",
+              gap: "12px",
+            }}
+          >
+            <div style={{ fontSize: "24px", opacity: 0.3 }}>⏱</div>
+            <p
+              style={{
+                fontSize: "15px",
+                color: "#52525b",
+                lineHeight: 1.6,
+                maxWidth: "400px",
+              }}
+            >
+              Signals processing — the pipeline runs each morning. Browse below while we finish.
+            </p>
           </div>
         )}
 
@@ -399,6 +470,20 @@ export default function Home() {
               <Zone2Card key={signal.id} signal={signal} />
             ))}
           </section>
+        )}
+
+        {/* ── Zone 2 empty state ───────────────────────────────── */}
+        {!loading && !fetchError && zone2.length === 0 && signals.length > 0 && (
+          <p
+            style={{
+              fontSize: "13px",
+              color: "#3f3f46",
+              letterSpacing: "0.02em",
+              paddingTop: "8px",
+            }}
+          >
+            Feed refreshing — more signals arrive through the day.
+          </p>
         )}
       </main>
 
