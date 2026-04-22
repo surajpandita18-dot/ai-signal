@@ -102,6 +102,16 @@
   {
     "id": "MIT Technology Review AI-1",
     "source": "MIT Technology Review AI",
+    "title": "AI needs a strong data fabric to deliver business value",
+    "link": "https://www.technologyreview.com/2026/04/22/1135295/ai-needs-a-strong-data-fabric-to-deliver-business-value/",
+    "date": "Wed, 22 Apr 2026 10:05:06 +0000",
+    "summary": "Artificial intelligence is moving quickly in the enterprise, from experimentation to everyday use. Organizations are deploying copilots, agents, and predictive systems across finance, supply chains, human resources, and customer operations. By the end of 2025, half of companies used AI in at least three business functions, according to a recent survey. But as AI becomes…",
+    "category": "AI News",
+    "image": ""
+  },
+  {
+    "id": "MIT Technology Review AI-2",
+    "source": "MIT Technology Review AI",
     "title": "10 Things That Matter in AI Right Now",
     "link": "https://www.technologyreview.com/2026/04/21/1135643/10-ai-artificial-intelligence-trends-technologies-research-2026/",
     "date": "Tue, 21 Apr 2026 20:45:00 +0000",
@@ -110,7 +120,7 @@
     "image": ""
   },
   {
-    "id": "MIT Technology Review AI-2",
+    "id": "MIT Technology Review AI-3",
     "source": "MIT Technology Review AI",
     "title": "LLMs+",
     "link": "https://www.technologyreview.com/2026/04/21/1135645/llm-large-language-models-ai/",
@@ -120,7 +130,7 @@
     "image": ""
   },
   {
-    "id": "MIT Technology Review AI-3",
+    "id": "MIT Technology Review AI-4",
     "source": "MIT Technology Review AI",
     "title": "Supercharged scams",
     "link": "https://www.technologyreview.com/2026/04/21/1135647/supercharged-scams-ai-artificial-intelligence/",
@@ -130,22 +140,12 @@
     "image": ""
   },
   {
-    "id": "MIT Technology Review AI-4",
+    "id": "MIT Technology Review AI-5",
     "source": "MIT Technology Review AI",
     "title": "World models",
     "link": "https://www.technologyreview.com/2026/04/21/1135650/world-models-ai-artificial-intelligence/",
     "date": "Tue, 21 Apr 2026 20:45:00 +0000",
     "summary": "AI systems have already gained impressive mastery over the digital world, but the physical world is still humanity’s domain. As it turns out, building an AI system that can compose a novel or code an app is far easier than developing one that can fold laundry or navigate a city street. To get there, many…",
-    "category": "AI News",
-    "image": ""
-  },
-  {
-    "id": "MIT Technology Review AI-5",
-    "source": "MIT Technology Review AI",
-    "title": "Weaponized deepfakes",
-    "link": "https://www.technologyreview.com/2026/04/21/1135652/weaponized-deepfakes-ai-artificial-intelligence/",
-    "date": "Tue, 21 Apr 2026 20:45:00 +0000",
-    "summary": "For years, experts have warned that deepfakes—AI-generated videos, images, or audio recordings of people doing or saying things they haven’t actually done in real life—could be deployed in malicious ways.  These dangers are now here. Improvements in deepfake technology, and the widespread availability of easy-to-use and cheap (or free) generative models, have made it easier…",
     "category": "AI News",
     "image": ""
   }
