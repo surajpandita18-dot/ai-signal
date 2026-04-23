@@ -1,0 +1,16 @@
+# .env.local — copy this to project root and fill in real values
+# Generate NEXTAUTH_SECRET: openssl rand -base64 32
+# macOS TCC note: create .env.local manually in VS Code (root dir is TCC-restricted)
+
+NEXTAUTH_SECRET=generate-with-openssl-rand-base64-32
+NEXTAUTH_URL=http://localhost:3000
+GITHUB_CLIENT_ID=from-github-oauth-app
+GITHUB_CLIENT_SECRET=from-github-oauth-app
+GEMINI_API_KEY=from-aistudio-google-com
+ANTHROPIC_API_KEY=from-console-anthropic-com
+NEXT_PUBLIC_POSTHOG_KEY=from-posthog-project
+NEXT_PUBLIC_POSTHOG_HOST=https://us.i.posthog.com
+
+# Production (Vercel):
+# NEXTAUTH_URL=https://ai-signal-eta.vercel.app
+# GITHUB OAuth callback: https://ai-signal-eta.vercel.app/api/auth/callback/github
