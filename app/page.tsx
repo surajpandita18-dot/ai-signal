@@ -25,7 +25,6 @@ export default function Home() {
   const plan = useUserPlan();
   const isPaid = plan === "paid";
   const { status: authStatus } = useSession();
-  const isAuthenticated = authStatus === "authenticated";
 
   function loadSignals() {
     setLoading(true);
@@ -138,6 +137,17 @@ export default function Home() {
         </div>
 
         <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+          <Link
+            href={`/digest/${new Date().toISOString().slice(0, 10)}`}
+            style={{
+              fontSize: "13px",
+              color: "#a1a1aa",
+              textDecoration: "none",
+              fontWeight: 500,
+            }}
+          >
+            Today&apos;s Brief
+          </Link>
           <Link
             href="/saved"
             style={{
@@ -291,73 +301,8 @@ export default function Home() {
           {zone1.map((signal, i) => {
             const rank = i + 1;
 
-            // Unauthenticated: signal #1 renders normally (title + source, no TAKEAWAY
-            // since server strips it). Signals #2+ show a single auth gate row.
-            if (authStatus === "unauthenticated" && rank > 1) {
-              if (rank === 2) {
-                // Render auth gate once, spanning remaining slots
-                return (
-                  <div
-                    key="auth-gate"
-                    style={{
-                      display: "flex",
-                      gap: "24px",
-                      padding: "32px 16px",
-                      borderBottom: "1px solid rgba(255,255,255,0.04)",
-                      alignItems: "center",
-                    }}
-                  >
-                    <span
-                      style={{
-                        fontSize: "48px",
-                        fontWeight: 800,
-                        color: "rgba(124,58,237,0.06)",
-                        lineHeight: 1,
-                        minWidth: "48px",
-                        flexShrink: 0,
-                        letterSpacing: "-0.02em",
-                        fontVariantNumeric: "tabular-nums",
-                      }}
-                    >
-                      02
-                    </span>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <p
-                        style={{
-                          fontSize: "13px",
-                          color: "#52525b",
-                          marginBottom: "14px",
-                          lineHeight: 1.5,
-                        }}
-                      >
-                        Sign in to see today&apos;s signals — takes 10 seconds.
-                      </p>
-                      <Link
-                        href="/api/auth/signin"
-                        style={{
-                          display: "inline-block",
-                          background: "rgba(255,255,255,0.04)",
-                          border: "1px solid rgba(255,255,255,0.1)",
-                          borderRadius: "6px",
-                          color: "#fafafa",
-                          fontSize: "13px",
-                          fontWeight: 600,
-                          padding: "8px 18px",
-                          textDecoration: "none",
-                          letterSpacing: "0.01em",
-                        }}
-                      >
-                        Sign in with GitHub →
-                      </Link>
-                    </div>
-                  </div>
-                );
-              }
-              // rank 3+ are hidden behind the single auth gate above
-              return null;
-            }
-
-            // Authenticated but not paid: signals beyond ZONE1_FREE_COUNT show upgrade gate
+            // Authenticated (unauthenticated is handled by LandingPage early-return above)
+            // Free users: signals beyond ZONE1_FREE_COUNT show upgrade gate
             const isPaidGate = !isPaid && rank > ZONE1_FREE_COUNT;
             if (isPaidGate) {
               return (
