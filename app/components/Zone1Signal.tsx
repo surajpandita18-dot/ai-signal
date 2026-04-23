@@ -19,20 +19,41 @@ interface Props {
 }
 
 export function Zone1Signal({ signal, rank, onDismiss }: Props) {
+  // Save entries: { id: string, savedAt: ISO string }[]
+  type SaveEntry = { id: string; savedAt: string };
+
+  function parseSaveEntries(): SaveEntry[] {
+    try {
+      const raw = localStorage.getItem("aiSignal_saves");
+      if (!raw) return [];
+      const parsed = JSON.parse(raw);
+      if (!Array.isArray(parsed) || parsed.length === 0) return [];
+      if (typeof parsed[0] === "string") {
+        return (parsed as string[]).map((id) => ({ id, savedAt: new Date(0).toISOString() }));
+      }
+      return parsed as SaveEntry[];
+    } catch { return []; }
+  }
+
   const [saved, setSaved] = useState(() => {
     if (typeof window === "undefined") return false;
-    const saves: string[] = JSON.parse(localStorage.getItem("aiSignal_saves") ?? "[]");
-    return saves.includes(signal.id);
+    return parseSaveEntries().some((e) => e.id === signal.id);
   });
 
   function handleSave(e: React.MouseEvent) {
     e.preventDefault();
-    const saves: string[] = JSON.parse(localStorage.getItem("aiSignal_saves") ?? "[]");
+    const entries = parseSaveEntries();
     if (saved) {
-      localStorage.setItem("aiSignal_saves", JSON.stringify(saves.filter((id) => id !== signal.id)));
+      localStorage.setItem(
+        "aiSignal_saves",
+        JSON.stringify(entries.filter((e) => e.id !== signal.id))
+      );
       setSaved(false);
     } else {
-      localStorage.setItem("aiSignal_saves", JSON.stringify([...saves, signal.id]));
+      localStorage.setItem(
+        "aiSignal_saves",
+        JSON.stringify([...entries, { id: signal.id, savedAt: new Date().toISOString() }])
+      );
       setSaved(true);
       trackSignalSaved(signal.id);
     }
