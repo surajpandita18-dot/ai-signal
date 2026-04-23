@@ -6,7 +6,7 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Zone1Signal } from "@/app/components/Zone1Signal";
 import { Zone2Card } from "@/app/components/Zone2Card";
-import { FirstVisitTooltip } from "@/app/components/FirstVisitTooltip";
+import { OnboardingOverlay } from "@/app/components/OnboardingOverlay";
 import { LandingPage } from "@/app/components/LandingPage";
 import { useUserPlan } from "@/lib/useUserPlan";
 import { trackUpgradeClicked } from "@/lib/analytics";
@@ -435,7 +435,7 @@ export default function Home() {
         )}
       </main>
 
-      <FirstVisitTooltip />
+      <OnboardingOverlay />
     </div>
   );
 }
