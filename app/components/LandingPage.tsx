@@ -414,6 +414,7 @@ export function LandingPage() {
             display: "flex",
             gap: "40px",
             flexWrap: "wrap",
+            rowGap: "24px",
           }}
         >
           {[

@@ -136,7 +136,7 @@ export default function Home() {
           </span>
         </div>
 
-        <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
+        <div style={{ display: "flex", gap: "12px", alignItems: "center", flexShrink: 1, minWidth: 0 }}>
           <Link
             href={`/digest/${new Date().toISOString().slice(0, 10)}`}
             style={{
@@ -144,9 +144,10 @@ export default function Home() {
               color: "#a1a1aa",
               textDecoration: "none",
               fontWeight: 500,
+              whiteSpace: "nowrap",
             }}
           >
-            Today&apos;s Brief
+            Brief
           </Link>
           <Link
             href="/saved"
@@ -155,6 +156,7 @@ export default function Home() {
               color: "#a1a1aa",
               textDecoration: "none",
               fontWeight: 500,
+              whiteSpace: "nowrap",
             }}
           >
             Saved
@@ -167,12 +169,13 @@ export default function Home() {
                 border: "1px solid rgba(139,92,246,0.35)",
                 color: "#a78bfa",
                 borderRadius: "6px",
-                padding: "6px 14px",
+                padding: "6px 12px",
                 fontSize: "12px",
                 fontWeight: 600,
                 cursor: "pointer",
                 letterSpacing: "0.02em",
                 transition: "border-color 150ms ease",
+                whiteSpace: "nowrap",
               }}
               onMouseEnter={(e) => {
                 (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,92,246,0.7)";
@@ -181,7 +184,7 @@ export default function Home() {
                 (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,92,246,0.35)";
               }}
             >
-              Upgrade for full access
+              Upgrade
             </button>
           )}
         </div>
@@ -191,7 +194,7 @@ export default function Home() {
         style={{
           maxWidth: "800px",
           margin: "0 auto",
-          padding: "40px 24px 80px",
+          padding: "32px 16px 80px",
         }}
       >
 
