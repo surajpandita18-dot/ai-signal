@@ -2,7 +2,6 @@ import Link from "next/link";
 import { existsSync, readFileSync } from "fs";
 import path from "path";
 import realNewsRaw from "@/lib/realNews.json";
-import { auth } from "@/lib/auth";
 import type { Signal } from "@/lib/types";
 
 // ── Local type for raw realNews entries ──────────────────────────────────────
@@ -71,10 +70,6 @@ export default async function ArticlePage({
 }) {
   const { id } = await params;
   const normalizedRouteId = normalizeId(id);
-
-  const session = await auth();
-  const isPaid =
-    (session?.user as { plan?: string } | undefined)?.plan === "paid";
 
   // Load data
   const realNews = realNewsRaw as RealArticle[];
@@ -376,7 +371,7 @@ export default async function ArticlePage({
                 </div>
               )}
 
-              {/* TAKEAWAY — amber, blurred for free */}
+              {/* TAKEAWAY — free for all */}
               {takeaway && (
                 <div
                   style={{
@@ -403,8 +398,6 @@ export default async function ArticlePage({
                       fontSize: "15px",
                       color: "#f59e0b",
                       lineHeight: 1.6,
-                      filter: isPaid ? "none" : "blur(4px)",
-                      userSelect: isPaid ? "auto" : "none",
                     }}
                   >
                     {takeaway}
@@ -543,7 +536,14 @@ export default async function ArticlePage({
             </div>
           )}
 
-          {/* ── CTA ── */}
+          {/* ── Read time ── */}
+          {hasLLM && (
+            <div style={{ fontSize: "11px", color: "#3f3f46", padding: "0 0 4px" }}>
+              {Math.max(1, Math.ceil(((what?.split(" ").length ?? 0) + (why?.split(" ").length ?? 0) + (takeaway?.split(" ").length ?? 0)) / 200))} min read
+            </div>
+          )}
+
+          {/* ── CTAs ── */}
           <div
             style={{
               background: "#0f0f12",
@@ -551,9 +551,8 @@ export default async function ArticlePage({
               borderRadius: "8px",
               padding: "24px 32px",
               display: "flex",
-              flexWrap: "wrap",
-              alignItems: "center",
-              gap: "12px",
+              flexDirection: "column",
+              gap: "16px",
             }}
           >
             <a
@@ -562,33 +561,78 @@ export default async function ArticlePage({
               rel="noreferrer"
               style={{
                 display: "inline-block",
-                background: "#7c3aed",
-                color: "#fff",
-                borderRadius: "8px",
+                background: "#f59e0b",
+                color: "#09090b",
+                borderRadius: "6px",
                 fontSize: "13px",
-                fontWeight: 600,
+                fontWeight: 700,
                 padding: "10px 20px",
                 textDecoration: "none",
+                alignSelf: "flex-start",
               }}
             >
-              Open original source →
+              Read original article →
             </a>
-            <Link
-              href="/saved"
-              style={{
-                display: "inline-block",
-                background: "rgba(255,255,255,0.04)",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: "8px",
-                color: "#52525b",
-                fontSize: "13px",
-                fontWeight: 500,
-                padding: "10px 20px",
-                textDecoration: "none",
-              }}
-            >
-              Go to saved articles
-            </Link>
+
+            {/* Share section */}
+            <div>
+              <span style={{ display: "block", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "#52525b", marginBottom: "10px" }}>
+                Share this signal
+              </span>
+              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
+                <a
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(article.link)}&summary=${encodeURIComponent(`${article.title}${takeaway ? `\n\nTakeaway: ${takeaway}` : ""}\n\nvia AI Signal`)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: "inline-block",
+                    background: "#0a66c2",
+                    color: "#fff",
+                    borderRadius: "6px",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Share on LinkedIn
+                </a>
+                <a
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${article.title.slice(0, 180)}${takeaway ? `\n\nTakeaway: ${takeaway.slice(0, 100)}…` : ""}`)}&url=${encodeURIComponent(article.link)}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  style={{
+                    display: "inline-block",
+                    background: "transparent",
+                    border: "1px solid rgba(255,255,255,0.12)",
+                    color: "#fafafa",
+                    borderRadius: "6px",
+                    fontSize: "12px",
+                    fontWeight: 600,
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Share on 𝕏
+                </a>
+                <Link
+                  href="/saved"
+                  style={{
+                    display: "inline-block",
+                    background: "rgba(255,255,255,0.04)",
+                    border: "1px solid rgba(255,255,255,0.06)",
+                    borderRadius: "6px",
+                    color: "#52525b",
+                    fontSize: "12px",
+                    fontWeight: 500,
+                    padding: "8px 16px",
+                    textDecoration: "none",
+                  }}
+                >
+                  Go to saved
+                </Link>
+              </div>
+            </div>
           </div>
         </article>
       </div>

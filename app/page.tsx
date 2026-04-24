@@ -96,7 +96,14 @@ export default function Home() {
   }
 
   const zone1Ids = new Set(zone1.map((s) => s.id));
-  const zone2 = visibleSignals.filter((s) => !zone1Ids.has(s.id)).slice(0, 50);
+  const zone2All = visibleSignals.filter((s) => !zone1Ids.has(s.id)).slice(0, 50);
+
+  // Zone 2 category filter — persisted to localStorage
+  const [zone2Filter, setZone2Filter] = useState<string>("All");
+  const ZONE2_CATEGORIES = ["All", "Research", "LLM", "Agents", "Infra", "Funding", "Product"];
+  const zone2 = zone2Filter === "All"
+    ? zone2All
+    : zone2All.filter((s) => s.tags?.some((t) => t.toLowerCase() === zone2Filter.toLowerCase()));
 
   // Unauthenticated: show landing page instead of dashboard
   if (authStatus === "unauthenticated") {
@@ -193,35 +200,67 @@ export default function Home() {
         }}
       >
 
-        {/* ── Zone 1 header ────────────────────────────────────── */}
-        <div style={{ marginBottom: "8px", display: "flex", alignItems: "center", gap: "12px" }}>
-          <span
-            style={{
-              fontSize: "11px",
-              fontWeight: 500,
-              letterSpacing: "0.08em",
-              textTransform: "uppercase",
-              color: "#52525b",
-            }}
-          >
-            Today&apos;s Signals
-          </span>
-          {userRole && (
+        {/* ── Date + Zone 1 header ─────────────────────────────── */}
+        <div style={{ marginBottom: "24px" }}>
+          <div style={{ display: "flex", alignItems: "baseline", gap: "16px", marginBottom: "4px" }}>
             <span
               style={{
                 fontSize: "11px",
                 fontWeight: 500,
-                color: "#7c3aed",
-                letterSpacing: "0.04em",
-                background: "rgba(124,58,237,0.1)",
-                border: "1px solid rgba(124,58,237,0.2)",
-                borderRadius: "4px",
-                padding: "2px 8px",
+                letterSpacing: "0.08em",
+                textTransform: "uppercase",
+                color: "#27272a",
               }}
             >
-              personalized
+              {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
             </span>
-          )}
+          </div>
+          <div style={{ display: "flex", alignItems: "center", gap: "12px" }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+              <span
+                style={{
+                  width: "6px",
+                  height: "6px",
+                  borderRadius: "50%",
+                  background: "#f59e0b",
+                  display: "inline-block",
+                  flexShrink: 0,
+                }}
+              />
+              <span
+                style={{
+                  fontSize: "11px",
+                  fontWeight: 500,
+                  letterSpacing: "0.1em",
+                  textTransform: "uppercase",
+                  color: "#52525b",
+                }}
+              >
+                Today&apos;s Intelligence
+              </span>
+            </div>
+            {!loading && signals.length > 0 && (
+              <span style={{ fontSize: "11px", color: "#3f3f46" }}>
+                {zone1.length} of {signals.length} signals
+              </span>
+            )}
+            {userRole && (
+              <span
+                style={{
+                  fontSize: "11px",
+                  fontWeight: 500,
+                  color: "#7c3aed",
+                  letterSpacing: "0.04em",
+                  background: "rgba(124,58,237,0.1)",
+                  border: "1px solid rgba(124,58,237,0.2)",
+                  borderRadius: "4px",
+                  padding: "2px 8px",
+                }}
+              >
+                personalized
+              </span>
+            )}
+          </div>
         </div>
 
         {/* ── Loading state ─────────────────────────────────────── */}
@@ -346,6 +385,37 @@ export default function Home() {
               More signals · {zone2.length} today
             </span>
             <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.04)" }} />
+          </div>
+        )}
+
+        {/* ── Zone 2: category filter pills ───────────────────── */}
+        {zone2All.length > 0 && (
+          <div style={{ display: "flex", gap: "8px", flexWrap: "wrap", marginBottom: "20px" }}>
+            {ZONE2_CATEGORIES.map((cat) => (
+              <button
+                key={cat}
+                onClick={() => setZone2Filter(cat)}
+                style={{
+                  background: zone2Filter === cat ? "rgba(124,58,237,0.12)" : "transparent",
+                  border: `1px solid ${zone2Filter === cat ? "rgba(124,58,237,0.4)" : "rgba(255,255,255,0.06)"}`,
+                  borderRadius: "4px",
+                  color: zone2Filter === cat ? "#a78bfa" : "#52525b",
+                  fontSize: "11px",
+                  fontWeight: zone2Filter === cat ? 600 : 400,
+                  padding: "4px 10px",
+                  cursor: "pointer",
+                  letterSpacing: "0.04em",
+                  transition: "all 150ms ease",
+                }}
+              >
+                {cat}
+              </button>
+            ))}
+            {zone2Filter !== "All" && (
+              <span style={{ fontSize: "11px", color: "#3f3f46", alignSelf: "center", marginLeft: "4px" }}>
+                {zone2.length} of {zone2All.length}
+              </span>
+            )}
           </div>
         )}
 

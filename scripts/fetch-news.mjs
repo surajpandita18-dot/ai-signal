@@ -13,34 +13,48 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const parser = new Parser({ timeout: 6000 });
 
 const FEED_SOURCES = [
-  { name: "OpenAI",             url: "https://openai.com/news/rss.xml",                                          category: "official" },
-  { name: "Anthropic",          url: "https://www.anthropic.com/news/rss.xml",                                   category: "official" },
-  { name: "Google DeepMind",    url: "https://deepmind.google/blog/rss.xml",                                     category: "official" },
-  { name: "Meta AI",            url: "https://ai.meta.com/blog/rss/",                                            category: "official" },
-  { name: "Hugging Face",       url: "https://huggingface.co/blog/feed.xml",                                     category: "research" },
-  { name: "Google Research",    url: "https://research.google/blog/rss/",                                        category: "research" },
-  { name: "arXiv AI",           url: "http://export.arxiv.org/rss/cs.AI",                                        category: "research" },
-  { name: "arXiv ML",           url: "http://export.arxiv.org/rss/cs.LG",                                        category: "research" },
-  { name: "arXiv NLP",          url: "http://export.arxiv.org/rss/cs.CL",                                        category: "research" },
-  { name: "VentureBeat AI",     url: "https://venturebeat.com/ai/feed/",                                         category: "media" },
-  { name: "TechCrunch AI",      url: "https://techcrunch.com/category/artificial-intelligence/feed/",            category: "media" },
-  { name: "MIT Tech Review AI", url: "https://www.technologyreview.com/topic/artificial-intelligence/feed/",    category: "media" },
-  { name: "The Verge AI",       url: "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",        category: "media" },
-  { name: "Latent Space",       url: "https://www.latent.space/feed",                                            category: "substack" },
-  { name: "Ben Evans",          url: "https://www.ben-evans.com/benedictevans?format=rss",                       category: "substack" },
-  { name: "Hacker News (AI)",   url: "https://hnrss.org/newest?q=AI",                                           category: "community" },
+  // Official labs (authority: 1.0)
+  { name: "OpenAI",          url: "https://openai.com/news/rss.xml",                                       category: "official" },
+  { name: "Anthropic",       url: "https://www.anthropic.com/news/rss.xml",                                category: "official" },
+  { name: "Google DeepMind", url: "https://deepmind.google/blog/rss.xml",                                  category: "official" },
+  { name: "Meta AI",         url: "https://ai.meta.com/blog/rss/",                                         category: "official" },
+  { name: "Mistral AI",      url: "https://mistral.ai/news/rss",                                           category: "official" },
+  // Research (authority: 0.9)
+  { name: "Hugging Face",    url: "https://huggingface.co/blog/feed.xml",                                  category: "research" },
+  { name: "Google Research", url: "https://research.google/blog/rss/",                                     category: "research" },
+  { name: "Papers With Code",url: "https://paperswithcode.com/latest/rss",                                 category: "research" },
+  { name: "arXiv AI",        url: "http://export.arxiv.org/rss/cs.AI",                                     category: "research" },
+  { name: "arXiv ML",        url: "http://export.arxiv.org/rss/cs.LG",                                     category: "research" },
+  { name: "arXiv NLP",       url: "http://export.arxiv.org/rss/cs.CL",                                     category: "research" },
+  // Developer tools (authority: 0.85)
+  { name: "GitHub Blog",     url: "https://github.blog/feed/",                                             category: "substack" },
+  { name: "Vercel",          url: "https://vercel.com/blog/rss.xml",                                       category: "substack" },
+  { name: "LangChain",       url: "https://blog.langchain.dev/rss/",                                       category: "substack" },
+  // Media (authority: 0.75)
+  { name: "TechCrunch AI",   url: "https://techcrunch.com/category/artificial-intelligence/feed/",         category: "media" },
+  { name: "The Verge AI",    url: "https://www.theverge.com/ai-artificial-intelligence/rss/index.xml",     category: "media" },
+  { name: "VentureBeat AI",  url: "https://venturebeat.com/ai/feed/",                                      category: "media" },
+  { name: "MIT Tech Review AI", url: "https://www.technologyreview.com/topic/artificial-intelligence/feed/", category: "media" },
+  { name: "Wired AI",        url: "https://www.wired.com/feed/tag/artificial-intelligence/latest/rss",     category: "media" },
+  // Newsletters / Substack (authority: 0.8)
+  { name: "The Batch",       url: "https://www.deeplearning.ai/the-batch/rss/",                            category: "substack" },
+  { name: "Latent Space",    url: "https://www.latent.space/feed",                                         category: "substack" },
+  { name: "Ben Evans",       url: "https://www.ben-evans.com/benedictevans?format=rss",                    category: "substack" },
+  // Community
+  { name: "Hacker News (AI)", url: "https://hnrss.org/newest?q=AI+LLM",                                   category: "community" },
 ];
 
 // ── Inline scoring (mirrors lib/scoring.ts — keep in sync) ───────
 
 const AUTHORITY_MAP = {
-  "openai": 1.0, "anthropic": 1.0, "google deepmind": 1.0, "meta ai": 1.0, "mistral": 1.0,
+  "openai": 1.0, "anthropic": 1.0, "google deepmind": 1.0, "meta ai": 1.0, "mistral ai": 1.0,
   "arxiv ai": 0.90, "arxiv ml": 0.90, "arxiv nlp": 0.90,
-  "hugging face": 0.85, "google research": 0.85,
-  "mit tech review ai": 0.75, "the verge ai": 0.75,
+  "hugging face": 0.85, "google research": 0.85, "papers with code": 0.85,
+  "github blog": 0.80, "vercel": 0.80, "langchain": 0.80,
+  "the batch": 0.80, "latent space": 0.80, "ben evans": 0.75,
+  "mit tech review ai": 0.75, "the verge ai": 0.75, "wired ai": 0.72,
   "hacker news (ai)": 0.70,
-  "venturebeat ai": 0.65, "techcrunch ai": 0.65, "replicate": 0.65, "langchain": 0.65,
-  "latent space": 0.60, "ben evans": 0.60,
+  "venturebeat ai": 0.65, "techcrunch ai": 0.65,
 };
 
 function getAuthority(source) {

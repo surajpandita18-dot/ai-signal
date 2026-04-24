@@ -11,6 +11,7 @@ import { useState } from "react";
 import Link from "next/link";
 import type { Signal } from "@/lib/types";
 import { trackSignalSaved, trackSignalDismissed } from "@/lib/analytics";
+import { ShareModal } from "@/app/components/ShareModal";
 
 interface Props {
   signal: Signal;
@@ -34,6 +35,8 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
       return parsed as SaveEntry[];
     } catch { return []; }
   }
+
+  const [showShare, setShowShare] = useState(false);
 
   const [saved, setSaved] = useState(() => {
     if (typeof window === "undefined") return false;
@@ -72,6 +75,7 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
   const amberColor = rank === 1 ? "#f59e0b" : "#d97706";
 
   return (
+    <>
     <div
       style={{
         display: "flex",
@@ -205,6 +209,24 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
       {/* Actions */}
       <div style={{ display: "flex", gap: "8px", flexShrink: 0, paddingTop: "4px" }}>
         <button
+          onClick={(e) => { e.preventDefault(); setShowShare(true); }}
+          aria-label="Share signal"
+          style={{
+            background: "none",
+            border: "none",
+            cursor: "pointer",
+            color: "#52525b",
+            fontSize: "14px",
+            padding: "4px",
+            lineHeight: 1,
+            transition: "color 150ms ease",
+          }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#a1a1aa"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
+        >
+          ↗
+        </button>
+        <button
           onClick={handleSave}
           aria-label={saved ? "Unsave signal" : "Save signal"}
           style={{
@@ -238,5 +260,9 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
         </button>
       </div>
     </div>
+    {showShare && (
+      <ShareModal signal={signal} zone="zone1" onClose={() => setShowShare(false)} />
+    )}
+    </>
   );
 }
