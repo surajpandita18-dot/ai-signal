@@ -22,3 +22,8 @@ export function trackUpgradeClicked(location: "nav" | "zone1_gate" | "article"):
   if (!isBrowser()) return;
   posthog.capture("upgrade_clicked", { location });
 }
+
+export function trackSignalShared(signalId: string, platform: "linkedin" | "twitter", zone: "zone1" | "zone2" | "article"): void {
+  if (!isBrowser()) return;
+  posthog.capture("signal_shared", { signal_id: signalId, platform, zone });
+}

@@ -9,21 +9,18 @@ import { Zone2Card } from "@/app/components/Zone2Card";
 import { OnboardingOverlay } from "@/app/components/OnboardingOverlay";
 import { LandingPage } from "@/app/components/LandingPage";
 import { useUserPlan } from "@/lib/useUserPlan";
-import { trackUpgradeClicked } from "@/lib/analytics";
 import type { Signal } from "@/lib/types";
 
-const ZONE1_COUNT = 5;       // Total Zone 1 slots
-const ZONE1_FREE_COUNT = 3;  // Free users see unblurred cards for first 3
-const ZONE1_MIN_SCORE = 2.8; // Lowered from 3.5 — calibrated to real score distribution
-const ZONE1_MIN_SHOW = 3;    // Always show at least this many when processed signals exist
+const ZONE1_COUNT = 5;
+const ZONE1_MIN_SCORE = 2.8;
+const ZONE1_MIN_SHOW = 3;
 
 export default function Home() {
   const [signals, setSignals] = useState<Signal[]>([]);
   const [dismissed, setDismissed] = useState<Set<string>>(new Set());
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(false);
-  const plan = useUserPlan();
-  const isPaid = plan === "paid";
+  useUserPlan(); // retained for future paid tier
   const { status: authStatus } = useSession();
 
   function loadSignals() {
@@ -161,32 +158,19 @@ export default function Home() {
           >
             Saved
           </Link>
-          {!isPaid && (
-            <button
-              onClick={() => trackUpgradeClicked("nav")}
-              style={{
-                background: "none",
-                border: "1px solid rgba(139,92,246,0.35)",
-                color: "#a78bfa",
-                borderRadius: "6px",
-                padding: "6px 12px",
-                fontSize: "12px",
-                fontWeight: 600,
-                cursor: "pointer",
-                letterSpacing: "0.02em",
-                transition: "border-color 150ms ease",
-                whiteSpace: "nowrap",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,92,246,0.7)";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLButtonElement).style.borderColor = "rgba(139,92,246,0.35)";
-              }}
-            >
-              Upgrade
-            </button>
-          )}
+          <Link
+            href="/upgrade"
+            style={{
+              fontSize: "12px",
+              color: "#52525b",
+              textDecoration: "none",
+              fontWeight: 500,
+              whiteSpace: "nowrap",
+              letterSpacing: "0.02em",
+            }}
+          >
+            Join waitlist
+          </Link>
         </div>
       </header>
 
@@ -301,81 +285,14 @@ export default function Home() {
 
         {/* ── Zone 1: editorial list ────────────────────────────── */}
         <section>
-          {zone1.map((signal, i) => {
-            const rank = i + 1;
-
-            // Authenticated (unauthenticated is handled by LandingPage early-return above)
-            // Free users: signals beyond ZONE1_FREE_COUNT show upgrade gate
-            const isPaidGate = !isPaid && rank > ZONE1_FREE_COUNT;
-            if (isPaidGate) {
-              return (
-                <div
-                  key={signal.id}
-                  style={{
-                    display: "flex",
-                    gap: "24px",
-                    padding: "24px 16px",
-                    borderBottom: "1px solid rgba(255,255,255,0.04)",
-                    alignItems: "flex-start",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "48px",
-                      fontWeight: 800,
-                      color: "rgba(124,58,237,0.06)",
-                      lineHeight: 1,
-                      minWidth: "48px",
-                      flexShrink: 0,
-                      letterSpacing: "-0.02em",
-                      marginTop: "-4px",
-                      fontVariantNumeric: "tabular-nums",
-                    }}
-                  >
-                    {String(rank).padStart(2, "0")}
-                  </span>
-                  <div style={{ flex: 1, minWidth: 0 }}>
-                    <p
-                      style={{
-                        fontSize: "20px",
-                        fontWeight: 600,
-                        color: "#3f3f46",
-                        marginBottom: "16px",
-                        lineHeight: 1.3,
-                      }}
-                    >
-                      {signal.title}
-                    </p>
-                    <button
-                      onClick={() => trackUpgradeClicked("zone1_gate")}
-                      style={{
-                        background: "none",
-                        border: "1px solid rgba(139,92,246,0.35)",
-                        color: "#a78bfa",
-                        borderRadius: "6px",
-                        padding: "6px 14px",
-                        fontSize: "12px",
-                        fontWeight: 600,
-                        cursor: "pointer",
-                        letterSpacing: "0.02em",
-                      }}
-                    >
-                      Unlock with Pro →
-                    </button>
-                  </div>
-                </div>
-              );
-            }
-
-            return (
-              <Zone1Signal
-                key={signal.id}
-                signal={signal}
-                rank={rank}
-                onDismiss={handleDismiss}
-              />
-            );
-          })}
+          {zone1.map((signal, i) => (
+            <Zone1Signal
+              key={signal.id}
+              signal={signal}
+              rank={i + 1}
+              onDismiss={handleDismiss}
+            />
+          ))}
         </section>
 
         {/* ── Zone 1→2 divider ──────────────────────────────────── */}

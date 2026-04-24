@@ -7,7 +7,78 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { signIn } from "next-auth/react";
 import type { Signal } from "@/lib/types";
+
+function EmailSignInForm() {
+  const [email, setEmail] = useState("");
+  const [sent, setSent] = useState(false);
+  const [sending, setSending] = useState(false);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim()) return;
+    setSending(true);
+    try {
+      await signIn("resend", { email: email.trim(), redirect: false });
+      setSent(true);
+    } catch {
+      setSent(true); // show success regardless to avoid email enumeration
+    }
+    setSending(false);
+  }
+
+  if (sent) {
+    return (
+      <p style={{ fontSize: "13px", color: "#a1a1aa", padding: "10px 0" }}>
+        Check your inbox — magic link sent to {email}
+      </p>
+    );
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px" }}>
+      <input
+        type="email"
+        placeholder="Continue with email"
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+        required
+        style={{
+          flex: 1,
+          background: "#0f0f12",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: "6px",
+          color: "#fafafa",
+          fontSize: "14px",
+          padding: "11px 14px",
+          outline: "none",
+          minWidth: 0,
+        }}
+        onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
+        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+      />
+      <button
+        type="submit"
+        disabled={sending}
+        style={{
+          background: "rgba(255,255,255,0.06)",
+          border: "1px solid rgba(255,255,255,0.1)",
+          borderRadius: "6px",
+          color: "#fafafa",
+          fontSize: "13px",
+          fontWeight: 600,
+          padding: "11px 16px",
+          cursor: sending ? "not-allowed" : "pointer",
+          whiteSpace: "nowrap",
+          transition: "background 150ms ease",
+        }}
+      >
+        {sending ? "…" : "Send link →"}
+      </button>
+    </form>
+  );
+}
 
 export function LandingPage() {
   const [demoSignal, setDemoSignal] = useState<Signal | null>(null);
@@ -131,40 +202,37 @@ export function LandingPage() {
           </p>
 
           {/* Primary CTA */}
-          <Link
-            href="/api/auth/signin"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "8px",
-              background: "#f59e0b",
-              color: "#09090b",
-              borderRadius: "6px",
-              padding: "12px 24px",
-              fontSize: "14px",
-              fontWeight: 700,
-              textDecoration: "none",
-              letterSpacing: "0.01em",
-              transition: "background 150ms ease",
-            }}
-            onMouseEnter={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "#d97706";
-            }}
-            onMouseLeave={(e) => {
-              (e.currentTarget as HTMLAnchorElement).style.background = "#f59e0b";
-            }}
-          >
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="currentColor"
-              aria-hidden="true"
+          <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "400px" }}>
+            <Link
+              href="/api/auth/signin"
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                gap: "8px",
+                background: "#f59e0b",
+                color: "#09090b",
+                borderRadius: "6px",
+                padding: "12px 24px",
+                fontSize: "14px",
+                fontWeight: 700,
+                textDecoration: "none",
+                letterSpacing: "0.01em",
+                transition: "background 150ms ease",
+              }}
+              onMouseEnter={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "#d97706";
+              }}
+              onMouseLeave={(e) => {
+                (e.currentTarget as HTMLAnchorElement).style.background = "#f59e0b";
+              }}
             >
-              <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-            </svg>
-            Sign in with GitHub — free for first 100 founders
-          </Link>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
+              </svg>
+              Continue with GitHub
+            </Link>
+            <EmailSignInForm />
+          </div>
         </div>
 
         {/* ── Live signal demo ───────────────────────────────────── */}
@@ -314,45 +382,40 @@ export function LandingPage() {
                   </div>
                 )}
 
-                {/* TAKEAWAY gate — solid amber surface (no blur, server strips takeaway) */}
-                <div
-                  style={{
-                    borderLeft: "2px solid rgba(245,158,11,0.4)",
-                    paddingLeft: "12px",
-                    marginTop: "8px",
-                  }}
-                >
-                  <span
+                {/* TAKEAWAY — visible to all, sign in to save/personalise */}
+                {demoSignal.takeaway && (
+                  <div
                     style={{
-                      display: "block",
-                      fontSize: "11px",
-                      fontWeight: 500,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "#52525b",
-                      marginBottom: "6px",
+                      borderLeft: "2px solid rgba(245,158,11,0.4)",
+                      paddingLeft: "12px",
+                      marginTop: "8px",
                     }}
                   >
-                    Takeaway
-                  </span>
-                  <Link
-                    href="/api/auth/signin"
-                    style={{
-                      display: "inline-block",
-                      background: "rgba(245,158,11,0.08)",
-                      border: "1px solid rgba(245,158,11,0.3)",
-                      borderRadius: "6px",
-                      color: "#f59e0b",
-                      fontSize: "12px",
-                      fontWeight: 600,
-                      padding: "6px 14px",
-                      textDecoration: "none",
-                      letterSpacing: "0.02em",
-                    }}
-                  >
-                    Sign in to unlock →
-                  </Link>
-                </div>
+                    <span
+                      style={{
+                        display: "block",
+                        fontSize: "11px",
+                        fontWeight: 500,
+                        textTransform: "uppercase",
+                        letterSpacing: "0.08em",
+                        color: "#f59e0b",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      Takeaway
+                    </span>
+                    <span
+                      style={{
+                        display: "block",
+                        fontSize: "14px",
+                        color: "#f59e0b",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {demoSignal.takeaway}
+                    </span>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -361,9 +424,7 @@ export function LandingPage() {
               <Link
                 href="/api/auth/signin"
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: "8px",
+                  display: "inline-block",
                   background: "#f59e0b",
                   color: "#09090b",
                   borderRadius: "6px",
@@ -381,25 +442,10 @@ export function LandingPage() {
                   (e.currentTarget as HTMLAnchorElement).style.background = "#f59e0b";
                 }}
               >
-                <svg
-                  width="16"
-                  height="16"
-                  viewBox="0 0 24 24"
-                  fill="currentColor"
-                  aria-hidden="true"
-                >
-                  <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-                </svg>
                 Get free access — takes 10 seconds
               </Link>
-              <p
-                style={{
-                  fontSize: "12px",
-                  color: "#52525b",
-                  marginTop: "12px",
-                }}
-              >
-                GitHub OAuth · No credit card · Cancel anytime
+              <p style={{ fontSize: "12px", color: "#52525b", marginTop: "12px" }}>
+                No credit card · Free forever
               </p>
             </div>
           </div>

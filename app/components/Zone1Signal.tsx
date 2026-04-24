@@ -10,7 +10,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import type { Signal } from "@/lib/types";
-import { trackSignalSaved, trackSignalDismissed, trackUpgradeClicked } from "@/lib/analytics";
+import { trackSignalSaved, trackSignalDismissed } from "@/lib/analytics";
 
 interface Props {
   signal: Signal;
@@ -68,9 +68,6 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
   const rankStr = String(rank).padStart(2, "0");
   // takeaway is populated when paid (server sends it) or null when stripped/skipped
   const hasLLM = signal.processed && !!signal.takeaway;
-  // takeawayGated=true means server withheld a real takeaway (free/unauthed user)
-  // This is distinct from takeaway=null because LLM returned SKIP (no gate shown)
-  const isGated = !!signal.takeawayGated;
   // Signal #1 gets amber-primary, #2-3 get amber-secondary
   const amberColor = rank === 1 ? "#f59e0b" : "#d97706";
 
@@ -180,46 +177,6 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
           </div>
         )}
 
-        {/* TAKEAWAY gate — solid surface, no blur (server stripped takeaway) */}
-        {isGated && (
-          <div
-            style={{
-              borderLeft: "2px solid rgba(245,158,11,0.2)",
-              paddingLeft: "12px",
-              marginTop: "8px",
-            }}
-          >
-            <span
-              style={{
-                display: "block",
-                fontSize: "11px",
-                fontWeight: 500,
-                textTransform: "uppercase",
-                letterSpacing: "0.08em",
-                color: "#52525b",
-                marginBottom: "6px",
-              }}
-            >
-              Takeaway
-            </span>
-            <button
-              onClick={() => trackUpgradeClicked("zone1_gate")}
-              style={{
-                background: "rgba(245,158,11,0.06)",
-                border: "1px solid rgba(245,158,11,0.2)",
-                borderRadius: "6px",
-                color: "#d97706",
-                fontSize: "12px",
-                fontWeight: 600,
-                padding: "6px 14px",
-                cursor: "pointer",
-                letterSpacing: "0.02em",
-              }}
-            >
-              Unlock takeaway →
-            </button>
-          </div>
-        )}
 
         {/* No LLM yet — show tags as fallback */}
         {!hasLLM && signal.tags.length > 0 && (
