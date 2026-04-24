@@ -122,7 +122,7 @@ export function ShareModal({ signal, zone, onClose }: Props) {
                 fontWeight: mode === m ? 600 : 400,
                 padding: "6px 14px",
                 cursor: "pointer",
-                transition: "all 150ms ease",
+                transition: "border-color 150ms ease, color 150ms ease, background 150ms ease",
                 textTransform: "capitalize",
               }}
             >

@@ -229,7 +229,7 @@ export function OnboardingFlow() {
                       color: selected ? "#f59e0b" : "#a1a1aa",
                       fontSize: "13px",
                       fontWeight: selected ? 600 : 400,
-                      transition: "all 150ms ease",
+                      transition: "border-color 150ms ease, color 150ms ease, background 150ms ease",
                       lineHeight: 1.3,
                     }}
                   >

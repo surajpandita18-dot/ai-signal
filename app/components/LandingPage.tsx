@@ -180,6 +180,7 @@ export function LandingPage() {
                     padding: "12px 20px",
                     cursor: submitting ? "not-allowed" : "pointer",
                     whiteSpace: "nowrap",
+                    flexShrink: 0,
                     opacity: submitting ? 0.7 : 1,
                     transition: "opacity 150ms ease",
                   }}

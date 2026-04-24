@@ -345,7 +345,7 @@ export default function AppPage() {
                   padding: "4px 10px",
                   cursor: "pointer",
                   letterSpacing: "0.04em",
-                  transition: "all 150ms ease",
+                  transition: "border-color 150ms ease, color 150ms ease, background 150ms ease",
                 }}
               >
                 {cat}
