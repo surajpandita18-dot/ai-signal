@@ -6,9 +6,10 @@ import Link from "next/link";
 import { useSession } from "next-auth/react";
 import { Zone1Signal } from "@/app/components/Zone1Signal";
 import { Zone2Card } from "@/app/components/Zone2Card";
-import { OnboardingOverlay } from "@/app/components/OnboardingOverlay";
+import { OnboardingFlow } from "@/app/components/OnboardingFlow";
 import { LandingPage } from "@/app/components/LandingPage";
 import { useUserPlan } from "@/lib/useUserPlan";
+import { getPersonalizedScore } from "@/lib/personalization";
 import type { Signal } from "@/lib/types";
 
 const ZONE1_COUNT = 5;
@@ -22,6 +23,8 @@ export default function Home() {
   const [fetchError, setFetchError] = useState(false);
   useUserPlan(); // retained for future paid tier
   const { status: authStatus } = useSession();
+  const [userRole, setUserRole] = useState<string>("");
+  const [userTopics, setUserTopics] = useState<string[]>([]);
 
   function loadSignals() {
     setLoading(true);
@@ -44,6 +47,10 @@ export default function Home() {
   useEffect(() => {
     const d: string[] = JSON.parse(localStorage.getItem("aiSignal_dismissed") ?? "[]");
     setDismissed(new Set(d));
+    const role = localStorage.getItem("aiSignal_role") ?? "";
+    const topics: string[] = JSON.parse(localStorage.getItem("aiSignal_topics") ?? "[]");
+    setUserRole(role);
+    setUserTopics(topics);
     loadSignals();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -71,17 +78,21 @@ export default function Home() {
     return true;
   });
 
-  // Fallback: if fewer than ZONE1_MIN_SHOW have enriched content + qualify by score,
-  // top up with any enriched signal regardless of threshold (pipeline ran, use what we have)
+  // Sort by personalized score when role/topics are set, otherwise by raw score
+  const sortByPersonalized = (arr: Signal[]) =>
+    userRole
+      ? [...arr].sort((a, b) => getPersonalizedScore(b, userRole, userTopics) - getPersonalizedScore(a, userRole, userTopics))
+      : arr;
+
   let zone1: Signal[];
   if (zone1Primary.length >= ZONE1_MIN_SHOW) {
-    zone1 = zone1Primary.slice(0, ZONE1_COUNT);
+    zone1 = sortByPersonalized(zone1Primary).slice(0, ZONE1_COUNT);
   } else {
     const primaryIds = new Set(zone1Primary.map((s) => s.id));
     const fallback = visibleSignals
       .filter((s) => hasEnrichedContent(s) && !primaryIds.has(s.id))
       .slice(0, ZONE1_MIN_SHOW - zone1Primary.length);
-    zone1 = [...zone1Primary, ...fallback].slice(0, ZONE1_COUNT);
+    zone1 = sortByPersonalized([...zone1Primary, ...fallback]).slice(0, ZONE1_COUNT);
   }
 
   const zone1Ids = new Set(zone1.map((s) => s.id));
@@ -183,7 +194,7 @@ export default function Home() {
       >
 
         {/* ── Zone 1 header ────────────────────────────────────── */}
-        <div style={{ marginBottom: "8px" }}>
+        <div style={{ marginBottom: "8px", display: "flex", alignItems: "center", gap: "12px" }}>
           <span
             style={{
               fontSize: "11px",
@@ -195,6 +206,22 @@ export default function Home() {
           >
             Today&apos;s Signals
           </span>
+          {userRole && (
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 500,
+                color: "#7c3aed",
+                letterSpacing: "0.04em",
+                background: "rgba(124,58,237,0.1)",
+                border: "1px solid rgba(124,58,237,0.2)",
+                borderRadius: "4px",
+                padding: "2px 8px",
+              }}
+            >
+              personalized
+            </span>
+          )}
         </div>
 
         {/* ── Loading state ─────────────────────────────────────── */}
@@ -352,7 +379,7 @@ export default function Home() {
         )}
       </main>
 
-      <OnboardingOverlay />
+      <OnboardingFlow />
     </div>
   );
 }
