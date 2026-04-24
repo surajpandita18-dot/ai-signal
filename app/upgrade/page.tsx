@@ -3,6 +3,12 @@
 import Link from "next/link";
 import { useState } from "react";
 
+declare global {
+  interface Window {
+    posthog?: { capture?: (event: string, props?: Record<string, unknown>) => void };
+  }
+}
+
 export default function WaitlistPage() {
   const [email, setEmail] = useState("");
   const [submitted, setSubmitted] = useState(false);
