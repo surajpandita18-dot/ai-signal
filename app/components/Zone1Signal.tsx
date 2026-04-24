@@ -69,10 +69,20 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
   }
 
   const rankStr = String(rank).padStart(2, "0");
-  // takeaway is populated when paid (server sends it) or null when stripped/skipped
   const hasLLM = signal.processed && !!signal.takeaway;
-  // Signal #1 gets amber-primary, #2-3 get amber-secondary
   const amberColor = rank === 1 ? "#f59e0b" : "#d97706";
+
+  function sourceDotColor(cat: Signal["sourceCategory"]): string {
+    switch (cat) {
+      case "official":  return "#f59e0b";
+      case "research":  return "#7c3aed";
+      case "media":     return "#4f46e5";
+      case "substack":  return "#d97706";
+      case "community": return "#52525b";
+      default:          return "#52525b";
+    }
+  }
+  const dotColor = sourceDotColor(signal.sourceCategory);
 
   return (
     <>
@@ -115,6 +125,16 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
         <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "8px" }}>
           <span
             style={{
+              width: "6px",
+              height: "6px",
+              borderRadius: "50%",
+              background: dotColor,
+              flexShrink: 0,
+              display: "inline-block",
+            }}
+          />
+          <span
+            style={{
               fontSize: "11px",
               color: "#52525b",
               textTransform: "uppercase",
@@ -146,11 +166,54 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
           {signal.title}
         </Link>
 
-        {/* TAKEAWAY — visible only when server sent it (paid users) */}
+        {/* WHAT / WHY — shown when LLM has processed the signal */}
+        {signal.processed && signal.what && (
+          <div style={{ marginBottom: "8px" }}>
+            <span
+              style={{
+                display: "block",
+                fontSize: "10px",
+                fontWeight: 500,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "#52525b",
+                marginBottom: "4px",
+              }}
+            >
+              What
+            </span>
+            <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.6, display: "block" }}>
+              {signal.what}
+            </span>
+          </div>
+        )}
+
+        {signal.processed && signal.why && (
+          <div style={{ marginBottom: "12px" }}>
+            <span
+              style={{
+                display: "block",
+                fontSize: "10px",
+                fontWeight: 500,
+                textTransform: "uppercase",
+                letterSpacing: "0.08em",
+                color: "#52525b",
+                marginBottom: "4px",
+              }}
+            >
+              Why it matters
+            </span>
+            <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.6, display: "block" }}>
+              {signal.why}
+            </span>
+          </div>
+        )}
+
+        {/* TAKEAWAY — amber left border, the screenshottable moment */}
         {hasLLM && (
           <div
             style={{
-              borderLeft: "2px solid rgba(245,158,11,0.4)",
+              borderLeft: "2px solid rgba(245,158,11,0.55)",
               paddingLeft: "12px",
               marginTop: "8px",
             }}

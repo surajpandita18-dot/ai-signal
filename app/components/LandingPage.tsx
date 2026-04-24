@@ -1,100 +1,44 @@
-// app/components/LandingPage.tsx
-// Shown to unauthenticated users in place of the dashboard.
-// Live signal demo: fetches /api/news, picks highest signalScore signal,
-// shows rank 01 editorial row with WHAT/WHY visible + TAKEAWAY gate.
-// Primary CTA: GitHub OAuth sign-in.
 "use client";
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { useRouter } from "next/navigation";
 import type { Signal } from "@/lib/types";
 
-function EmailSignInForm() {
-  const [email, setEmail] = useState("");
-  const [sent, setSent] = useState(false);
-  const [sending, setSending] = useState(false);
-
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email.trim()) return;
-    setSending(true);
-    try {
-      await signIn("resend", { email: email.trim(), redirect: false });
-      setSent(true);
-    } catch {
-      setSent(true); // show success regardless to avoid email enumeration
-    }
-    setSending(false);
-  }
-
-  if (sent) {
-    return (
-      <p style={{ fontSize: "13px", color: "#a1a1aa", padding: "10px 0" }}>
-        Check your inbox — magic link sent to {email}
-      </p>
-    );
-  }
-
-  return (
-    <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px" }}>
-      <input
-        type="email"
-        placeholder="Continue with email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        required
-        style={{
-          flex: 1,
-          background: "#0f0f12",
-          border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: "6px",
-          color: "#fafafa",
-          fontSize: "14px",
-          padding: "11px 14px",
-          outline: "none",
-          minWidth: 0,
-        }}
-        onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
-        onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
-      />
-      <button
-        type="submit"
-        disabled={sending}
-        style={{
-          background: "rgba(255,255,255,0.06)",
-          border: "1px solid rgba(255,255,255,0.1)",
-          borderRadius: "6px",
-          color: "#fafafa",
-          fontSize: "13px",
-          fontWeight: 600,
-          padding: "11px 16px",
-          cursor: sending ? "not-allowed" : "pointer",
-          whiteSpace: "nowrap",
-          transition: "background 150ms ease",
-        }}
-      >
-        {sending ? "…" : "Send link →"}
-      </button>
-    </form>
-  );
-}
-
 export function LandingPage() {
+  const router = useRouter();
   const [demoSignal, setDemoSignal] = useState<Signal | null>(null);
+  const [email, setEmail] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [done, setDone] = useState(false);
 
   useEffect(() => {
     fetch("/api/news")
       .then((r) => r.json())
       .then((data: Signal[]) => {
         if (!Array.isArray(data) || data.length === 0) return;
-        // Pick highest signalScore with real content (what/why/title)
         const sorted = [...data].sort((a, b) => b.signalScore - a.signalScore);
         const top = sorted.find((s) => s.title) ?? sorted[0];
         setDemoSignal(top);
       })
-      .catch(() => {/* silent — demo section just stays hidden */});
+      .catch(() => {});
   }, []);
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    if (!email.trim() || submitting) return;
+    setSubmitting(true);
+    try {
+      await fetch("/api/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: email.trim() }),
+      });
+    } catch {
+      // silent — still redirect on network failure
+    }
+    setDone(true);
+    setTimeout(() => router.push("/app"), 1400);
+  }
 
   return (
     <div style={{ minHeight: "100vh", background: "#09090b", color: "#fafafa" }}>
@@ -107,7 +51,6 @@ export function LandingPage() {
           height: "56px",
           display: "flex",
           alignItems: "center",
-          justifyContent: "space-between",
           position: "sticky",
           top: 0,
           background: "#09090b",
@@ -136,28 +79,11 @@ export function LandingPage() {
             AI Signal
           </span>
         </div>
-
-        <Link
-          href="/api/auth/signin"
-          style={{
-            fontSize: "13px",
-            color: "#a1a1aa",
-            textDecoration: "none",
-            fontWeight: 500,
-          }}
-        >
-          Sign in
-        </Link>
       </header>
 
-      <main
-        style={{
-          maxWidth: "800px",
-          margin: "0 auto",
-          padding: "72px 24px 80px",
-        }}
-      >
-        {/* ── Hero copy ──────────────────────────────────────────── */}
+      <main style={{ maxWidth: "800px", margin: "0 auto", padding: "72px 24px 80px" }}>
+
+        {/* ── Hero ──────────────────────────────────────────────── */}
         <div style={{ marginBottom: "56px" }}>
           <div
             style={{
@@ -170,7 +96,7 @@ export function LandingPage() {
               marginBottom: "20px",
             }}
           >
-            Early Access · Free for first 100 founders
+            Early Access · Free
           </div>
 
           <h1
@@ -201,37 +127,70 @@ export function LandingPage() {
             that matter — with the specific takeaway for what to do next.
           </p>
 
-          {/* Primary CTA */}
-          <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "400px" }}>
-            <Link
-              href="/api/auth/signin"
-              style={{
-                display: "inline-flex",
-                alignItems: "center",
-                gap: "8px",
-                background: "#f59e0b",
-                color: "#09090b",
-                borderRadius: "6px",
-                padding: "12px 24px",
-                fontSize: "14px",
-                fontWeight: 700,
-                textDecoration: "none",
-                letterSpacing: "0.01em",
-                transition: "background 150ms ease",
-              }}
-              onMouseEnter={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "#d97706";
-              }}
-              onMouseLeave={(e) => {
-                (e.currentTarget as HTMLAnchorElement).style.background = "#f59e0b";
-              }}
-            >
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                <path d="M12 0C5.374 0 0 5.373 0 12c0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23A11.509 11.509 0 0 1 12 5.803c1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576C20.566 21.797 24 17.3 24 12c0-6.627-5.373-12-12-12z" />
-              </svg>
-              Continue with GitHub
-            </Link>
-            <EmailSignInForm />
+          {/* Email capture */}
+          <div style={{ maxWidth: "400px" }}>
+            {done ? (
+              <div
+                style={{
+                  background: "rgba(245,158,11,0.08)",
+                  border: "1px solid rgba(245,158,11,0.2)",
+                  borderRadius: "8px",
+                  padding: "14px 20px",
+                  fontSize: "14px",
+                  color: "#f59e0b",
+                  fontWeight: 500,
+                }}
+              >
+                You&apos;re in! Taking you to your signals…
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px" }}>
+                <input
+                  type="email"
+                  placeholder="Enter your email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required
+                  autoFocus
+                  style={{
+                    flex: 1,
+                    background: "#0f0f12",
+                    border: "1px solid rgba(255,255,255,0.08)",
+                    borderRadius: "6px",
+                    color: "#fafafa",
+                    fontSize: "14px",
+                    padding: "12px 14px",
+                    outline: "none",
+                    minWidth: 0,
+                    transition: "border-color 150ms ease",
+                  }}
+                  onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.2)"; }}
+                  onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.08)"; }}
+                />
+                <button
+                  type="submit"
+                  disabled={submitting}
+                  style={{
+                    background: "#f59e0b",
+                    border: "none",
+                    borderRadius: "6px",
+                    color: "#09090b",
+                    fontSize: "13px",
+                    fontWeight: 700,
+                    padding: "12px 20px",
+                    cursor: submitting ? "not-allowed" : "pointer",
+                    whiteSpace: "nowrap",
+                    opacity: submitting ? 0.7 : 1,
+                    transition: "opacity 150ms ease",
+                  }}
+                >
+                  {submitting ? "…" : "Get daily signals →"}
+                </button>
+              </form>
+            )}
+            <p style={{ fontSize: "12px", color: "#3f3f46", marginTop: "10px" }}>
+              No spam. Unsubscribe anytime.
+            </p>
           </div>
         </div>
 
@@ -252,7 +211,6 @@ export function LandingPage() {
               </span>
             </div>
 
-            {/* Signal row (Zone 1 style) */}
             <div
               style={{
                 display: "flex",
@@ -284,14 +242,7 @@ export function LandingPage() {
 
               <div style={{ flex: 1, minWidth: 0 }}>
                 {/* Source + date */}
-                <div
-                  style={{
-                    display: "flex",
-                    gap: "8px",
-                    alignItems: "center",
-                    marginBottom: "8px",
-                  }}
-                >
+                <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "8px" }}>
                   <span
                     style={{
                       fontSize: "11px",
@@ -305,10 +256,7 @@ export function LandingPage() {
                   </span>
                   <span style={{ color: "#27272a" }}>·</span>
                   <span style={{ fontSize: "11px", color: "#52525b" }}>
-                    {new Date(demoSignal.date).toLocaleDateString("en-US", {
-                      month: "short",
-                      day: "numeric",
-                    })}
+                    {new Date(demoSignal.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
                   </span>
                 </div>
 
@@ -325,7 +273,6 @@ export function LandingPage() {
                   {demoSignal.title}
                 </p>
 
-                {/* WHAT / WHY — visible in demo */}
                 {demoSignal.what && (
                   <div style={{ marginBottom: "8px" }}>
                     <span
@@ -341,14 +288,7 @@ export function LandingPage() {
                     >
                       What
                     </span>
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        color: "#a1a1aa",
-                        lineHeight: 1.6,
-                        display: "block",
-                      }}
-                    >
+                    <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.6, display: "block" }}>
                       {demoSignal.what}
                     </span>
                   </div>
@@ -369,20 +309,12 @@ export function LandingPage() {
                     >
                       Why it matters
                     </span>
-                    <span
-                      style={{
-                        fontSize: "14px",
-                        color: "#a1a1aa",
-                        lineHeight: 1.6,
-                        display: "block",
-                      }}
-                    >
+                    <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.6, display: "block" }}>
                       {demoSignal.why}
                     </span>
                   </div>
                 )}
 
-                {/* TAKEAWAY — visible to all, sign in to save/personalise */}
                 {demoSignal.takeaway && (
                   <div
                     style={{
@@ -404,14 +336,7 @@ export function LandingPage() {
                     >
                       Takeaway
                     </span>
-                    <span
-                      style={{
-                        display: "block",
-                        fontSize: "14px",
-                        color: "#f59e0b",
-                        lineHeight: 1.6,
-                      }}
-                    >
+                    <span style={{ display: "block", fontSize: "14px", color: "#f59e0b", lineHeight: 1.6 }}>
                       {demoSignal.takeaway}
                     </span>
                   </div>
@@ -421,37 +346,37 @@ export function LandingPage() {
 
             {/* Secondary CTA */}
             <div style={{ textAlign: "center" }}>
-              <Link
-                href="/api/auth/signin"
+              <button
+                onClick={() => router.push("/app")}
                 style={{
                   display: "inline-block",
-                  background: "#f59e0b",
-                  color: "#09090b",
+                  background: "transparent",
+                  border: "1px solid rgba(255,255,255,0.1)",
+                  color: "#a1a1aa",
                   borderRadius: "6px",
-                  padding: "12px 28px",
-                  fontSize: "14px",
-                  fontWeight: 700,
+                  padding: "10px 24px",
+                  fontSize: "13px",
+                  fontWeight: 500,
+                  cursor: "pointer",
                   textDecoration: "none",
-                  letterSpacing: "0.01em",
-                  transition: "background 150ms ease",
+                  transition: "border-color 150ms ease, color 150ms ease",
                 }}
                 onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "#d97706";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
+                  e.currentTarget.style.color = "#fafafa";
                 }}
                 onMouseLeave={(e) => {
-                  (e.currentTarget as HTMLAnchorElement).style.background = "#f59e0b";
+                  e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
+                  e.currentTarget.style.color = "#a1a1aa";
                 }}
               >
-                Get free access — takes 10 seconds
-              </Link>
-              <p style={{ fontSize: "12px", color: "#52525b", marginTop: "12px" }}>
-                No credit card · Free forever
-              </p>
+                Browse all signals →
+              </button>
             </div>
           </div>
         )}
 
-        {/* ── Social proof strip ─────────────────────────────────── */}
+        {/* ── Stats strip ───────────────────────────────────────── */}
         <div
           style={{
             marginTop: "64px",
