@@ -184,3 +184,37 @@ Draft the full updated CLAUDE.md with:
 **Density is trust.** Technical founders trust tools that treat them as intelligent. Whitespace reads as empty, not calm.
 
 **The TAKEAWAY is the product.** Every design choice either earns the right to show the TAKEAWAY or it doesn't.
+
+---
+
+## Auto-Update Rules (for /design-check)
+
+After running `/design-check`, if violations are found — classify each:
+
+| Occurrence | Action |
+|------------|--------|
+| First time | Flag for human review only. Do NOT auto-update. |
+| 2nd time | MEDIUM confidence — flag + suggest update text |
+| 3rd+ time | HIGH confidence — auto-update CLAUDE.md |
+
+**Update format when writing to CLAUDE.md:**
+```
+## Auto-added {date} — seen {N} times
+Never use: [specific violation]
+Example of violation: [code/component snippet]
+Correct approach: [correct code]
+```
+
+After updating CLAUDE.md:
+- Add same pattern to this file's checklist section
+- So next `/design-check` catches it automatically
+- This closes the loop: detect → fix → prevent
+
+**Report at end of /design-check:**
+```
+DESIGN CRITIC AUTO-UPDATE — {date}
+Violations found:        N
+Auto-updated CLAUDE.md:  [list or 'none — first occurrence']
+Flagged for review:      [list]
+Checklist updated:       YES / NO
+```
