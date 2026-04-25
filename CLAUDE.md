@@ -59,6 +59,27 @@ Flexibility rule: Never reject changes due to past decisions. Adapt always.
 
 ---
 
+## Feedback Protocol — run this every time feedback arrives
+
+When user gives feedback (screenshot, text, comparison):
+
+1. **Identify delta** — what specifically is different vs current state?
+2. **Check FEEDBACK_MEMORY.md** — has this been said before? If 3x → promote to rule
+3. **Determine scope:**
+   - Visual change → update `DESIGN_SYSTEM.md` first, then implement in code
+   - Workflow change → update `CLAUDE.md` (this file)
+   - Priority/focus change → update `SYSTEM_STATE.md`
+   - New source → update `SOURCES.md`
+4. **Make targeted code changes** — only what the feedback requires
+5. **Run `npm run build`** — verify zero errors
+6. **Append session summary to `FEEDBACK_MEMORY.md`**
+7. **Update `SYSTEM_STATE.md`** — what shipped + next step
+
+Do NOT implement feedback before reading DESIGN_SYSTEM.md.
+Do NOT make changes beyond what the feedback specifically requests.
+
+---
+
 ## Never Break
 RSS feed · search · source filter · bookmarks · read state ·
 unread toggle · saved page · article pages · auto-refresh

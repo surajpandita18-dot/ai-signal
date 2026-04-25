@@ -24,7 +24,7 @@ function getEmoji(tags: string[]): string {
 
 function getCategoryLabel(tags: string[]): string {
   const hit = tags.find((t) => CATEGORY_EMOJI[t.toLowerCase()]);
-  return hit ? hit.charAt(0).toUpperCase() + hit.slice(1).toLowerCase() : "";
+  return hit ? hit.toUpperCase() : "";
 }
 
 function getCategoryColor(tags: string[]): string {
@@ -99,150 +99,127 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
 
   return (
     <>
+      {/* Card wrapper — Rundown-style bordered card per signal */}
       <div
         style={{
           display: "flex",
           gap: "20px",
-          padding: "24px 16px",
-          borderBottom: "1px solid rgba(255,255,255,0.05)",
+          padding: "20px",
+          background: "#111111",
+          border: "1px solid rgba(255,255,255,0.07)",
+          borderRadius: "8px",
           alignItems: "flex-start",
-          transition: "background 150ms ease",
+          transition: "background 150ms ease, border-color 150ms ease",
         }}
-        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.background = "#111111"; }}
-        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.background = "transparent"; }}
+        onMouseEnter={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "#161616";
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.12)";
+        }}
+        onMouseLeave={(e) => {
+          (e.currentTarget as HTMLElement).style.background = "#111111";
+          (e.currentTarget as HTMLElement).style.borderColor = "rgba(255,255,255,0.07)";
+        }}
       >
         {/* Rank */}
-        <span
-          style={{
-            fontSize: "44px",
-            fontWeight: 800,
-            color: "rgba(124,58,237,0.12)",
-            lineHeight: 1,
-            minWidth: "44px",
-            fontVariantNumeric: "tabular-nums",
-            flexShrink: 0,
-            letterSpacing: "-0.02em",
-            marginTop: "-2px",
-          }}
-        >
+        <span style={{
+          fontSize: "40px",
+          fontWeight: 800,
+          color: "rgba(124,58,237,0.12)",
+          lineHeight: 1,
+          minWidth: "40px",
+          fontVariantNumeric: "tabular-nums",
+          flexShrink: 0,
+          letterSpacing: "-0.02em",
+          marginTop: "2px",
+        }}>
           {rankStr}
         </span>
 
         {/* Content */}
         <div style={{ flex: 1, minWidth: 0 }}>
 
-          {/* Source row — dot + source + date + category pill */}
+          {/* Source row */}
           <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "10px", flexWrap: "wrap" }}>
-            <span style={{ width: "6px", height: "6px", borderRadius: "50%", background: dotColor, flexShrink: 0, display: "inline-block" }} />
-            <span style={{ fontSize: "11px", color: "#52525b", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
+            <span style={{ width: "5px", height: "5px", borderRadius: "50%", background: dotColor, flexShrink: 0, display: "inline-block" }} />
+            <span style={{ fontSize: "11px", color: "#3f3f46", textTransform: "uppercase", letterSpacing: "0.1em", fontWeight: 600 }}>
               {signal.source}
             </span>
-            <span style={{ color: "#27272a" }}>·</span>
-            <span style={{ fontSize: "11px", color: "#52525b" }}>
+            <span style={{ color: "#27272a", fontSize: "11px" }}>·</span>
+            <span style={{ fontSize: "11px", color: "#3f3f46" }}>
               {new Date(signal.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
             </span>
             {categoryLabel && (
-              <span
-                style={{
-                  fontSize: "10px",
-                  fontWeight: 600,
-                  padding: "1px 7px",
-                  borderRadius: "3px",
-                  background: `${categoryColor}18`,
-                  color: categoryColor,
-                  letterSpacing: "0.04em",
-                  textTransform: "uppercase",
-                }}
-              >
+              <span style={{
+                fontSize: "10px",
+                fontWeight: 700,
+                padding: "1px 6px",
+                borderRadius: "3px",
+                background: `${categoryColor}15`,
+                color: categoryColor,
+                letterSpacing: "0.06em",
+                textTransform: "uppercase",
+              }}>
                 {categoryLabel}
               </span>
             )}
           </div>
 
-          {/* Title — emoji prefix, Rundown style */}
+          {/* Title */}
           <Link
             href={`/article/${signal.id}`}
             style={{
               display: "block",
-              fontSize: "19px",
+              fontSize: "18px",
               fontWeight: 700,
               color: "#ffffff",
               lineHeight: 1.35,
               textDecoration: "none",
               marginBottom: "14px",
-              letterSpacing: "-0.01em",
+              letterSpacing: "-0.015em",
             }}
           >
             {emoji} {signal.title}
           </Link>
 
-          {/* WHAT */}
+          {/* WHAT — inline bold prefix, Rundown style */}
           {signal.processed && signal.what && (
-            <div style={{ marginBottom: "10px" }}>
-              <span style={{
-                display: "inline-block",
-                fontSize: "10px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: "#71717a",
-                marginBottom: "5px",
-              }}>
-                What
-              </span>
-              <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.65, display: "block" }}>
-                {signal.what}
-              </span>
-            </div>
+            <p style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.7, marginBottom: "10px" }}>
+              <strong style={{ color: "#ffffff", fontWeight: 600 }}>The Signal: </strong>
+              {signal.what}
+            </p>
           )}
 
-          {/* WHY */}
+          {/* WHY — inline bold prefix, Rundown style */}
           {signal.processed && signal.why && (
-            <div style={{ marginBottom: "14px" }}>
-              <span style={{
-                display: "inline-block",
-                fontSize: "10px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: "#71717a",
-                marginBottom: "5px",
-              }}>
-                Why it matters
-              </span>
-              <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.65, display: "block" }}>
-                {signal.why}
-              </span>
-            </div>
+            <p style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.7, marginBottom: "14px" }}>
+              <strong style={{ color: "#ffffff", fontWeight: 600 }}>Why it matters: </strong>
+              {signal.why}
+            </p>
           )}
 
-          {/* TAKEAWAY — the screenshottable moment */}
+          {/* TAKEAWAY — our differentiator, keep as-is */}
           {hasLLM && (
-            <div style={{ borderLeft: "2px solid rgba(245,158,11,0.5)", paddingLeft: "14px", marginTop: "4px" }}>
-              <span style={{
-                display: "block",
-                fontSize: "10px",
-                fontWeight: 700,
-                textTransform: "uppercase",
-                letterSpacing: "0.1em",
-                color: amberColor,
-                marginBottom: "5px",
-              }}>
-                Takeaway
-              </span>
-              <span style={{ fontSize: "15px", color: amberColor, lineHeight: 1.6, display: "block" }}>
+            <div style={{
+              borderLeft: "2px solid rgba(245,158,11,0.5)",
+              paddingLeft: "14px",
+              marginTop: "4px",
+            }}>
+              <p style={{ fontSize: "14px", color: amberColor, lineHeight: 1.65, margin: 0 }}>
+                <strong style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginRight: "8px" }}>
+                  Takeaway
+                </strong>
                 {signal.takeaway}
-              </span>
+              </p>
             </div>
           )}
 
           {/* Fallback tags */}
           {!hasLLM && signal.tags.length > 0 && (
-            <div style={{ display: "flex", gap: "8px", flexWrap: "wrap" }}>
+            <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
               {signal.tags.map((tag) => (
                 <span key={tag} style={{
-                  fontSize: "11px",
-                  padding: "2px 8px",
+                  fontSize: "10px",
+                  padding: "2px 7px",
                   background: "#1a1a1a",
                   borderRadius: "3px",
                   color: "#52525b",
@@ -258,30 +235,26 @@ export function Zone1Signal({ signal, rank, onDismiss }: Props) {
         </div>
 
         {/* Actions */}
-        <div style={{ display: "flex", gap: "8px", flexShrink: 0, paddingTop: "4px" }}>
+        <div style={{ display: "flex", gap: "6px", flexShrink: 0, paddingTop: "2px" }}>
           <button
             onClick={(e) => { e.preventDefault(); setShowShare(true); }}
-            aria-label="Share signal"
-            style={{ background: "none", border: "none", cursor: "pointer", color: "#52525b", fontSize: "14px", padding: "4px", lineHeight: 1, transition: "color 150ms ease" }}
+            aria-label="Share"
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#3f3f46", fontSize: "14px", padding: "4px", lineHeight: 1, transition: "color 150ms ease" }}
             onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#a1a1aa"; }}
-            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#52525b"; }}
-          >
-            ↗
-          </button>
+            onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.color = "#3f3f46"; }}
+          >↗</button>
           <button
             onClick={handleSave}
-            aria-label={saved ? "Unsave signal" : "Save signal"}
-            style={{ background: "none", border: "none", cursor: "pointer", color: saved ? "#7c3aed" : "#52525b", fontSize: "16px", padding: "4px", lineHeight: 1, transition: "color 150ms ease" }}
+            aria-label={saved ? "Unsave" : "Save"}
+            style={{ background: "none", border: "none", cursor: "pointer", color: saved ? "#7c3aed" : "#3f3f46", fontSize: "15px", padding: "4px", lineHeight: 1, transition: "color 150ms ease" }}
           >
             {saved ? "♥" : "♡"}
           </button>
           <button
             onClick={handleDismiss}
-            aria-label="Dismiss signal"
-            style={{ background: "none", border: "none", cursor: "pointer", color: "#52525b", fontSize: "14px", padding: "4px", lineHeight: 1, transition: "color 150ms ease" }}
-          >
-            ✕
-          </button>
+            aria-label="Dismiss"
+            style={{ background: "none", border: "none", cursor: "pointer", color: "#3f3f46", fontSize: "13px", padding: "4px", lineHeight: 1, transition: "color 150ms ease" }}
+          >✕</button>
         </div>
       </div>
       {showShare && <ShareModal signal={signal} zone="zone1" onClose={() => setShowShare(false)} />}

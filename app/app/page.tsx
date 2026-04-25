@@ -180,50 +180,52 @@ export default function AppPage() {
 
       <main style={{ maxWidth: "800px", margin: "0 auto", padding: "32px 16px 80px" }}>
 
-        {/* ── Editorial header — Rundown style ─────────────────── */}
-        <div style={{ marginBottom: "32px", paddingBottom: "24px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-          <div style={{ marginBottom: "8px" }}>
-            <span style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3f3f46" }}>
-              {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
-            </span>
-          </div>
-          <div style={{ display: "flex", alignItems: "center", gap: "12px", flexWrap: "wrap" }}>
-            <h1 style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.02em", margin: 0 }}>
+        {/* ── Editorial header ──────────────────────────────────── */}
+        <div style={{ marginBottom: "24px" }}>
+          <span style={{ fontSize: "11px", fontWeight: 600, letterSpacing: "0.1em", textTransform: "uppercase", color: "#3f3f46" }}>
+            {new Date().toLocaleDateString("en-US", { weekday: "long", month: "long", day: "numeric" })}
+          </span>
+          <div style={{ display: "flex", alignItems: "center", gap: "10px", marginTop: "6px", flexWrap: "wrap" }}>
+            <h1 style={{ fontSize: "20px", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.02em", margin: 0 }}>
               Today&apos;s AI Intelligence
             </h1>
-            {!loading && signals.length > 0 && (
-              <span style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                color: "#f59e0b",
-                background: "rgba(245,158,11,0.08)",
-                border: "1px solid rgba(245,158,11,0.15)",
-                borderRadius: "3px",
-                padding: "2px 8px",
-                letterSpacing: "0.04em",
-              }}>
-                {signals.length} signals
-              </span>
-            )}
             {userRole && (
-              <span style={{
-                fontSize: "11px",
-                fontWeight: 500,
-                color: "#7c3aed",
-                letterSpacing: "0.04em",
-                background: "rgba(124,58,237,0.1)",
-                border: "1px solid rgba(124,58,237,0.2)",
-                borderRadius: "3px",
-                padding: "2px 8px",
-              }}>
+              <span style={{ fontSize: "10px", fontWeight: 600, color: "#7c3aed", background: "rgba(124,58,237,0.1)", border: "1px solid rgba(124,58,237,0.2)", borderRadius: "3px", padding: "2px 7px", letterSpacing: "0.04em" }}>
                 personalized
               </span>
             )}
           </div>
-          <p style={{ fontSize: "14px", color: "#52525b", marginTop: "8px", marginBottom: 0, lineHeight: 1.5 }}>
-            What changed overnight — and what to build next.
-          </p>
         </div>
+
+        {/* ── In today's brief — Rundown-style preview ─────────── */}
+        {!loading && !fetchError && zone1.length > 0 && (
+          <div style={{
+            background: "#111111",
+            border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: "8px",
+            padding: "16px 20px",
+            marginBottom: "24px",
+          }}>
+            <span style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#3f3f46", display: "block", marginBottom: "12px" }}>
+              In today&apos;s brief
+            </span>
+            <ul style={{ margin: 0, padding: 0, listStyle: "none", display: "flex", flexDirection: "column", gap: "8px" }}>
+              {zone1.map((s, i) => (
+                <li key={s.id} style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+                  <span style={{ fontSize: "11px", fontWeight: 700, color: "rgba(124,58,237,0.4)", minWidth: "20px", fontVariantNumeric: "tabular-nums" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <a href={`/article/${s.id}`} style={{ fontSize: "13px", color: "#a1a1aa", textDecoration: "none", lineHeight: 1.4 }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#ffffff"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#a1a1aa"; }}
+                  >
+                    {s.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
 
         {/* ── Loading state ─────────────────────────────────────── */}
         {loading && (
@@ -271,8 +273,8 @@ export default function AppPage() {
           </div>
         )}
 
-        {/* ── Zone 1: editorial list ────────────────────────────── */}
-        <section>
+        {/* ── Zone 1: editorial cards ───────────────────────────── */}
+        <section style={{ display: "flex", flexDirection: "column", gap: "12px" }}>
           {zone1.map((signal, i) => (
             <Zone1Signal
               key={signal.id}
@@ -283,30 +285,25 @@ export default function AppPage() {
           ))}
         </section>
 
-        {/* ── Zone 1→2 divider ──────────────────────────────────── */}
+        {/* ── Zone 2 section header — Rundown "LATEST DEVELOPMENTS" ── */}
         {zone2.length > 0 && (
-          <div
-            style={{
+          <div style={{ margin: "40px 0 20px" }}>
+            <div style={{
+              background: "#111111",
+              border: "1px solid rgba(255,255,255,0.07)",
+              borderRadius: "6px",
+              padding: "10px 16px",
               display: "flex",
               alignItems: "center",
-              gap: "16px",
-              margin: "48px 0 32px",
-            }}
-          >
-            <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.04)" }} />
-            <span
-              style={{
-                fontSize: "11px",
-                color: "#52525b",
-                whiteSpace: "nowrap",
-                letterSpacing: "0.08em",
-                textTransform: "uppercase",
-                fontWeight: 500,
-              }}
-            >
-              More signals · {zone2.length} today
-            </span>
-            <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.04)" }} />
+              justifyContent: "space-between",
+            }}>
+              <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#ffffff" }}>
+                More Signals
+              </span>
+              <span style={{ fontSize: "11px", color: "#3f3f46", fontWeight: 500 }}>
+                {zone2All.length} today
+              </span>
+            </div>
           </div>
         )}
 
