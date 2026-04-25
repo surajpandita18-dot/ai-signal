@@ -32,7 +32,7 @@ function getEmoji(tags: string[]): string {
 }
 
 function getCategoryColor(tags: string[]): string {
-  return tags.map((t) => CATEGORY_COLOR[t.toLowerCase()]).find(Boolean) ?? "#52525b";
+  return tags.map((t) => CATEGORY_COLOR[t.toLowerCase()]).find(Boolean) ?? "#6b7280";
 }
 
 function cleanSummary(summary: string): string {
@@ -51,16 +51,10 @@ function loadProcessedSignals(): Signal[] {
     const filePath = path.join(process.cwd(), "lib", "processedSignals.json");
     if (!existsSync(filePath)) return [];
     return JSON.parse(readFileSync(filePath, "utf-8")) as Signal[];
-  } catch {
-    return [];
-  }
+  } catch { return []; }
 }
 
-export default async function ArticlePage({
-  params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+export default async function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
   const { id } = await params;
   const normalizedRouteId = normalizeId(id);
 
@@ -81,20 +75,25 @@ export default async function ArticlePage({
 
   if (!article) {
     return (
-      <main style={{ minHeight: "100vh", background: "#0a0a0a" }}>
+      <main style={{ minHeight: "100vh", background: "#ffffff" }}>
+        <nav style={{ background: "#111111", height: "52px", padding: "0 24px", display: "flex", alignItems: "center" }}>
+          <Link href="/app" style={{ fontWeight: 800, fontSize: "14px", color: "#ffffff", textDecoration: "none", letterSpacing: "0.04em" }}>
+            AI Signal
+          </Link>
+        </nav>
         <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px" }}>
-          <Link href="/app" style={{ fontSize: "13px", color: "#52525b", textDecoration: "none" }}>← Back</Link>
-          <p style={{ color: "#52525b", marginTop: "48px" }}>Signal not found.</p>
+          <p style={{ color: "#9ca3af" }}>Signal not found.</p>
         </div>
       </main>
     );
   }
 
+  // Related signals
   const relatedArticles: RealArticle[] = [];
   if (articleTags.length > 0) {
-    const candidates = processedSignals.length > 0
-      ? processedSignals.filter((s) => normalizeId(s.id) !== normalizedRouteId && s.tags?.some((t) => articleTags.includes(t)))
-      : [];
+    const candidates = processedSignals.filter(
+      (s) => normalizeId(s.id) !== normalizedRouteId && s.tags?.some((t) => articleTags.includes(t))
+    );
     for (const c of candidates.slice(0, 3)) {
       const raw = realNews.find((r) => normalizeId(r.id) === normalizeId(c.id));
       if (raw) relatedArticles.push(raw);
@@ -111,110 +110,114 @@ export default async function ArticlePage({
   const cleanedSummary = cleanSummary(article.summary);
 
   return (
-    <main style={{ minHeight: "100vh", background: "#0a0a0a", color: "#ffffff" }}>
+    <main style={{ minHeight: "100vh", background: "#ffffff" }}>
 
-      {/* Nav */}
+      {/* Dark navbar — exactly Rundown */}
       <nav style={{
-        position: "sticky", top: 0, zIndex: 100,
-        background: "#0a0a0a",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        height: "52px", padding: "0 32px",
-        display: "flex", alignItems: "center", justifyContent: "space-between",
+        background: "#111111",
+        height: "56px",
+        padding: "0 32px",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "space-between",
+        position: "sticky",
+        top: 0,
+        zIndex: 100,
       }}>
-        <Link href="/app" style={{ textDecoration: "none" }}>
-          <span style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "0.06em", color: "#ffffff" }}>
-            ● AI SIGNAL
-          </span>
+        <Link href="/app" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none", letterSpacing: "0.04em" }}>
+          AI Signal
         </Link>
-        <Link href="/app" style={{ fontSize: "13px", color: "#52525b", textDecoration: "none", fontWeight: 500 }}>
-          ← Back to feed
+        <Link href="/app" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none", fontWeight: 500 }}>
+          ← Feed
         </Link>
       </nav>
 
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px 96px" }}>
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "40px 24px 96px" }}>
 
-        {/* Category + meta */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px", flexWrap: "wrap" }}>
+        {/* Breadcrumb */}
+        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "24px", flexWrap: "wrap" }}>
+          <Link href="/app" style={{ fontSize: "13px", color: "#6b7280", textDecoration: "none" }}>Feed</Link>
+          <span style={{ color: "#d1d5db", fontSize: "13px" }}>›</span>
           {catLabel && (
-            <span style={{
-              fontSize: "11px", fontWeight: 700,
-              textTransform: "uppercase", letterSpacing: "0.1em",
-              color: catColor,
-            }}>
-              {catLabel}
-            </span>
+            <>
+              <span style={{ fontSize: "13px", color: catColor, fontWeight: 600 }}>{catLabel}</span>
+              <span style={{ color: "#d1d5db", fontSize: "13px" }}>›</span>
+            </>
           )}
-          {catLabel && <span style={{ color: "#27272a" }}>·</span>}
-          <span style={{ fontSize: "11px", color: "#3f3f46", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
-            {article.source}
-          </span>
-          <span style={{ color: "#27272a" }}>·</span>
-          <span style={{ fontSize: "11px", color: "#3f3f46" }}>
-            {new Date(article.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+          <span style={{ fontSize: "13px", color: "#374151", fontWeight: 500 }}>
+            {article.title.slice(0, 40)}{article.title.length > 40 ? "…" : ""}
           </span>
         </div>
 
         {/* Title */}
         <h1 style={{
-          fontSize: "clamp(22px, 4vw, 32px)",
-          fontWeight: 800, color: "#ffffff",
-          lineHeight: 1.2, letterSpacing: "-0.025em",
-          marginBottom: "32px",
+          fontSize: "clamp(24px, 4vw, 36px)",
+          fontWeight: 800,
+          color: "#111111",
+          lineHeight: 1.2,
+          letterSpacing: "-0.025em",
+          marginBottom: "12px",
         }}>
           {emoji} {article.title}
         </h1>
 
-        {/* Divider */}
-        <div style={{ height: "1px", background: "rgba(255,255,255,0.07)", marginBottom: "32px" }} />
+        {/* Meta */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "32px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "13px", color: "#6b7280", fontWeight: 500 }}>{article.source}</span>
+          <span style={{ color: "#d1d5db" }}>·</span>
+          <span style={{ fontSize: "13px", color: "#9ca3af" }}>
+            {new Date(article.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+          </span>
+          {catLabel && (
+            <>
+              <span style={{ color: "#d1d5db" }}>·</span>
+              <span style={{ fontSize: "12px", fontWeight: 700, color: catColor, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                {catLabel}
+              </span>
+            </>
+          )}
+        </div>
 
-        {/* THE SIGNAL */}
+        {/* Divider */}
+        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "28px" }} />
+
+        {/* THE RUNDOWN — main summary */}
         {(hasLLM ? what : cleanedSummary) && (
-          <div style={{ marginBottom: "28px" }}>
-            <p style={{
-              fontSize: "11px", fontWeight: 700,
-              textTransform: "uppercase", letterSpacing: "0.12em",
-              color: "#52525b", margin: "0 0 10px",
-            }}>
-              The Signal
-            </p>
-            <p style={{ fontSize: "16px", color: "#a1a1aa", lineHeight: 1.8, margin: 0 }}>
-              {hasLLM ? what : cleanedSummary}
-            </p>
-          </div>
+          <p style={{ fontSize: "16px", color: "#1f2937", lineHeight: 1.8, marginBottom: "20px" }}>
+            <strong style={{ color: "#111111" }}>The Signal: </strong>
+            {hasLLM ? what : cleanedSummary}
+          </p>
         )}
 
-        {/* WHY IT MATTERS */}
+        {/* THE DETAILS — why as bullets if it contains multiple points, else paragraph */}
         {hasLLM && why && (
-          <div style={{ marginBottom: "28px" }}>
-            <p style={{
-              fontSize: "11px", fontWeight: 700,
-              textTransform: "uppercase", letterSpacing: "0.12em",
-              color: "#52525b", margin: "0 0 10px",
-            }}>
-              Why it matters
-            </p>
-            <p style={{ fontSize: "16px", color: "#a1a1aa", lineHeight: 1.8, margin: 0 }}>
+          <div style={{ marginBottom: "20px" }}>
+            <p style={{ fontSize: "16px", color: "#1f2937", lineHeight: 1.8, margin: 0 }}>
+              <strong style={{ color: "#111111" }}>Why it matters: </strong>
               {why}
             </p>
           </div>
         )}
 
-        {/* BUILDER TAKEAWAY */}
+        {/* BUILDER TAKEAWAY — our differentiator */}
         {hasLLM && takeaway && (
           <>
-            <div style={{ height: "1px", background: "rgba(255,255,255,0.06)", margin: "28px 0" }} />
+            <div style={{ height: "1px", background: "#e5e7eb", margin: "24px 0" }} />
             <div style={{
-              borderLeft: "2px solid rgba(245,158,11,0.5)",
-              paddingLeft: "16px", marginBottom: "32px",
+              background: "#fffbeb",
+              borderLeft: "3px solid #f59e0b",
+              borderRadius: "0 6px 6px 0",
+              padding: "16px 20px",
+              marginBottom: "28px",
             }}>
               <p style={{
                 fontSize: "11px", fontWeight: 700,
-                textTransform: "uppercase", letterSpacing: "0.12em",
-                color: "#f59e0b", margin: "0 0 10px",
+                textTransform: "uppercase", letterSpacing: "0.1em",
+                color: "#d97706", margin: "0 0 8px",
               }}>
                 Builder Takeaway
               </p>
-              <p style={{ fontSize: "16px", color: "#f59e0b", lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
+              <p style={{ fontSize: "15px", color: "#92400e", lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
                 {takeaway}
               </p>
             </div>
@@ -222,42 +225,40 @@ export default async function ArticlePage({
         )}
 
         {!hasLLM && !cleanedSummary && (
-          <p style={{ fontSize: "15px", color: "#52525b", lineHeight: 1.75, marginBottom: "32px" }}>
+          <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: 1.75, marginBottom: "28px" }}>
             Full signal analysis not yet available.
           </p>
         )}
 
         {/* Divider */}
-        <div style={{ height: "1px", background: "rgba(255,255,255,0.06)", marginBottom: "24px" }} />
+        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "20px" }} />
 
         {/* Links */}
-        <div style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap", marginBottom: "56px" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "20px", flexWrap: "wrap", marginBottom: "52px" }}>
           <a
             href={article.link}
             target="_blank"
             rel="noreferrer"
             style={{
-              fontSize: "14px", fontWeight: 700,
-              color: "#ffffff", textDecoration: "underline",
-              textDecorationColor: "rgba(255,255,255,0.25)",
+              fontSize: "14px", fontWeight: 700, color: "#111111",
+              textDecoration: "underline",
+              textDecorationColor: "#d1d5db",
               textUnderlineOffset: "3px",
             }}
           >
-            Read original source ↗
+            Read original ↗
           </a>
           <a
             href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title.slice(0, 180))}&url=${encodeURIComponent(article.link)}`}
-            target="_blank"
-            rel="noreferrer"
-            style={{ fontSize: "13px", color: "#52525b", textDecoration: "none", fontWeight: 500 }}
+            target="_blank" rel="noreferrer"
+            style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}
           >
             Share on 𝕏
           </a>
           <a
             href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(article.link)}`}
-            target="_blank"
-            rel="noreferrer"
-            style={{ fontSize: "13px", color: "#52525b", textDecoration: "none", fontWeight: 500 }}
+            target="_blank" rel="noreferrer"
+            style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}
           >
             LinkedIn
           </a>
@@ -268,8 +269,8 @@ export default async function ArticlePage({
           <>
             <p style={{
               fontSize: "11px", fontWeight: 700,
-              textTransform: "uppercase", letterSpacing: "0.12em",
-              color: "#3f3f46", marginBottom: "16px",
+              textTransform: "uppercase", letterSpacing: "0.1em",
+              color: "#9ca3af", marginBottom: "16px",
             }}>
               Related Signals
             </p>
@@ -278,25 +279,19 @@ export default async function ArticlePage({
                 <div key={related.id} style={{
                   paddingTop: idx === 0 ? "0" : "16px",
                   marginTop: idx === 0 ? "0" : "16px",
-                  borderTop: idx === 0 ? "none" : "1px solid rgba(255,255,255,0.05)",
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "baseline",
-                  gap: "16px",
+                  borderTop: idx === 0 ? "none" : "1px solid #f3f4f6",
+                  display: "flex", justifyContent: "space-between",
+                  alignItems: "baseline", gap: "16px",
                 }}>
                   <Link
                     href={`/article/${related.id}`}
-                    style={{
-                      fontSize: "14px", color: "#a1a1aa",
-                      textDecoration: "none", lineHeight: 1.5,
-                      fontWeight: 500, flex: 1,
-                    }}
-                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#ffffff"; }}
-                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#a1a1aa"; }}
+                    style={{ fontSize: "14px", color: "#374151", textDecoration: "none", lineHeight: 1.5, fontWeight: 500, flex: 1 }}
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#111111"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#374151"; }}
                   >
                     {getEmoji(related.tags ?? [])} {related.title}
                   </Link>
-                  <span style={{ fontSize: "10px", color: "#3f3f46", textTransform: "uppercase", letterSpacing: "0.08em", flexShrink: 0 }}>
+                  <span style={{ fontSize: "10px", color: "#9ca3af", textTransform: "uppercase", letterSpacing: "0.08em", flexShrink: 0 }}>
                     {related.source}
                   </span>
                 </div>

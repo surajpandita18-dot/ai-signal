@@ -1,104 +1,33 @@
-# AI Signal — System Brain
-Last updated: 2026-04-25
+# AI Signal
 
-## What is AI Signal
-Premium daily intelligence briefing for PMs, founders, and engineers building AI products.
+## Product
+Daily AI intelligence briefing for builders.
 Tagline: "AI changed overnight. Here's what to build."
-Feel: Rundown AI energy + Linear precision.
+Live: ai-signal-eta.vercel.app
+Stack: Next.js 16, TypeScript, Vercel, Gemini primary / Claude fallback pipeline.
 
-## User
-Primary: CTO / Technical Founder at AI startup
-Pain: Too much AI noise, no time to filter what matters
-Job: Know what changed overnight + what to do next
+## Users
+CTO / Technical Founder at AI startups.
+Pain: too much AI noise, no time to filter.
+Job: know what changed overnight + what to build next.
 
----
+## Data flow
+RSS sources → lib/realNews.json (raw) → lib/processedSignals.json (LLM processed: what/why/takeaway) → /api/news → UI
 
-## Session Ritual
+## Routes
+/ → landing (email capture)
+/app → main feed (Zone1 list + Zone2 grid)
+/article/[id] → single signal page
+/saved → bookmarked signals
+/api/subscribe → saves email to subscribers.json
 
-**START:**
-Read `SYSTEM_STATE.md` — pick ONE task only.
+## Design reference
+Rundown AI (therundown.ai) — exactly this:
+- Dark navbar (black)
+- White page background
+- Newsletter content structure
+- "The Rundown:" / "The details:" / "Why it matters:" labels
+- Clean open typography, no card boxes
 
-**BEFORE any design change:**
-Read `DESIGN_SYSTEM.md` + last 5 entries in `FEEDBACK_MEMORY.md`. Then implement.
-
-**AFTER any change:**
-Run `npm run build` (zero TS errors required).
-Append session summary to `FEEDBACK_MEMORY.md`.
-Update `SYSTEM_STATE.md`: what shipped + next action.
-
-**FEEDBACK RECEIVED:**
-→ Design feedback: log in `FEEDBACK_MEMORY.md` → update `DESIGN_SYSTEM.md` → implement.
-→ "Yeh acha nahi": ask what specifically → log → check if 3x pattern → make it a rule.
-→ Screenshot shared: extract 3–5 patterns → add dated section to `DESIGN_SYSTEM.md` → implement targeted only.
-→ Competitor shared: add sources to `SOURCES.md` → add patterns to `DESIGN_SYSTEM.md`.
-→ Same mistake 3x: promote to named rule in `DESIGN_SYSTEM.md`, never repeat.
-
----
-
-## File Roles
-
-| File | Owns |
-|------|------|
-| `CLAUDE.md` (this) | Brain, vision, workflow |
-| `DESIGN_SYSTEM.md` | ALL visual decisions — overrides this |
-| `FEEDBACK_MEMORY.md` | Learning log + rules (append only) |
-| `SYSTEM_STATE.md` | Current focus + next steps |
-| `SOURCES.md` | Pipeline source list |
-
-Design rule: `DESIGN_SYSTEM.md` wins over everything visual.
-Flexibility rule: Never reject changes due to past decisions. Adapt always.
-
----
-
-## Product Principles
-1. Fewer signals, more insight
-2. Every signal: WHAT + WHY + TAKEAWAY
-3. Calm senior-operator voice — no hype
-4. Fast to scan — editorial not algorithmic
-5. One original layer per signal
-
----
-
-## Feedback Protocol — run this every time feedback arrives
-
-When user gives feedback (screenshot, text, comparison):
-
-1. **Identify delta** — what specifically is different vs current state?
-2. **Check FEEDBACK_MEMORY.md** — has this been said before? If 3x → promote to rule
-3. **Determine scope:**
-   - Visual change → update `DESIGN_SYSTEM.md` first, then implement in code
-   - Workflow change → update `CLAUDE.md` (this file)
-   - Priority/focus change → update `SYSTEM_STATE.md`
-   - New source → update `SOURCES.md`
-4. **Make targeted code changes** — only what the feedback requires
-5. **Run `npm run build`** — verify zero errors
-6. **Append session summary to `FEEDBACK_MEMORY.md`**
-7. **Update `SYSTEM_STATE.md`** — what shipped + next step
-
-Do NOT implement feedback before reading DESIGN_SYSTEM.md.
-Do NOT make changes beyond what the feedback specifically requests.
-
----
-
-## Design Agent
-When design needs to change:
-1. Read DESIGN_SYSTEM.md first
-2. Read last 3 entries in FEEDBACK_MEMORY.md
-3. Show exactly which files will change + why
-4. Make targeted change only
-5. npm run build — verify clean
-6. Append to FEEDBACK_MEMORY.md
-
-Core rule: DARK everywhere. No exceptions.
-Reference: Rundown AI (therundown.ai) — dark editorial feel.
-If unsure about anything visual → check DESIGN_SYSTEM.md first.
-
-## Anti-Drift Rule
-DARK everywhere. No white. No light backgrounds. No grey backgrounds.
-If Claude suggests light themes or white backgrounds → STOP. Re-read DESIGN_SYSTEM.md. Stay dark. Stay editorial.
-This applies to: landing page, article pages, app feed, all routes.
-
-## Never Break
-RSS feed · search · source filter · bookmarks · read state ·
-unread toggle · saved page · article pages · auto-refresh
-No `transition: all`. No light backgrounds. No amber outside TAKEAWAY.
+## Never break
+RSS feed · search · source filter · bookmarks · read state · unread toggle · auto-refresh
