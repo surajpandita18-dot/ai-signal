@@ -4,7 +4,6 @@ import path from "path";
 import realNewsRaw from "@/lib/realNews.json";
 import type { Signal } from "@/lib/types";
 
-// ── Local type for raw realNews entries ──────────────────────────────────────
 type RealArticle = {
   id: string;
   source: string;
@@ -16,53 +15,37 @@ type RealArticle = {
   tags?: string[];
 };
 
-// ── Helpers (keep) ───────────────────────────────────────────────────────────
-function splitSummary(summary: string) {
-  const clean = summary.replace(/\s+/g, " ").trim();
-  if (
-    !clean ||
-    clean.toLowerCase() === "no summary available" ||
-    clean.toLowerCase() === "no summary available."
-  )
-    return [];
-  const sentences = clean.split(/(?<=[.!?])\s+/);
-  const paragraphs: string[] = [];
-  let current = "";
-  for (const sentence of sentences) {
-    if ((current + " " + sentence).trim().length > 260) {
-      if (current.trim()) paragraphs.push(current.trim());
-      current = sentence;
-    } else {
-      current = `${current} ${sentence}`.trim();
-    }
-  }
-  if (current.trim()) paragraphs.push(current.trim());
-  return paragraphs;
+const CATEGORY_EMOJI: Record<string, string> = {
+  llm: "🧠", models: "🧠", research: "🔬", infra: "⚡",
+  infrastructure: "⚡", funding: "💰", product: "🚀",
+  agents: "🤖", "open source": "📦", policy: "🛡️",
+};
+
+function getEmoji(tags: string[]): string {
+  return tags.map((t) => CATEGORY_EMOJI[t.toLowerCase()]).find(Boolean) ?? "📡";
 }
 
-function getFallbackArticleNote(article: RealArticle) {
-  return `This signal was pulled from ${article.source}. A full summary was not available in the feed, but the headline suggests a development worth tracking under ${
-    article.category || "AI News"
-  }. Use the original source link below to read the complete piece.`;
+function cleanSummary(summary: string): string {
+  return summary
+    .replace(/arXiv:\S+\s+Announce Type:\s+\w+\s+Abstract:\s*/i, "")
+    .replace(/^Abstract:\s*/i, "")
+    .trim();
 }
 
 function normalizeId(value: string) {
   return decodeURIComponent(value).trim().toLowerCase();
 }
 
-// ── Load processedSignals once (may not exist) ───────────────────────────────
 function loadProcessedSignals(): Signal[] {
   try {
     const filePath = path.join(process.cwd(), "lib", "processedSignals.json");
     if (!existsSync(filePath)) return [];
-    const raw = readFileSync(filePath, "utf-8");
-    return JSON.parse(raw) as Signal[];
+    return JSON.parse(readFileSync(filePath, "utf-8")) as Signal[];
   } catch {
     return [];
   }
 }
 
-// ── Page ─────────────────────────────────────────────────────────────────────
 export default async function ArticlePage({
   params,
 }: {
@@ -71,570 +54,271 @@ export default async function ArticlePage({
   const { id } = await params;
   const normalizedRouteId = normalizeId(id);
 
-  // Load data
   const realNews = realNewsRaw as RealArticle[];
   const processedSignals = loadProcessedSignals();
 
-  // Find article
-  const article = realNews.find(
-    (item) => normalizeId(item.id) === normalizedRouteId
-  );
-
-  // Merge LLM fields from processedSignals if available
-  const processed = processedSignals.find(
-    (s) => normalizeId(s.id) === normalizedRouteId
-  );
+  const article = realNews.find((item) => normalizeId(item.id) === normalizedRouteId);
+  const processed = processedSignals.find((s) => normalizeId(s.id) === normalizedRouteId);
 
   const what = processed?.what ?? null;
   const why = processed?.why ?? null;
   const takeaway = processed?.takeaway ?? null;
   const hasLLM = !!(processed?.processed && (what || why || takeaway));
   const articleTags: string[] = article?.tags ?? processed?.tags ?? [];
+  const emoji = getEmoji(articleTags);
 
-  // ── Not found ──
   if (!article) {
     return (
-      <main
-        style={{
-          minHeight: "100vh",
-          background: "#09090b",
-        }}
-      >
-        <div style={{ maxWidth: "900px", margin: "0 auto", padding: "48px 28px" }}>
-          <Link
-            href="/"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              background: "rgba(255,255,255,0.04)",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: "8px",
-              color: "#52525b",
-              fontSize: "11px",
-              fontWeight: 500,
-              padding: "7px 13px",
-              textDecoration: "none",
-              marginBottom: "32px",
-            }}
-          >
-            ← Back to home
-          </Link>
-          <div
-            style={{
-              background: "#1a1a20",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: "8px",
-              padding: "60px 40px",
-              textAlign: "center",
-            }}
-          >
-            <h1 style={{ fontSize: "18px", fontWeight: 600, color: "#fafafa" }}>
-              Article not found
-            </h1>
-            <p style={{ fontSize: "13px", color: "#52525b", marginTop: "8px" }}>
-              This signal may have been removed, refreshed, or the route id may no longer
-              match the latest feed.
-            </p>
-          </div>
+      <main style={{ minHeight: "100vh", background: "#0a0a0a" }}>
+        <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px" }}>
+          <Link href="/app" style={{ fontSize: "13px", color: "#52525b", textDecoration: "none" }}>← Back</Link>
+          <p style={{ color: "#52525b", marginTop: "48px" }}>Signal not found.</p>
         </div>
       </main>
     );
   }
 
-  const paragraphs = splitSummary(article.summary);
-
-  // ── Related signals: up to 3 same-tag, not self ──
+  // Related signals
   const relatedArticles: RealArticle[] = [];
   if (articleTags.length > 0) {
-    // Try processedSignals first for richer tag data, fall back to realNews
-    const candidates =
-      processedSignals.length > 0
-        ? processedSignals.filter((s) => {
-            if (normalizeId(s.id) === normalizedRouteId) return false;
-            return s.tags?.some((t) => articleTags.includes(t));
-          })
-        : [];
-
-    if (candidates.length > 0) {
-      // Map processed back to RealArticle shape for display
-      for (const c of candidates.slice(0, 3)) {
-        const raw = realNews.find((r) => normalizeId(r.id) === normalizeId(c.id));
-        if (raw) relatedArticles.push(raw);
-      }
-    } else {
-      // Fall back to realNews tag matching
+    const candidates = processedSignals.length > 0
+      ? processedSignals.filter((s) => normalizeId(s.id) !== normalizedRouteId && s.tags?.some((t) => articleTags.includes(t)))
+      : [];
+    for (const c of candidates.slice(0, 3)) {
+      const raw = realNews.find((r) => normalizeId(r.id) === normalizeId(c.id));
+      if (raw) relatedArticles.push(raw);
+    }
+    if (relatedArticles.length === 0) {
       for (const r of realNews) {
         if (relatedArticles.length >= 3) break;
         if (normalizeId(r.id) === normalizedRouteId) continue;
-        const rTags: string[] = r.tags ?? [];
-        if (rTags.some((t) => articleTags.includes(t))) {
-          relatedArticles.push(r);
-        }
+        if ((r.tags ?? []).some((t) => articleTags.includes(t))) relatedArticles.push(r);
       }
     }
   }
 
-  // ── Render ──
+  const cleanedSummary = cleanSummary(article.summary);
+
   return (
-    <main style={{ minHeight: "100vh", background: "#09090b" }}>
-      {/* Sticky navbar */}
-      <nav
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 100,
-          background: "rgba(9,9,11,0.94)",
-          backdropFilter: "blur(20px)",
-          WebkitBackdropFilter: "blur(20px)",
-          borderBottom: "1px solid rgba(255,255,255,0.06)",
-          height: "60px",
-          padding: "0 28px",
-          display: "flex",
-          alignItems: "center",
-          gap: "16px",
-        }}
-      >
-        <Link
-          href="/"
-          style={{
-            background: "rgba(255,255,255,0.04)",
-            border: "1px solid rgba(255,255,255,0.06)",
-            borderRadius: "8px",
-            color: "#52525b",
-            fontSize: "11px",
-            fontWeight: 500,
-            padding: "7px 13px",
-            textDecoration: "none",
-          }}
-        >
-          ← Back
+    <main style={{ minHeight: "100vh", background: "#0a0a0a" }}>
+
+      {/* Navbar */}
+      <nav style={{
+        position: "sticky", top: 0, zIndex: 100,
+        background: "#0a0a0a",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        height: "52px", padding: "0 24px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+      }}>
+        <Link href="/app" style={{ display: "flex", alignItems: "center", gap: "8px", textDecoration: "none" }}>
+          <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#7c3aed", display: "inline-block" }} />
+          <span style={{ fontWeight: 800, fontSize: "13px", letterSpacing: "0.1em", color: "#ffffff", textTransform: "uppercase" }}>
+            AI Signal
+          </span>
         </Link>
-        <span
-          style={{
-            fontSize: "11px",
-            letterSpacing: "0.08em",
-            color: "#52525b",
-            fontWeight: 500,
-            textTransform: "uppercase",
-          }}
-        >
-          {article.source}
-        </span>
+        <Link href="/app" style={{ fontSize: "12px", color: "#52525b", textDecoration: "none", fontWeight: 500 }}>
+          ← Back to feed
+        </Link>
       </nav>
 
-      <div style={{ maxWidth: "900px", margin: "0 auto", padding: "32px 28px" }}>
-        <article>
-          {/* ── Flat header block ── */}
-          <div
-            style={{
-              background: "#1a1a20",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: "8px",
-              padding: "36px 40px",
-              marginBottom: "16px",
-            }}
-          >
-            {/* Source + date labels */}
-            <div
-              style={{
-                display: "flex",
-                flexWrap: "wrap",
-                alignItems: "center",
-                gap: "10px",
-                marginBottom: "16px",
-              }}
-            >
-              <span
-                style={{
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  color: "#52525b",
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                {article.source}
-              </span>
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "40px 24px 96px" }}>
+
+        {/* Source + date — Rundown category header style */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
+          <span style={{ fontSize: "11px", fontWeight: 700, color: "#3f3f46", textTransform: "uppercase", letterSpacing: "0.1em" }}>
+            {article.source}
+          </span>
+          <span style={{ color: "#27272a" }}>·</span>
+          <span style={{ fontSize: "11px", color: "#3f3f46" }}>
+            {new Date(article.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
+          </span>
+          {articleTags[0] && (
+            <>
               <span style={{ color: "#27272a" }}>·</span>
-              <span
-                style={{
-                  fontSize: "11px",
-                  color: "#52525b",
-                  letterSpacing: "0.08em",
-                }}
-              >
-                {article.date}
+              <span style={{ fontSize: "10px", fontWeight: 700, color: "#7c3aed", textTransform: "uppercase", letterSpacing: "0.06em" }}>
+                {articleTags[0]}
               </span>
-              {article.category && (
-                <>
-                  <span style={{ color: "#27272a" }}>·</span>
-                  <span
-                    style={{
-                      fontSize: "11px",
-                      color: "#52525b",
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      fontWeight: 500,
-                    }}
-                  >
-                    {article.category}
-                  </span>
-                </>
-              )}
-            </div>
+            </>
+          )}
+        </div>
 
-            {/* Title */}
-            <h1
-              style={{
-                fontSize: "24px",
-                fontWeight: 700,
-                color: "#fafafa",
-                lineHeight: 1.25,
-                letterSpacing: "-0.02em",
-                maxWidth: "680px",
-                margin: 0,
-              }}
-            >
-              {article.title}
-            </h1>
-          </div>
+        {/* Title */}
+        <h1 style={{
+          fontSize: "clamp(22px, 4vw, 30px)",
+          fontWeight: 800,
+          color: "#ffffff",
+          lineHeight: 1.2,
+          letterSpacing: "-0.025em",
+          marginBottom: "32px",
+        }}>
+          {emoji} {article.title}
+        </h1>
 
-          {/* ── LLM fields block ── */}
-          {hasLLM && (
-            <div
-              style={{
-                background: "#0f0f12",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: "8px",
-                padding: "28px 32px",
-                marginBottom: "16px",
-                display: "flex",
-                flexDirection: "column",
-                gap: "24px",
-              }}
-            >
-              {/* WHAT */}
-              {what && (
-                <div>
-                  <span
-                    style={{
-                      display: "block",
-                      fontSize: "11px",
-                      fontWeight: 500,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "#52525b",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    What
-                  </span>
-                  <p
-                    style={{
-                      fontSize: "15px",
-                      color: "#a1a1aa",
-                      lineHeight: 1.6,
-                      margin: 0,
-                    }}
-                  >
-                    {what}
-                  </p>
-                </div>
-              )}
+        {/* Main content card — Rundown newsletter style */}
+        <div style={{
+          background: "#111111",
+          border: "1px solid rgba(255,255,255,0.08)",
+          borderRadius: "8px",
+          padding: "28px 28px",
+          marginBottom: "16px",
+        }}>
 
-              {/* WHY */}
-              {why && (
-                <div>
-                  <span
-                    style={{
-                      display: "block",
-                      fontSize: "11px",
-                      fontWeight: 500,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "#52525b",
-                      marginBottom: "6px",
-                    }}
-                  >
-                    Why
-                  </span>
-                  <p
-                    style={{
-                      fontSize: "15px",
-                      color: "#a1a1aa",
-                      lineHeight: 1.6,
-                      margin: 0,
-                    }}
-                  >
-                    {why}
-                  </p>
-                </div>
-              )}
-
-              {/* TAKEAWAY — free for all */}
-              {takeaway && (
-                <div
-                  style={{
-                    borderLeft: "2px solid rgba(245,158,11,0.4)",
-                    paddingLeft: "12px",
-                  }}
-                >
-                  <span
-                    style={{
-                      display: "block",
-                      fontSize: "11px",
-                      fontWeight: 500,
-                      textTransform: "uppercase",
-                      letterSpacing: "0.08em",
-                      color: "#f59e0b",
-                      marginBottom: "4px",
-                    }}
-                  >
-                    Takeaway
-                  </span>
-                  <span
-                    style={{
-                      display: "block",
-                      fontSize: "15px",
-                      color: "#f59e0b",
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {takeaway}
-                  </span>
-                </div>
-              )}
-            </div>
+          {/* WHAT — inline bold prefix, Rundown style */}
+          {hasLLM && what && (
+            <p style={{ fontSize: "16px", color: "#a1a1aa", lineHeight: 1.75, marginBottom: "20px" }}>
+              <strong style={{ color: "#ffffff", fontWeight: 700 }}>The Signal: </strong>
+              {what}
+            </p>
           )}
 
-          {/* ── Summary body ── */}
-          <div
-            style={{
-              background: "#0f0f12",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: "8px",
-              padding: "32px 36px",
-              marginBottom: "16px",
-            }}
-          >
-            {/* Signal Summary label */}
-            <div
-              style={{
-                borderLeft: "2px solid #7c3aed",
-                paddingLeft: "12px",
-                marginBottom: "24px",
-              }}
-            >
-              <p
-                style={{
-                  fontSize: "11px",
-                  letterSpacing: "0.08em",
-                  color: "#52525b",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  marginBottom: "6px",
-                }}
-              >
-                Signal Summary
-              </p>
-              <p style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.6, margin: 0 }}>
-                {paragraphs.length > 0
-                  ? article.summary
-                  : "A detailed summary was not available in the source feed for this article."}
+          {/* WHY — inline bold prefix */}
+          {hasLLM && why && (
+            <p style={{ fontSize: "16px", color: "#a1a1aa", lineHeight: 1.75, marginBottom: "20px" }}>
+              <strong style={{ color: "#ffffff", fontWeight: 700 }}>Why it matters: </strong>
+              {why}
+            </p>
+          )}
+
+          {/* TAKEAWAY — amber left border, our differentiator */}
+          {hasLLM && takeaway && (
+            <div style={{
+              borderLeft: "2px solid rgba(245,158,11,0.5)",
+              paddingLeft: "16px",
+              marginTop: hasLLM ? "8px" : "0",
+            }}>
+              <p style={{ fontSize: "15px", color: "#f59e0b", lineHeight: 1.7, margin: 0 }}>
+                <strong style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", marginRight: "10px", opacity: 0.8 }}>
+                  Takeaway
+                </strong>
+                {takeaway}
               </p>
             </div>
-
-            {/* Paragraphs */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "16px" }}>
-              {paragraphs.length > 0 ? (
-                paragraphs.map((paragraph, index) => (
-                  <p
-                    key={index}
-                    style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.7, margin: 0 }}
-                  >
-                    {paragraph}
-                  </p>
-                ))
-              ) : (
-                <p style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.7, margin: 0 }}>
-                  {getFallbackArticleNote(article)}
-                </p>
-              )}
-            </div>
-          </div>
-
-          {/* ── Related signals ── */}
-          {relatedArticles.length > 0 && (
-            <div
-              style={{
-                background: "#0f0f12",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: "8px",
-                padding: "24px 32px",
-                marginBottom: "16px",
-              }}
-            >
-              <span
-                style={{
-                  display: "block",
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  textTransform: "uppercase",
-                  letterSpacing: "0.08em",
-                  color: "#52525b",
-                  marginBottom: "16px",
-                }}
-              >
-                Related signals
-              </span>
-              <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
-                {relatedArticles.map((related, idx) => (
-                  <div
-                    key={related.id}
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                      gap: "16px",
-                      padding: "12px 0",
-                      borderTop:
-                        idx === 0
-                          ? "none"
-                          : "1px solid rgba(255,255,255,0.04)",
-                    }}
-                  >
-                    <Link
-                      href={`/article/${related.id}`}
-                      style={{
-                        fontSize: "15px",
-                        color: "#fafafa",
-                        textDecoration: "none",
-                        fontWeight: 500,
-                        lineHeight: 1.4,
-                        flex: 1,
-                        minWidth: 0,
-                      }}
-                    >
-                      {related.title}
-                    </Link>
-                    <span
-                      style={{
-                        fontSize: "11px",
-                        color: "#52525b",
-                        textTransform: "uppercase",
-                        letterSpacing: "0.08em",
-                        fontWeight: 500,
-                        flexShrink: 0,
-                        whiteSpace: "nowrap",
-                      }}
-                    >
-                      {related.source}
-                    </span>
-                  </div>
-                ))}
-              </div>
-            </div>
           )}
 
-          {/* ── Read time ── */}
-          {hasLLM && (
-            <div style={{ fontSize: "11px", color: "#3f3f46", padding: "0 0 4px" }}>
-              {Math.max(1, Math.ceil(((what?.split(" ").length ?? 0) + (why?.split(" ").length ?? 0) + (takeaway?.split(" ").length ?? 0)) / 200))} min read
-            </div>
+          {/* Fallback — show cleaned summary when no LLM */}
+          {!hasLLM && cleanedSummary && (
+            <p style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.75, margin: 0 }}>
+              <strong style={{ color: "#ffffff", fontWeight: 700 }}>The Signal: </strong>
+              {cleanedSummary}
+            </p>
           )}
 
-          {/* ── CTAs ── */}
-          <div
+          {!hasLLM && !cleanedSummary && (
+            <p style={{ fontSize: "15px", color: "#52525b", lineHeight: 1.75, margin: 0 }}>
+              Full signal analysis not yet available. Read the original source for details.
+            </p>
+          )}
+        </div>
+
+        {/* Read original CTA */}
+        <div style={{ marginBottom: "16px" }}>
+          <a
+            href={article.link}
+            target="_blank"
+            rel="noreferrer"
             style={{
-              background: "#0f0f12",
-              border: "1px solid rgba(255,255,255,0.06)",
-              borderRadius: "8px",
-              padding: "24px 32px",
-              display: "flex",
-              flexDirection: "column",
-              gap: "16px",
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "#f59e0b",
+              color: "#0a0a0a",
+              borderRadius: "6px",
+              fontSize: "13px",
+              fontWeight: 800,
+              padding: "11px 20px",
+              textDecoration: "none",
+              letterSpacing: "-0.01em",
             }}
           >
-            <a
-              href={article.link}
-              target="_blank"
-              rel="noreferrer"
-              style={{
-                display: "inline-block",
-                background: "#f59e0b",
-                color: "#09090b",
-                borderRadius: "6px",
-                fontSize: "13px",
-                fontWeight: 700,
-                padding: "10px 20px",
-                textDecoration: "none",
-                alignSelf: "flex-start",
-              }}
-            >
-              Read original article →
-            </a>
+            Read original →
+          </a>
+          <a
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${article.title.slice(0, 180)}${takeaway ? `\n\nTakeaway: ${takeaway.slice(0, 100)}…` : ""}`)}&url=${encodeURIComponent(article.link)}`}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "transparent",
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: "#a1a1aa",
+              borderRadius: "6px",
+              fontSize: "13px",
+              fontWeight: 600,
+              padding: "11px 20px",
+              textDecoration: "none",
+              marginLeft: "8px",
+            }}
+          >
+            Share on 𝕏
+          </a>
+          <a
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(article.link)}`}
+            target="_blank"
+            rel="noreferrer"
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: "6px",
+              background: "transparent",
+              border: "1px solid rgba(255,255,255,0.1)",
+              color: "#a1a1aa",
+              borderRadius: "6px",
+              fontSize: "13px",
+              fontWeight: 600,
+              padding: "11px 20px",
+              textDecoration: "none",
+              marginLeft: "8px",
+            }}
+          >
+            LinkedIn
+          </a>
+        </div>
 
-            {/* Share section */}
-            <div>
-              <span style={{ display: "block", fontSize: "11px", fontWeight: 500, textTransform: "uppercase", letterSpacing: "0.08em", color: "#52525b", marginBottom: "10px" }}>
-                Share this signal
-              </span>
-              <div style={{ display: "flex", gap: "10px", flexWrap: "wrap" }}>
-                <a
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(article.link)}&summary=${encodeURIComponent(`${article.title}${takeaway ? `\n\nTakeaway: ${takeaway}` : ""}\n\nvia AI Signal`)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: "inline-block",
-                    background: "#0a66c2",
-                    color: "#fff",
-                    borderRadius: "6px",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    padding: "8px 16px",
+        {/* Related signals */}
+        {relatedArticles.length > 0 && (
+          <div style={{
+            background: "#111111",
+            border: "1px solid rgba(255,255,255,0.07)",
+            borderRadius: "8px",
+            padding: "20px 24px",
+          }}>
+            <span style={{ display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#3f3f46", marginBottom: "16px" }}>
+              Related signals
+            </span>
+            <div style={{ display: "flex", flexDirection: "column", gap: "0" }}>
+              {relatedArticles.map((related, idx) => (
+                <div key={related.id} style={{
+                  paddingTop: idx === 0 ? "0" : "12px",
+                  marginTop: idx === 0 ? "0" : "12px",
+                  borderTop: idx === 0 ? "none" : "1px solid rgba(255,255,255,0.05)",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "baseline",
+                  gap: "16px",
+                }}>
+                  <Link href={`/article/${related.id}`} style={{
+                    fontSize: "14px",
+                    color: "#a1a1aa",
                     textDecoration: "none",
-                  }}
-                >
-                  Share on LinkedIn
-                </a>
-                <a
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(`${article.title.slice(0, 180)}${takeaway ? `\n\nTakeaway: ${takeaway.slice(0, 100)}…` : ""}`)}&url=${encodeURIComponent(article.link)}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{
-                    display: "inline-block",
-                    background: "transparent",
-                    border: "1px solid rgba(255,255,255,0.12)",
-                    color: "#fafafa",
-                    borderRadius: "6px",
-                    fontSize: "12px",
-                    fontWeight: 600,
-                    padding: "8px 16px",
-                    textDecoration: "none",
-                  }}
-                >
-                  Share on 𝕏
-                </a>
-                <Link
-                  href="/saved"
-                  style={{
-                    display: "inline-block",
-                    background: "rgba(255,255,255,0.04)",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    borderRadius: "6px",
-                    color: "#52525b",
-                    fontSize: "12px",
+                    lineHeight: 1.45,
                     fontWeight: 500,
-                    padding: "8px 16px",
-                    textDecoration: "none",
+                    flex: 1,
                   }}
-                >
-                  Go to saved
-                </Link>
-              </div>
+                    onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#ffffff"; }}
+                    onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#a1a1aa"; }}
+                  >
+                    {related.title}
+                  </Link>
+                  <span style={{ fontSize: "10px", color: "#3f3f46", textTransform: "uppercase", letterSpacing: "0.08em", flexShrink: 0 }}>
+                    {related.source}
+                  </span>
+                </div>
+              ))}
             </div>
           </div>
-        </article>
+        )}
       </div>
     </main>
   );
