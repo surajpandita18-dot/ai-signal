@@ -27,10 +27,10 @@ See DESIGN_SYSTEM.md for exact specs.
 - 0 real users, 0 feedback
 
 ## Next Implementation (in order)
-1. Zone 2 left border by category color — 20 min
+1. Add ANTHROPIC_API_KEY to Vercel dashboard — 5 min (pipeline broken in prod)
 2. Landing page overhaul — Rundown/Superhuman feel — 45 min
-3. Add ANTHROPIC_API_KEY to Vercel dashboard — 5 min
-4. DM first 10 CTOs — TODAY
+3. DM first 10 CTOs — TODAY
+4. /competitive-watch — run weekly to track Rundown + Superhuman updates
 
 ## Future Features (do NOT build yet)
 - Thumbnail images on Zone 2 cards (validate with real users first)
@@ -48,3 +48,4 @@ EXP-005: Manual DM vs HN launch (TBD)
 ## Session Notes
 2026-04-25: System files restructured + emoji implemented → Zone 2 border next
 2026-04-25: Deleted .claude/ folder, all files at root, full UI cleanup done
+2026-04-25: Competitive research — Rundown (dark) vs Superhuman (light) patterns documented. Skills created: design-implementer + competitive-watcher. Zone1 + Zone2 confirmed matching Rundown style already.

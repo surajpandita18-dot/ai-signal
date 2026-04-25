@@ -94,6 +94,12 @@ Status: APPLIED
 
 ## Interaction Log
 
+### 2026-04-25 — Design research synthesis + missing skills created
+Did: Created .claude/skills/design-implementer.md + competitive-watcher.md. Updated DESIGN_SYSTEM.md with exact Rundown/Superhuman patterns (dark vs light theme distinction, inline bold labels, emoji prefix, category pill). Confirmed Zone1Signal + Zone2Card already implement all patterns correctly.
+Why: User ran deep competitive analysis — Rundown (dark) vs Superhuman (light). Needed explicit rules on what to borrow from each.
+Result: Design system now precisely documents what to copy vs skip from each competitor. Skills enable repeatable process for future design sessions.
+Rule promoted?: No — RULE 2 reinforced (editorial not dashboard)
+
 ### 2026-04-25 — Workflow simplification + full system cleanup
 Did: Deleted .claude/ folder entirely. Moved DESIGN_SYSTEM, FEEDBACK_MEMORY, SYSTEM_STATE, SOURCES to root. Single CLAUDE.md. Deleted ~6k lines of dead weight (claude-os, personas, intelligence, validation, 5 unused skills).
 Why: User said multiple files/folders cause confusion, want one brain file.

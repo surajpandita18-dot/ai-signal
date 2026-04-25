@@ -6,10 +6,9 @@ Rule: Overwrite freely. This file evolves constantly.
 ---
 
 ## Current Direction
-Dark editorial briefing. Premium. Fast to scan.
-NOT: generic dark SaaS dashboard
-YES: morning intelligence briefing with editorial personality
-FEEL: Rundown AI × Superhuman AI × Linear
+Landing + Article pages: LIGHT (white) — exactly like Rundown AI.
+App feed (/app): DARK — editorial, dark background, unchanged.
+FEEL: Rundown AI exact — open typography, no cards on article, white background.
 
 ---
 
@@ -17,11 +16,15 @@ FEEL: Rundown AI × Superhuman AI × Linear
 
 ### PRIMARY: The Rundown AI (therundown.ai)
 Observed: April 2026
+Theme: DARK background (#0a0a0a), white text
 Adopt:
 - Emoji before every article title — instant visual hook
   🧠 LLM/Models  🔬 Research  ⚡ Infra  💰 Funding
   🚀 Product  🤖 Agents  📦 Open Source  🛡️ Policy  📡 Default
-- Bold "WHAT" / "WHY IT MATTERS" labels — more weight than body text
+- Bold "WHAT" / "WHY IT MATTERS" inline labels — more weight than body text
+- Category label UPPERCASE above title (pill or plain text)
+- "The Rundown:" / "Why it matters:" as bold inline prefixes, not section headers
+- Thin horizontal divider between articles
 - Dark header with strong contrast against content
 - Email input huge + prominent above fold
 - Secondary CTA: "Browse without email" — zero-friction path
@@ -33,10 +36,23 @@ Skip:
 - Breadth over depth (we do fewer, better signals)
 
 ### SECONDARY: Superhuman AI
-Adopt:
+Observed: April 2026
+Theme: LIGHT background (white/#f9f9f9), black text — we DO NOT copy the light theme
+Borrow only:
 - Left border color on cards = category identity (instant scan)
 - Very clean card layout — source + title + read link
 - Strong typographic hierarchy within each item
+- Horizontal rules as section separators
+- Emoji + bold section headers (e.g. "🔥 Top Story")
+
+Do NOT copy:
+- Light theme (we stay dark)
+- White/light backgrounds anywhere
+
+### What We Borrow From Both
+FROM RUNDOWN: dark bg, emoji prefix, inline bold labels, category pill, thin divider
+FROM SUPERHUMAN: section structure, left border = category, "Read →" CTA, emoji section headers
+NOT COPYING: Superhuman light theme, Rundown thumbnails, any ad placements
 
 ### TERTIARY: Linear
 Adopt: calm density, Inter font, minimal accent usage

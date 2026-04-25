@@ -10,13 +10,28 @@ const CATEGORY_EMOJI: Record<string, string> = {
   agents: "🤖", "open source": "📦", policy: "🛡️",
 };
 
+const CATEGORY_COLOR: Record<string, string> = {
+  llm: "#7c3aed", models: "#7c3aed", research: "#2563eb", infra: "#059669",
+  infrastructure: "#059669", funding: "#d97706", product: "#dc2626",
+  agents: "#7c3aed", "open source": "#0891b2", policy: "#6b7280",
+};
+
 function getEmoji(tags: string[]): string {
   return tags?.map((t) => CATEGORY_EMOJI[t.toLowerCase()]).find(Boolean) ?? "📡";
 }
 
+function getCatColor(tags: string[]): string {
+  return tags?.map((t) => CATEGORY_COLOR[t.toLowerCase()]).find(Boolean) ?? "#6b7280";
+}
+
+function getCatLabel(tags: string[]): string {
+  const hit = tags?.find((t) => CATEGORY_EMOJI[t.toLowerCase()]);
+  return hit ? hit.toUpperCase() : "AI";
+}
+
 export function LandingPage() {
   const router = useRouter();
-  const [demoSignal, setDemoSignal] = useState<Signal | null>(null);
+  const [signals, setSignals] = useState<Signal[]>([]);
   const [email, setEmail] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [done, setDone] = useState(false);
@@ -27,7 +42,7 @@ export function LandingPage() {
       .then((data: Signal[]) => {
         if (!Array.isArray(data) || data.length === 0) return;
         const sorted = [...data].sort((a, b) => b.signalScore - a.signalScore);
-        setDemoSignal(sorted.find((s) => s.takeaway) ?? sorted[0]);
+        setSignals(sorted.filter((s) => s.takeaway).slice(0, 3));
       })
       .catch(() => {});
   }, []);
@@ -42,281 +57,229 @@ export function LandingPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: email.trim() }),
       });
-    } catch { /* silent — still redirect */ }
+    } catch { /* silent */ }
     setDone(true);
     setTimeout(() => router.push("/app"), 1400);
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0a0a0a", color: "#ffffff" }}>
+    <div style={{ minHeight: "100vh", background: "#ffffff", color: "#111111", fontFamily: "Inter, system-ui, sans-serif" }}>
 
-      {/* ── Navbar ─────────────────────────────────────────────── */}
+      {/* Nav */}
       <header style={{
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
+        borderBottom: "1px solid #e5e7eb",
         padding: "0 24px",
-        height: "52px",
+        height: "56px",
         display: "flex",
         alignItems: "center",
         justifyContent: "space-between",
         position: "sticky",
         top: 0,
-        background: "#0a0a0a",
+        background: "#ffffff",
         zIndex: 100,
       }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-          <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "#7c3aed", display: "inline-block" }} />
-          <span style={{ fontWeight: 800, fontSize: "13px", letterSpacing: "0.1em", color: "#ffffff", textTransform: "uppercase" }}>
-            AI Signal
-          </span>
-        </div>
+        <span style={{ fontWeight: 900, fontSize: "15px", letterSpacing: "-0.01em", color: "#111111" }}>
+          AI Signal
+        </span>
         <button
           onClick={() => router.push("/app")}
           style={{
             background: "none",
-            border: "1px solid rgba(255,255,255,0.1)",
-            borderRadius: "5px",
-            color: "#a1a1aa",
-            fontSize: "12px",
+            border: "none",
+            color: "#6b7280",
+            fontSize: "13px",
             fontWeight: 500,
-            padding: "6px 14px",
             cursor: "pointer",
-            transition: "color 150ms ease, border-color 150ms ease",
+            padding: 0,
           }}
-          onMouseEnter={(e) => {
-            e.currentTarget.style.color = "#ffffff";
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.25)";
-          }}
-          onMouseLeave={(e) => {
-            e.currentTarget.style.color = "#a1a1aa";
-            e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)";
-          }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#111111"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "#6b7280"; }}
         >
           Browse →
         </button>
       </header>
 
-      <main style={{ maxWidth: "680px", margin: "0 auto", padding: "64px 24px 96px" }}>
+      <main style={{ maxWidth: "640px", margin: "0 auto", padding: "64px 24px 96px" }}>
 
-        {/* ── Edition badge ──────────────────────────────────────── */}
-        <div style={{ marginBottom: "24px" }}>
+        {/* Category tag */}
+        <div style={{ marginBottom: "20px" }}>
           <span style={{
-            display: "inline-flex",
-            alignItems: "center",
-            gap: "6px",
+            display: "inline-block",
             fontSize: "11px",
-            fontWeight: 600,
+            fontWeight: 700,
             letterSpacing: "0.1em",
             textTransform: "uppercase",
-            color: "#f59e0b",
+            color: "#9ca3af",
           }}>
-            <span style={{
-              width: "6px",
-              height: "6px",
-              borderRadius: "50%",
-              background: "#f59e0b",
-              display: "inline-block",
-              animation: "pulse 2s infinite",
-            }} />
-            Daily Brief · Free
+            Daily · Free
           </span>
         </div>
 
-        {/* ── Hero ──────────────────────────────────────────────── */}
+        {/* Hero */}
         <h1 style={{
           fontSize: "clamp(32px, 6vw, 52px)",
           fontWeight: 800,
           lineHeight: 1.1,
           letterSpacing: "-0.03em",
-          color: "#ffffff",
-          marginBottom: "20px",
+          color: "#111111",
+          marginBottom: "16px",
         }}>
           AI changed overnight.
           <br />
-          <span style={{ color: "#52525b" }}>Here&apos;s what to build.</span>
+          <span style={{ color: "#9ca3af" }}>Here&apos;s what to build.</span>
         </h1>
 
         <p style={{
-          fontSize: "16px",
-          color: "#71717a",
+          fontSize: "17px",
+          color: "#6b7280",
           lineHeight: 1.65,
           maxWidth: "480px",
           marginBottom: "36px",
         }}>
-          Every morning: the 3 AI moves that matter for builders —
-          with the specific takeaway for what to do next. No noise.
+          Every morning: the AI moves that matter for builders — with the specific takeaway for what to do next.
         </p>
 
-        {/* ── Email capture ─────────────────────────────────────── */}
+        {/* Email capture */}
         <div style={{ marginBottom: "12px" }}>
           {done ? (
             <div style={{
-              background: "rgba(245,158,11,0.08)",
-              border: "1px solid rgba(245,158,11,0.2)",
+              background: "#fffbeb",
+              border: "1px solid #fde68a",
               borderRadius: "8px",
               padding: "16px 20px",
               fontSize: "15px",
-              color: "#f59e0b",
+              color: "#d97706",
               fontWeight: 600,
             }}>
               You&apos;re in — taking you to today&apos;s signals…
             </div>
           ) : (
-            <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px", maxWidth: "460px" }}>
+            <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px", maxWidth: "480px" }}>
               <input
                 type="email"
-                placeholder="your@email.com"
+                placeholder="Enter your email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
                 autoFocus
                 style={{
                   flex: 1,
-                  background: "#111111",
-                  border: "1px solid rgba(255,255,255,0.1)",
+                  background: "#ffffff",
+                  border: "1px solid #d1d5db",
                   borderRadius: "6px",
-                  color: "#ffffff",
+                  color: "#111111",
                   fontSize: "15px",
                   padding: "13px 16px",
                   outline: "none",
                   minWidth: 0,
                   transition: "border-color 150ms ease",
                 }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)"; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; }}
+                onFocus={(e) => { e.currentTarget.style.borderColor = "#111111"; }}
+                onBlur={(e) => { e.currentTarget.style.borderColor = "#d1d5db"; }}
               />
               <button
                 type="submit"
                 disabled={submitting}
                 style={{
-                  background: "#f59e0b",
+                  background: "#111111",
                   border: "none",
                   borderRadius: "6px",
-                  color: "#0a0a0a",
+                  color: "#ffffff",
                   fontSize: "14px",
-                  fontWeight: 800,
+                  fontWeight: 700,
                   padding: "13px 22px",
                   cursor: submitting ? "not-allowed" : "pointer",
                   whiteSpace: "nowrap",
                   flexShrink: 0,
-                  opacity: submitting ? 0.7 : 1,
+                  opacity: submitting ? 0.6 : 1,
                   letterSpacing: "-0.01em",
                 }}
               >
-                {submitting ? "…" : "Get daily signals →"}
+                {submitting ? "…" : "Subscribe →"}
               </button>
             </form>
           )}
         </div>
 
-        <p style={{ fontSize: "12px", color: "#3f3f46", marginBottom: "48px" }}>
+        <p style={{ fontSize: "12px", color: "#9ca3af", marginBottom: "56px" }}>
           No spam. Unsubscribe anytime.{" "}
           <button
             onClick={() => router.push("/app")}
-            style={{ background: "none", border: "none", color: "#52525b", fontSize: "12px", cursor: "pointer", padding: 0, textDecoration: "underline", textDecorationColor: "#3f3f46" }}
+            style={{ background: "none", border: "none", color: "#6b7280", fontSize: "12px", cursor: "pointer", padding: 0, textDecoration: "underline", textDecorationColor: "#d1d5db" }}
           >
             Browse without email →
           </button>
         </p>
 
-        {/* ── Live signal preview ────────────────────────────────── */}
-        {demoSignal && (
+        {/* Divider */}
+        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "40px" }} />
+
+        {/* Newsletter preview */}
+        {signals.length > 0 && (
           <div>
-            {/* Section label */}
-            <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "16px" }}>
-              <span style={{
-                width: "6px",
-                height: "6px",
-                borderRadius: "50%",
-                background: "#f59e0b",
-                display: "inline-block",
-                flexShrink: 0,
-              }} />
-              <span style={{
-                fontSize: "10px",
-                fontWeight: 700,
-                letterSpacing: "0.12em",
-                textTransform: "uppercase",
-                color: "#52525b",
-              }}>
-                Today&apos;s top signal — live
-              </span>
-            </div>
-
-            {/* Signal card */}
-            <div style={{
-              background: "#111111",
-              border: "1px solid rgba(255,255,255,0.08)",
-              borderLeft: "3px solid rgba(124,58,237,0.6)",
-              borderRadius: "0 8px 8px 0",
-              padding: "20px 20px 20px 20px",
+            {/* Section header — Rundown style */}
+            <p style={{
+              fontSize: "11px", fontWeight: 700,
+              textTransform: "uppercase", letterSpacing: "0.12em",
+              color: "#9ca3af", marginBottom: "28px",
             }}>
-              {/* Source row */}
-              <div style={{ display: "flex", gap: "8px", alignItems: "center", marginBottom: "10px" }}>
-                <span style={{ fontSize: "11px", color: "#52525b", textTransform: "uppercase", letterSpacing: "0.08em", fontWeight: 500 }}>
-                  {demoSignal.source}
-                </span>
-                <span style={{ color: "#27272a" }}>·</span>
-                <span style={{ fontSize: "11px", color: "#52525b" }}>
-                  {new Date(demoSignal.date).toLocaleDateString("en-US", { month: "short", day: "numeric" })}
-                </span>
-              </div>
+              Today&apos;s top signals
+            </p>
 
-              {/* Title with emoji */}
-              <p style={{
-                fontSize: "18px",
-                fontWeight: 700,
-                color: "#ffffff",
-                lineHeight: 1.35,
-                letterSpacing: "-0.01em",
-                marginBottom: "14px",
-              }}>
-                {getEmoji(demoSignal.tags ?? [])} {demoSignal.title}
-              </p>
+            {signals.map((signal, idx) => {
+              const emoji = getEmoji(signal.tags ?? []);
+              const catColor = getCatColor(signal.tags ?? []);
+              const catLabel = getCatLabel(signal.tags ?? []);
 
-              {/* WHAT */}
-              {demoSignal.what && (
-                <div style={{ marginBottom: "10px" }}>
-                  <span style={{ display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#71717a", marginBottom: "4px" }}>
-                    What
-                  </span>
-                  <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.65, display: "block" }}>
-                    {demoSignal.what}
-                  </span>
+              return (
+                <div key={signal.id} style={{
+                  paddingTop: idx === 0 ? "0" : "28px",
+                  marginTop: idx === 0 ? "0" : "28px",
+                  borderTop: idx === 0 ? "none" : "1px solid #f3f4f6",
+                }}>
+                  {/* Category */}
+                  <p style={{
+                    fontSize: "11px", fontWeight: 700,
+                    textTransform: "uppercase", letterSpacing: "0.1em",
+                    color: catColor, margin: "0 0 8px",
+                  }}>
+                    {catLabel}
+                  </p>
+
+                  {/* Title */}
+                  <p style={{
+                    fontSize: "18px", fontWeight: 700,
+                    color: "#111111", lineHeight: 1.3,
+                    letterSpacing: "-0.015em", margin: "0 0 12px",
+                  }}>
+                    {emoji} {signal.title}
+                  </p>
+
+                  {/* The Signal inline */}
+                  {signal.what && (
+                    <p style={{ fontSize: "14px", color: "#6b7280", lineHeight: 1.7, margin: "0 0 8px" }}>
+                      <strong style={{ color: "#374151" }}>The Signal: </strong>
+                      {signal.what}
+                    </p>
+                  )}
+
+                  {/* Takeaway */}
+                  {signal.takeaway && (
+                    <p style={{ fontSize: "13px", color: "#d97706", lineHeight: 1.6, margin: "0 0 4px", fontWeight: 600 }}>
+                      ↳ {signal.takeaway}
+                    </p>
+                  )}
                 </div>
-              )}
-
-              {/* WHY */}
-              {demoSignal.why && (
-                <div style={{ marginBottom: "14px" }}>
-                  <span style={{ display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#71717a", marginBottom: "4px" }}>
-                    Why it matters
-                  </span>
-                  <span style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.65, display: "block" }}>
-                    {demoSignal.why}
-                  </span>
-                </div>
-              )}
-
-              {/* TAKEAWAY */}
-              {demoSignal.takeaway && (
-                <div style={{ borderLeft: "2px solid rgba(245,158,11,0.5)", paddingLeft: "14px" }}>
-                  <span style={{ display: "block", fontSize: "10px", fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.1em", color: "#f59e0b", marginBottom: "4px" }}>
-                    Takeaway
-                  </span>
-                  <span style={{ display: "block", fontSize: "14px", color: "#f59e0b", lineHeight: 1.6 }}>
-                    {demoSignal.takeaway}
-                  </span>
-                </div>
-              )}
-            </div>
+              );
+            })}
           </div>
         )}
 
-        {/* ── Stats strip ───────────────────────────────────────── */}
+        {/* Stats strip */}
         <div style={{
           marginTop: "56px",
           paddingTop: "36px",
-          borderTop: "1px solid rgba(255,255,255,0.05)",
+          borderTop: "1px solid #e5e7eb",
           display: "flex",
           gap: "48px",
           flexWrap: "wrap",
@@ -328,10 +291,10 @@ export function LandingPage() {
             { stat: "24+", label: "Curated AI sources" },
           ].map(({ stat, label }) => (
             <div key={stat}>
-              <div style={{ fontSize: "22px", fontWeight: 800, color: "#ffffff", letterSpacing: "-0.02em", marginBottom: "3px" }}>
+              <div style={{ fontSize: "22px", fontWeight: 800, color: "#111111", letterSpacing: "-0.02em", marginBottom: "3px" }}>
                 {stat}
               </div>
-              <div style={{ fontSize: "12px", color: "#52525b" }}>{label}</div>
+              <div style={{ fontSize: "12px", color: "#9ca3af" }}>{label}</div>
             </div>
           ))}
         </div>
