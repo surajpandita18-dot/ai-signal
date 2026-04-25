@@ -10,47 +10,31 @@ const CATEGORY_EMOJI: Record<string, string> = {
   agents: "🤖", "open source": "📦", policy: "🛡️",
 };
 
-const CATEGORY_COLOR: Record<string, string> = {
-  llm: "#7c3aed", models: "#7c3aed", research: "#2563eb", infra: "#059669",
-  infrastructure: "#059669", funding: "#d97706", product: "#dc2626",
-  agents: "#7c3aed", "open source": "#0891b2", policy: "#6b7280",
-};
-
 function getEmoji(tags: string[]): string {
   return tags?.map((t) => CATEGORY_EMOJI[t.toLowerCase()]).find(Boolean) ?? "📡";
-}
-
-function getCatColor(tags: string[]): string {
-  return tags?.map((t) => CATEGORY_COLOR[t.toLowerCase()]).find(Boolean) ?? "#6b7280";
-}
-
-function getCatLabel(tags: string[]): string {
-  const hit = tags?.find((t) => CATEGORY_EMOJI[t.toLowerCase()]);
-  return hit ? hit.toUpperCase() : "AI";
 }
 
 export function LandingPage() {
   const router = useRouter();
   const [signals, setSignals] = useState<Signal[]>([]);
   const [email, setEmail] = useState("");
-  const [submitting, setSubmitting] = useState(false);
-  const [done, setDone] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "done">("idle");
 
   useEffect(() => {
     fetch("/api/news")
       .then((r) => r.json())
       .then((data: Signal[]) => {
-        if (!Array.isArray(data) || data.length === 0) return;
+        if (!Array.isArray(data)) return;
         const sorted = [...data].sort((a, b) => b.signalScore - a.signalScore);
-        setSignals(sorted.filter((s) => s.takeaway).slice(0, 3));
+        setSignals(sorted.filter((s) => s.takeaway || s.what).slice(0, 2));
       })
       .catch(() => {});
   }, []);
 
-  async function handleSubmit(e: React.FormEvent) {
-    e.preventDefault();
-    if (!email.trim() || submitting) return;
-    setSubmitting(true);
+  async function handleSubmit(e?: React.FormEvent) {
+    e?.preventDefault();
+    if (status !== "idle") return;
+    setStatus("loading");
     try {
       await fetch("/api/subscribe", {
         method: "POST",
@@ -58,247 +42,203 @@ export function LandingPage() {
         body: JSON.stringify({ email: email.trim() }),
       });
     } catch { /* silent */ }
-    setDone(true);
+    setStatus("done");
     setTimeout(() => router.push("/app"), 1400);
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#ffffff", color: "#111111", fontFamily: "Inter, system-ui, sans-serif" }}>
+    <div style={{
+      minHeight: "100vh",
+      background: "#0a0a0a",
+      color: "#ffffff",
+      fontFamily: "Inter, system-ui, sans-serif",
+    }}>
 
-      {/* Nav */}
-      <header style={{
-        borderBottom: "1px solid #e5e7eb",
-        padding: "0 24px",
-        height: "56px",
+      {/* Navbar */}
+      <nav style={{
         display: "flex",
-        alignItems: "center",
         justifyContent: "space-between",
+        alignItems: "center",
+        padding: "0 32px",
+        height: "52px",
+        borderBottom: "1px solid rgba(255,255,255,0.06)",
         position: "sticky",
         top: 0,
-        background: "#ffffff",
+        background: "#0a0a0a",
         zIndex: 100,
       }}>
-        <span style={{ fontWeight: 900, fontSize: "15px", letterSpacing: "-0.01em", color: "#111111" }}>
-          AI Signal
+        <span style={{ fontWeight: 800, fontSize: "14px", letterSpacing: "0.06em", color: "#ffffff" }}>
+          ● AI SIGNAL
         </span>
         <button
           onClick={() => router.push("/app")}
           style={{
-            background: "none",
-            border: "none",
-            color: "#6b7280",
-            fontSize: "13px",
-            fontWeight: 500,
-            cursor: "pointer",
-            padding: 0,
+            background: "none", border: "none",
+            fontSize: "13px", color: "#52525b",
+            cursor: "pointer", padding: 0,
           }}
-          onMouseEnter={(e) => { e.currentTarget.style.color = "#111111"; }}
-          onMouseLeave={(e) => { e.currentTarget.style.color = "#6b7280"; }}
+          onMouseEnter={(e) => { e.currentTarget.style.color = "#a1a1aa"; }}
+          onMouseLeave={(e) => { e.currentTarget.style.color = "#52525b"; }}
         >
           Browse →
         </button>
-      </header>
+      </nav>
 
-      <main style={{ maxWidth: "640px", margin: "0 auto", padding: "64px 24px 96px" }}>
+      {/* Hero */}
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "72px 24px 56px" }}>
 
-        {/* Category tag */}
-        <div style={{ marginBottom: "20px" }}>
-          <span style={{
-            display: "inline-block",
-            fontSize: "11px",
-            fontWeight: 700,
-            letterSpacing: "0.1em",
-            textTransform: "uppercase",
-            color: "#9ca3af",
-          }}>
-            Daily · Free
-          </span>
+        {/* Badge */}
+        <div style={{
+          fontSize: "11px", fontWeight: 700,
+          letterSpacing: "0.12em", textTransform: "uppercase",
+          color: "#52525b", marginBottom: "28px",
+        }}>
+          Daily · Free
         </div>
 
-        {/* Hero */}
+        {/* Headline */}
         <h1 style={{
           fontSize: "clamp(32px, 6vw, 52px)",
-          fontWeight: 800,
-          lineHeight: 1.1,
-          letterSpacing: "-0.03em",
-          color: "#111111",
-          marginBottom: "16px",
+          fontWeight: 800, lineHeight: 1.1,
+          letterSpacing: "-0.025em",
+          color: "#ffffff", marginBottom: "20px",
         }}>
           AI changed overnight.
           <br />
-          <span style={{ color: "#9ca3af" }}>Here&apos;s what to build.</span>
+          <span style={{ color: "#a1a1aa", fontWeight: 700 }}>Here&apos;s what to build.</span>
         </h1>
 
+        {/* Subheading */}
         <p style={{
-          fontSize: "17px",
-          color: "#6b7280",
-          lineHeight: 1.65,
-          maxWidth: "480px",
-          marginBottom: "36px",
+          fontSize: "17px", color: "#71717a",
+          lineHeight: 1.65, maxWidth: "500px", marginBottom: "40px",
         }}>
-          Every morning: the AI moves that matter for builders — with the specific takeaway for what to do next.
+          Every morning: the AI moves that matter for builders —
+          with the specific takeaway for what to do next.
         </p>
 
-        {/* Email capture */}
-        <div style={{ marginBottom: "12px" }}>
-          {done ? (
-            <div style={{
-              background: "#fffbeb",
-              border: "1px solid #fde68a",
-              borderRadius: "8px",
-              padding: "16px 20px",
-              fontSize: "15px",
-              color: "#d97706",
-              fontWeight: 600,
-            }}>
-              You&apos;re in — taking you to today&apos;s signals…
-            </div>
-          ) : (
-            <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px", maxWidth: "480px" }}>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-                required
-                autoFocus
-                style={{
-                  flex: 1,
-                  background: "#ffffff",
-                  border: "1px solid #d1d5db",
-                  borderRadius: "6px",
-                  color: "#111111",
-                  fontSize: "15px",
-                  padding: "13px 16px",
-                  outline: "none",
-                  minWidth: 0,
-                  transition: "border-color 150ms ease",
-                }}
-                onFocus={(e) => { e.currentTarget.style.borderColor = "#111111"; }}
-                onBlur={(e) => { e.currentTarget.style.borderColor = "#d1d5db"; }}
-              />
-              <button
-                type="submit"
-                disabled={submitting}
-                style={{
-                  background: "#111111",
-                  border: "none",
-                  borderRadius: "6px",
-                  color: "#ffffff",
-                  fontSize: "14px",
-                  fontWeight: 700,
-                  padding: "13px 22px",
-                  cursor: submitting ? "not-allowed" : "pointer",
-                  whiteSpace: "nowrap",
-                  flexShrink: 0,
-                  opacity: submitting ? 0.6 : 1,
-                  letterSpacing: "-0.01em",
-                }}
-              >
-                {submitting ? "…" : "Subscribe →"}
-              </button>
-            </form>
-          )}
-        </div>
+        {/* Email form */}
+        {status === "done" ? (
+          <div style={{
+            background: "rgba(245,158,11,0.08)",
+            border: "1px solid rgba(245,158,11,0.2)",
+            borderRadius: "8px", padding: "16px 20px",
+            fontSize: "15px", color: "#f59e0b", fontWeight: 600,
+            marginBottom: "16px",
+          }}>
+            You&apos;re in — taking you to today&apos;s signals…
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px", maxWidth: "480px", marginBottom: "16px" }}>
+            <input
+              type="email"
+              placeholder="Enter your email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+              autoFocus
+              style={{
+                flex: 1, padding: "14px 18px",
+                background: "#111111",
+                border: "1px solid rgba(255,255,255,0.1)",
+                borderRadius: "8px", color: "#ffffff",
+                fontSize: "15px", outline: "none", minWidth: 0,
+                transition: "border-color 150ms ease",
+              }}
+              onFocus={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.3)"; }}
+              onBlur={(e) => { e.currentTarget.style.borderColor = "rgba(255,255,255,0.1)"; }}
+            />
+            <button
+              type="submit"
+              disabled={status === "loading"}
+              style={{
+                padding: "14px 24px",
+                background: "#ffffff", color: "#000000",
+                border: "none", borderRadius: "8px",
+                fontSize: "14px", fontWeight: 700,
+                cursor: status === "loading" ? "not-allowed" : "pointer",
+                whiteSpace: "nowrap", flexShrink: 0,
+                opacity: status === "loading" ? 0.6 : 1,
+                letterSpacing: "-0.01em",
+              }}
+            >
+              {status === "loading" ? "…" : "Subscribe →"}
+            </button>
+          </form>
+        )}
 
-        <p style={{ fontSize: "12px", color: "#9ca3af", marginBottom: "56px" }}>
+        {/* Secondary CTA */}
+        <p style={{ fontSize: "13px", color: "#3f3f46" }}>
           No spam. Unsubscribe anytime.{" "}
           <button
             onClick={() => router.push("/app")}
-            style={{ background: "none", border: "none", color: "#6b7280", fontSize: "12px", cursor: "pointer", padding: 0, textDecoration: "underline", textDecorationColor: "#d1d5db" }}
+            style={{
+              background: "none", border: "none",
+              color: "#52525b", fontSize: "13px", cursor: "pointer",
+              padding: 0, textDecoration: "underline",
+              textDecorationColor: "rgba(255,255,255,0.12)",
+            }}
           >
             Browse without email →
           </button>
         </p>
+      </div>
 
-        {/* Divider */}
-        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "40px" }} />
+      {/* Divider + signals preview */}
+      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "0 24px 96px" }}>
+        <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: "40px" }}>
 
-        {/* Newsletter preview */}
-        {signals.length > 0 && (
-          <div>
-            {/* Section header — Rundown style */}
-            <p style={{
-              fontSize: "11px", fontWeight: 700,
-              textTransform: "uppercase", letterSpacing: "0.12em",
-              color: "#9ca3af", marginBottom: "28px",
-            }}>
-              Today&apos;s top signals
-            </p>
-
-            {signals.map((signal, idx) => {
-              const emoji = getEmoji(signal.tags ?? []);
-              const catColor = getCatColor(signal.tags ?? []);
-              const catLabel = getCatLabel(signal.tags ?? []);
-
-              return (
-                <div key={signal.id} style={{
-                  paddingTop: idx === 0 ? "0" : "28px",
-                  marginTop: idx === 0 ? "0" : "28px",
-                  borderTop: idx === 0 ? "none" : "1px solid #f3f4f6",
-                }}>
-                  {/* Category */}
-                  <p style={{
-                    fontSize: "11px", fontWeight: 700,
-                    textTransform: "uppercase", letterSpacing: "0.1em",
-                    color: catColor, margin: "0 0 8px",
-                  }}>
-                    {catLabel}
-                  </p>
-
-                  {/* Title */}
-                  <p style={{
-                    fontSize: "18px", fontWeight: 700,
-                    color: "#111111", lineHeight: 1.3,
-                    letterSpacing: "-0.015em", margin: "0 0 12px",
-                  }}>
-                    {emoji} {signal.title}
-                  </p>
-
-                  {/* The Signal inline */}
-                  {signal.what && (
-                    <p style={{ fontSize: "14px", color: "#6b7280", lineHeight: 1.7, margin: "0 0 8px" }}>
-                      <strong style={{ color: "#374151" }}>The Signal: </strong>
-                      {signal.what}
-                    </p>
-                  )}
-
-                  {/* Takeaway */}
-                  {signal.takeaway && (
-                    <p style={{ fontSize: "13px", color: "#d97706", lineHeight: 1.6, margin: "0 0 4px", fontWeight: 600 }}>
-                      ↳ {signal.takeaway}
-                    </p>
-                  )}
-                </div>
-              );
-            })}
+          <div style={{
+            fontSize: "11px", fontWeight: 700,
+            letterSpacing: "0.12em", textTransform: "uppercase",
+            color: "#3f3f46", marginBottom: "32px",
+          }}>
+            Today&apos;s Top Signals
           </div>
-        )}
 
-        {/* Stats strip */}
-        <div style={{
-          marginTop: "56px",
-          paddingTop: "36px",
-          borderTop: "1px solid #e5e7eb",
-          display: "flex",
-          gap: "48px",
-          flexWrap: "wrap",
-          rowGap: "20px",
-        }}>
-          {[
-            { stat: "Daily", label: "Fresh signals every morning" },
-            { stat: "3 min", label: "To read the full brief" },
-            { stat: "24+", label: "Curated AI sources" },
-          ].map(({ stat, label }) => (
-            <div key={stat}>
-              <div style={{ fontSize: "22px", fontWeight: 800, color: "#111111", letterSpacing: "-0.02em", marginBottom: "3px" }}>
-                {stat}
+          {signals.map((signal, i) => {
+            const emoji = getEmoji(signal.tags ?? []);
+            return (
+              <div key={signal.id} style={{
+                paddingBottom: i < signals.length - 1 ? "28px" : "0",
+                marginBottom: i < signals.length - 1 ? "28px" : "0",
+                borderBottom: i < signals.length - 1 ? "1px solid rgba(255,255,255,0.06)" : "none",
+              }}>
+                <div style={{
+                  fontSize: "11px", fontWeight: 700,
+                  letterSpacing: "0.1em", textTransform: "uppercase",
+                  color: "#52525b", marginBottom: "8px",
+                }}>
+                  {signal.source}
+                </div>
+                <h3 style={{
+                  fontSize: "17px", fontWeight: 800,
+                  color: "#ffffff", lineHeight: 1.3,
+                  letterSpacing: "-0.015em", marginBottom: "10px",
+                }}>
+                  {emoji} {signal.title}
+                </h3>
+                {signal.what && (
+                  <p style={{ fontSize: "14px", color: "#a1a1aa", lineHeight: 1.7, marginBottom: "10px" }}>
+                    <strong style={{ color: "#ffffff", fontWeight: 600 }}>The Signal: </strong>
+                    {signal.what}
+                  </p>
+                )}
+                {signal.takeaway && (
+                  <div style={{
+                    borderLeft: "2px solid rgba(245,158,11,0.5)",
+                    paddingLeft: "12px", marginTop: "10px",
+                  }}>
+                    <p style={{ fontSize: "13px", color: "#f59e0b", lineHeight: 1.6, margin: 0 }}>
+                      {signal.takeaway}
+                    </p>
+                  </div>
+                )}
               </div>
-              <div style={{ fontSize: "12px", color: "#9ca3af" }}>{label}</div>
-            </div>
-          ))}
+            );
+          })}
         </div>
-      </main>
+      </div>
     </div>
   );
 }

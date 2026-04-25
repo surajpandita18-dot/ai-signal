@@ -1,213 +1,101 @@
 # AI Signal — Design System
 Last updated: 2026-04-25
-Rule: This file overrides CLAUDE.md for all visual decisions.
-Rule: Overwrite freely. This file evolves constantly.
-
----
+Rule: This file overrides everything. Overwrite freely.
 
 ## Current Direction
-Landing + Article pages: LIGHT (white) — exactly like Rundown AI.
-App feed (/app): DARK — editorial, dark background, unchanged.
-FEEL: Rundown AI exact — open typography, no cards on article, white background.
+FULLY DARK everywhere — landing, app, article, all pages.
+Exactly like Rundown AI: dark background, white text, editorial.
+NO light theme anywhere. NO white backgrounds. Ever.
 
----
+## Reference
+Rundown AI (therundown.ai) — primary reference
+- Dark background #0a0a0a everywhere
+- Clean navbar: logo left, minimal links right
+- Hero: big bold headline, email input, secondary CTA
+- Signals: full-width rows, NO card borders
+- Bold inline labels: "The Signal:" / "Why it matters:"
+- Emoji prefix on titles
+- Thin divider between signals
+- Amber accent = one special element only (TAKEAWAY)
 
-## Inspiration Stack
-
-### PRIMARY: The Rundown AI (therundown.ai)
-Observed: April 2026
-Theme: DARK background (#0a0a0a), white text
-Adopt:
-- Emoji before every article title — instant visual hook
-  🧠 LLM/Models  🔬 Research  ⚡ Infra  💰 Funding
-  🚀 Product  🤖 Agents  📦 Open Source  🛡️ Policy  📡 Default
-- Bold "WHAT" / "WHY IT MATTERS" inline labels — more weight than body text
-- Category label UPPERCASE above title (pill or plain text)
-- "The Rundown:" / "Why it matters:" as bold inline prefixes, not section headers
-- Thin horizontal divider between articles
-- Dark header with strong contrast against content
-- Email input huge + prominent above fold
-- Secondary CTA: "Browse without email" — zero-friction path
-- Company logos for social proof (add when real users exist)
-
-Skip:
-- White content sections (we stay fully dark)
-- Generic thumbnails
-- Breadth over depth (we do fewer, better signals)
-
-### SECONDARY: Superhuman AI
-Observed: April 2026
-Theme: LIGHT background (white/#f9f9f9), black text — we DO NOT copy the light theme
-Borrow only:
-- Left border color on cards = category identity (instant scan)
-- Very clean card layout — source + title + read link
-- Strong typographic hierarchy within each item
-- Horizontal rules as section separators
-- Emoji + bold section headers (e.g. "🔥 Top Story")
-
-Do NOT copy:
-- Light theme (we stay dark)
-- White/light backgrounds anywhere
-
-### What We Borrow From Both
-FROM RUNDOWN: dark bg, emoji prefix, inline bold labels, category pill, thin divider
-FROM SUPERHUMAN: section structure, left border = category, "Read →" CTA, emoji section headers
-NOT COPYING: Superhuman light theme, Rundown thumbnails, any ad placements
-
-### TERTIARY: Linear
-Adopt: calm density, Inter font, minimal accent usage
-Skip: task-management UI patterns
-
----
-
-## Color System
-
+## Colors
 ```
---bg:              #0a0a0a
---bg-card:         #111111
---bg-card-hover:   #161616
---bg-elevated:     #1a1a1a
---border:          rgba(255,255,255,0.08)
---border-hover:    rgba(255,255,255,0.15)
---purple:          #7c3aed
---amber:           #f59e0b   ← TAKEAWAY only, never elsewhere
---amber-dim:       #d97706   ← secondary signals
---text-1:          #ffffff
---text-2:          #a1a1aa
---text-3:          #52525b
---text-4:          #27272a
+--bg:         #0a0a0a
+--bg-card:    #111111
+--bg-hover:   #161616
+--border:     rgba(255,255,255,0.07)
+--purple:     #7c3aed
+--amber:      #f59e0b   ← TAKEAWAY only
+--text-1:     #ffffff
+--text-2:     #a1a1aa
+--text-3:     #52525b
 ```
 
-**Amber = TAKEAWAY only. Purple = chrome. Never swap.**
-
-Category colors + emoji (use consistently everywhere):
+Category colors + emoji:
 ```
-LLM / Models:  #7c3aed  🧠
-Research:      #2563eb  🔬
-Infra:         #059669  ⚡
-Funding:       #d97706  💰
-Product:       #dc2626  🚀
-Agents:        #7c3aed  🤖
-Open Source:   #0891b2  📦
-Policy:        #6b7280  🛡️
-Default:       #52525b  📡
+LLM:       #7c3aed  🧠
+Research:  #2563eb  🔬
+Infra:     #059669  ⚡
+Funding:   #d97706  💰
+Product:   #dc2626  🚀
+Agents:    #7c3aed  🤖
+Open Src:  #0891b2  📦
+Policy:    #6b7280  🛡️
+Default:   #52525b  📡
 ```
-
----
 
 ## Typography
-
 ```
-Font: Inter (variable) — loaded via globals.css
-Headings:  Inter 700–800, letter-spacing: -0.02em
-Body:      Inter 400
-Labels:    Inter 600–700, uppercase, letter-spacing: 0.08–0.1em
-
-Scale:
-xs:   11px  (labels, timestamps, pills)
-sm:   13px  (secondary body, nav links)
-base: 15px  (primary body)
-lg:   17px  (card titles)
-xl:   20px  (Zone 1 titles)
-2xl:  28px  (page headers)
-3xl:  36px  (landing hero subhead)
-hero: 48px  (landing headline)
+Font: Inter variable
+Hero headline: clamp(32px,6vw,52px), weight 800, #ffffff
+Section labels: 11px, uppercase, letter-spacing 0.12em, #52525b
+Signal title: 18–19px, weight 700–800, #ffffff
+Body: 14px, #a1a1aa, line-height 1.7
+Labels: 10–11px, uppercase, weight 700, letter-spacing 0.1em
 ```
 
-Spacing: 8px base. All multiples of 8.
-Max content width: 768px centered.
-
----
-
-## Zone 1 — Signal Row (implementation)
-
-Structure top to bottom:
-1. Signal number: 44px, `rgba(124,58,237,0.12)`, weight 800
-2. Source row: `[dot] [SOURCE] · [date] [category pill]`
-3. Title: `{emoji} {title}` — 19px, weight 700, tight line-height
-4. WHAT label: 10px, uppercase, weight 700, `#71717a`
-   WHAT body: 14px, `#a1a1aa`, line-height 1.65
-5. WHY label: 10px, uppercase, weight 700, `#71717a`
-   WHY body: 14px, `#a1a1aa`, line-height 1.65
-6. TAKEAWAY: `border-left: 2px solid rgba(245,158,11,0.5)`, `padding-left: 14px`
-   Label: 10px, uppercase, weight 700, amber
-   Body: 15px, amber, line-height 1.6
-7. Row divider: `1px solid rgba(255,255,255,0.05)`
-8. Hover: `#111111` bg only. No translateY. No glow.
-
-Emoji implementation (Zone1Signal.tsx) — uses tags[], NOT signal.category:
-```tsx
-const CATEGORY_EMOJI: Record<string, string> = {
-  llm: "🧠", models: "🧠", research: "🔬", infra: "⚡",
-  infrastructure: "⚡", funding: "💰", product: "🚀",
-  agents: "🤖", "open source": "📦", policy: "🛡️",
-};
-const emoji = signal.tags?.map(t => CATEGORY_EMOJI[t.toLowerCase()]).find(Boolean) ?? "📡";
-// <Link>{emoji} {signal.title}</Link>
-```
-
----
-
-## Zone 2 — Signal Card (implementation)
-
-Structure:
-- Left border: `3px solid {categoryColor}` — Superhuman-style category identity
-- Border style: left = color bar, rest = `1px solid rgba(255,255,255,0.08)`
-- Border radius: `0 8px 8px 0` (flush left edge, rounded right)
-- `[emoji] [SOURCE]` row — emoji from category map
-- Score bar: 3px, category color fill
-- Title: 13px, weight 600, `#ffffff`, 2-line clamp
-- "Read →" in category color (not purple)
-- Hover: `#161616` bg only. `transition: background 150ms ease`.
-
-```tsx
-// Zone2Card.tsx — left border pattern
-<Link style={{
-  borderLeft: `3px solid ${categoryColor}`,
-  borderRight: "1px solid rgba(255,255,255,0.08)",
-  borderTop: "1px solid rgba(255,255,255,0.08)",
-  borderBottom: "1px solid rgba(255,255,255,0.08)",
-  borderRadius: "0 8px 8px 0",
-  ...
-}}>
-```
-
----
-
-## Landing Page
-
-Above fold:
-- Edition badge: "DAILY BRIEF · FREE" — small, uppercase, amber
-- Headline: large, bold, 2 lines, tight tracking
-- Subheading: 1 sentence value prop, `#71717a`
-- Email input + amber CTA — full width block, prominent
-- Secondary: "Browse without email →" in `#52525b`
-
+## Landing Page (DARK)
+Background: #0a0a0a
+Navbar: logo left "● AI SIGNAL", "Browse →" right in #52525b
+Hero:
+  - Badge: "DAILY · FREE" 11px uppercase #52525b
+  - H1: big bold white headline 2 lines, #a1a1aa for second line
+  - Sub: 1 sentence value prop, 17px #71717a
+  - Email input: bg #111, border rgba(255,255,255,0.1), white text
+  - Subscribe button: bg #ffffff, color #000000
+  - Secondary: "Browse without email →" #52525b, underlined
 Below fold:
-- "TODAY'S TOP SIGNAL — LIVE" label with pulsing amber dot
-- Full Zone1-style preview (real data)
-- Stats strip: Daily / 3 min / 24+ sources
-- Social proof: add logos when real users exist
+  - "TODAY'S TOP SIGNALS" label, 11px uppercase #3f3f46
+  - 1–2 real signals (same editorial style: source → title → The Signal → TAKEAWAY)
+  - Thin dividers between signals
 
----
+## Zone 1 Signal Row
+- Full width, NO outer card border
+- Only bottom divider: 1px rgba(255,255,255,0.06)
+- Signal number: large, rgba(124,58,237,0.1), weight 800
+- Source row: dot + SOURCE + date + category pill
+- Title: emoji + title, weight 700–800, #ffffff
+- "The Signal:" bold white inline + body #a1a1aa
+- "Why it matters:" bold white inline + body #a1a1aa
+- TAKEAWAY: 2px amber left border, amber text
 
-## Interaction Patterns
+## Zone 2 Cards
+- bg #111111, border-left 3px category color
+- border-radius 0 8px 8px 0
+- Hover: bg #161616 only. transition: background 150ms ease
 
-Hover: bg color change only — no translateY on Zone 1 rows
-Zone 2 cards: `translateY(-1px)` max, subtle
-Transitions: `150ms ease`, targeted property only — never `transition: all`
-Amber: ONLY on TAKEAWAY — nowhere else
-Max border-radius: 8px on cards
+## Article Page (DARK)
+Background: #0a0a0a
+Open typography — NO card wrapper around content
+Category → Title → divider → sections as standalone labels
+TAKEAWAY: amber left border, amber text
+"Read original source ↗" — plain text link, white, underlined
+Related signals: thin dividers, no cards
 
----
-
-## Thumbnail (future — do NOT build yet)
-Validate with real users first. If needed: category gradient + emoji fallback.
-
----
-
-## How to Update
-When user shares screenshot → add dated section above
-When user gives feedback → update relevant section
-When competitor analyzed → add to Inspiration Stack
-This file is always source of truth. Overwrite freely.
+## Rules
+- No light backgrounds anywhere. No white backgrounds anywhere.
+- No transition: all
+- No box-shadow with large blur
+- Amber = TAKEAWAY only
+- Border-radius max 8px
+- Purple = chrome/accent only

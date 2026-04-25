@@ -80,6 +80,24 @@ Do NOT make changes beyond what the feedback specifically requests.
 
 ---
 
+## Design Agent
+When design needs to change:
+1. Read DESIGN_SYSTEM.md first
+2. Read last 3 entries in FEEDBACK_MEMORY.md
+3. Show exactly which files will change + why
+4. Make targeted change only
+5. npm run build — verify clean
+6. Append to FEEDBACK_MEMORY.md
+
+Core rule: DARK everywhere. No exceptions.
+Reference: Rundown AI (therundown.ai) — dark editorial feel.
+If unsure about anything visual → check DESIGN_SYSTEM.md first.
+
+## Anti-Drift Rule
+DARK everywhere. No white. No light backgrounds. No grey backgrounds.
+If Claude suggests light themes or white backgrounds → STOP. Re-read DESIGN_SYSTEM.md. Stay dark. Stay editorial.
+This applies to: landing page, article pages, app feed, all routes.
+
 ## Never Break
 RSS feed · search · source filter · bookmarks · read state ·
 unread toggle · saved page · article pages · auto-refresh
