@@ -8,7 +8,6 @@ import type { Metadata } from "next";
 import { readFileSync, existsSync } from "fs";
 import { join } from "path";
 import Link from "next/link";
-import { auth } from "@/lib/auth";
 import type { Signal } from "@/lib/types";
 
 // ── Data loading (mirrors api/news route.ts) ─────────────────────────────────
@@ -96,11 +95,9 @@ export default async function DigestPage({
 }) {
   const { date } = await params;
 
-  // Auth gate — same as API route
-  const session = await auth();
-  const isPaid =
-    (session?.user as { plan?: string } | undefined)?.plan === "paid";
-  const isAuthed = !!session?.user;
+  // Auth gating deferred — validate retention first (PRD: monetization phase 2)
+  const isPaid = false;
+  const isAuthed = false;
 
   // Load + filter signals for this date
   const allSignals = loadAllSignals();

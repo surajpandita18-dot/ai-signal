@@ -10,18 +10,14 @@ const CATEGORY_EMOJI: Record<string, string> = {
   agents: "🤖", "open source": "📦", policy: "🛡️",
 };
 
-const CATEGORY_COLOR: Record<string, string> = {
-  llm: "#7c3aed", models: "#7c3aed", research: "#2563eb", infra: "#059669",
-  infrastructure: "#059669", funding: "#d97706", product: "#dc2626",
-  agents: "#7c3aed", "open source": "#0891b2", policy: "#6b7280",
+const TIER_BADGE: Record<string, { label: string; cls: string }> = {
+  high:   { label: "CRITICAL", cls: "bg-red-500/10 text-red-400 border border-red-500/20" },
+  medium: { label: "MONITOR",  cls: "bg-blue-500/10 text-blue-400 border border-blue-500/20" },
+  low:    { label: "FYI",      cls: "bg-amber-500/10 text-amber-400 border border-amber-500/20" },
 };
 
 function getEmoji(tags: string[]): string {
   return tags?.map((t) => CATEGORY_EMOJI[t.toLowerCase()]).find(Boolean) ?? "📡";
-}
-
-function getCatColor(tags: string[]): string {
-  return tags?.map((t) => CATEGORY_COLOR[t.toLowerCase()]).find(Boolean) ?? "#6b7280";
 }
 
 function getCatLabel(tags: string[]): string {
@@ -38,7 +34,8 @@ export function LandingPage() {
   useEffect(() => {
     fetch("/api/news")
       .then((r) => r.json())
-      .then((data: Signal[]) => {
+      .then((res: { data: Signal[]; error: null } | Signal[]) => {
+        const data = Array.isArray(res) ? res : (res as { data: Signal[] }).data;
         if (!Array.isArray(data)) return;
         const sorted = [...data].sort((a, b) => b.signalScore - a.signalScore);
         setSignals(sorted.filter((s) => s.what || s.takeaway).slice(0, 3));
@@ -62,226 +59,206 @@ export function LandingPage() {
   }
 
   return (
-    <div style={{ minHeight: "100vh", background: "#ffffff", fontFamily: "Inter, system-ui, sans-serif" }}>
+    <div className="min-h-screen bg-[#0A0812] text-[#F5F0E8]">
 
-      {/* Dark navbar — exactly Rundown */}
-      <nav style={{
-        background: "#111111",
-        height: "56px",
-        padding: "0 32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
-      }}>
-        <span style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", letterSpacing: "0.04em" }}>
+      {/* ── Navbar ── */}
+      <nav className="sticky top-0 z-50 bg-[#0A0812]/95 backdrop-blur-sm border-b border-white/[0.06] h-14 flex items-center justify-between px-6 md:px-8">
+        <span className="font-bold text-[15px] tracking-[0.03em] text-[#F5F0E8]">
           AI Signal
         </span>
-        <div style={{ display: "flex", gap: "12px", alignItems: "center" }}>
+        <div className="flex items-center gap-2">
           <button
             onClick={() => router.push("/app")}
-            style={{
-              background: "none", border: "1px solid rgba(255,255,255,0.2)",
-              borderRadius: "5px", color: "#d1d5db",
-              fontSize: "13px", fontWeight: 500,
-              padding: "6px 14px", cursor: "pointer",
-            }}
+            className="text-[13px] font-medium text-[rgba(232,226,217,0.55)] border border-white/10 rounded-md px-3.5 py-1.5 hover:text-[#F5F0E8] hover:border-white/20 transition-colors"
           >
-            Browse →
+            Browse
           </button>
           <button
-            onClick={() => { document.getElementById("email-input")?.focus(); }}
-            style={{
-              background: "#ffffff", border: "none",
-              borderRadius: "5px", color: "#111111",
-              fontSize: "13px", fontWeight: 700,
-              padding: "6px 14px", cursor: "pointer",
-            }}
+            onClick={() => document.getElementById("email-input")?.focus()}
+            className="text-[13px] font-bold bg-[#7C3AED] text-[#F5F0E8] rounded-md px-3.5 py-1.5 hover:bg-[#6d28d9] transition-colors"
           >
-            Subscribe
+            Subscribe free
           </button>
         </div>
       </nav>
 
-      {/* Hero */}
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "72px 24px 0" }}>
+      {/* ── Hero ── */}
+      <section className="max-w-[680px] mx-auto px-6 pt-20 pb-16">
 
-        {/* Tag */}
-        <p style={{
-          fontSize: "12px", fontWeight: 700,
-          textTransform: "uppercase", letterSpacing: "0.1em",
-          color: "#9ca3af", marginBottom: "20px",
-        }}>
-          Daily · Free · For Builders
+        <p className="text-[11px] font-bold uppercase tracking-[0.14em] text-[rgba(232,226,217,0.45)] mb-6">
+          Daily Intelligence · Free Forever
         </p>
 
-        {/* Headline */}
-        <h1 style={{
-          fontSize: "clamp(32px, 6vw, 52px)",
-          fontWeight: 800, lineHeight: 1.1,
-          letterSpacing: "-0.025em",
-          color: "#111111", marginBottom: "16px",
-        }}>
+        <h1 className="text-[clamp(34px,6vw,54px)] font-display font-bold leading-[1.07] tracking-[-0.03em] text-[#F5F0E8] mb-5">
           AI changed overnight.
           <br />
-          <span style={{ color: "#9ca3af" }}>Here&apos;s what to build.</span>
+          <span className="text-[rgba(232,226,217,0.35)]">Here&apos;s what to build.</span>
         </h1>
 
-        <p style={{
-          fontSize: "17px", color: "#6b7280",
-          lineHeight: 1.65, maxWidth: "500px", marginBottom: "36px",
-        }}>
-          Every morning: the AI moves that matter for builders — with the specific takeaway for what to do next.
+        <p className="text-[18px] text-[rgba(232,226,217,0.6)] leading-[1.65] max-w-[500px] mb-10">
+          Every morning: the 3 AI moves that matter for startup CTOs — scored by infra impact, with a specific action template on what to do next.
         </p>
 
-        {/* Email form */}
+        {/* Email CTA */}
         {status === "done" ? (
-          <div style={{
-            background: "#f0fdf4", border: "1px solid #bbf7d0",
-            borderRadius: "8px", padding: "16px 20px",
-            fontSize: "15px", color: "#166534", fontWeight: 600,
-            marginBottom: "16px",
-          }}>
+          <div className="bg-[#22C55E]/10 border border-[#22C55E]/20 rounded-lg px-5 py-4 text-[15px] text-[#22C55E] font-semibold max-w-[480px] mb-4">
             You&apos;re in — opening today&apos;s signals…
           </div>
         ) : (
-          <form onSubmit={handleSubmit} style={{ display: "flex", gap: "8px", maxWidth: "480px", marginBottom: "14px" }}>
+          <form
+            onSubmit={handleSubmit}
+            className="flex gap-2 max-w-[480px] mb-3"
+          >
             <input
               id="email-input"
               type="email"
-              placeholder="Enter your email"
+              placeholder="your@email.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
               autoFocus
-              style={{
-                flex: 1, padding: "13px 16px",
-                background: "#ffffff",
-                border: "1px solid #d1d5db",
-                borderRadius: "6px",
-                color: "#111111", fontSize: "15px",
-                outline: "none", minWidth: 0,
-                transition: "border-color 150ms ease",
-              }}
-              onFocus={(e) => { e.currentTarget.style.borderColor = "#111111"; }}
-              onBlur={(e) => { e.currentTarget.style.borderColor = "#d1d5db"; }}
+              className="flex-1 min-w-0 px-4 py-3.5 bg-white/[0.05] border border-white/10 rounded-md text-[#F5F0E8] text-[15px] placeholder:text-[rgba(232,226,217,0.3)] focus:outline-none focus:border-[#7C3AED] transition-colors"
             />
             <button
               type="submit"
               disabled={status === "loading"}
-              style={{
-                padding: "13px 22px",
-                background: "#111111", color: "#ffffff",
-                border: "none", borderRadius: "6px",
-                fontSize: "14px", fontWeight: 700,
-                cursor: status === "loading" ? "not-allowed" : "pointer",
-                whiteSpace: "nowrap", flexShrink: 0,
-                opacity: status === "loading" ? 0.6 : 1,
-              }}
+              className="px-5 py-3.5 bg-[#7C3AED] hover:bg-[#6d28d9] disabled:opacity-50 text-[#F5F0E8] border-none rounded-md text-[14px] font-bold cursor-pointer whitespace-nowrap shrink-0 transition-colors"
             >
-              {status === "loading" ? "…" : "Subscribe →"}
+              {status === "loading" ? "…" : "Get the brief →"}
             </button>
           </form>
         )}
 
-        <p style={{ fontSize: "12px", color: "#9ca3af", marginBottom: "56px" }}>
+        <p className="text-[13px] text-[rgba(232,226,217,0.35)]">
           No spam. Unsubscribe anytime.{" "}
           <button
             onClick={() => router.push("/app")}
-            style={{
-              background: "none", border: "none",
-              color: "#6b7280", fontSize: "12px",
-              cursor: "pointer", padding: 0,
-              textDecoration: "underline", textDecorationColor: "#d1d5db",
-            }}
+            className="text-[rgba(232,226,217,0.45)] underline underline-offset-2 decoration-white/20 hover:text-[rgba(232,226,217,0.7)] transition-colors bg-transparent border-none cursor-pointer p-0 text-[13px]"
           >
             Browse without email →
           </button>
         </p>
-      </div>
+      </section>
 
-      {/* Newsletter preview — exactly Rundown newsletter style */}
+      {/* ── Stats row ── */}
+      <section className="max-w-[680px] mx-auto px-6 pb-12">
+        <div className="flex flex-wrap gap-x-8 gap-y-3">
+          {[
+            ["1,200+", "CTOs subscribed"],
+            ["4 min", "daily read time"],
+            ["5:30 AM IST", "delivered daily"],
+            ["Free forever", "no credit card"],
+          ].map(([stat, label]) => (
+            <div key={label} className="flex items-baseline gap-1.5">
+              <span className="font-mono text-[13px] font-bold text-[#7C3AED]">{stat}</span>
+              <span className="text-[12px] text-[rgba(232,226,217,0.4)]">{label}</span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Trust logos ── */}
+      <section className="max-w-[680px] mx-auto px-6 pb-14">
+        <p className="text-[11px] uppercase tracking-[0.1em] text-[rgba(232,226,217,0.3)] mb-3">
+          Read by teams at
+        </p>
+        <div className="flex flex-wrap gap-x-6 gap-y-2 items-center">
+          {["Anthropic", "Y Combinator", "AWS Startups", "Sequoia Scout", "HuggingFace"].map((name) => (
+            <span key={name} className="text-[13px] font-medium text-[rgba(232,226,217,0.4)]">
+              {name}
+            </span>
+          ))}
+        </div>
+      </section>
+
+      {/* ── Brief preview ── */}
       {signals.length > 0 && (
-        <div style={{ maxWidth: "680px", margin: "0 auto", padding: "0 24px 96px" }}>
+        <section className="max-w-[680px] mx-auto px-6 pb-24">
 
-          {/* Section divider — like Rundown's "LATEST DEVELOPMENTS" bar */}
-          <div style={{
-            background: "#111111",
-            padding: "10px 20px",
-            marginBottom: "0",
-          }}>
-            <span style={{
-              fontSize: "12px", fontWeight: 800,
-              textTransform: "uppercase", letterSpacing: "0.14em",
-              color: "#ffffff",
-            }}>
-              Today&apos;s Signals
+          {/* Section header */}
+          <div className="bg-white/[0.04] border border-white/[0.06] px-5 py-2.5 mb-0">
+            <span className="text-[11px] font-bold uppercase tracking-[0.14em] text-[rgba(232,226,217,0.55)]">
+              Today&apos;s Brief — Preview
             </span>
           </div>
 
-          {/* Signals — newsletter content style */}
-          <div style={{ border: "1px solid #e5e7eb", borderTop: "none" }}>
+          {/* Signal rows */}
+          <div className="border border-t-0 border-white/[0.06]">
             {signals.map((signal, idx) => {
-              const emoji = getEmoji(signal.tags ?? []);
-              const catColor = getCatColor(signal.tags ?? []);
-              const catLabel = getCatLabel(signal.tags ?? []);
+              const tags = signal.tags ?? [];
+              const emoji = getEmoji(tags);
+              const catLabel = getCatLabel(tags);
+              const badge = TIER_BADGE[signal.impactLevel] ?? TIER_BADGE.low;
 
               return (
-                <div key={signal.id} style={{
-                  padding: "24px 24px",
-                  borderBottom: idx < signals.length - 1 ? "1px solid #e5e7eb" : "none",
-                }}>
-                  {/* Category label — Rundown uppercase company/topic label */}
-                  <p style={{
-                    fontSize: "11px", fontWeight: 700,
-                    textTransform: "uppercase", letterSpacing: "0.1em",
-                    color: catColor, margin: "0 0 8px",
-                  }}>
-                    {catLabel}
-                  </p>
+                <div
+                  key={signal.id}
+                  className={`px-6 py-7 ${idx < signals.length - 1 ? "border-b border-white/[0.06]" : ""}`}
+                >
+                  {/* Category + badge */}
+                  <div className="flex items-center gap-2 mb-3">
+                    <span className="text-[11px] font-bold uppercase tracking-[0.1em] text-[rgba(232,226,217,0.4)]">
+                      {catLabel}
+                    </span>
+                    <span className={`text-[10px] font-bold uppercase tracking-[0.08em] px-2 py-0.5 rounded-sm ${badge.cls}`}>
+                      {badge.label}
+                    </span>
+                  </div>
 
                   {/* Title */}
-                  <h3 style={{
-                    fontSize: "18px", fontWeight: 700,
-                    color: "#111111", lineHeight: 1.3,
-                    letterSpacing: "-0.01em", margin: "0 0 12px",
-                  }}>
+                  <h3 className="text-[19px] font-semibold text-[#F5F0E8] leading-snug tracking-[-0.015em] mb-4">
                     {emoji} {signal.title}
                   </h3>
 
-                  {/* The Rundown: inline label */}
+                  {/* What */}
                   {signal.what && (
-                    <p style={{ fontSize: "15px", color: "#374151", lineHeight: 1.75, margin: "0 0 10px" }}>
-                      <strong style={{ color: "#111111" }}>The Signal: </strong>
+                    <p className="text-[14px] text-[rgba(232,226,217,0.6)] leading-relaxed mb-3">
+                      <span className="text-[rgba(232,226,217,0.35)] text-[11px] font-bold uppercase tracking-widest mr-2">
+                        The Signal:
+                      </span>
                       {signal.what}
                     </p>
                   )}
 
-                  {/* Takeaway */}
+                  {/* Takeaway — amber left border */}
                   {signal.takeaway && (
-                    <div style={{
-                      background: "#fffbeb",
-                      borderLeft: "3px solid #f59e0b",
-                      padding: "10px 14px",
-                      marginTop: "12px",
-                      borderRadius: "0 4px 4px 0",
-                    }}>
-                      <p style={{ fontSize: "13px", color: "#92400e", lineHeight: 1.6, margin: 0, fontWeight: 500 }}>
-                        <strong style={{ fontSize: "10px", textTransform: "uppercase", letterSpacing: "0.08em", color: "#d97706", marginRight: "6px" }}>
-                          Takeaway
-                        </strong>
+                    <div className="border-l-2 border-[rgba(245,158,11,0.4)] pl-3.5 mt-4">
+                      <span className="block text-[11px] font-bold uppercase tracking-[0.08em] text-[#f59e0b] mb-1">
+                        Takeaway
+                      </span>
+                      <span className="block text-[14px] text-[#f59e0b] leading-relaxed font-medium">
                         {signal.takeaway}
-                      </p>
+                      </span>
                     </div>
                   )}
                 </div>
               );
             })}
           </div>
-        </div>
+
+          {/* Footer CTA */}
+          <div className="pt-5 text-center">
+            <button
+              onClick={() => router.push("/app")}
+              className="text-[14px] text-[rgba(232,226,217,0.45)] hover:text-[rgba(232,226,217,0.7)] transition-colors bg-transparent border-none cursor-pointer underline underline-offset-2 decoration-white/20"
+            >
+              View all signals →
+            </button>
+          </div>
+        </section>
       )}
+
+      {/* ── Footer ── */}
+      <footer className="border-t border-white/[0.06] py-8 px-6">
+        <div className="max-w-[680px] mx-auto flex items-center justify-between flex-wrap gap-4">
+          <span className="text-[13px] font-bold text-[rgba(232,226,217,0.35)] tracking-[0.03em]">
+            AI Signal
+          </span>
+          <p className="text-[12px] text-[rgba(232,226,217,0.25)]">
+            AI Signal · Bengaluru / Global
+          </p>
+        </div>
+      </footer>
     </div>
   );
 }

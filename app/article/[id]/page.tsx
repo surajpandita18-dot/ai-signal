@@ -10,9 +10,9 @@ type RealArticle = {
   title: string;
   link: string;
   date: string;
-  summary: string;
+  summary: string | null;
   category?: string;
-  tags?: string[];
+  tags?: string[] | null;
 };
 
 const CATEGORY_EMOJI: Record<string, string> = {
@@ -35,23 +35,31 @@ function getCategoryColor(tags: string[]): string {
   return tags.map((t) => CATEGORY_COLOR[t.toLowerCase()]).find(Boolean) ?? "#6b7280";
 }
 
-function cleanSummary(summary: string): string {
+function cleanSummary(summary: string | null | undefined): string {
+  if (!summary) return "";
   return summary
     .replace(/arXiv:\S+\s+Announce Type:\s+\w+\s+Abstract:\s*/i, "")
     .replace(/^Abstract:\s*/i, "")
     .trim();
 }
 
-function normalizeId(value: string) {
-  return decodeURIComponent(value).trim().toLowerCase();
+function normalizeId(value: string): string {
+  try {
+    return decodeURIComponent(value).trim().toLowerCase();
+  } catch {
+    return value.trim().toLowerCase();
+  }
 }
 
 function loadProcessedSignals(): Signal[] {
   try {
     const filePath = path.join(process.cwd(), "lib", "processedSignals.json");
     if (!existsSync(filePath)) return [];
-    return JSON.parse(readFileSync(filePath, "utf-8")) as Signal[];
-  } catch { return []; }
+    const raw = readFileSync(filePath, "utf-8");
+    return JSON.parse(raw) as Signal[];
+  } catch {
+    return [];
+  }
 }
 
 export default async function ArticlePage({ params }: { params: Promise<{ id: string }> }) {
@@ -68,63 +76,78 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
   const why = processed?.why ?? null;
   const takeaway = processed?.takeaway ?? null;
   const hasLLM = !!(processed?.processed && (what || why || takeaway));
-  const articleTags: string[] = article?.tags ?? processed?.tags ?? [];
+  const articleTags: string[] = (article?.tags ?? processed?.tags ?? []).filter(Boolean) as string[];
   const emoji = getEmoji(articleTags);
   const catColor = getCategoryColor(articleTags);
   const catLabel = articleTags[0]?.toUpperCase() ?? "";
+  const cleanedSummary = cleanSummary(article?.summary);
 
   if (!article) {
     return (
       <main style={{ minHeight: "100vh", background: "#ffffff" }}>
-        <nav style={{ background: "#111111", height: "52px", padding: "0 24px", display: "flex", alignItems: "center" }}>
-          <Link href="/app" style={{ fontWeight: 800, fontSize: "14px", color: "#ffffff", textDecoration: "none", letterSpacing: "0.04em" }}>
+        <nav style={{
+          background: "#111111", height: "56px", padding: "0 32px",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          position: "sticky", top: 0, zIndex: 100,
+        }}>
+          <Link href="/app" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none" }}>
             AI Signal
           </Link>
+          <Link href="/app" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}>← Feed</Link>
         </nav>
-        <div style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px" }}>
-          <p style={{ color: "#9ca3af" }}>Signal not found.</p>
+        <div style={{ maxWidth: "680px", margin: "0 auto", padding: "64px 24px" }}>
+          <p style={{ fontSize: "16px", color: "#6b7280", lineHeight: 1.6 }}>
+            This signal couldn&apos;t be found — it may have expired or moved.{" "}
+            <Link href="/app" style={{ color: "#111111", fontWeight: 600 }}>View today&apos;s feed →</Link>
+          </p>
         </div>
       </main>
     );
   }
 
-  // Related signals
+  // Related signals — safe, with null guards
   const relatedArticles: RealArticle[] = [];
   if (articleTags.length > 0) {
     const candidates = processedSignals.filter(
-      (s) => normalizeId(s.id) !== normalizedRouteId && s.tags?.some((t) => articleTags.includes(t))
+      (s) => s.id && normalizeId(s.id) !== normalizedRouteId &&
+             Array.isArray(s.tags) && s.tags.some((t) => articleTags.includes(t))
     );
     for (const c of candidates.slice(0, 3)) {
       const raw = realNews.find((r) => normalizeId(r.id) === normalizeId(c.id));
       if (raw) relatedArticles.push(raw);
     }
-    if (relatedArticles.length === 0) {
+    if (relatedArticles.length < 3) {
       for (const r of realNews) {
         if (relatedArticles.length >= 3) break;
         if (normalizeId(r.id) === normalizedRouteId) continue;
-        if ((r.tags ?? []).some((t) => articleTags.includes(t))) relatedArticles.push(r);
+        if (relatedArticles.some((a) => a.id === r.id)) continue;
+        if (Array.isArray(r.tags) && r.tags.some((t) => articleTags.includes(t))) {
+          relatedArticles.push(r);
+        }
       }
     }
   }
 
-  const cleanedSummary = cleanSummary(article.summary);
+  const formattedDate = (() => {
+    try {
+      return new Date(article.date).toLocaleDateString("en-US", {
+        month: "long", day: "numeric", year: "numeric",
+      });
+    } catch {
+      return article.date;
+    }
+  })();
 
   return (
     <main style={{ minHeight: "100vh", background: "#ffffff" }}>
 
-      {/* Dark navbar — exactly Rundown */}
+      {/* Dark navbar — Rundown style */}
       <nav style={{
-        background: "#111111",
-        height: "56px",
-        padding: "0 32px",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        position: "sticky",
-        top: 0,
-        zIndex: 100,
+        background: "#111111", height: "56px", padding: "0 32px",
+        display: "flex", alignItems: "center", justifyContent: "space-between",
+        position: "sticky", top: 0, zIndex: 100,
       }}>
-        <Link href="/app" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none", letterSpacing: "0.04em" }}>
+        <Link href="/app" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none", letterSpacing: "0.03em" }}>
           AI Signal
         </Link>
         <Link href="/app" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none", fontWeight: 500 }}>
@@ -132,11 +155,11 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         </Link>
       </nav>
 
-      <div style={{ maxWidth: "680px", margin: "0 auto", padding: "40px 24px 96px" }}>
+      <article style={{ maxWidth: "680px", margin: "0 auto", padding: "48px 24px 96px" }}>
 
         {/* Breadcrumb */}
-        <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "24px", flexWrap: "wrap" }}>
-          <Link href="/app" style={{ fontSize: "13px", color: "#6b7280", textDecoration: "none" }}>Feed</Link>
+        <nav style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "28px", flexWrap: "wrap" }}>
+          <Link href="/app" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}>Feed</Link>
           <span style={{ color: "#d1d5db", fontSize: "13px" }}>›</span>
           {catLabel && (
             <>
@@ -144,97 +167,97 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
               <span style={{ color: "#d1d5db", fontSize: "13px" }}>›</span>
             </>
           )}
-          <span style={{ fontSize: "13px", color: "#374151", fontWeight: 500 }}>
-            {article.title.slice(0, 40)}{article.title.length > 40 ? "…" : ""}
+          <span style={{ fontSize: "13px", color: "#6b7280" }}>
+            {article.title.length > 48 ? article.title.slice(0, 48) + "…" : article.title}
           </span>
-        </div>
+        </nav>
 
         {/* Title */}
         <h1 style={{
-          fontSize: "clamp(24px, 4vw, 36px)",
-          fontWeight: 800,
-          color: "#111111",
-          lineHeight: 1.2,
-          letterSpacing: "-0.025em",
-          marginBottom: "12px",
+          fontSize: "clamp(26px, 4vw, 38px)",
+          fontWeight: 800, color: "#111111",
+          lineHeight: 1.15, letterSpacing: "-0.025em",
+          marginBottom: "16px",
         }}>
           {emoji} {article.title}
         </h1>
 
-        {/* Meta */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "32px", flexWrap: "wrap" }}>
-          <span style={{ fontSize: "13px", color: "#6b7280", fontWeight: 500 }}>{article.source}</span>
-          <span style={{ color: "#d1d5db" }}>·</span>
-          <span style={{ fontSize: "13px", color: "#9ca3af" }}>
-            {new Date(article.date).toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" })}
-          </span>
+        {/* Meta row */}
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "36px", flexWrap: "wrap" }}>
+          <span style={{ fontSize: "14px", color: "#374151", fontWeight: 600 }}>{article.source}</span>
+          <span style={{ color: "#e5e7eb" }}>·</span>
+          <span style={{ fontSize: "13px", color: "#9ca3af" }}>{formattedDate}</span>
           {catLabel && (
             <>
-              <span style={{ color: "#d1d5db" }}>·</span>
-              <span style={{ fontSize: "12px", fontWeight: 700, color: catColor, textTransform: "uppercase", letterSpacing: "0.06em" }}>
+              <span style={{ color: "#e5e7eb" }}>·</span>
+              <span style={{
+                fontSize: "11px", fontWeight: 700,
+                textTransform: "uppercase", letterSpacing: "0.08em",
+                color: catColor,
+              }}>
                 {catLabel}
               </span>
             </>
           )}
         </div>
 
-        {/* Divider */}
-        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "28px" }} />
+        {/* ── CONTENT — open editorial layout, no card wrappers ── */}
 
-        {/* THE RUNDOWN — main summary */}
+        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "32px" }} />
+
+        {/* The Signal */}
         {(hasLLM ? what : cleanedSummary) && (
-          <p style={{ fontSize: "16px", color: "#1f2937", lineHeight: 1.8, marginBottom: "20px" }}>
-            <strong style={{ color: "#111111" }}>The Signal: </strong>
-            {hasLLM ? what : cleanedSummary}
-          </p>
+          <section style={{ marginBottom: "28px" }}>
+            <p style={{ fontSize: "16px", color: "#1f2937", lineHeight: 1.85, margin: 0 }}>
+              <strong>The Signal: </strong>
+              {hasLLM ? what : cleanedSummary}
+            </p>
+          </section>
         )}
 
-        {/* THE DETAILS — why as bullets if it contains multiple points, else paragraph */}
+        {/* Why it matters */}
         {hasLLM && why && (
-          <div style={{ marginBottom: "20px" }}>
-            <p style={{ fontSize: "16px", color: "#1f2937", lineHeight: 1.8, margin: 0 }}>
-              <strong style={{ color: "#111111" }}>Why it matters: </strong>
+          <section style={{ marginBottom: "28px" }}>
+            <p style={{ fontSize: "16px", color: "#1f2937", lineHeight: 1.85, margin: 0 }}>
+              <strong>Why it matters: </strong>
               {why}
             </p>
-          </div>
-        )}
-
-        {/* BUILDER TAKEAWAY — our differentiator */}
-        {hasLLM && takeaway && (
-          <>
-            <div style={{ height: "1px", background: "#e5e7eb", margin: "24px 0" }} />
-            <div style={{
-              background: "#fffbeb",
-              borderLeft: "3px solid #f59e0b",
-              borderRadius: "0 6px 6px 0",
-              padding: "16px 20px",
-              marginBottom: "28px",
-            }}>
-              <p style={{
-                fontSize: "11px", fontWeight: 700,
-                textTransform: "uppercase", letterSpacing: "0.1em",
-                color: "#d97706", margin: "0 0 8px",
-              }}>
-                Builder Takeaway
-              </p>
-              <p style={{ fontSize: "15px", color: "#92400e", lineHeight: 1.7, margin: 0, fontWeight: 500 }}>
-                {takeaway}
-              </p>
-            </div>
-          </>
+          </section>
         )}
 
         {!hasLLM && !cleanedSummary && (
           <p style={{ fontSize: "15px", color: "#9ca3af", lineHeight: 1.75, marginBottom: "28px" }}>
-            Full signal analysis not yet available.
+            Full analysis not yet available for this signal.
           </p>
         )}
 
-        {/* Divider */}
-        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "20px" }} />
+        {/* Builder Takeaway */}
+        {hasLLM && takeaway && (
+          <>
+            <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "24px" }} />
+            <section style={{
+              borderLeft: "3px solid #f59e0b",
+              paddingLeft: "20px",
+              marginBottom: "32px",
+            }}>
+              <p style={{
+                fontSize: "11px", fontWeight: 700,
+                textTransform: "uppercase", letterSpacing: "0.1em",
+                color: "#d97706", margin: "0 0 10px",
+              }}>
+                Builder Takeaway
+              </p>
+              <p style={{ fontSize: "16px", color: "#374151", lineHeight: 1.8, margin: 0, fontWeight: 500 }}>
+                {takeaway}
+              </p>
+            </section>
+          </>
+        )}
 
-        {/* Links */}
-        <div style={{ display: "flex", alignItems: "center", gap: "20px", flexWrap: "wrap", marginBottom: "52px" }}>
+        <div style={{ height: "1px", background: "#e5e7eb", marginBottom: "24px" }} />
+
+        {/* Action links */}
+        <div style={{ display: "flex", alignItems: "center", gap: "24px", flexWrap: "wrap", marginBottom: "56px" }}>
           <a
             href={article.link}
             target="_blank"
@@ -249,7 +272,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
             Read original ↗
           </a>
           <a
-            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title.slice(0, 180))}&url=${encodeURIComponent(article.link)}`}
+            href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title.slice(0, 200))}&url=${encodeURIComponent(article.link)}`}
             target="_blank" rel="noreferrer"
             style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}
           >
@@ -266,15 +289,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
         {/* Related signals */}
         {relatedArticles.length > 0 && (
-          <>
+          <section>
             <p style={{
               fontSize: "11px", fontWeight: 700,
               textTransform: "uppercase", letterSpacing: "0.1em",
-              color: "#9ca3af", marginBottom: "16px",
+              color: "#9ca3af", marginBottom: "20px",
             }}>
               Related Signals
             </p>
-            <div style={{ display: "flex", flexDirection: "column" }}>
+            <div>
               {relatedArticles.map((related, idx) => (
                 <div key={related.id} style={{
                   paddingTop: idx === 0 ? "0" : "16px",
@@ -297,9 +320,9 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
                 </div>
               ))}
             </div>
-          </>
+          </section>
         )}
-      </div>
+      </article>
     </main>
   );
 }

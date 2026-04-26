@@ -1,9 +1,9 @@
-"use client";
-// Replaces OnboardingOverlay. 4-screen first-visit flow collecting role + topics.
+// app/components/OnboardingFlow.tsx
+// 4-screen first-visit flow collecting role + topics.
 // Stored: aiSignal_onboarded, aiSignal_role, aiSignal_topics, aiSignal_onboardingSeen
+"use client";
 
 import { useEffect, useState } from "react";
-import { useSession } from "next-auth/react";
 import type { Role } from "@/lib/personalization";
 import { ROLE_LABELS, TOPIC_OPTIONS } from "@/lib/personalization";
 
@@ -19,17 +19,14 @@ const ROLE_EMOJIS: Record<Role, string> = {
 };
 
 export function OnboardingFlow() {
-  const { status } = useSession();
-  const [step, setStep] = useState(0); // 0 = hidden
+  const [step, setStep] = useState(0);
   const [role, setRole] = useState<Role | null>(null);
   const [topics, setTopics] = useState<string[]>([]);
 
   useEffect(() => {
-    if (status === "authenticated") {
-      const seen = localStorage.getItem(STORAGE_KEY);
-      if (!seen) setStep(1);
-    }
-  }, [status]);
+    const seen = localStorage.getItem(STORAGE_KEY);
+    if (!seen) setStep(1);
+  }, []);
 
   function handleRoleSelect(r: Role) {
     setRole(r);
@@ -46,191 +43,94 @@ export function OnboardingFlow() {
     localStorage.setItem(STORAGE_KEY, "true");
     localStorage.setItem("aiSignal_onboarded", "true");
     if (role) localStorage.setItem("aiSignal_role", role);
-    if (topics.length > 0) localStorage.setItem("aiSignal_topics", JSON.stringify(topics));
+    if (topics.length > 0)
+      localStorage.setItem("aiSignal_topics", JSON.stringify(topics));
     setStep(0);
   }
 
   if (step === 0) return null;
 
   return (
-    <div
-      style={{
-        position: "fixed",
-        inset: 0,
-        background: "rgba(9,9,11,0.88)",
-        backdropFilter: "blur(12px)",
-        WebkitBackdropFilter: "blur(12px)",
-        zIndex: 200,
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "24px",
-      }}
-    >
-      <div
-        style={{
-          background: "#0f0f12",
-          border: "1px solid rgba(255,255,255,0.08)",
-          borderRadius: "12px",
-          padding: "40px 36px",
-          maxWidth: "480px",
-          width: "100%",
-        }}
-      >
-        {/* Step 1 — Welcome */}
+    <div className="fixed inset-0 bg-[rgba(9,9,11,0.88)] backdrop-blur-xl z-[200] flex items-center justify-center p-6">
+      <div className="bg-[#0f0f12] border border-white/[0.08] rounded-xl px-9 py-10 max-w-[480px] w-full">
+
         {step === 1 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
+          <div className="flex flex-col gap-6">
             <div>
-              <div
-                style={{
-                  fontSize: "11px",
-                  fontWeight: 500,
-                  letterSpacing: "0.1em",
-                  textTransform: "uppercase",
-                  color: "#7c3aed",
-                  marginBottom: "16px",
-                }}
-              >
+              <div className="text-[11px] font-medium tracking-[0.1em] uppercase text-[#7c3aed] mb-4">
                 Quick setup · 2 questions
               </div>
-              <h2
-                style={{
-                  fontSize: "24px",
-                  fontWeight: 700,
-                  color: "#fafafa",
-                  lineHeight: 1.2,
-                  letterSpacing: "-0.02em",
-                  margin: 0,
-                }}
-              >
+              <h2 className="text-[24px] font-bold text-[#fafafa] leading-snug tracking-[-0.02em] m-0">
                 AI Signal learns what matters to you.
               </h2>
             </div>
-            <p style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.6, margin: 0 }}>
-              Answer 2 quick questions so Zone 1 surfaces signals that are actually relevant to your work.
+            <p className="text-[15px] text-[#a1a1aa] leading-relaxed m-0">
+              Answer 2 quick questions so the feed surfaces signals actually relevant to your work.
             </p>
             <button
               onClick={() => setStep(2)}
-              style={{
-                background: "#f59e0b",
-                color: "#09090b",
-                border: "none",
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: 700,
-                padding: "12px 24px",
-                cursor: "pointer",
-                alignSelf: "flex-start",
-                transition: "background 150ms ease",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#d97706"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#f59e0b"; }}
+              className="bg-[#f59e0b] text-[#09090b] border-none rounded-md text-[14px] font-bold px-6 py-3 cursor-pointer self-start hover:bg-[#d97706] transition-colors"
             >
               Get started →
             </button>
             <button
               onClick={finish}
-              style={{
-                background: "none",
-                border: "none",
-                color: "#3f3f46",
-                fontSize: "12px",
-                cursor: "pointer",
-                padding: 0,
-                textDecoration: "underline",
-                alignSelf: "flex-start",
-              }}
+              className="bg-transparent border-none text-[#3f3f46] text-[12px] cursor-pointer p-0 underline self-start"
             >
               Skip for now
             </button>
           </div>
         )}
 
-        {/* Step 2 — Role selection */}
         {step === 2 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div className="flex flex-col gap-5">
             <div>
-              <div style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: "#52525b", marginBottom: "12px" }}>
+              <div className="text-[11px] font-medium tracking-[0.1em] uppercase text-[#52525b] mb-3">
                 1 of 2
               </div>
-              <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#fafafa", letterSpacing: "-0.01em", margin: 0 }}>
+              <h2 className="text-[20px] font-bold text-[#fafafa] tracking-[-0.01em] m-0">
                 What best describes you?
               </h2>
             </div>
-            <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+            <div className="flex flex-col gap-2">
               {(Object.entries(ROLE_LABELS) as [Role, string][]).map(([id, label]) => (
                 <button
                   key={id}
                   onClick={() => handleRoleSelect(id)}
-                  style={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "12px",
-                    background: "rgba(255,255,255,0.03)",
-                    border: "1px solid rgba(255,255,255,0.06)",
-                    borderRadius: "8px",
-                    padding: "12px 16px",
-                    cursor: "pointer",
-                    textAlign: "left",
-                    transition: "border-color 150ms ease, background 150ms ease",
-                    color: "#fafafa",
-                  }}
-                  onMouseEnter={(e) => {
-                    const el = e.currentTarget as HTMLButtonElement;
-                    el.style.borderColor = "rgba(124,58,237,0.4)";
-                    el.style.background = "rgba(124,58,237,0.06)";
-                  }}
-                  onMouseLeave={(e) => {
-                    const el = e.currentTarget as HTMLButtonElement;
-                    el.style.borderColor = "rgba(255,255,255,0.06)";
-                    el.style.background = "rgba(255,255,255,0.03)";
-                  }}
+                  className="flex items-center gap-3 bg-white/[0.03] border border-white/[0.06] rounded-lg px-4 py-3 cursor-pointer text-left text-[#fafafa] hover:border-[rgba(124,58,237,0.4)] hover:bg-[rgba(124,58,237,0.06)] transition-all"
                 >
-                  <span style={{ fontSize: "18px", lineHeight: 1 }}>{ROLE_EMOJIS[id]}</span>
-                  <span style={{ fontSize: "14px", fontWeight: 500 }}>{label}</span>
+                  <span className="text-[18px] leading-none">{ROLE_EMOJIS[id]}</span>
+                  <span className="text-[14px] font-medium">{label}</span>
                 </button>
               ))}
             </div>
           </div>
         )}
 
-        {/* Step 3 — Topic selection */}
         {step === 3 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+          <div className="flex flex-col gap-5">
             <div>
-              <div style={{ fontSize: "11px", fontWeight: 500, letterSpacing: "0.1em", textTransform: "uppercase", color: "#52525b", marginBottom: "12px" }}>
+              <div className="text-[11px] font-medium tracking-[0.1em] uppercase text-[#52525b] mb-3">
                 2 of 2
               </div>
-              <h2 style={{ fontSize: "20px", fontWeight: 700, color: "#fafafa", letterSpacing: "-0.01em", margin: "0 0 4px" }}>
+              <h2 className="text-[20px] font-bold text-[#fafafa] tracking-[-0.01em] m-0 mb-1">
                 What are you most interested in?
               </h2>
-              <p style={{ fontSize: "13px", color: "#52525b", margin: 0 }}>Select all that apply</p>
+              <p className="text-[13px] text-[#52525b] m-0">Select all that apply</p>
             </div>
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "1fr 1fr",
-                gap: "8px",
-              }}
-            >
+            <div className="grid grid-cols-2 gap-2">
               {TOPIC_OPTIONS.map(({ id, label }) => {
                 const selected = topics.includes(id);
                 return (
                   <button
                     key={id}
                     onClick={() => toggleTopic(id)}
+                    className="rounded-lg px-3 py-2.5 cursor-pointer text-left text-[13px] leading-snug transition-all"
                     style={{
                       background: selected ? "rgba(245,158,11,0.08)" : "rgba(255,255,255,0.03)",
                       border: `1px solid ${selected ? "rgba(245,158,11,0.4)" : "rgba(255,255,255,0.06)"}`,
-                      borderRadius: "8px",
-                      padding: "10px 12px",
-                      cursor: "pointer",
-                      textAlign: "left",
                       color: selected ? "#f59e0b" : "#a1a1aa",
-                      fontSize: "13px",
                       fontWeight: selected ? 600 : 400,
-                      transition: "border-color 150ms ease, color 150ms ease, background 150ms ease",
-                      lineHeight: 1.3,
                     }}
                   >
                     {label}
@@ -240,59 +140,25 @@ export function OnboardingFlow() {
             </div>
             <button
               onClick={() => setStep(4)}
-              style={{
-                background: "#f59e0b",
-                color: "#09090b",
-                border: "none",
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: 700,
-                padding: "12px 24px",
-                cursor: "pointer",
-                alignSelf: "flex-start",
-                transition: "background 150ms ease",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#d97706"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#f59e0b"; }}
+              className="bg-[#f59e0b] text-[#09090b] border-none rounded-md text-[14px] font-bold px-6 py-3 cursor-pointer self-start hover:bg-[#d97706] transition-colors"
             >
               {topics.length > 0 ? "Done →" : "Skip →"}
             </button>
           </div>
         )}
 
-        {/* Step 4 — Done */}
         {step === 4 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: "24px" }}>
-            <div
-              style={{
-                width: "40px",
-                height: "40px",
-                borderRadius: "50%",
-                background: "rgba(245,158,11,0.1)",
-                border: "1px solid rgba(245,158,11,0.3)",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: "18px",
-              }}
-            >
+          <div className="flex flex-col gap-6">
+            <div className="w-10 h-10 rounded-full bg-[rgba(245,158,11,0.1)] border border-[rgba(245,158,11,0.3)] flex items-center justify-center text-[18px]">
               ✓
             </div>
             <div>
-              <h2
-                style={{
-                  fontSize: "22px",
-                  fontWeight: 700,
-                  color: "#fafafa",
-                  letterSpacing: "-0.01em",
-                  margin: "0 0 8px",
-                }}
-              >
+              <h2 className="text-[22px] font-bold text-[#fafafa] tracking-[-0.01em] m-0 mb-2">
                 Your feed is ready.
               </h2>
-              <p style={{ fontSize: "15px", color: "#a1a1aa", lineHeight: 1.6, margin: 0 }}>
+              <p className="text-[15px] text-[#a1a1aa] leading-relaxed m-0">
                 3 signals every morning, curated for{" "}
-                <span style={{ color: "#fafafa", fontWeight: 600 }}>
+                <span className="text-[#fafafa] font-semibold">
                   {role ? ROLE_LABELS[role] : "you"}
                 </span>
                 .
@@ -300,20 +166,7 @@ export function OnboardingFlow() {
             </div>
             <button
               onClick={finish}
-              style={{
-                background: "#f59e0b",
-                color: "#09090b",
-                border: "none",
-                borderRadius: "6px",
-                fontSize: "14px",
-                fontWeight: 700,
-                padding: "12px 24px",
-                cursor: "pointer",
-                alignSelf: "flex-start",
-                transition: "background 150ms ease",
-              }}
-              onMouseEnter={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#d97706"; }}
-              onMouseLeave={(e) => { (e.currentTarget as HTMLButtonElement).style.background = "#f59e0b"; }}
+              className="bg-[#f59e0b] text-[#09090b] border-none rounded-md text-[14px] font-bold px-6 py-3 cursor-pointer self-start hover:bg-[#d97706] transition-colors"
             >
               See today&apos;s signals →
             </button>

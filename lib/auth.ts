@@ -1,37 +1,26 @@
 // lib/auth.ts
-import NextAuth from "next-auth";
-import GitHub from "next-auth/providers/github";
-import Resend from "next-auth/providers/resend";
+// Supabase Auth helpers — magic link only, no passwords, no GitHub OAuth.
 
-export const { handlers, auth, signIn, signOut } = NextAuth({
-  secret:
-    process.env.NEXTAUTH_SECRET ??
-    process.env.AUTH_SECRET ??
-    "pEgGUKfLh50mDxdSu+guhKj7hfYOlRroZzHD1QqKvTE=",
-  providers: [
-    GitHub({
-      clientId: process.env.GITHUB_CLIENT_ID ?? "PLACEHOLDER",
-      clientSecret: process.env.GITHUB_CLIENT_SECRET ?? "PLACEHOLDER",
-    }),
-    // Email magic link via Resend — requires RESEND_API_KEY in env
-    ...(process.env.RESEND_API_KEY
-      ? [Resend({ from: "AI Signal <noreply@ai-signal.app>" })]
-      : []),
-  ],
-  callbacks: {
-    async session({ session, token }) {
-      return {
-        ...session,
-        user: {
-          ...session.user,
-          plan: (token["plan"] as string) ?? "free",
-          githubId: token.sub,
-        },
-      };
+import { getBrowserClient } from "./supabase";
+
+export async function sendMagicLink(email: string): Promise<{ error: string | null }> {
+  const supabase = getBrowserClient();
+  const { error } = await supabase.auth.signInWithOtp({
+    email,
+    options: {
+      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000"}/api/auth/callback`,
     },
-    async jwt({ token }) {
-      token["plan"] = token["plan"] ?? "free";
-      return token;
-    },
-  },
-});
+  });
+  return { error: error?.message ?? null };
+}
+
+export async function signOut(): Promise<void> {
+  const supabase = getBrowserClient();
+  await supabase.auth.signOut();
+}
+
+export async function getSession() {
+  const supabase = getBrowserClient();
+  const { data } = await supabase.auth.getSession();
+  return data.session;
+}

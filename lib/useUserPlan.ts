@@ -1,12 +1,23 @@
 // lib/useUserPlan.ts
 "use client";
 
-import { useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
+import { getBrowserClient } from "./supabase";
 import type { UserPlan } from "./types";
 
 export function useUserPlan(): UserPlan {
-  const { data: session } = useSession();
-  // Type assertion — session.user.plan added in auth.ts callback
-  const plan = (session?.user as { plan?: string } | undefined)?.plan;
-  return (plan as UserPlan) ?? "free";
+  const [plan, setPlan] = useState<UserPlan>("free");
+
+  useEffect(() => {
+    const supabase = getBrowserClient();
+    supabase.auth.getSession().then(({ data }) => {
+      const email = data.session?.user?.email;
+      if (!email) return;
+      // Plan is stored in user_metadata by Stripe webhook
+      const meta = data.session?.user?.user_metadata as { plan?: string } | undefined;
+      setPlan((meta?.plan as UserPlan) ?? "free");
+    });
+  }, []);
+
+  return plan;
 }
