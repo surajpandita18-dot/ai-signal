@@ -1,8 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
-import { getBrowserClient } from "@/lib/supabase";
 
 // ── Types ─────────────────────────────────────────────────────────────────────
 
@@ -57,231 +55,161 @@ export interface BriefViewProps {
   proBrief: BriefContent;
 }
 
-// ── Design helpers ────────────────────────────────────────────────────────────
+// ── Helpers ───────────────────────────────────────────────────────────────────
 
-function SectionRule({ label, color }: { label: string; color: string }) {
+function fmtLong(date: string) {
+  if (!date.match(/^\d{4}-\d{2}-\d{2}$/)) return date;
+  return new Date(date + "T00:00:00").toLocaleDateString("en-US", {
+    weekday: "long", month: "long", day: "numeric", year: "numeric",
+  });
+}
+
+function fmtShort(date: string) {
+  if (!date.match(/^\d{4}-\d{2}-\d{2}$/)) return date;
+  return new Date(date + "T00:00:00").toLocaleDateString("en-US", {
+    month: "short", day: "numeric", year: "numeric",
+  });
+}
+
+// ── Sub-components ────────────────────────────────────────────────────────────
+
+function SectionBanner({ label }: { label: string }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: "12px", margin: "0 0 28px" }}>
+    <div style={{
+      background: "#111111",
+      padding: "11px 24px",
+      textAlign: "center",
+    }}>
       <span style={{
-        fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em",
-        textTransform: "uppercase", color, whiteSpace: "nowrap",
+        fontSize: "11px", fontWeight: 800, letterSpacing: "0.18em",
+        textTransform: "uppercase", color: "#ffffff",
       }}>
         {label}
       </span>
-      <div style={{ flex: 1, height: "1px", background: "rgba(255,255,255,0.07)" }} />
     </div>
   );
 }
 
-function SourceChip({ source }: { source: string }) {
-  return (
-    <span style={{
-      fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em",
-      textTransform: "uppercase", color: "rgba(245,240,232,0.4)",
-      background: "rgba(255,255,255,0.04)", border: "1px solid rgba(255,255,255,0.07)",
-      borderRadius: "4px", padding: "2px 7px",
-    }}>
-      {source}
-    </span>
-  );
-}
+function CriticalCard({ story, rank }: { story: CriticalStory; rank: number }) {
+  const hasAction = story.actionTemplate?.action && !story.actionTemplate.action.includes("🔒");
 
-function ActionBlock({ action, isPro }: { action: ActionTemplate; isPro: boolean }) {
-  const blurred = action.action.includes("🔒") || !isPro;
-  if (blurred) {
-    return (
-      <div style={{
-        margin: "14px 0 10px",
-        background: "rgba(124,58,237,0.06)",
-        border: "1px dashed rgba(124,58,237,0.3)",
-        borderRadius: "8px",
-        padding: "14px 16px",
-      }}>
-        <p style={{ fontSize: "12px", color: "#A78BFA", fontWeight: 600, marginBottom: "4px" }}>
-          🔒 Action template — Pro only
-        </p>
-        <p style={{ fontSize: "12px", color: "rgba(245,240,232,0.35)", marginBottom: "12px", lineHeight: 1.5 }}>
-          Who owns this, what to do, and by when — unlocked for Pro subscribers.
-        </p>
-        <Link href="/upgrade" style={{
-          display: "inline-block", background: "#7C3AED", color: "#F5F0E8",
-          fontSize: "12px", fontWeight: 700, padding: "7px 14px", borderRadius: "6px",
-          textDecoration: "none",
-        }}>
-          Upgrade to Pro →
-        </Link>
-      </div>
-    );
-  }
   return (
     <div style={{
-      margin: "14px 0 10px",
-      borderLeft: "2px solid #22C55E",
-      paddingLeft: "14px",
+      background: "#ffffff",
+      border: "1px solid #e5e7eb",
+      borderRadius: "8px",
+      padding: "22px 24px",
+      margin: "16px 0",
     }}>
-      <p style={{ fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#22C55E", marginBottom: "8px" }}>
-        Action Required
-      </p>
-      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
-        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.7)", lineHeight: 1.5 }}>
-          <span style={{ color: "rgba(245,240,232,0.45)", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 600 }}>Owner · </span>
-          {action.owner}
-        </p>
-        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.85)", lineHeight: 1.6 }}>
-          <span style={{ color: "rgba(245,240,232,0.45)", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 600 }}>Action · </span>
-          {action.action}
-        </p>
-        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.7)", lineHeight: 1.5 }}>
-          <span style={{ color: "rgba(245,240,232,0.45)", fontSize: "11px", textTransform: "uppercase", letterSpacing: "0.06em", fontWeight: 600 }}>By · </span>
-          {action.by}
-        </p>
-      </div>
-    </div>
-  );
-}
-
-function CriticalRow({ story, rank, isPro }: { story: CriticalStory; rank: number; isPro: boolean }) {
-  return (
-    <div style={{ display: "flex", gap: "20px", paddingBottom: "28px", marginBottom: "28px", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-      {/* Rank */}
-      <span style={{
-        fontSize: "28px", fontWeight: 800, color: "rgba(239,68,68,0.15)",
-        lineHeight: 1, minWidth: "32px", flexShrink: 0, fontVariantNumeric: "tabular-nums",
-        letterSpacing: "-0.03em", marginTop: "2px",
-        fontFamily: "var(--font-jetbrains, monospace)",
+      {/* Source label */}
+      <p style={{
+        fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em",
+        textTransform: "uppercase", color: "#9ca3af", margin: "0 0 10px",
       }}>
-        {String(rank).padStart(2, "0")}
-      </span>
+        {story.source}
+      </p>
 
-      {/* Content */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        {/* Source + tier chip */}
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px", flexWrap: "wrap" }}>
-          <SourceChip source={story.source} />
-          <span style={{
-            fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em",
-            textTransform: "uppercase", color: "#EF4444",
-            background: "rgba(239,68,68,0.1)", border: "1px solid rgba(239,68,68,0.2)",
-            borderRadius: "4px", padding: "2px 7px",
-          }}>
-            Critical
-          </span>
-        </div>
+      {/* Headline */}
+      <h2 style={{
+        fontSize: "19px", fontWeight: 800, color: "#111111",
+        lineHeight: 1.3, letterSpacing: "-0.02em", margin: "0 0 14px",
+        fontFamily: "var(--font-fraunces, serif)",
+      }}>
+        🔴 {story.headline}
+      </h2>
 
-        {/* Headline */}
-        <h3 style={{
-          fontSize: "18px", fontWeight: 700, color: "#F5F0E8",
-          lineHeight: 1.35, letterSpacing: "-0.015em", margin: "0 0 10px",
-          fontFamily: "var(--font-fraunces, serif)",
+      {/* The Signal */}
+      <p style={{ fontSize: "15px", color: "#374151", lineHeight: 1.7, margin: "0 0 14px" }}>
+        <strong style={{ color: "#111111" }}>The Signal: </strong>
+        {story.summary}
+      </p>
+
+      {/* Action template */}
+      {hasAction && (
+        <div style={{
+          background: "#f0fdf4",
+          border: "1px solid #bbf7d0",
+          borderRadius: "6px",
+          padding: "14px 16px",
+          margin: "0 0 16px",
         }}>
-          {story.headline}
-        </h3>
+          <p style={{
+            fontSize: "11px", fontWeight: 800, letterSpacing: "0.14em",
+            textTransform: "uppercase", color: "#15803d", margin: "0 0 10px",
+          }}>
+            What to do
+          </p>
+          <ul style={{ margin: 0, padding: "0 0 0 16px", display: "flex", flexDirection: "column", gap: "5px" }}>
+            <li style={{ fontSize: "14px", color: "#1f2937", lineHeight: 1.55 }}>
+              <strong>Owner:</strong> {story.actionTemplate.owner}
+            </li>
+            <li style={{ fontSize: "14px", color: "#1f2937", lineHeight: 1.55 }}>
+              <strong>Action:</strong> {story.actionTemplate.action}
+            </li>
+            <li style={{ fontSize: "14px", color: "#1f2937", lineHeight: 1.55 }}>
+              <strong>By:</strong> {story.actionTemplate.by}
+            </li>
+          </ul>
+        </div>
+      )}
 
-        {/* Summary */}
-        <p style={{ fontSize: "14px", color: "rgba(245,240,232,0.6)", lineHeight: 1.7, margin: "0 0 4px" }}>
-          {story.summary}
-        </p>
-
-        {/* Action template */}
-        <ActionBlock action={story.actionTemplate} isPro={isPro} />
-
-        {/* Read more */}
-        <a
-          href={story.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          style={{ fontSize: "13px", color: "#A78BFA", fontWeight: 500, textDecoration: "none" }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#C4B5FD"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#A78BFA"; }}
-        >
-          {story.ctaLabel || "Read more →"}
-        </a>
-      </div>
+      {/* Read more */}
+      <a
+        href={story.url}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{
+          fontSize: "14px", fontWeight: 600, color: "#2563eb",
+          textDecoration: "none",
+        }}
+        onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+        onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
+      >
+        {story.ctaLabel || "Read more"} →
+      </a>
     </div>
   );
 }
 
 function MonitorRow({ story, rank }: { story: MonitorStory; rank: number }) {
   return (
-    <div style={{ display: "flex", gap: "20px", paddingBottom: "20px", marginBottom: "20px", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
-      {/* Rank */}
+    <div style={{
+      padding: "16px 0",
+      borderBottom: "1px solid #f3f4f6",
+      display: "flex", gap: "14px", alignItems: "flex-start",
+    }}>
       <span style={{
-        fontSize: "22px", fontWeight: 800, color: "rgba(59,130,246,0.15)",
-        lineHeight: 1, minWidth: "32px", flexShrink: 0, fontVariantNumeric: "tabular-nums",
-        letterSpacing: "-0.03em", marginTop: "2px",
+        fontSize: "12px", fontWeight: 700, color: "#d1d5db",
         fontFamily: "var(--font-jetbrains, monospace)",
+        minWidth: "24px", flexShrink: 0, paddingTop: "2px",
+        letterSpacing: "0.04em",
       }}>
         {String(rank).padStart(2, "0")}
       </span>
-
-      {/* Content */}
-      <div style={{ flex: 1, minWidth: 0 }}>
-        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "8px", flexWrap: "wrap" }}>
-          <SourceChip source={story.source} />
-          <span style={{
-            fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em",
-            textTransform: "uppercase", color: "#3B82F6",
-            background: "rgba(59,130,246,0.08)", border: "1px solid rgba(59,130,246,0.15)",
-            borderRadius: "4px", padding: "2px 7px",
-          }}>
-            Monitor
-          </span>
-        </div>
-
+      <div style={{ flex: 1 }}>
+        <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em", textTransform: "uppercase", color: "#9ca3af", margin: "0 0 6px" }}>
+          {story.source}
+        </p>
         <h4 style={{
-          fontSize: "15px", fontWeight: 600, color: "rgba(245,240,232,0.9)",
-          lineHeight: 1.45, letterSpacing: "-0.01em", margin: "0 0 7px",
+          fontSize: "15px", fontWeight: 700, color: "#111111",
+          lineHeight: 1.4, margin: "0 0 6px", letterSpacing: "-0.01em",
         }}>
-          {story.headline}
+          🔵 {story.headline}
         </h4>
-
-        <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.5)", lineHeight: 1.65, margin: "0 0 8px" }}>
+        <p style={{ fontSize: "14px", color: "#6b7280", lineHeight: 1.65, margin: "0 0 8px" }}>
           {story.summary}
         </p>
-
         <a
           href={story.url}
           target="_blank"
           rel="noopener noreferrer"
-          style={{ fontSize: "12px", color: "#60A5FA", fontWeight: 500, textDecoration: "none" }}
-          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.color = "#93C5FD"; }}
-          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.color = "#60A5FA"; }}
+          style={{ fontSize: "13px", fontWeight: 600, color: "#2563eb", textDecoration: "none" }}
+          onMouseEnter={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "underline"; }}
+          onMouseLeave={(e) => { (e.currentTarget as HTMLElement).style.textDecoration = "none"; }}
         >
-          {story.ctaLabel || "Read more →"}
+          {story.ctaLabel || "Read more"} →
         </a>
       </div>
-    </div>
-  );
-}
-
-function ToolRow({ story }: { story: ToolStory }) {
-  return (
-    <div style={{ padding: "20px", background: "rgba(245,158,11,0.04)", border: "1px solid rgba(245,158,11,0.12)", borderRadius: "10px", marginBottom: "12px" }}>
-      <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "10px", flexWrap: "wrap" }}>
-        <SourceChip source={story.source} />
-        <span style={{
-          fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em",
-          textTransform: "uppercase", color: "#F59E0B",
-          background: "rgba(245,158,11,0.1)", border: "1px solid rgba(245,158,11,0.2)",
-          borderRadius: "4px", padding: "2px 7px",
-        }}>
-          Tool of the Day
-        </span>
-      </div>
-      <h4 style={{ fontSize: "16px", fontWeight: 700, color: "#F5F0E8", lineHeight: 1.4, margin: "0 0 8px" }}>
-        {story.headline}
-      </h4>
-      <p style={{ fontSize: "13px", color: "rgba(245,240,232,0.55)", lineHeight: 1.65, margin: "0 0 10px" }}>
-        {story.summary}
-      </p>
-      <a
-        href={story.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ fontSize: "12px", color: "#F59E0B", fontWeight: 500, textDecoration: "none" }}
-      >
-        {story.ctaLabel || "Try it →"}
-      </a>
     </div>
   );
 }
@@ -289,215 +217,211 @@ function ToolRow({ story }: { story: ToolStory }) {
 // ── Main BriefView ────────────────────────────────────────────────────────────
 
 export function BriefView({ slug, date, freeBrief, proBrief }: BriefViewProps) {
-  const [isPro, setIsPro] = useState(false);
-
-  useEffect(() => {
-    const supabase = getBrowserClient();
-    supabase.auth.getSession().then(({ data }) => {
-      const meta = data.session?.user?.user_metadata as { plan?: string } | undefined;
-      setIsPro(meta?.plan === "pro");
-    });
-  }, []);
-
-  const brief = isPro ? proBrief : freeBrief;
-  const { criticalStories, monitorStories, toolOfDay, ctaPrompt } = brief;
-
-  const displayDate = date.match(/^\d{4}-\d{2}-\d{2}$/)
-    ? new Date(date + "T00:00:00").toLocaleDateString("en-IN", {
-        weekday: "short", day: "numeric", month: "long", year: "numeric",
-        timeZone: "Asia/Kolkata",
-      })
-    : date;
-
-  const totalCount = criticalStories.length + monitorStories.length;
+  // Everything is free — always show full content
+  const brief = proBrief ?? freeBrief;
+  const { criticalStories = [], monitorStories = [], toolOfDay, ctaPrompt } = brief;
+  const allHeadlines = [
+    ...criticalStories.map((s) => s.headline),
+    ...monitorStories.map((s) => s.headline),
+    ...(toolOfDay ? [toolOfDay.headline] : []),
+  ];
 
   return (
-    <div style={{ minHeight: "100vh", background: "#0A0812", color: "#F5F0E8" }}>
+    <div style={{ minHeight: "100vh", background: "#f3f4f6" }}>
 
-      {/* ── Sticky navbar ── */}
+      {/* ── Dark sticky navbar ── */}
       <header style={{
-        position: "sticky", top: 0, zIndex: 100,
-        background: "rgba(10,8,18,0.92)", backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        borderBottom: "1px solid rgba(255,255,255,0.06)",
-        height: "52px", display: "flex", alignItems: "center",
-        justifyContent: "space-between", padding: "0 24px",
+        position: "sticky", top: 0, zIndex: 50,
+        background: "#0f0f0f",
+        borderBottom: "1px solid #222",
+        height: "50px",
+        display: "flex", alignItems: "center",
+        justifyContent: "space-between",
+        padding: "0 24px",
       }}>
         <Link href="/" style={{
-          fontSize: "14px", fontWeight: 800, letterSpacing: "0.04em",
-          textTransform: "uppercase", color: "#F5F0E8", textDecoration: "none",
+          fontSize: "13px", fontWeight: 800, letterSpacing: "0.06em",
+          textTransform: "uppercase", color: "#ffffff", textDecoration: "none",
         }}>
           AI Signal
         </Link>
-
-        <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
-          <span style={{ fontSize: "12px", color: "rgba(245,240,232,0.4)", fontWeight: 500 }}>
-            {displayDate}
+        <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+          <span style={{ fontSize: "12px", color: "#6b7280" }}>
+            {fmtShort(date)}
           </span>
           <Link href="/brief" style={{
-            fontSize: "12px", color: "rgba(245,240,232,0.55)", fontWeight: 500,
-            textDecoration: "none", padding: "5px 10px",
-            border: "1px solid rgba(255,255,255,0.08)", borderRadius: "6px",
+            fontSize: "12px", fontWeight: 600, color: "#9ca3af", textDecoration: "none",
           }}>
             Latest
           </Link>
-          {isPro && (
-            <span style={{
-              fontSize: "10px", fontWeight: 700, letterSpacing: "0.1em",
-              textTransform: "uppercase", color: "#A78BFA",
-              background: "rgba(124,58,237,0.15)", border: "1px solid rgba(124,58,237,0.3)",
-              borderRadius: "20px", padding: "3px 10px",
-            }}>
-              Pro
-            </span>
-          )}
-          {!isPro && (
-            <Link href="/upgrade" style={{
-              fontSize: "12px", fontWeight: 700, color: "#F5F0E8",
-              background: "#7C3AED", borderRadius: "6px", padding: "5px 12px",
-              textDecoration: "none",
-            }}>
-              Upgrade
-            </Link>
-          )}
+          <Link href="/" style={{
+            fontSize: "12px", fontWeight: 700, color: "#ffffff",
+            background: "#7C3AED", borderRadius: "6px",
+            padding: "5px 14px", textDecoration: "none",
+          }}>
+            Subscribe free
+          </Link>
         </div>
       </header>
 
-      {/* ── Content ── */}
-      <main style={{ maxWidth: "680px", margin: "0 auto", padding: "40px 24px 80px" }}>
+      {/* ── Newsletter container ── */}
+      <main style={{ maxWidth: "660px", margin: "28px auto 60px", background: "#ffffff", borderRadius: "2px" }}>
 
-        {/* Score header — Rundown style */}
-        <div style={{ marginBottom: "36px" }}>
+        {/* ── Masthead banner ── */}
+        <div style={{
+          background: "#0f0f0f",
+          padding: "28px 24px 24px",
+          textAlign: "center",
+        }}>
           <p style={{
-            fontSize: "11px", fontWeight: 700, letterSpacing: "0.12em",
-            textTransform: "uppercase", color: "rgba(245,240,232,0.3)", marginBottom: "10px",
+            fontSize: "10px", fontWeight: 700, letterSpacing: "0.2em",
+            textTransform: "uppercase", color: "#6b7280", marginBottom: "8px",
           }}>
-            {displayDate}
+            {fmtLong(date)}
           </p>
-          <div style={{ display: "flex", alignItems: "baseline", gap: "10px", flexWrap: "wrap" }}>
-            <span style={{
-              fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
-              textTransform: "uppercase", color: "#EF4444",
-            }}>
-              {criticalStories.length} Critical
-            </span>
-            <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "13px" }}>·</span>
-            <span style={{
-              fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em",
-              textTransform: "uppercase", color: "#3B82F6",
-            }}>
-              {monitorStories.length} Monitor
-            </span>
-            {toolOfDay && (
-              <>
-                <span style={{ color: "rgba(255,255,255,0.12)", fontSize: "13px" }}>·</span>
-                <span style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.08em", textTransform: "uppercase", color: "#F59E0B" }}>
-                  1 Tool
-                </span>
-              </>
-            )}
-          </div>
           <h1 style={{
-            fontSize: "clamp(24px, 4vw, 32px)", fontWeight: 700, letterSpacing: "-0.025em",
-            color: "#F5F0E8", lineHeight: 1.2, margin: "12px 0 0",
+            fontSize: "28px", fontWeight: 800, color: "#ffffff",
+            letterSpacing: "-0.025em", lineHeight: 1.15, margin: "0 0 6px",
             fontFamily: "var(--font-fraunces, serif)",
           }}>
-            {totalCount > 0
-              ? `${totalCount} signals that matter today`
-              : "Today's AI Signal Brief"}
+            AI Signal
           </h1>
+          <p style={{ fontSize: "13px", color: "#6b7280", margin: 0, letterSpacing: "0.02em" }}>
+            Daily intelligence for startup CTOs
+          </p>
         </div>
+
+        {/* ── Greeting box ── */}
+        <div style={{
+          margin: "20px 20px 0",
+          border: "1px solid #e5e7eb",
+          borderRadius: "6px",
+          padding: "18px 20px",
+        }}>
+          <p style={{ fontSize: "15px", color: "#1f2937", lineHeight: 1.7, margin: "0 0 12px" }}>
+            <strong>Good morning, CTOs.</strong> Here&apos;s today&apos;s briefing — {criticalStories.length} critical signals requiring action, {monitorStories.length} to track this week{toolOfDay ? ", and one tool worth your attention" : ""}.
+          </p>
+          <p style={{ fontSize: "15px", color: "#4b5563", lineHeight: 1.7, margin: 0 }}>
+            Each story is scored on infra impact, speed-to-action, and competitive relevance — filtered through a CTO lens so you can move fast.
+          </p>
+        </div>
+
+        {/* ── TOC box ── */}
+        {allHeadlines.length > 0 && (
+          <div style={{
+            margin: "16px 20px 0",
+            border: "1px solid #e5e7eb",
+            borderRadius: "6px",
+            padding: "16px 20px",
+          }}>
+            <p style={{ fontSize: "13px", fontWeight: 700, color: "#374151", margin: "0 0 10px" }}>
+              In today&apos;s AI Signal:
+            </p>
+            <ul style={{ margin: 0, padding: "0 0 0 18px", display: "flex", flexDirection: "column", gap: "6px" }}>
+              {allHeadlines.map((h, i) => (
+                <li key={i} style={{ fontSize: "13px", color: "#4b5563", lineHeight: 1.5 }}>
+                  {h}
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+
+        <div style={{ height: "20px" }} />
 
         {/* ── CRITICAL section ── */}
         {criticalStories.length > 0 && (
-          <section style={{ marginBottom: "16px" }}>
-            <SectionRule label="🔴 Critical — Act today" color="#EF4444" />
-            {criticalStories.map((story, i) => (
-              <CriticalRow key={story.id} story={story} rank={i + 1} isPro={isPro} />
-            ))}
-          </section>
+          <>
+            <SectionBanner label="🔴 Critical Signals — Act Today" />
+            <div style={{ padding: "4px 20px 8px" }}>
+              {criticalStories.map((story, i) => (
+                <CriticalCard key={story.id} story={story} rank={i + 1} />
+              ))}
+            </div>
+          </>
         )}
 
         {/* ── MONITOR section ── */}
         {monitorStories.length > 0 && (
-          <section style={{ marginBottom: "16px" }}>
-            <SectionRule label="🔵 Monitor — Watch this week" color="#3B82F6" />
-            {monitorStories.map((story, i) => (
-              <MonitorRow key={story.id} story={story} rank={criticalStories.length + i + 1} />
-            ))}
-          </section>
+          <>
+            <SectionBanner label="🔵 Monitor — Watch This Week" />
+            <div style={{ padding: "8px 20px 16px" }}>
+              {monitorStories.map((story, i) => (
+                <MonitorRow key={story.id} story={story} rank={criticalStories.length + i + 1} />
+              ))}
+            </div>
+          </>
         )}
 
         {/* ── Tool of Day ── */}
         {toolOfDay && (
-          <section style={{ marginBottom: "32px" }}>
-            <SectionRule label="⚡ Tool of the Day" color="#F59E0B" />
-            <ToolRow story={toolOfDay} />
-          </section>
+          <>
+            <SectionBanner label="⚡ Tool of the Day" />
+            <div style={{ padding: "16px 20px 20px" }}>
+              <div style={{
+                border: "1px solid #fde68a",
+                background: "#fffbeb",
+                borderRadius: "8px",
+                padding: "18px 20px",
+              }}>
+                <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.14em", textTransform: "uppercase", color: "#92400e", margin: "0 0 8px" }}>
+                  {toolOfDay.source}
+                </p>
+                <h4 style={{ fontSize: "17px", fontWeight: 700, color: "#111111", lineHeight: 1.35, margin: "0 0 8px" }}>
+                  ⚡ {toolOfDay.headline}
+                </h4>
+                <p style={{ fontSize: "14px", color: "#374151", lineHeight: 1.7, margin: "0 0 12px" }}>
+                  {toolOfDay.summary}
+                </p>
+                <a
+                  href={toolOfDay.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{ fontSize: "14px", fontWeight: 600, color: "#d97706", textDecoration: "none" }}
+                >
+                  {toolOfDay.ctaLabel || "Try it"} →
+                </a>
+              </div>
+            </div>
+          </>
         )}
 
         {/* ── CTO Prompt ── */}
         {ctaPrompt && (
-          <div style={{
-            borderLeft: "3px solid #7C3AED",
-            paddingLeft: "18px", margin: "36px 0",
-          }}>
-            <p style={{
-              fontSize: "10px", fontWeight: 700, letterSpacing: "0.12em",
-              textTransform: "uppercase", color: "#7C3AED", marginBottom: "8px",
-            }}>
-              CTO Prompt of the Day
-            </p>
-            <p style={{ fontSize: "15px", color: "rgba(245,240,232,0.75)", lineHeight: 1.7, fontStyle: "italic" }}>
-              &ldquo;{ctaPrompt}&rdquo;
-            </p>
-          </div>
+          <>
+            <SectionBanner label="💭 Team Discussion Prompt" />
+            <div style={{ padding: "20px" }}>
+              <div style={{
+                borderLeft: "4px solid #7C3AED",
+                paddingLeft: "16px",
+              }}>
+                <p style={{
+                  fontSize: "16px", color: "#1f2937", lineHeight: 1.75,
+                  fontStyle: "italic", margin: 0,
+                }}>
+                  &ldquo;{ctaPrompt}&rdquo;
+                </p>
+              </div>
+            </div>
+          </>
         )}
 
-        {/* ── Upgrade CTA (free users only) ── */}
-        {!isPro && (
-          <div style={{
-            background: "rgba(124,58,237,0.06)",
-            border: "1px solid rgba(124,58,237,0.2)",
-            borderRadius: "12px", padding: "28px 24px",
-            margin: "36px 0", textAlign: "center",
-          }}>
-            <p style={{ fontSize: "11px", fontWeight: 700, letterSpacing: "0.1em", textTransform: "uppercase", color: "#A78BFA", marginBottom: "10px" }}>
-              Unlock the full brief
-            </p>
-            <p style={{ fontSize: "20px", fontWeight: 700, color: "#F5F0E8", letterSpacing: "-0.02em", margin: "0 0 8px", fontFamily: "var(--font-fraunces, serif)" }}>
-              Every action template. Every signal.
-            </p>
-            <p style={{ fontSize: "14px", color: "rgba(245,240,232,0.5)", lineHeight: 1.6, marginBottom: "20px" }}>
-              Pro gives you the full action template on every Critical story — owner, action, and deadline. Plus all Monitor signals and Slack delivery.
-            </p>
-            <Link href="/upgrade" style={{
-              display: "inline-block", background: "#7C3AED", color: "#F5F0E8",
-              fontSize: "14px", fontWeight: 700, padding: "12px 28px",
-              borderRadius: "8px", textDecoration: "none", letterSpacing: "0.01em",
-            }}>
-              Upgrade to Pro →
-            </Link>
-          </div>
-        )}
-
-        {/* ── Archive footer ── */}
+        {/* ── Footer ── */}
         <div style={{
-          borderTop: "1px solid rgba(255,255,255,0.06)",
-          paddingTop: "24px", marginTop: "40px",
-          display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "12px",
+          background: "#f9fafb",
+          borderTop: "1px solid #e5e7eb",
+          padding: "20px 24px",
+          textAlign: "center",
         }}>
-          <div style={{ display: "flex", gap: "16px", alignItems: "center" }}>
-            <Link href="/brief" style={{ fontSize: "13px", color: "#7C3AED", textDecoration: "none", fontWeight: 500 }}>
-              Latest brief
-            </Link>
-            <span style={{ color: "rgba(255,255,255,0.12)" }}>·</span>
-            <Link href="/" style={{ fontSize: "13px", color: "rgba(245,240,232,0.35)", textDecoration: "none" }}>
-              Home
-            </Link>
-          </div>
-          <p style={{ fontSize: "12px", color: "rgba(245,240,232,0.2)" }}>
-            AI Signal · {date}
+          <p style={{ fontSize: "13px", color: "#6b7280", margin: "0 0 10px" }}>
+            <Link href="/brief" style={{ color: "#7C3AED", textDecoration: "none", fontWeight: 600 }}>Latest brief</Link>
+            {" · "}
+            <Link href="/" style={{ color: "#9ca3af", textDecoration: "none" }}>Subscribe</Link>
+            {" · "}
+            <span style={{ color: "#9ca3af" }}>AI Signal · {slug}</span>
+          </p>
+          <p style={{ fontSize: "11px", color: "#d1d5db", margin: 0 }}>
+            Delivered 5:30 AM IST · Mon – Fri
           </p>
         </div>
 
