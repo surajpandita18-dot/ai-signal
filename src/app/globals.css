@@ -1,0 +1,61 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --background: #FAFAF7;
+    --text-primary: #1A1A1A;
+    --text-secondary: #4A4A4A;
+    --text-muted: #9A9590;
+    --accent: #8B7355;
+    --accent-border: rgba(139, 115, 85, 0.4);
+    --border: #E8E4DC;
+    --card-bg: #F3F0E8;
+    --card-bg-deeper: #EAE7DF;
+  }
+
+  .dark {
+    --background: #0F0F0E;
+    --text-primary: #F0EDE6;
+    --text-secondary: #9A9590;
+    --text-muted: #5A5550;
+    --accent: #C4A882;
+    --accent-border: rgba(196, 168, 130, 0.4);
+    --border: #2A2A28;
+    --card-bg: #1A1A18;
+    --card-bg-deeper: #131311;
+  }
+
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  html {
+    background-color: var(--background);
+    color: var(--text-primary);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    font-family: var(--font-inter), system-ui, sans-serif;
+    font-size: 15px;
+    line-height: 1.6;
+    background-color: var(--background);
+    color: var(--text-primary);
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-source-serif), Georgia, serif;
+    font-weight: 600;
+  }
+}
+
+@layer utilities {
+  .long-read-link:hover {
+    text-decoration: underline;
+  }
+}

@@ -5,9 +5,9 @@ Extracted from PRD section 11. One phase at a time. Never start N+1 on a broken 
 | Phase | Description | Status | Started | Completed |
 |---|---|---|---|---|
 | Phase 0 | Setup — multi-agent workspace, root files, agent CLAUDE.md files | COMPLETE | 2026-04-27 | 2026-04-27 |
-| Phase 1 | Schema + data layer + seed one fake issue | PENDING | — | — |
-| Phase 2 | Story card component with both states (collapsed / expanded) | PENDING | — | — |
-| Phase 3 | Issue page (`/issue/[slug]`) that renders one issue end-to-end | PENDING | — | — |
+| Phase 1 | Schema + data layer + seed one fake issue | COMPLETE | 2026-04-27 | 2026-04-27 |
+| Phase 2 | Story card component with both states (collapsed / expanded) | COMPLETE | 2026-04-27 | 2026-04-27 |
+| Phase 3 | Issue page (`/issue/[slug]`) that renders one issue end-to-end | IN_PROGRESS | 2026-04-27 | — |
 | Phase 4 | Homepage (latest issue inline) + archive page | PENDING | — | — |
 | Phase 5 | Subscribe form + onboarding role pick (email → role card → confirm) | PENDING | — | — |
 | Phase 6 | Admin compose tool (paste → draft → edit → publish) | PENDING | — | — |
