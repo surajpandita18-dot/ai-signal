@@ -7,7 +7,7 @@ import { NextResponse } from "next/server";
 export async function GET(req: Request): Promise<Response> {
   const { searchParams, origin } = new URL(req.url);
   const code = searchParams.get("code");
-  const next = searchParams.get("next") ?? "/app";
+  const next = searchParams.get("next") ?? "/brief";
 
   if (code) {
     // Exchange code for session — handled client-side by Supabase JS SDK

@@ -55,7 +55,7 @@ export function LandingPage() {
       });
     } catch { /* silent */ }
     setStatus("done");
-    setTimeout(() => router.push("/app"), 1400);
+    setTimeout(() => router.push("/brief"), 1400);
   }
 
   return (
@@ -68,7 +68,7 @@ export function LandingPage() {
         </span>
         <div className="flex items-center gap-2">
           <button
-            onClick={() => router.push("/app")}
+            onClick={() => router.push("/brief")}
             className="text-[13px] font-medium text-[rgba(232,226,217,0.55)] border border-white/10 rounded-md px-3.5 py-1.5 hover:text-[#F5F0E8] hover:border-white/20 transition-colors"
           >
             Browse
@@ -132,7 +132,7 @@ export function LandingPage() {
         <p className="text-[13px] text-[rgba(232,226,217,0.35)]">
           No spam. Unsubscribe anytime.{" "}
           <button
-            onClick={() => router.push("/app")}
+            onClick={() => router.push("/brief")}
             className="text-[rgba(232,226,217,0.45)] underline underline-offset-2 decoration-white/20 hover:text-[rgba(232,226,217,0.7)] transition-colors bg-transparent border-none cursor-pointer p-0 text-[13px]"
           >
             Browse without email →
@@ -239,7 +239,7 @@ export function LandingPage() {
           {/* Footer CTA */}
           <div className="pt-5 text-center">
             <button
-              onClick={() => router.push("/app")}
+              onClick={() => router.push("/brief")}
               className="text-[14px] text-[rgba(232,226,217,0.45)] hover:text-[rgba(232,226,217,0.7)] transition-colors bg-transparent border-none cursor-pointer underline underline-offset-2 decoration-white/20"
             >
               View all signals →

@@ -90,15 +90,15 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
           display: "flex", alignItems: "center", justifyContent: "space-between",
           position: "sticky", top: 0, zIndex: 100,
         }}>
-          <Link href="/app" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none" }}>
+          <Link href="/brief" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none" }}>
             AI Signal
           </Link>
-          <Link href="/app" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}>← Feed</Link>
+          <Link href="/brief" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}>← Feed</Link>
         </nav>
         <div style={{ maxWidth: "680px", margin: "0 auto", padding: "64px 24px" }}>
           <p style={{ fontSize: "16px", color: "#6b7280", lineHeight: 1.6 }}>
             This signal couldn&apos;t be found — it may have expired or moved.{" "}
-            <Link href="/app" style={{ color: "#111111", fontWeight: 600 }}>View today&apos;s feed →</Link>
+            <Link href="/brief" style={{ color: "#111111", fontWeight: 600 }}>View today&apos;s feed →</Link>
           </p>
         </div>
       </main>
@@ -147,10 +147,10 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
         display: "flex", alignItems: "center", justifyContent: "space-between",
         position: "sticky", top: 0, zIndex: 100,
       }}>
-        <Link href="/app" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none", letterSpacing: "0.03em" }}>
+        <Link href="/brief" style={{ fontWeight: 800, fontSize: "15px", color: "#ffffff", textDecoration: "none", letterSpacing: "0.03em" }}>
           AI Signal
         </Link>
-        <Link href="/app" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none", fontWeight: 500 }}>
+        <Link href="/brief" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none", fontWeight: 500 }}>
           ← Feed
         </Link>
       </nav>
@@ -159,7 +159,7 @@ export default async function ArticlePage({ params }: { params: Promise<{ id: st
 
         {/* Breadcrumb */}
         <nav style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "28px", flexWrap: "wrap" }}>
-          <Link href="/app" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}>Feed</Link>
+          <Link href="/brief" style={{ fontSize: "13px", color: "#9ca3af", textDecoration: "none" }}>Feed</Link>
           <span style={{ color: "#d1d5db", fontSize: "13px" }}>›</span>
           {catLabel && (
             <>
