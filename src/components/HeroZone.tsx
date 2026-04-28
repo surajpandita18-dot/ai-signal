@@ -1,3 +1,5 @@
+import { HeroBroadcast } from '@/components/HeroBroadcast'
+
 interface HeroZoneProps {
   date?: string
 }
@@ -156,6 +158,8 @@ export function HeroZone({
           </strong>
           {' '}· Reading time 3 minutes · For people who ship.
         </p>
+
+        <HeroBroadcast />
       </div>
     </section>
   )
