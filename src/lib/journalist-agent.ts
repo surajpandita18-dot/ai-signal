@@ -276,9 +276,22 @@ Reader brain needs alternation between dense and breath:
 - BREATH (single insight): pull_quote, counter_view
 
 DENSE sections must respect cognitive load:
-- \`summary\`: max 60 words
-- \`why_it_matters\`: 3-4 sentences max
+- \`summary\`: 30-40 words MAX. 2-3 sentences. v8 reference: ~38 words. If you can't state the implication in 40 words, sharpen the implication.
+- \`why_it_matters\`: 35-55 words MAX (paragraph 1 — the Signal block). 3-4 SHORT sentences. The signal is a CLAIM with evidence, not an essay.
+
+  GOOD signal block (38 words, v8 reference):
+  'OpenAI quietly shipped **GPT-5 Mini at $0.04 per million input tokens** — a 10× reduction from GPT-4o Mini. It outperforms GPT-4 Turbo on most reasoning tasks. **If you're still defaulting to yesterday's models, you're burning runway.**'
+
+  Notice: tight claim, one number, one comparison, one prescription. No restated context. No nested clauses. Reader fills gaps.
+
 - Each lens field: 2-3 sentences max
+- Each \`action_items\` entry: 12-20 words MAX. ONE sentence. Action verb in **bold** at start.
+
+  GOOD action (15 words): '**Re-run your unit economics** on every feature gated by token cost — likely one feature became profitable.'
+
+  BAD action (38 words): 'Today — if you run an AWS-native stack: check whether your AWS Marketplace account has OpenAI models visible under Bedrock; if not, flag to your cloud admin to enable...'
+
+  Cut: remove conditional setup. Trust reader.
 
 Tight prose > exhaustive. Reader fills gaps.`
 
@@ -298,14 +311,14 @@ export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before
 const JSON_SCHEMA = `{
   "category": "models"|"tools"|"business"|"policy"|"research",
   "headline": "Sharp, specific, max 12 words. Contains a name, number, or concrete change. No clickbait.",
-  "summary": "2 sentences. IMPLICATION first — what this means for the reader, not a recap of headline facts. Bold 2-4 key phrases.",
+  "summary": "2 sentences, 30-40 words MAX. IMPLICATION first — what this means for the reader, not a recap of headline facts. Bold 2-4 key phrases.",
   "why_it_matters": "3-4 sentences. WHY/HOW — context, evidence, thesis. Bold 2-4 phrases on specific numbers or entities.",
   "pull_quote": "One claim-sentence, under 140 characters, standalone and tweetable.",
   "lens_pm": "1-2 sentences for a PM. Conditional + concrete action. Bold 1-2 phrases. If India context is high, name a specific Indian builder/buyer category.",
   "lens_founder": "1-2 sentences for a founder. Competitive or strategic lens. Bold 1-2 phrases.",
   "lens_builder": "1-2 sentences for an engineer. Stack, API, or workflow implication. Bold 1-2 phrases.",
   "stats": "CONDITIONAL — return [] if you cannot fill 2 reader-meaningful stat objects. Each must have a specific number and a detail explaining reader impact. Never include meta-data (story age, source count, confidence). Format when non-empty: [{ \"label\": \"UPPERCASE CATEGORY\", \"value\": \"number with unit\", \"delta\": \"trend or null\", \"detail\": \"1 line — what this number means for the reader\" }]",
-  "action_items": "CONDITIONAL — return [] if no concrete 48h actions exist (funding/talent stories typically). Each action must specify WHEN + WHO + WHAT EXACTLY. Format when non-empty: [\"By Friday: ask your eng lead...\"]",
+  "action_items": "CONDITIONAL — return [] if no concrete 48h actions exist. Each action: 12-20 words, ONE sentence, **bold action verb** at start. e.g., [\"**Re-run your unit economics** on every token-gated feature — one likely became profitable today.\"]",
   "counter_view": "1-2 sentences. Names specific structural reasons for the counter-argument. Not generic 'but consider...'.",
   "counter_view_headline": "A declarative claim (5-7 words) the counter_view body defends. Not a label.",
   "sources": [{ "label": "Source name", "url": "full URL" }],

@@ -8,7 +8,8 @@ export interface ValidationResult {
 export interface Violation {
   field: string
   type: 'BOLD_COUNT' | 'FORBIDDEN_STAT' | 'PRESS_RELEASE' |
-        'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL'
+        'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL' |
+        'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB'
   message: string
   current?: string
 }
@@ -55,11 +56,14 @@ const MIN_BOLD_PER_FIELD: Record<string, number> = {
 }
 
 const MAX_WORD_COUNT: Record<string, number> = {
-  summary: 70,        // 60 target + 10 grace
+  summary: 45,
+  why_it_matters: 60,
   lens_pm: 60,
   lens_founder: 60,
   lens_builder: 60,
 }
+
+const ACTION_ITEM_MAX_WORDS = 22
 
 function countBold(text: string): number {
   const matches = text.match(/\*\*[^*]+\*\*/g)
@@ -165,6 +169,39 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
           current: signal.counter_view_headline,
         })
         break
+      }
+    }
+  }
+
+  // Check 7: Action item word length
+  if (signal.action_items && signal.action_items.length > 0) {
+    for (let i = 0; i < signal.action_items.length; i++) {
+      const item = signal.action_items[i]
+      if (typeof item !== 'string') continue
+      const words = wordCount(item)
+      if (words > ACTION_ITEM_MAX_WORDS) {
+        violations.push({
+          field: 'action_items',
+          type: 'ACTION_ITEM_TOO_LONG',
+          message: `action_items[${i}] has ${words} words (max ${ACTION_ITEM_MAX_WORDS}). Cut conditional setup. Trust the reader.`,
+          current: item.slice(0, 120),
+        })
+      }
+    }
+  }
+
+  // Check 8: Action items must start with **bold action verb**
+  if (signal.action_items && signal.action_items.length > 0) {
+    for (let i = 0; i < signal.action_items.length; i++) {
+      const action = signal.action_items[i]
+      if (typeof action !== 'string') continue
+      if (!/^\*\*[^*]+\*\*/.test(action.trim())) {
+        violations.push({
+          field: 'action_items',
+          type: 'ACTION_ITEM_NO_BOLD_VERB',
+          message: `action_items[${i}] must start with **bold action verb**. e.g., '**Re-run your unit economics** on...'`,
+          current: action.slice(0, 100),
+        })
       }
     }
   }
