@@ -177,6 +177,19 @@ Under 140 characters. Standalone — makes sense without reading the article. A 
 Bad: "This represents a significant change in the industry."
 Good: "OpenAI just bought itself the right to play AWS and Azure against each other — that changes every enterprise AI pricing conversation."`
 
+const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before returning your JSON output. If any answer is NO, revise that field first.
+
+1. \`headline\`: Does it contain a specific number, name, or concrete change? (No vague claims.)
+2. \`summary\`: Does it add NEW information beyond the headline? Does it focus on IMPLICATION for the reader — not a recap of the same event?
+3. \`counter_view_headline\`: Is it a declarative claim — not a generic label like "Another perspective" or "The counter view"?
+4. Bold: Does each long-form field (\`summary\`, \`why_it_matters\`, lenses) have 2-4 bold phrases on specific numbers, entities, or key insights?
+5. \`stats\`: Are all stat objects reader-meaningful, with no filler meta-data (story age, confidence, source count)? If any stat is weak, remove it. If fewer than 2 strong stats remain, set \`"stats": []\`.
+6. \`action_items\`: Does each item specify WHEN + WHO + WHAT EXACTLY? Is it genuinely doable in 48 hours — not a reading task or a multi-week project? If not, set \`"action_items": []\`.
+7. India context: Is there at least one lens field naming a specific category of Indian builder or buyer (not just "Indian companies")?
+8. \`pull_quote\`: Is it under 140 characters, standalone, a claim not a description, tweetable?
+9. \`counter_view\`: Does it name specific structural reasons for the counter-argument — not generic "but consider..."?
+10. Story shape: Have I included \`stats\` or \`action_items\` entries that don't genuinely satisfy their rules? If yes, remove or empty those arrays.`
+
 const JSON_SCHEMA = `{
   "category": "models"|"tools"|"business"|"policy"|"research",
   "headline": "Sharp, specific, max 12 words. No clickbait.",
@@ -211,7 +224,9 @@ ${QUALITY_RULES}
 
 Return ONLY valid JSON. No markdown fences. No explanation before or after.
 
-${JSON_SCHEMA}`
+${JSON_SCHEMA}
+
+${SELF_CHECK_QUESTIONS}`
 }
 
 // ─── Story premise type (for experiments without live fetching) ─────────────────
