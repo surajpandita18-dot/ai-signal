@@ -195,6 +195,350 @@ function categoryChip(category: string): { bg: string; text: string } {
   return CATEGORY_STYLES[category.toLowerCase()] ?? { bg: 'var(--signal-soft)', text: 'var(--signal-deep)' }
 }
 
+// ---------- FeedbackVote ----------
+
+type VoteKey = 'changed' | 'thinking' | 'known' | 'irrelevant'
+
+const VOTE_BUTTONS: { key: VoteKey; icon: string; label: string }[] = [
+  { key: 'changed',    icon: '✓', label: 'Changed my decision' },
+  { key: 'thinking',  icon: '◐', label: 'Made me think' },
+  { key: 'known',     icon: '○', label: 'Already knew this' },
+  { key: 'irrelevant',icon: '×', label: 'Not relevant' },
+]
+
+function FeedbackVote() {
+  const [voted, setVoted] = useState<VoteKey | null>(null)
+
+  return (
+    <>
+      <style>{`
+        .feedback-btn {
+          background: var(--bg-card);
+          border: 0.5px solid var(--border-mid);
+          padding: 9px 14px;
+          border-radius: 6px;
+          font-family: var(--ff-body);
+          font-size: 12.5px;
+          font-weight: 500;
+          color: var(--text-soft);
+          cursor: pointer;
+          display: inline-flex;
+          align-items: center;
+          gap: 7px;
+          transition: border-color 0.2s, color 0.2s, transform 0.2s, box-shadow 0.2s;
+          letter-spacing: -0.005em;
+        }
+        .feedback-btn:hover {
+          border-color: var(--signal);
+          color: var(--signal);
+          transform: translateY(-1px);
+          box-shadow: 0 4px 12px rgba(43,91,255,0.08);
+        }
+        .feedback-btn.voted-state {
+          background: var(--signal-soft);
+          border-color: var(--signal);
+          color: var(--signal-deep);
+          pointer-events: none;
+        }
+        .feedback-thanks {
+          font-family: var(--ff-display);
+          font-style: italic;
+          font-size: 14px;
+          color: var(--green);
+          margin-top: 14px;
+          letter-spacing: -0.005em;
+          transition: opacity 0.4s;
+        }
+        @media (max-width: 720px) {
+          .feedback-buttons-row { flex-direction: column !important; }
+          .feedback-btn { width: 100%; justify-content: center; }
+        }
+      `}</style>
+      <div
+        style={{
+          marginTop: 32,
+          paddingTop: 28,
+          borderTop: '1px dashed var(--border-mid)',
+          textAlign: 'center',
+        }}
+      >
+        <div
+          style={{
+            fontFamily: 'var(--ff-display)',
+            fontStyle: 'italic',
+            fontSize: 16,
+            color: 'var(--text-soft)',
+            marginBottom: 16,
+            letterSpacing: '-0.005em',
+          }}
+        >
+          Was this useful today?
+        </div>
+        <div
+          className="feedback-buttons-row"
+          style={{ display: 'flex', flexWrap: 'wrap', gap: 8, justifyContent: 'center' }}
+        >
+          {VOTE_BUTTONS.map(({ key, icon, label }) => (
+            <button
+              key={key}
+              type="button"
+              className={`feedback-btn${voted === key ? ' voted-state' : ''}`}
+              onClick={() => setVoted(key)}
+              data-vote={key}
+            >
+              <span style={{ fontSize: 11, color: 'inherit' }}>{icon}</span>
+              {label}
+            </button>
+          ))}
+        </div>
+        {voted && (
+          <div className="feedback-thanks">
+            Thanks — that helps shape tomorrow's signal.
+          </div>
+        )}
+      </div>
+    </>
+  )
+}
+
+// ---------- StandupCard ----------
+
+type StandupFormat = 'slack' | 'email' | 'whatsapp' | 'linkedin'
+
+function buildStandupContent(story: Story) {
+  const tldr = story.headline
+  const implication = story.summary.replace(/\*\*(.*?)\*\*/g, '$1').slice(0, 160)
+  const actions = story.action_items ?? []
+  const action0 = typeof actions[0] === 'string' ? actions[0].replace(/\*\*(.*?)\*\*/g, '$1') : 'Review the implications for your team.'
+  const action1 = typeof actions[1] === 'string' ? actions[1].replace(/\*\*(.*?)\*\*/g, '$1') : 'Assess your current approach in light of this.'
+  const action2 = typeof actions[2] === 'string' ? actions[2].replace(/\*\*(.*?)\*\*/g, '$1') : 'Share this signal with relevant stakeholders.'
+  const domain = 'aisignal.so'
+
+  function getClipboard(format: StandupFormat): string {
+    if (format === 'slack') {
+      return `*🧠 AI Signal · Today*\n\n${tldr}\n\n→ *Why it matters:* ${implication}\n→ *What I'd do:* ${action0}\n\n_3 min read_ · ${domain}`
+    }
+    if (format === 'email') {
+      return `Hey —\n\nQuick share from this morning's AI Signal: ${tldr}\n\nThe implication: ${implication}\n\n${action0}\n\nFull read (3 min): https://${domain}\n\n— shared via AI Signal`
+    }
+    if (format === 'whatsapp') {
+      return `*AI Signal · Today* 🧠\n\n${tldr.slice(0, 80)}.\n\n*Worth reading before your next meeting.*\n\nhttps://${domain}`
+    }
+    // linkedin
+    return `${tldr}\n\n${implication}\n\nThree things teams should do this week:\n\n→ ${action0}\n\n→ ${action1}\n\n→ ${action2}\n\nThe old defaults may now be the expensive choice.\n\nWhat's the first thing you'd change?\n\n—\nRead AI Signal — one AI story every day at 6:14 AM IST.\n\nhttps://${domain}`
+  }
+
+  function getPreviewHtml(format: StandupFormat): string {
+    if (format === 'slack') {
+      return `<b>🧠 AI Signal · Today</b>\n\n${tldr}\n\n<span style="color:var(--warm);font-weight:600">→</span> <b>Why it matters:</b> ${implication}\n<span style="color:var(--warm);font-weight:600">→</span> <b>What I'd do:</b> ${action0}\n\n<span style="color:var(--text-mute);font-style:italic">3 min read</span> · <span style="color:var(--signal);text-decoration:underline">${domain}</span>`
+    }
+    if (format === 'email') {
+      return `Hey —\n\nQuick share from this morning's AI Signal: ${tldr}\n\nThe implication: ${implication}\n\n${action0}\n\nFull read (3 min): <span style="color:var(--signal);text-decoration:underline">https://${domain}</span>\n\n<span style="color:var(--text-mute);font-style:italic">— shared via AI Signal</span>`
+    }
+    if (format === 'whatsapp') {
+      return `<b>AI Signal · Today</b> 🧠\n\n${tldr.slice(0, 80)}.\n\n<b>Worth reading before your next meeting.</b>\n\n<span style="color:var(--signal);text-decoration:underline">https://${domain}</span>`
+    }
+    return `${tldr}\n\n${implication}\n\nThree things teams should do this week:\n\n<span style="color:var(--warm);font-weight:600">→</span> ${action0}\n\n<span style="color:var(--warm);font-weight:600">→</span> ${action1}\n\n<span style="color:var(--warm);font-weight:600">→</span> ${action2}\n\n<i>The old defaults may now be the expensive choice.</i>\n\n<span style="color:var(--signal);text-decoration:underline">https://${domain}</span>`
+  }
+
+  return { getClipboard, getPreviewHtml }
+}
+
+function StandupCard({ story }: { story: Story }) {
+  const [activeFormat, setActiveFormat] = useState<StandupFormat>('slack')
+  const [copied, setCopied] = useState(false)
+  const { getClipboard, getPreviewHtml } = buildStandupContent(story)
+
+  const FORMAT_LABELS: Record<StandupFormat, string> = {
+    slack: 'Slack',
+    email: 'Email',
+    whatsapp: 'WhatsApp',
+    linkedin: 'LinkedIn',
+  }
+
+  async function handleCopy() {
+    const text = getClipboard(activeFormat)
+    try {
+      await navigator.clipboard.writeText(text)
+    } catch {
+      const ta = document.createElement('textarea')
+      ta.value = text
+      ta.style.cssText = 'position:fixed;opacity:0'
+      document.body.appendChild(ta)
+      ta.select()
+      document.execCommand('copy')
+      document.body.removeChild(ta)
+    }
+    setCopied(true)
+    setTimeout(() => setCopied(false), 1800)
+  }
+
+  return (
+    <>
+      <style>{`
+        .standup-tab-btn {
+          flex: 1;
+          background: transparent;
+          border: none;
+          padding: 8px 0 10px;
+          font-family: var(--ff-mono);
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          color: var(--text-mute);
+          cursor: pointer;
+          border-bottom: 2px solid transparent;
+          margin-bottom: -1px;
+          transition: color 0.2s, border-color 0.2s;
+        }
+        .standup-tab-btn:hover { color: var(--text); }
+        .standup-tab-btn.active {
+          color: var(--text);
+          border-bottom-color: var(--warm);
+        }
+        @media (max-width: 720px) {
+          .standup-tabs-row { display: grid !important; grid-template-columns: 1fr 1fr; }
+          .standup-tab-btn:nth-child(1),
+          .standup-tab-btn:nth-child(3) { border-right: 1px solid rgba(180,140,60,0.15); }
+        }
+      `}</style>
+
+      <div
+        id="standup-card"
+        style={{
+          background: '#FBF8E8',
+          border: '1px dashed rgba(180,140,60,0.3)',
+          borderRadius: 6,
+          padding: '24px 28px',
+          margin: '32px 0 8px',
+          transform: 'rotate(-0.5deg)',
+          boxShadow: '0 4px 12px rgba(180,140,60,0.08), 0 1px 2px rgba(0,0,0,0.03)',
+          position: 'relative',
+        }}
+      >
+        {/* Header */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12, marginBottom: 18 }}>
+          <div
+            style={{
+              width: 32, height: 32,
+              background: 'rgba(180,140,60,0.15)',
+              borderRadius: 6,
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              color: '#8A6F2C', flexShrink: 0,
+            }}
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+              <rect x="9" y="3" width="6" height="3" rx="1"/><rect x="5" y="6" width="14" height="15" rx="2"/><path d="M9 12h6M9 16h4"/>
+            </svg>
+          </div>
+          <div style={{ lineHeight: 1.2 }}>
+            <div
+              style={{
+                fontFamily: 'var(--ff-display)',
+                fontStyle: 'italic',
+                fontSize: 17,
+                color: 'var(--text)',
+                fontWeight: 500,
+                letterSpacing: '-0.005em',
+                lineHeight: 1.1,
+                marginBottom: 3,
+              }}
+            >
+              Bring this to your standup
+            </div>
+            <div
+              style={{
+                fontFamily: 'var(--ff-mono)',
+                fontSize: 9.5,
+                fontWeight: 600,
+                letterSpacing: '0.18em',
+                textTransform: 'uppercase',
+                color: 'var(--text-faint)',
+              }}
+            >
+              9 AM · Quotable
+            </div>
+          </div>
+        </div>
+
+        {/* Tabs */}
+        <div
+          className="standup-tabs-row"
+          style={{
+            display: 'flex',
+            gap: 0,
+            borderBottom: '1px solid rgba(180,140,60,0.2)',
+            marginBottom: 14,
+          }}
+        >
+          {(Object.keys(FORMAT_LABELS) as StandupFormat[]).map(fmt => (
+            <button
+              key={fmt}
+              className={`standup-tab-btn${activeFormat === fmt ? ' active' : ''}`}
+              onClick={() => setActiveFormat(fmt)}
+              role="tab"
+              aria-selected={activeFormat === fmt}
+            >
+              {FORMAT_LABELS[fmt]}
+            </button>
+          ))}
+        </div>
+
+        {/* Preview */}
+        <div
+          style={{
+            background: '#FFFFFF',
+            border: '0.5px solid var(--border)',
+            borderRadius: 6,
+            padding: '16px 18px',
+            marginBottom: 14,
+            fontSize: 13.5,
+            lineHeight: 1.6,
+            color: 'var(--text)',
+            minHeight: 100,
+            whiteSpace: 'pre-wrap',
+            fontFamily: 'var(--ff-body)',
+          }}
+          dangerouslySetInnerHTML={{ __html: getPreviewHtml(activeFormat) }}
+        />
+
+        {/* Copy button */}
+        <button
+          type="button"
+          onClick={handleCopy}
+          style={{
+            width: '100%',
+            background: copied ? 'var(--green)' : 'var(--text)',
+            color: 'white',
+            border: 'none',
+            padding: '11px 16px',
+            borderRadius: 6,
+            fontFamily: 'var(--ff-body)',
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 8,
+            transition: 'background 0.2s',
+            letterSpacing: '-0.005em',
+          }}
+        >
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="14" height="14">
+            {copied
+              ? <path d="M5 12l5 5L20 7"/>
+              : <><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></>
+            }
+          </svg>
+          {copied ? 'Copied ✓' : `Copy for ${FORMAT_LABELS[activeFormat]}`}
+        </button>
+      </div>
+    </>
+  )
+}
+
 // ---------- StoryArticle ----------
 
 export function StoryArticle({
@@ -294,8 +638,41 @@ export function StoryArticle({
         position: 'relative',
       }}
     >
-      {/* Responsive stat grid + stat-card hover bar + builder grain */}
+      {/* Responsive stat grid + stat-card hover bar + builder grain + jump link */}
       <style>{`
+        .story-jump-link {
+          display: inline-flex;
+          align-items: center;
+          gap: 6px;
+          font-family: var(--ff-mono);
+          font-size: 10.5px;
+          font-weight: 600;
+          letter-spacing: 0.16em;
+          text-transform: uppercase;
+          color: var(--text-faint);
+          text-decoration: none;
+          padding: 5px 10px;
+          border: 1px dashed rgba(180,140,60,0.3);
+          border-radius: 4px;
+          background: rgba(251,248,232,0.5);
+          cursor: pointer;
+          transition: color 0.2s, border-color 0.2s, background 0.2s;
+          margin-bottom: 18px;
+          margin-right: auto;
+        }
+        .story-jump-link:hover {
+          color: #8A6F2C;
+          border-color: rgba(180,140,60,0.5);
+          background: #FBF8E8;
+        }
+        .story-jump-link:hover .jump-icon {
+          transform: translateY(2px);
+        }
+        .jump-icon {
+          font-size: 11px;
+          opacity: 0.7;
+          transition: transform 0.2s;
+        }
         @media (max-width: 640px) {
           .stat-grid { grid-template-columns: 1fr !important; }
         }
@@ -312,12 +689,25 @@ export function StoryArticle({
           content: '';
           position: absolute;
           inset: 0;
-          background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.08 0 0 0 0 0.07 0 0 0 0 0.06 0 0 0 0.5 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+          background-image: url("data:image/svg+xml;utf8,<svg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.4 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
           opacity: 0.05;
           pointer-events: none;
           border-radius: 16px;
         }
       `}</style>
+
+      {/* ── Jump link ── */}
+      <a
+        href="#standup-card"
+        className="story-jump-link"
+        onClick={(e) => {
+          e.preventDefault()
+          document.getElementById('standup-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
+        }}
+      >
+        <span className="jump-icon">↓</span>
+        Bring this to standup
+      </a>
 
       {/* ── Section 1: Story meta bar ── */}
       <div
@@ -476,7 +866,7 @@ export function StoryArticle({
             </svg>
           </div>
           <div style={{ fontSize: 13, color: 'var(--text-mute)' }}>
-            @aisignal · 06:14 IST · Signal #{signalNumber}
+            @aisignal · today, 06:14 IST
           </div>
         </div>
 
@@ -757,7 +1147,7 @@ export function StoryArticle({
                 flexShrink: 0,
               }}
             />
-            The Build · Viewed from the code floor
+            The Build · viewed from the code floor
           </div>
 
           {/* Builder copy */}
@@ -1033,6 +1423,9 @@ export function StoryArticle({
         </div>
       )}
 
+      {/* ── Section 8b: Standup snippet ── */}
+      <StandupCard story={story} />
+
       {/* ── Section 9: Devil's Advocate ── */}
       {story.counter_view && (
         <div
@@ -1241,6 +1634,9 @@ export function StoryArticle({
         <br />
         That puts you ahead of most readers.
       </div>
+
+      {/* ── Section 13: Feedback vote ── */}
+      <FeedbackVote />
     </article>
   )
 }
