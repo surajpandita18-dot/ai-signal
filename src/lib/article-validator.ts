@@ -9,7 +9,8 @@ export interface Violation {
   field: string
   type: 'BOLD_COUNT' | 'FORBIDDEN_STAT' | 'PRESS_RELEASE' |
         'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL' |
-        'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB' | 'STATS_COUNT_WRONG'
+        'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB' | 'STATS_COUNT_WRONG' |
+        'WHY_IT_MATTERS_SINGLE_PARA'
   message: string
   current?: string
 }
@@ -212,6 +213,22 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
           current: action.slice(0, 100),
         })
       }
+    }
+  }
+
+  // Check 11: why_it_matters must have 2-3 paragraphs split on \n\n
+  if (signal.why_it_matters && typeof signal.why_it_matters === 'string') {
+    const paragraphs = signal.why_it_matters
+      .split('\n\n')
+      .map(p => p.trim())
+      .filter(p => p.length > 0)
+    if (paragraphs.length < 2) {
+      violations.push({
+        field: 'why_it_matters',
+        type: 'WHY_IT_MATTERS_SINGLE_PARA',
+        message: `why_it_matters has only ${paragraphs.length} paragraph. The component splits on \\n\\n. Single paragraph means the Why It Matters block renders an empty body below the pull quote. Required: 2-3 paragraphs separated by \\n\\n. P1 (signal block, 35-55w), P2 (why it matters body, 35-55w), P3 (optional closing, 30-40w).`,
+        current: signal.why_it_matters.slice(0, 200),
+      })
     }
   }
 
