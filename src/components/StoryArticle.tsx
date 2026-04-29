@@ -247,8 +247,10 @@ function FeedbackVote() {
           color: var(--green);
           margin-top: 14px;
           letter-spacing: -0.005em;
+          opacity: 0;
           transition: opacity 0.4s;
         }
+        .feedback-thanks.shown { opacity: 1; }
         @media (max-width: 720px) {
           .feedback-buttons-row { flex-direction: column !important; }
           .feedback-btn { width: 100%; justify-content: center; }
@@ -291,11 +293,9 @@ function FeedbackVote() {
             </button>
           ))}
         </div>
-        {voted && (
-          <div className="feedback-thanks">
-            Thanks — that helps shape tomorrow's signal.
-          </div>
-        )}
+        <div className={`feedback-thanks${voted ? ' shown' : ''}`}>
+          Thanks — that helps shape tomorrow&apos;s signal.
+        </div>
       </div>
     </>
   )
