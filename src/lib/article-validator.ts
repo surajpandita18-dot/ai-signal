@@ -10,7 +10,7 @@ export interface Violation {
   type: 'BOLD_COUNT' | 'FORBIDDEN_STAT' | 'PRESS_RELEASE' |
         'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL' |
         'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB' | 'STATS_COUNT_WRONG' |
-        'WHY_IT_MATTERS_SINGLE_PARA' | 'EDITORIAL_TAKE_MISSING'
+        'WHY_IT_MATTERS_SINGLE_PARA' | 'EDITORIAL_TAKE_MISSING' | 'BROADCAST_PHRASES_INVALID'
   message: string
   current?: string
 }
@@ -239,6 +239,38 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
       type: 'EDITORIAL_TAKE_MISSING',
       message: `editorial_take is missing or too short. Write one sharp tweetable sentence as AI Signal Editorial — opinion not recap, min 5 words.`,
       current: signal.editorial_take ?? '',
+    })
+  }
+
+  // Check 13: broadcast_phrases must be exactly 3, each 6-14 words,
+  // each starting with anchor (number, currency, or capital letter)
+  if (!Array.isArray(signal.broadcast_phrases) || signal.broadcast_phrases.length !== 3) {
+    violations.push({
+      field: 'broadcast_phrases',
+      type: 'BROADCAST_PHRASES_INVALID',
+      message: `broadcast_phrases must be exactly 3 phrases, got ${
+        Array.isArray(signal.broadcast_phrases) ? signal.broadcast_phrases.length : 0
+      }`,
+    })
+  } else {
+    signal.broadcast_phrases.forEach((phrase, i) => {
+      if (typeof phrase !== 'string') return
+      const words = wordCount(phrase)
+      if (words < 6 || words > 14) {
+        violations.push({
+          field: 'broadcast_phrases',
+          type: 'BROADCAST_PHRASES_INVALID',
+          message: `broadcast_phrases[${i}] must be 6-14 words, got ${words}: "${phrase.slice(0, 80)}"`,
+        })
+      }
+      const startsWithAnchor = /^(Today's signal:\s+)?[A-Z0-9$₹]/.test(phrase.trim())
+      if (!startsWithAnchor) {
+        violations.push({
+          field: 'broadcast_phrases',
+          type: 'BROADCAST_PHRASES_INVALID',
+          message: `broadcast_phrases[${i}] must start with a number, currency, or named entity (capital letter). Generic openers not allowed.`,
+        })
+      }
     })
   }
 

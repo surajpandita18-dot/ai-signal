@@ -7,13 +7,23 @@ let _tokens = 47392
 let _water = 12.4
 let _startups = 23
 
+interface HeroBroadcastProps {
+  broadcastPhrases?: string[]
+}
+
 // phrase definitions — live counter values injected at render time
-function getPhrases(tokens: number, water: number, startups: number) {
+function getPhrases(tokens: number, water: number, startups: number, broadcastPhrases?: string[]) {
   return [
-    // Editorial
-    { plain: "Today's signal: pricing economics shifted overnight.", html: "Today's signal: <em>pricing economics shifted overnight.</em>" },
-    { plain: 'OpenAI quietly cut model costs by 10×. Most teams haven\'t noticed yet.', html: 'OpenAI quietly cut model costs by <span class="bc-num">10×</span>. Most teams haven\'t noticed yet.' },
-    { plain: 'If you ship AI products, your unit economics changed today.', html: 'If you ship AI products, your <em>unit economics changed today.</em>' },
+    // Editorial — items 1-3 use cron-generated data-anchored phrases when available
+    broadcastPhrases?.[0]
+      ? { plain: broadcastPhrases[0], html: broadcastPhrases[0] }
+      : { plain: "Today's signal: pricing economics shifted overnight.", html: "Today's signal: <em>pricing economics shifted overnight.</em>" },
+    broadcastPhrases?.[1]
+      ? { plain: broadcastPhrases[1], html: broadcastPhrases[1] }
+      : { plain: 'OpenAI quietly cut model costs by 10×. Most teams haven\'t noticed yet.', html: 'OpenAI quietly cut model costs by <span class="bc-num">10×</span>. Most teams haven\'t noticed yet.' },
+    broadcastPhrases?.[2]
+      ? { plain: broadcastPhrases[2], html: broadcastPhrases[2] }
+      : { plain: 'If you ship AI products, your unit economics changed today.', html: 'If you ship AI products, your <em>unit economics changed today.</em>' },
     // Live counters
     { plain: `While you've been here, AI has burned ${tokens.toLocaleString()} tokens for free.`, html: `While you've been here, AI has burned <span class="bc-num">${tokens.toLocaleString()}</span> tokens for free.` },
     { plain: `${water.toFixed(1)} gallons of water cooled GPUs in the time it took to reach this line.`, html: `<span class="bc-num">${water.toFixed(1)}</span> gallons of water cooled GPUs in the time it took to reach this line.` },
@@ -24,48 +34,53 @@ function getPhrases(tokens: number, water: number, startups: number) {
   ]
 }
 
-export function HeroBroadcast() {
+export function HeroBroadcast({ broadcastPhrases }: HeroBroadcastProps) {
   const [tokens, setTokens] = useState(_tokens)
   const [water, setWater] = useState(_water)
   const [startups, setStartups] = useState(_startups)
   const [displayed, setDisplayed] = useState('')
   const [phraseIdx, setPhraseIdx] = useState(0)
-  const [isDeleting, setIsDeleting] = useState(false)
+  const isDeletingRef = useRef(false)
   const [showFull, setShowFull] = useState(false)
   const charIdxRef = useRef(0)
   const typingTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const tokensRef = useRef(_tokens)
+  const waterRef = useRef(_water)
+  const startupsRef = useRef(_startups)
 
   // Live counter intervals
   useEffect(() => {
     const t1 = setInterval(() => {
       _tokens += Math.floor(Math.random() * 30) + 5
+      tokensRef.current = _tokens
       setTokens(_tokens)
     }, 200)
     const t2 = setInterval(() => {
       _water += Math.random() * 0.04 + 0.02
+      waterRef.current = _water
       setWater(parseFloat(_water.toFixed(1)))
     }, 800)
     const t3 = setInterval(() => {
-      if (Math.random() > 0.5) { _startups += 1; setStartups(_startups) }
+      if (Math.random() > 0.5) { _startups += 1; startupsRef.current = _startups; setStartups(_startups) }
     }, 4500)
     return () => { clearInterval(t1); clearInterval(t2); clearInterval(t3) }
   }, [])
 
   // Type-on loop
   useEffect(() => {
-    const phrases = getPhrases(tokens, water, startups)
-    const phrase = phrases[phraseIdx]
-    const plain = phrase.plain
-
     function step() {
-      if (!isDeleting) {
+      const phrases = getPhrases(tokensRef.current, waterRef.current, startupsRef.current, broadcastPhrases)
+      const phrase = phrases[phraseIdx]
+      const plain = phrase.plain
+
+      if (!isDeletingRef.current) {
         charIdxRef.current++
         if (charIdxRef.current >= plain.length) {
           setDisplayed(plain)
           setShowFull(true)
           typingTimer.current = setTimeout(() => {
             setShowFull(false)
-            setIsDeleting(true)
+            isDeletingRef.current = true
             step()
           }, 3200)
           return
@@ -76,9 +91,8 @@ export function HeroBroadcast() {
         charIdxRef.current = Math.max(0, charIdxRef.current - 3)
         if (charIdxRef.current <= 0) {
           setDisplayed('')
-          setIsDeleting(false)
+          isDeletingRef.current = false
           setPhraseIdx(i => (i + 1) % phrases.length)
-          typingTimer.current = setTimeout(step, 500)
           return
         }
         setDisplayed(plain.slice(0, charIdxRef.current))
@@ -86,12 +100,12 @@ export function HeroBroadcast() {
       }
     }
 
-    typingTimer.current = setTimeout(step, phraseIdx === 0 ? 1200 : 0)
+    typingTimer.current = setTimeout(step, phraseIdx === 0 ? 1200 : 500)
     return () => { if (typingTimer.current) clearTimeout(typingTimer.current) }
   // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [phraseIdx, isDeleting])
+  }, [phraseIdx])
 
-  const phrases = getPhrases(tokens, water, startups)
+  const phrases = getPhrases(tokensRef.current, waterRef.current, startupsRef.current, broadcastPhrases)
 
   return (
     <>

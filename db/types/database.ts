@@ -72,6 +72,7 @@ export interface Database {
           action_items: string[] | null
           counter_view: string | null
           counter_view_headline: string | null
+          broadcast_phrases: string[] | null
         }
         Insert: {
           id?: string
@@ -93,6 +94,7 @@ export interface Database {
           action_items?: string[] | null
           counter_view?: string | null
           counter_view_headline?: string | null
+          broadcast_phrases?: string[] | null
         }
         Update: {
           id?: string
@@ -114,6 +116,7 @@ export interface Database {
           action_items?: string[] | null
           counter_view?: string | null
           counter_view_headline?: string | null
+          broadcast_phrases?: string[] | null
         }
       }
       subscribers: {

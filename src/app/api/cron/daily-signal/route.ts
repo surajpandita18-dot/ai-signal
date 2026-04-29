@@ -39,6 +39,7 @@ interface GeneratedSignal {
   read_minutes: number
   deeper_read: string
   editorial_take: string
+  broadcast_phrases?: string[]
 }
 
 // ─── Source registry ────────────────────────────────────────────────────────────
@@ -467,7 +468,8 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   ],
   "read_minutes": 4,
   "deeper_read": "URL of the primary source article",
-  "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts. e.g., 'The default model is no longer a question of capability — it's a question of who notices the price change first.'"
+  "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts. e.g., 'The default model is no longer a question of capability — it's a question of who notices the price change first.'",
+  "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + data anchor)", "Phrase 2 (6-14 words, pure data anchor — number, currency, or named entity)", "Phrase 3 (6-14 words, pure data anchor — implication or consequence)"]
 }
 
 ${SELF_CHECK_QUESTIONS}`
@@ -511,6 +513,7 @@ ${SELF_CHECK_QUESTIONS}`
   if (!Array.isArray(signal.stats)) signal.stats = []
   if (!Array.isArray(signal.action_items)) signal.action_items = []
   if (!Array.isArray(signal.sources)) signal.sources = []
+  if (!Array.isArray(signal.broadcast_phrases)) signal.broadcast_phrases = []
   return signal
 }
 
@@ -675,6 +678,7 @@ export async function GET(request: Request) {
     read_minutes: signal.read_minutes ?? 4,
     deeper_read: signal.deeper_read ?? null,
     editorial_take: signal.editorial_take ?? null,
+    broadcast_phrases: signal.broadcast_phrases?.length ? signal.broadcast_phrases : null,
     stats: signal.stats?.length ? signal.stats : null,
     action_items: signal.action_items?.length ? signal.action_items : null,
     counter_view: signal.counter_view ?? null,

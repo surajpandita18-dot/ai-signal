@@ -377,7 +377,8 @@ const JSON_SCHEMA = `{
   "sources": [{ "label": "Source name", "url": "full URL" }],
   "read_minutes": 4,
   "deeper_read": "URL of primary source",
-  "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts."
+  "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts.",
+  "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + specific data anchor)", "Phrase 2 (6-14 words, pure data anchor — number/currency/named entity)", "Phrase 3 (6-14 words, pure data anchor — implication)"]
 }`
 
 export function buildSystemPrompt(config: ContentConfig): string {
@@ -446,6 +447,7 @@ export interface GeneratedSignal {
   read_minutes?: number
   deeper_read?: string
   editorial_take?: string
+  broadcast_phrases?: string[]
 }
 
 export async function generateSignalWithConfig(

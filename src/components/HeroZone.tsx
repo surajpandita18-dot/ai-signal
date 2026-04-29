@@ -1,7 +1,11 @@
+'use client'
+
+import { useRef } from 'react'
 import { HeroBroadcast } from '@/components/HeroBroadcast'
 
 interface HeroZoneProps {
   date?: string
+  broadcastPhrases?: string[]
 }
 
 export function HeroZone({
@@ -10,7 +14,22 @@ export function HeroZone({
     month: 'long',
     year: 'numeric',
   }),
+  broadcastPhrases,
 }: HeroZoneProps) {
+  const headlineRef = useRef<HTMLHeadingElement>(null)
+
+  function handleHeadlineMouseMove(e: React.MouseEvent<HTMLHeadingElement>) {
+    const el = headlineRef.current
+    if (!el) return
+    const r = el.getBoundingClientRect()
+    const x = (e.clientX - r.left) / r.width - 0.5
+    const y = (e.clientY - r.top) / r.height - 0.5
+    el.style.transform = `translate(${x * 6}px, ${y * 4}px)`
+  }
+
+  function handleHeadlineMouseLeave() {
+    if (headlineRef.current) headlineRef.current.style.transform = ''
+  }
 
   return (
     <section
@@ -52,7 +71,65 @@ export function HeroZone({
           z-index: 0;
           opacity: 0.85;
         }
+        @keyframes heroShapeFloat {
+          0%, 100% { transform: translate(0, 0); }
+          50% { transform: translate(8px, -10px); }
+        }
+        @keyframes heroShapeFloatRotate {
+          0%, 100% { transform: rotate(-8deg) translate(0, 0); }
+          50% { transform: rotate(-7deg) translate(-6px, 4px); }
+        }
+        @keyframes fragmentBreath {
+          0%, 100% { opacity: 0; transform: rotate(-4deg) translateY(2px); }
+          25%, 75% { opacity: 0.32; transform: rotate(-4deg) translateY(0); }
+          50% { opacity: 0.42; transform: rotate(-4deg) translateY(-1px); }
+        }
+        .hero-shape-warm {
+          position: absolute;
+          width: 280px; height: 280px;
+          top: 8%; right: 6%;
+          background: radial-gradient(circle, rgba(255,107,53,0.18), rgba(255,107,53,0.06) 60%, transparent 75%);
+          border-radius: 50%;
+          filter: blur(8px);
+          pointer-events: none;
+          animation: heroShapeFloat 14s ease-in-out infinite;
+        }
+        .hero-shape-cobalt {
+          position: absolute;
+          width: 380px; height: 240px;
+          bottom: 12%; left: -4%;
+          background: radial-gradient(ellipse 60% 50% at 50% 50%, rgba(43,91,255,0.14), rgba(43,91,255,0.04) 60%, transparent 75%);
+          border-radius: 50%;
+          filter: blur(20px);
+          pointer-events: none;
+          animation: heroShapeFloatRotate 18s ease-in-out infinite;
+        }
+        .hero-fragment {
+          position: absolute;
+          top: 14%; left: 8%;
+          font-family: var(--ff-display);
+          font-style: italic;
+          font-size: 17px;
+          color: var(--text-faint);
+          opacity: 0;
+          letter-spacing: -0.01em;
+          transform: rotate(-4deg);
+          animation: fragmentBreath 9s ease-in-out infinite;
+          pointer-events: none;
+        }
+        @media (max-width: 720px) {
+          .hero-shape-warm { width: 180px; height: 180px; top: 4%; right: -10%; }
+          .hero-shape-cobalt { width: 240px; height: 160px; bottom: 8%; left: -20%; }
+          .hero-fragment { display: none; }
+        }
       `}</style>
+
+      {/* Floating backdrop graphics */}
+      <div aria-hidden="true" style={{ position: 'absolute', inset: 0, pointerEvents: 'none', zIndex: 0, overflow: 'hidden' }}>
+        <span className="hero-shape-warm" />
+        <span className="hero-shape-cobalt" />
+        <span className="hero-fragment">One signal.</span>
+      </div>
 
       <div
         style={{
@@ -105,9 +182,12 @@ export function HeroZone({
           </span>
         </div>
 
-        {/* Big headline — two lines */}
+        {/* Big headline — two lines with magnetic hover */}
         <h1
+          ref={headlineRef}
           className="hero-headline anim d3"
+          onMouseMove={handleHeadlineMouseMove}
+          onMouseLeave={handleHeadlineMouseLeave}
           style={{
             fontFamily: 'var(--ff-display, "Instrument Serif", serif)',
             fontSize: 'clamp(48px, 7.8vw, 104px)',
@@ -119,6 +199,7 @@ export function HeroZone({
             maxWidth: 1100,
             willChange: 'transform',
             transition: 'transform 0.4s cubic-bezier(0.2,0.8,0.2,1)',
+            cursor: 'default',
           }}
         >
           Today&apos;s one AI story.
@@ -159,7 +240,7 @@ export function HeroZone({
           {' '}· Reading time 3 minutes · For people who ship.
         </p>
 
-        <HeroBroadcast />
+        <HeroBroadcast broadcastPhrases={broadcastPhrases} />
       </div>
     </section>
   )

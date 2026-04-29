@@ -18,6 +18,7 @@ interface HomePageClientProps {
   story: StoryType
   publishedAt: string
   signalNumber: number
+  broadcastPhrases?: string[]
 }
 
 function ProgressBar({ pct }: { pct: number }) {
@@ -70,7 +71,7 @@ function RevealObserver() {
   return null
 }
 
-export function HomePageClient({ story, publishedAt, signalNumber }: HomePageClientProps) {
+export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhrases }: HomePageClientProps) {
   const [readPct, setReadPct] = useState(0)
 
   return (
@@ -103,7 +104,7 @@ export function HomePageClient({ story, publishedAt, signalNumber }: HomePageCli
       `}</style>
       <ProgressBar pct={readPct} />
       <SiteNav signalNumber={signalNumber} />
-      <HeroZone />
+      <HeroZone broadcastPhrases={broadcastPhrases} />
       <HeroBridge />
       <NotebookFacts />
 
