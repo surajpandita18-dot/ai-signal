@@ -1164,7 +1164,7 @@ export function StoryArticle({
               zIndex: 1,
             }}
           >
-            {story.lens_builder}
+            {parseBold(story.lens_builder)}
           </p>
 
           {/* Attribution */}
@@ -1242,7 +1242,7 @@ export function StoryArticle({
                     marginBottom: 14,
                   }}
                 >
-                  {story.lens_pm}
+                  {parseBold(story.lens_pm)}
                 </p>
                 <div
                   style={{
@@ -1296,7 +1296,7 @@ export function StoryArticle({
                     marginBottom: 14,
                   }}
                 >
-                  {story.lens_founder}
+                  {parseBold(story.lens_founder)}
                 </p>
                 <div
                   style={{
