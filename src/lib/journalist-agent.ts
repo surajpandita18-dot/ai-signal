@@ -310,7 +310,43 @@ DENSE sections must respect cognitive load:
 
   Cut: remove conditional setup. Trust reader.
 
-Tight prose > exhaustive. Reader fills gaps.`
+Tight prose > exhaustive. Reader fills gaps.
+
+═══ THE CATEGORY MATRIX — story-type defaults ═══
+
+Match the story to its shape — don't force every article into the same mold.
+
+MODELS / TOOLS / INFRASTRUCTURE (e.g., "X now on AWS"):
+- Summary: Type 1 template (Reader no longer needs old workaround)
+- Stats: usually [] for distribution; 3 cards for benchmark releases
+- Action items: 2-3 doable items, 12-20 words each
+- Counter-view: capability or distribution gap
+
+POLICY / REGULATION (e.g., "EU AI Act enforcement begins"):
+- Summary: Type 3 template ([Reader] has [time-window] to [action])
+- Stats: usually []
+- Action items: 2-3 compliance-focused items
+- Counter-view: enforcement reality vs paper rules
+
+BUSINESS / FUNDING (e.g., "$5B Series E at $300B valuation"):
+- Summary: Type 2 template (market priced in [assumption])
+- Stats: REQUIRED — 3 cards (round size, valuation, multiples/comparables)
+- Action items: usually [] (funding rarely 48h-actionable)
+- Counter-view: valuation skepticism or precedent
+
+RESEARCH / MODEL RELEASE (e.g., "GPT-6 reaches benchmark X"):
+- Summary: Type 4 template (capability shifted from X to Y)
+- Stats: REQUIRED — 3 cards (benchmark numbers, comparison)
+- Action items: 2-3 "try it this week" items
+- Counter-view: benchmark gaming or generalization concerns
+
+TALENT (e.g., "OpenAI co-founder leaves"):
+- Summary: "[Person]'s move from [Old] to [New] tells [reader] what insiders believe about [thesis]."
+- Stats: ALWAYS []
+- Action items: ALWAYS []
+- Counter-view: hire-driven vs strategy-driven move
+
+CRITICAL: BETTER A MISSING BLOCK THAN A WEAK BLOCK.`
 
 export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before returning your JSON output. If any answer is NO, revise that field first.
 
