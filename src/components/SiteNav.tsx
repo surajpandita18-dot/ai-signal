@@ -203,7 +203,18 @@ export function SiteNav({ signalNumber }: SiteNavProps) {
           >
             Archive
           </Link>
-          <SoonLink text="About" />
+          <Link
+            href="/about"
+            style={{
+              color: 'var(--text-mute)',
+              textDecoration: 'none',
+              transition: 'color 0.2s',
+            }}
+            onMouseEnter={(e) => (e.currentTarget.style.color = 'var(--text)')}
+            onMouseLeave={(e) => (e.currentTarget.style.color = 'var(--text-mute)')}
+          >
+            About
+          </Link>
           <SoonLink text="Sponsor" />
           <a
             href="#subscribe"
