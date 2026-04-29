@@ -114,9 +114,26 @@ export async function fixWithHaiku(
 
 export async function reviewWithSonnet(
   signal: GeneratedSignal,
+  violations: Violation[],
   client: Anthropic
 ): Promise<EditorResult> {
-  const userMessage = `Review this article holistically:\n\n${JSON.stringify(signal, null, 2)}`
+  const violationsText = violations
+    .map(v => `- [${v.field}] ${v.type}: ${v.message}`)
+    .join('\n')
+
+  const userMessage = `Review this article holistically AND fix the validation issues below.
+
+VALIDATION VIOLATIONS (must fix in your output):
+${violationsText}
+
+═══
+
+Article JSON to review:
+${JSON.stringify(signal, null, 2)}
+
+═══
+
+Output the corrected article JSON. Address ALL validation violations above in addition to applying your holistic 6-dimension review.`
 
   try {
     const response = await client.messages.create({

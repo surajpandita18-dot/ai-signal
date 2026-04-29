@@ -615,18 +615,26 @@ export async function GET(request: Request) {
       if (!validation2.pass) {
         // Layer 3: Sonnet holistic review
         console.log('[cascade] Layer 3 (Sonnet review) attempting full review...')
-        const sonnetResult = await reviewWithSonnet(signal as unknown as ValidatorSignal, anthropicClient)
+        const sonnetResult = await reviewWithSonnet(signal as unknown as ValidatorSignal, validation2.violations, anthropicClient)
         signal = sonnetResult.signal as unknown as GeneratedSignal
         qualityPath = 'sonnet-review'
         console.log('[cascade] Layer 3 reasoning:', sonnetResult.reasoning)
+        const finalCheck1 = validateArticle(signal as unknown as ValidatorSignal)
+        if (!finalCheck1.pass) {
+          console.warn('[cascade] Sonnet output still has violations:', finalCheck1.violations.map(v => `${v.field}/${v.type}`).join(', '))
+        }
       }
     } else {
       // Haiku couldn't fix — escalate directly to Sonnet
       console.log('[cascade] Layer 2 failed, escalating to Layer 3...')
-      const sonnetResult = await reviewWithSonnet(signal as unknown as ValidatorSignal, anthropicClient)
+      const sonnetResult = await reviewWithSonnet(signal as unknown as ValidatorSignal, validation1.violations, anthropicClient)
       signal = sonnetResult.signal as unknown as GeneratedSignal
       qualityPath = 'sonnet-review'
       console.log('[cascade] Layer 3 reasoning:', sonnetResult.reasoning)
+      const finalCheck2 = validateArticle(signal as unknown as ValidatorSignal)
+      if (!finalCheck2.pass) {
+        console.warn('[cascade] Sonnet output still has violations:', finalCheck2.violations.map(v => `${v.field}/${v.type}`).join(', '))
+      }
     }
   }
 
