@@ -9,7 +9,7 @@ export interface Violation {
   field: string
   type: 'BOLD_COUNT' | 'FORBIDDEN_STAT' | 'PRESS_RELEASE' |
         'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL' |
-        'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB'
+        'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB' | 'STATS_COUNT_WRONG'
   message: string
   current?: string
 }
@@ -173,7 +173,16 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
     }
   }
 
-  // Check 7: Action item word length
+  // Check 7: Stats must be exactly 3 or empty
+  if (signal.stats && signal.stats.length > 0 && signal.stats.length !== 3) {
+    violations.push({
+      field: 'stats',
+      type: 'STATS_COUNT_WRONG',
+      message: `stats has ${signal.stats.length} entries. Must be exactly 3 (visual grid symmetry) or [] (empty). 2 stats look broken in the 3-card layout.`,
+    })
+  }
+
+  // Check 8: Action item word length
   if (signal.action_items && signal.action_items.length > 0) {
     for (let i = 0; i < signal.action_items.length; i++) {
       const item = signal.action_items[i]
@@ -190,7 +199,7 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
     }
   }
 
-  // Check 8: Action items must start with **bold action verb**
+  // Check 9: Action items must start with **bold action verb**
   if (signal.action_items && signal.action_items.length > 0) {
     for (let i = 0; i < signal.action_items.length; i++) {
       const action = signal.action_items[i]

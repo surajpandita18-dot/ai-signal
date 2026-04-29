@@ -179,6 +179,21 @@ Type 4 — Model/research release:
 
 Adapt language but keep implication-first structure.
 
+why_it_matters MUST be structured as TWO OR THREE paragraphs separated by blank lines (\n\n in the JSON string).
+
+Paragraph 1 (renders as Signal block): 35-55 words. The sharp claim with evidence — your tightest version of WHY this matters.
+
+Paragraph 2 (renders as Why It Matters body, shown after the pull quote): 35-55 words. Deeper analysis — the cascade, second-order effects, what this enables or breaks.
+
+Paragraph 3 (optional, shown after pull quote): 30-40 words. The closing reframe or implication.
+
+Total why_it_matters: 80-150 words across 2-3 paragraphs.
+
+Format example (exact format — use \\n\\n in the JSON string):
+"why_it_matters": "OpenAI just shifted the model cost floor. The compete...\\n\\nFor Indian SaaS teams building token-heavy features, this means Y...\\n\\nThe deeper signal is Z."
+
+CRITICAL: If you return why_it_matters as a single paragraph, the Why It Matters block on the page will be EMPTY. The component splits on \\n\\n — always use it.
+
 ═══ Rule 2 — Bold MUST appear in EVERY long-form field
 
 CRITICAL: The markdown syntax is double-asterisk: **word** or **phrase**. The JSON string must literally contain the characters ** before and after the bolded text.
@@ -235,6 +250,8 @@ FORCED EMPTY ARRAY — for these story types, return \`"stats": []\` immediately
 - Product launches without published performance numbers
 
 If story is "Company X launches/lands/integrates with Y" — answer is \`"stats": []\`. Story metadata is NEVER a stat.
+
+WHEN STATS APPLY: include EXACTLY 3 stats (not 2, not 4) for visual symmetry with the 3-card grid layout. If you only have 2 strong stats, return [] — empty is better than uneven.
 
 ═══ Rule 5 — \`action_items\` must be 48h-doable and India-consistent
 
