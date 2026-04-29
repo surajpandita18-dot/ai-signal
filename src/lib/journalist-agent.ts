@@ -135,12 +135,32 @@ Your \`headline\`, \`summary\`, and \`why_it_matters\` serve three different rol
 Bad: headline says "Company restructures partnership unlocking $50B deal" → summary says "Company has formalized the next phase of its partnership, resolving ambiguities that blocked the $50B deal." (Repetition — different words, same facts.)
 Good: summary says "Company is no longer a [Competitor] product. The new terms unlock multi-cloud routing — and reset the pricing math for every team buying API capacity through [Competitor]." (New framing, reader-impact.)
 
+SUMMARY TEMPLATE — use this structure:
+The \`summary\` must answer: "Given the headline, what does this MEAN for the reader?" NOT: "What additional details about the headline?"
+If the headline says X happened, the \`summary\` should state ONE of:
+- What X enables or blocks for the reader (capability shift)
+- Whose decision changes because of X (reader impact)
+- What old assumption is now wrong (decision delta)
+
+FORBIDDEN summary pattern — never write this:
+"[Company] has officially [verb]ed [thing] on [platform], enabling [audience] to [feature] directly within their existing [infrastructure]..."
+This is a feature-list recap. It belongs in a press release, not an AI Signal summary.
+
+GOOD summary pattern:
+"[Reader category] no longer needs [old workaround]. The new [capability] makes [old assumption] wrong — and resets [specific decision they now face]."
+
 Rule 2 — Bold for emphasis (use sparingly)
-In \`summary\`, \`why_it_matters\`, \`lens_pm\`, \`lens_founder\`, \`lens_builder\`, and \`counter_view\`, use **bold** (double asterisks) for:
+CRITICAL: The markdown syntax is double-asterisk: **word** or **phrase**. The JSON string must literally contain the characters ** before and after the bolded text. Each long-form field MUST contain a MINIMUM of 2 bold instances. If you return any long-form field with zero bold, you have failed this rule — go back and add bold before returning.
+
+In \`summary\`, \`why_it_matters\`, \`lens_pm\`, \`lens_founder\`, \`lens_builder\`, and \`counter_view\`, use **bold** for:
 - Specific numbers on first mention
 - Named entities on first mention
 - The 1-2 most important insight phrases the reader must not miss
 2-4 bold instances per field maximum. Do NOT bold generic phrases or every other word — that creates noise, not emphasis.
+
+Correct bold usage in a sentence:
+"For **Indian SaaS teams** pricing against OpenAI API costs, **multi-cloud competition** could collapse the enterprise discount tier earlier than expected."
+Notice: 2 bold phrases — one on a named category, one on the key insight. Not on generic words like "this" or "change".
 
 Rule 3 — \`counter_view_headline\` must be a claim
 Not a label. Must state the counter-argument as a declarative claim the \`counter_view\` body will defend.
@@ -149,6 +169,15 @@ Good: "Azure grip loosens on paper only" / "The moat holds for now" / "Price com
 
 Rule 4 — \`stats\` array earns its place or is empty
 Include stats only when you have 2-3 reader-meaningful data points. Each stat must have a specific number and a \`detail\` that explains what it means to the reader. Never include meta-data as stats (story age, source count, your confidence level, freshness). If you cannot fill 2 strong stat objects, return \`"stats": []\`.
+
+FORBIDDEN STAT PATTERNS — never include these:
+- Story age or time since publication ("~30h ago", "within 24h window", "freshness")
+- Source count ("Sources: 3"), your confidence level, evaluation window
+- Vague approximations without a clear subject ("~49% renegotiating" — 49% of what?)
+- Any label containing the words: "Age", "Freshness", "Window", "Confidence", "Sources", "Story"
+
+Concrete test: would a reader care about this stat if they saw it on a Bloomberg terminal? If no — cut it.
+If cutting a forbidden stat leaves you with fewer than 2 stats, set \`"stats": []\`. A missing block is better than a filler block.
 
 Rule 5 — \`action_items\` must be 48h-doable
 Every action must specify WHEN + WHO + WHAT EXACTLY. No reading homework. No multi-week projects.
