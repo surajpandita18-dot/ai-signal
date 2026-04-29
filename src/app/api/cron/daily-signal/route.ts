@@ -5,6 +5,7 @@ import type { StoryCategory, StoryStats, StorySource } from '../../../../../db/t
 import { validateArticle } from '@/lib/article-validator'
 import { fixWithHaiku, reviewWithSonnet } from '@/lib/editor-agent'
 import type { GeneratedSignal as ValidatorSignal } from '@/lib/journalist-agent'
+import { QUALITY_RULES, SELF_CHECK_QUESTIONS } from '@/lib/journalist-agent'
 
 // Vercel Pro: 60s. Hobby plan cap is 10s — upgrade if cron times out.
 export const maxDuration = 60
@@ -437,6 +438,8 @@ Your job:
 1. Pick the single most impactful story — prioritise: model releases, pricing changes, capability leaps, funding/acquisition, regulatory moves. Prefer tier 5 > tier 4 > tier 3, but a viral tier-3 story beats a stale tier-5 one. Age matters: same story older than 36h is stale.
 2. Write the full signal as JSON.
 
+${QUALITY_RULES}
+
 Return ONLY valid JSON. No markdown fences. No explanation before or after.
 
 {
@@ -463,7 +466,9 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   ],
   "read_minutes": 4,
   "deeper_read": "URL of the primary source article"
-}`
+}
+
+${SELF_CHECK_QUESTIONS}`
 
   const msg = await client.messages.create(
     {

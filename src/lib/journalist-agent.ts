@@ -123,7 +123,7 @@ What could go wrong if you act on this signal? What assumption in the main take 
 Who should NOT act on this? What context changes the calculus?`,
 }
 
-const QUALITY_RULES = `
+export const QUALITY_RULES = `
 CONTENT QUALITY RULES — non-negotiable
 
 ═══ THE GOLDEN RULE — VOICE CONSISTENCY ═══
@@ -282,7 +282,7 @@ DENSE sections must respect cognitive load:
 
 Tight prose > exhaustive. Reader fills gaps.`
 
-const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before returning your JSON output. If any answer is NO, revise that field first.
+export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before returning your JSON output. If any answer is NO, revise that field first.
 
 1. \`headline\`: Does it contain a specific number, name, or concrete change? (No vague claims.)
 2. \`summary\`: Does it add NEW information beyond the headline? Does it focus on IMPLICATION for the reader — not a recap of the same event?
