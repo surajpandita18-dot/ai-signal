@@ -1071,10 +1071,10 @@ export function StoryArticle({
               {para2 && (
                 <p style={{ marginBottom: 20 }} dangerouslySetInnerHTML={{ __html: toHtml(para2) }} />
               )}
-              {story.pull_quote && (
+              {(story.editorial_take ?? story.pull_quote) && (
                 <div style={{ margin: '28px 0', padding: '28px 32px', background: 'var(--bg-soft)', borderRadius: 14, position: 'relative' }}>
                   <span aria-hidden="true" style={{ position: 'absolute', top: 14, left: 18, fontFamily: 'var(--ff-display)', fontStyle: 'italic', fontSize: 56, color: 'var(--text-faint)', lineHeight: 0.9, opacity: 0.5 }}>&ldquo;</span>
-                  <p style={{ fontFamily: 'var(--ff-display)', fontSize: 24, lineHeight: 1.3, fontWeight: 400, letterSpacing: '-0.012em', paddingLeft: 36 }}>{story.pull_quote}</p>
+                  <p style={{ fontFamily: 'var(--ff-display)', fontSize: 24, lineHeight: 1.3, fontWeight: 400, letterSpacing: '-0.012em', paddingLeft: 36 }}>{story.editorial_take ?? story.pull_quote}</p>
                   <div style={{ marginTop: 14, paddingLeft: 36, fontFamily: 'var(--ff-mono)', fontSize: 11, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 500 }}>— AI Signal Editorial</div>
                 </div>
               )}
@@ -1496,35 +1496,54 @@ export function StoryArticle({
         </div>
       )}
 
-      {/* ── Section 10: Deeper read ── */}
+      {/* ── Section 10: Read the original ── */}
       {story.deeper_read && (
-        <div
+        <a
+          href={story.deeper_read}
+          target="_blank"
+          rel="noopener noreferrer"
           style={{
-            padding: '22px 26px',
-            background: 'var(--bg-soft)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: 14,
+            padding: '18px 22px',
+            background: 'var(--bg-card)',
             border: '1px solid var(--border)',
-            borderLeft: '3px solid var(--signal)',
             borderRadius: 12,
             marginTop: 32,
+            textDecoration: 'none',
+            color: 'var(--text)',
+            transition: 'border-color 0.2s, background 0.2s',
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = 'var(--signal)'
+            e.currentTarget.style.background = 'var(--signal-faint)'
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = 'var(--border)'
+            e.currentTarget.style.background = 'var(--bg-card)'
           }}
         >
           <div
             style={{
-              fontFamily: 'var(--ff-mono)',
-              fontSize: 10,
-              fontWeight: 700,
-              textTransform: 'uppercase',
-              letterSpacing: '0.18em',
-              color: 'var(--signal)',
-              marginBottom: 10,
+              width: 38, height: 38, borderRadius: 8,
+              background: 'var(--text)', color: 'var(--bg)',
+              display: 'flex', alignItems: 'center', justifyContent: 'center',
+              fontFamily: 'var(--ff-mono)', fontWeight: 800, fontSize: 15, flexShrink: 0,
             }}
           >
-            Deeper read
+            {domainInitial(story.deeper_read)}
           </div>
-          <p style={{ fontSize: 16, lineHeight: 1.6, color: 'var(--text-soft)' }}>
-            {story.deeper_read}
-          </p>
-        </div>
+          <div style={{ flex: 1, lineHeight: 1.3 }}>
+            <div style={{ fontFamily: 'var(--ff-mono)', fontSize: 10, fontWeight: 600, color: 'var(--text-mute)', marginBottom: 2, textTransform: 'lowercase' }}>
+              {(() => { try { return new URL(story.deeper_read).hostname.replace('www.', '') } catch { return '' } })()}
+            </div>
+            <div style={{ fontSize: 15, fontWeight: 500 }}>Read the original</div>
+          </div>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" style={{ color: 'var(--text-mute)', flexShrink: 0, transition: 'all 0.2s' }}>
+            <path d="M7 17L17 7M9 7h8v8"/>
+          </svg>
+        </a>
       )}
 
       {/* ── Section 11: Sources ── */}

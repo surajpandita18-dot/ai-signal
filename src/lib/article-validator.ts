@@ -10,7 +10,7 @@ export interface Violation {
   type: 'BOLD_COUNT' | 'FORBIDDEN_STAT' | 'PRESS_RELEASE' |
         'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL' |
         'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB' | 'STATS_COUNT_WRONG' |
-        'WHY_IT_MATTERS_SINGLE_PARA'
+        'WHY_IT_MATTERS_SINGLE_PARA' | 'EDITORIAL_TAKE_MISSING'
   message: string
   current?: string
 }
@@ -230,6 +230,16 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
         current: signal.why_it_matters.slice(0, 200),
       })
     }
+  }
+
+  // Check 12: editorial_take must be present and at least 5 words
+  if (!signal.editorial_take || wordCount(signal.editorial_take) < 5) {
+    violations.push({
+      field: 'editorial_take',
+      type: 'EDITORIAL_TAKE_MISSING',
+      message: `editorial_take is missing or too short. Write one sharp tweetable sentence as AI Signal Editorial — opinion not recap, min 5 words.`,
+      current: signal.editorial_take ?? '',
+    })
   }
 
   return {

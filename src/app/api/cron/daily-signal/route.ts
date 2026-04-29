@@ -38,6 +38,7 @@ interface GeneratedSignal {
   sources: StorySource[]
   read_minutes: number
   deeper_read: string
+  editorial_take: string
 }
 
 // ─── Source registry ────────────────────────────────────────────────────────────
@@ -465,7 +466,8 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
     { "label": "Source name", "url": "full URL" }
   ],
   "read_minutes": 4,
-  "deeper_read": "URL of the primary source article"
+  "deeper_read": "URL of the primary source article",
+  "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts. e.g., 'The default model is no longer a question of capability — it's a question of who notices the price change first.'"
 }
 
 ${SELF_CHECK_QUESTIONS}`
@@ -672,6 +674,7 @@ export async function GET(request: Request) {
     sources: signal.sources ?? [],
     read_minutes: signal.read_minutes ?? 4,
     deeper_read: signal.deeper_read ?? null,
+    editorial_take: signal.editorial_take ?? null,
     stats: signal.stats?.length ? signal.stats : null,
     action_items: signal.action_items?.length ? signal.action_items : null,
     counter_view: signal.counter_view ?? null,

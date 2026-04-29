@@ -18,7 +18,7 @@ export interface Database {
           published_at: string | null
           editor_note: string | null
           long_read: LongRead | null
-          status: 'draft' | 'published'
+          status: 'draft' | 'published' | 'no_signal'
           created_at: string
         }
         Insert: {
@@ -28,7 +28,7 @@ export interface Database {
           published_at?: string | null
           editor_note?: string | null
           long_read?: LongRead | null
-          status?: 'draft' | 'published'
+          status?: 'draft' | 'published' | 'no_signal'
           created_at?: string
         }
         Update: {
@@ -38,7 +38,7 @@ export interface Database {
           published_at?: string | null
           editor_note?: string | null
           long_read?: LongRead | null
-          status?: 'draft' | 'published'
+          status?: 'draft' | 'published' | 'no_signal'
           created_at?: string
         }
       }
@@ -61,11 +61,17 @@ export interface Database {
           summary: string
           why_it_matters: string
           deeper_read: string | null
+          pull_quote: string | null
+          editorial_take: string | null
           lens_pm: string | null
           lens_founder: string | null
           lens_builder: string | null
           sources: StorySource[]
           read_minutes: number
+          stats: StoryStats[] | null
+          action_items: string[] | null
+          counter_view: string | null
+          counter_view_headline: string | null
         }
         Insert: {
           id?: string
@@ -76,11 +82,17 @@ export interface Database {
           summary: string
           why_it_matters: string
           deeper_read?: string | null
+          pull_quote?: string | null
+          editorial_take?: string | null
           lens_pm?: string | null
           lens_founder?: string | null
           lens_builder?: string | null
           sources?: StorySource[]
           read_minutes?: number
+          stats?: StoryStats[] | null
+          action_items?: string[] | null
+          counter_view?: string | null
+          counter_view_headline?: string | null
         }
         Update: {
           id?: string
@@ -91,11 +103,17 @@ export interface Database {
           summary?: string
           why_it_matters?: string
           deeper_read?: string | null
+          pull_quote?: string | null
+          editorial_take?: string | null
           lens_pm?: string | null
           lens_founder?: string | null
           lens_builder?: string | null
           sources?: StorySource[]
           read_minutes?: number
+          stats?: StoryStats[] | null
+          action_items?: string[] | null
+          counter_view?: string | null
+          counter_view_headline?: string | null
         }
       }
       subscribers: {
@@ -157,6 +175,13 @@ export interface LongRead {
 export interface StorySource {
   label: string
   url: string
+}
+
+export interface StoryStats {
+  label: string
+  value: string
+  delta: string | null  // e.g. "↓ 10×" or "+12%"
+  detail: string
 }
 
 // Convenience row types

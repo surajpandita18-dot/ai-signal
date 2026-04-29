@@ -376,7 +376,8 @@ const JSON_SCHEMA = `{
   "counter_view_headline": "A declarative claim (5-7 words) the counter_view body defends. Not a label.",
   "sources": [{ "label": "Source name", "url": "full URL" }],
   "read_minutes": 4,
-  "deeper_read": "URL of primary source"
+  "deeper_read": "URL of primary source",
+  "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts."
 }`
 
 export function buildSystemPrompt(config: ContentConfig): string {
@@ -444,6 +445,7 @@ export interface GeneratedSignal {
   sources?: Array<{ label: string; url: string }>
   read_minutes?: number
   deeper_read?: string
+  editorial_take?: string
 }
 
 export async function generateSignalWithConfig(
