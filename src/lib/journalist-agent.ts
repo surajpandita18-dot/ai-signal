@@ -192,17 +192,17 @@ const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before return
 
 const JSON_SCHEMA = `{
   "category": "models"|"tools"|"business"|"policy"|"research",
-  "headline": "Sharp, specific, max 12 words. No clickbait.",
-  "summary": "2 dense sentences. What happened and why it matters.",
-  "why_it_matters": "3-4 sentences. Deeper implication. Bold key phrases with **double asterisks**.",
-  "pull_quote": "One killer sentence max 25 words.",
-  "lens_pm": "1-2 sentences for a PM. What should they rethink or do?",
-  "lens_founder": "1-2 sentences for a founder. Competitive or strategic lens.",
-  "lens_builder": "1-2 sentences for an engineer. Stack, API, or workflow implication.",
-  "stats": [{ "label": "short label", "value": "number with unit", "delta": "trend or null", "detail": "context" }],
-  "action_items": ["Concrete action for today or this week", "Second", "Third"],
-  "counter_view": "1-2 sentences. The counter-view as instructed.",
-  "counter_view_headline": "5-7 words",
+  "headline": "Sharp, specific, max 12 words. Contains a name, number, or concrete change. No clickbait.",
+  "summary": "2 sentences. IMPLICATION first — what this means for the reader, not a recap of headline facts. Bold 2-4 key phrases.",
+  "why_it_matters": "3-4 sentences. WHY/HOW — context, evidence, thesis. Bold 2-4 phrases on specific numbers or entities.",
+  "pull_quote": "One claim-sentence, under 140 characters, standalone and tweetable.",
+  "lens_pm": "1-2 sentences for a PM. Conditional + concrete action. Bold 1-2 phrases. If India context is high, name a specific Indian builder/buyer category.",
+  "lens_founder": "1-2 sentences for a founder. Competitive or strategic lens. Bold 1-2 phrases.",
+  "lens_builder": "1-2 sentences for an engineer. Stack, API, or workflow implication. Bold 1-2 phrases.",
+  "stats": "CONDITIONAL — return [] if you cannot fill 2 reader-meaningful stat objects. Each must have a specific number and a detail explaining reader impact. Never include meta-data (story age, source count, confidence). Format when non-empty: [{ \"label\": \"UPPERCASE CATEGORY\", \"value\": \"number with unit\", \"delta\": \"trend or null\", \"detail\": \"1 line — what this number means for the reader\" }]",
+  "action_items": "CONDITIONAL — return [] if no concrete 48h actions exist (funding/talent stories typically). Each action must specify WHEN + WHO + WHAT EXACTLY. Format when non-empty: [\"By Friday: ask your eng lead...\"]",
+  "counter_view": "1-2 sentences. Names specific structural reasons for the counter-argument. Not generic 'but consider...'.",
+  "counter_view_headline": "A declarative claim (5-7 words) the counter_view body defends. Not a label.",
   "sources": [{ "label": "Source name", "url": "full URL" }],
   "read_minutes": 4,
   "deeper_read": "URL of primary source"
@@ -265,6 +265,7 @@ export interface GeneratedSignal {
   lens_pm?: string
   lens_founder?: string
   lens_builder?: string
+  // stats and action_items are conditional — model returns [] for story types that don't warrant them
   stats?: Array<{ label: string; value: string; delta: string | null; detail: string }>
   action_items?: string[]
   counter_view?: string
