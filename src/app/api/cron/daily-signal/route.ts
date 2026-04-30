@@ -154,6 +154,11 @@ function extractDomain(url: string): string {
   }
 }
 
+function extractConcepts(text: string): string[] {
+  const lower = text.toLowerCase()
+  return AI_KEYWORDS.filter(kw => lower.includes(kw))
+}
+
 function fetchWithTimeout(url: string, ms = 8000): Promise<Response> {
   const ctrl = new AbortController()
   // Timer is NOT cleared on header receipt so it also covers body streaming
@@ -420,6 +425,75 @@ async function fetchAllCandidates(): Promise<Candidate[]> {
   return capped
 }
 
+// ─── Saturation penalty ──────────────────────────────────────────────────────────
+
+interface RecentStory {
+  category: string
+  headline: string
+  deeper_read: string | null
+  sources: Array<{ label: string; url: string }>
+}
+
+async function fetchRecentStories(supabase: ReturnType<typeof createAdminSupabaseClient>): Promise<RecentStory[]> {
+  const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString()
+  const { data } = await supabase
+    .from('issues')
+    .select('stories(category, headline, deeper_read, sources)')
+    .gte('published_at', sevenDaysAgo)
+    .eq('status', 'published')
+    .order('published_at', { ascending: true })
+  if (!data) return []
+  return (data as Array<{ stories: RecentStory[] }>).flatMap(issue => issue.stories ?? [])
+}
+
+function applySaturationPenalties(candidates: Candidate[], recentStories: RecentStory[]): Candidate[] {
+  if (recentStories.length === 0) return candidates
+
+  // Scale penalties by sample size — at low N penalties are disproportionately harsh
+  const penaltyMultiplier = Math.min(1.0, recentStories.length / 7)
+  const last3 = recentStories.slice(-3)
+
+  // Collect source domains seen in last 3 issues
+  const recentDomains3 = new Set<string>()
+  for (const story of last3) {
+    if (story.deeper_read) recentDomains3.add(extractDomain(story.deeper_read))
+    for (const src of story.sources) {
+      if (src.url) recentDomains3.add(extractDomain(src.url))
+    }
+  }
+
+  const last3Concepts = last3.map(s => extractConcepts(s.headline))
+  const last7Concepts = recentStories.map(s => extractConcepts(s.headline))
+
+  return candidates.map(c => {
+    // Domain penalty: same source domain appeared in last 3 issues
+    const domainPenalty = recentDomains3.has(extractDomain(c.url))
+      ? Math.round(30 * penaltyMultiplier)
+      : 0
+
+    const candidateConcepts = extractConcepts(c.title)
+
+    // Category penalty: 2+ AI_KEYWORDS concept overlap with any last-3 headline (short window)
+    const categoryPenalty = last3Concepts.some(
+      rc => candidateConcepts.filter(kw => rc.includes(kw)).length >= 2
+    ) ? Math.round(20 * penaltyMultiplier) : 0
+
+    // Keyword penalty: 2+ concept overlap with any last-7 headline (wide window)
+    const keywordPenalty = last7Concepts.some(
+      rc => candidateConcepts.filter(kw => rc.includes(kw)).length >= 2
+    ) ? Math.round(15 * penaltyMultiplier) : 0
+
+    const MAX_SATURATION_PENALTY = 50
+    const cappedPenalty = Math.min(domainPenalty + categoryPenalty + keywordPenalty, MAX_SATURATION_PENALTY)
+
+    console.log(
+      `[scout] candidate "${c.title.slice(0, 40)}": base ${c.finalScore}, domain -${domainPenalty}, category -${categoryPenalty}, keyword -${keywordPenalty}, multiplier ${penaltyMultiplier.toFixed(2)}, total -${cappedPenalty}, final ${c.finalScore - cappedPenalty}`
+    )
+
+    return { ...c, finalScore: c.finalScore - cappedPenalty }
+  }).sort((a, b) => b.finalScore - a.finalScore)
+}
+
 // ─── Claude generation ──────────────────────────────────────────────────────────
 
 async function generateSignal(candidates: Candidate[]): Promise<GeneratedSignal> {
@@ -579,6 +653,16 @@ export async function GET(request: Request) {
     })
     return NextResponse.json({ ok: true, no_signal: true, issue_number: nextNumber })
   }
+
+  // Apply saturation penalty — score down topics/sources covered in last 7 issues
+  let recentStories: RecentStory[] = []
+  try {
+    recentStories = await fetchRecentStories(supabase)
+    console.log(`[scout] saturation check: ${recentStories.length} recent stories loaded`)
+  } catch (e) {
+    console.warn('[scout] saturation check failed, skipping penalty:', String(e))
+  }
+  candidates = applySaturationPenalties(candidates, recentStories)
 
   // Generate signal with Claude
   let signal: GeneratedSignal
