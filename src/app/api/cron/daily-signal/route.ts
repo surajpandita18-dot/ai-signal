@@ -561,7 +561,7 @@ ${SELF_CHECK_QUESTIONS}`
   const msg = await client.messages.create(
     {
       model: 'claude-sonnet-4-6',
-      max_tokens: 2500,
+      max_tokens: 3500,
       system: [
         {
           type: 'text',
@@ -578,6 +578,11 @@ ${SELF_CHECK_QUESTIONS}`
     },
     { headers: { 'anthropic-beta': 'prompt-caching-2024-07-31' } }
   )
+
+  if (msg.stop_reason === 'max_tokens') {
+    console.error('[generateSignal] Claude output truncated — hit max_tokens limit. Raise the cap or shrink output schema.')
+    throw new Error('Claude output truncated at max_tokens. Raise the cap.')
+  }
 
   const text = msg.content[0].type === 'text' ? msg.content[0].text : ''
   const jsonMatch = text.match(/\{[\s\S]*\}/)
