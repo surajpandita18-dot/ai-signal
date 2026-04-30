@@ -40,6 +40,8 @@ interface GeneratedSignal {
   deeper_read: string
   editorial_take: string
   broadcast_phrases?: string[]
+  pick_reason?: string
+  rejected_alternatives?: Array<{ title: string; reason: string }>
 }
 
 // ─── Source registry ────────────────────────────────────────────────────────────
@@ -513,6 +515,12 @@ async function generateSignal(candidates: Candidate[]): Promise<GeneratedSignal>
 Your job:
 1. Pick the single most impactful story — prioritise: model releases, pricing changes, capability leaps, funding/acquisition, regulatory moves. Prefer tier 5 > tier 4 > tier 3, but a viral tier-3 story beats a stale tier-5 one. Age matters: same story older than 36h is stale.
 2. Write the full signal as JSON.
+3. Document your editorial decision in two metadata fields alongside the article fields:
+
+   - pick_reason: 1-2 sentence explanation of WHY this story beat the others. Be specific about the editorial criterion (e.g., "Highest leverage for Indian SaaS unit economics — pricing disruption beats scaling stories this week. Anthropic funding story loses because funding rounds are rarely 48h-actionable for builders.").
+
+   - rejected_alternatives: Array of 2-4 candidates you did NOT pick, each with title (verbatim from the input list) and a 1-line editorial reason. Keep reasons sharp and decision-quality.
+     Format: [{"title": "...", "reason": "..."}, ...]
 
 ${QUALITY_RULES}
 
@@ -543,7 +551,9 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   "read_minutes": 4,
   "deeper_read": "URL of the primary source article",
   "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts. e.g., 'The default model is no longer a question of capability — it's a question of who notices the price change first.'",
-  "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + data anchor)", "Phrase 2 (6-14 words, pure data anchor — number, currency, or named entity)", "Phrase 3 (6-14 words, pure data anchor — implication or consequence)"]
+  "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + data anchor)", "Phrase 2 (6-14 words, pure data anchor — number, currency, or named entity)", "Phrase 3 (6-14 words, pure data anchor — implication or consequence)"],
+  "pick_reason": "1-2 sentence editorial reason this story was chosen over the others. Name the specific criterion.",
+  "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}]
 }
 
 ${SELF_CHECK_QUESTIONS}`
@@ -738,6 +748,8 @@ export async function GET(request: Request) {
       slug: `signal-${nextNumber}`,
       status: 'published',
       published_at: new Date().toISOString(),
+      pick_reason: signal.pick_reason ?? null,
+      rejected_alternatives: signal.rejected_alternatives?.length ? signal.rejected_alternatives : null,
     })
     .select('id')
     .single()

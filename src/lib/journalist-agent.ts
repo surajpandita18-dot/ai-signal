@@ -378,7 +378,9 @@ const JSON_SCHEMA = `{
   "read_minutes": 4,
   "deeper_read": "URL of primary source",
   "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts.",
-  "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + specific data anchor)", "Phrase 2 (6-14 words, pure data anchor — number/currency/named entity)", "Phrase 3 (6-14 words, pure data anchor — implication)"]
+  "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + specific data anchor)", "Phrase 2 (6-14 words, pure data anchor — number/currency/named entity)", "Phrase 3 (6-14 words, pure data anchor — implication)"],
+  "pick_reason": "1-2 sentence editorial reason this story was chosen over the others. Name the specific criterion.",
+  "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}]
 }`
 
 export function buildSystemPrompt(config: ContentConfig): string {
@@ -448,6 +450,8 @@ export interface GeneratedSignal {
   deeper_read?: string
   editorial_take?: string
   broadcast_phrases?: string[]
+  pick_reason?: string
+  rejected_alternatives?: Array<{ title: string; reason: string }>
 }
 
 export async function generateSignalWithConfig(

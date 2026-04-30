@@ -20,6 +20,8 @@ export interface Database {
           long_read: LongRead | null
           status: 'draft' | 'published' | 'no_signal'
           created_at: string
+          pick_reason: string | null
+          rejected_alternatives: Array<{ title: string; reason: string }> | null
         }
         Insert: {
           id?: string
@@ -30,6 +32,8 @@ export interface Database {
           long_read?: LongRead | null
           status?: 'draft' | 'published' | 'no_signal'
           created_at?: string
+          pick_reason?: string | null
+          rejected_alternatives?: Array<{ title: string; reason: string }> | null
         }
         Update: {
           id?: string
@@ -40,6 +44,8 @@ export interface Database {
           long_read?: LongRead | null
           status?: 'draft' | 'published' | 'no_signal'
           created_at?: string
+          pick_reason?: string | null
+          rejected_alternatives?: Array<{ title: string; reason: string }> | null
         }
       }
       stories: {
