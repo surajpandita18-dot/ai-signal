@@ -627,6 +627,41 @@ export const generateDailySignal = inngest.createFunction(
     await step.run('publish', async () => {
       const supabase = createAdminSupabaseClient()
 
+      // Idempotency guard — Inngest may retry this step on transient failure
+      const { data: existingStory } = await supabase
+        .from('stories')
+        .select('id')
+        .eq('issue_id', issueId)
+        .maybeSingle()
+
+      if (existingStory) {
+        console.log('[inngest] publish: story already exists, skipping insert')
+      } else {
+        const { error: storyErr } = await supabase.from('stories').insert({
+          issue_id: issueId,
+          position: 1,
+          category: finalSignal.category,
+          headline: finalSignal.headline,
+          summary: finalSignal.summary,
+          why_it_matters: finalSignal.why_it_matters,
+          pull_quote: finalSignal.pull_quote ?? null,
+          lens_pm: finalSignal.lens_pm ?? null,
+          lens_founder: finalSignal.lens_founder ?? null,
+          lens_builder: finalSignal.lens_builder ?? null,
+          sources: finalSignal.sources ?? [],
+          read_minutes: finalSignal.read_minutes ?? 4,
+          deeper_read: finalSignal.deeper_read ?? null,
+          editorial_take: finalSignal.editorial_take ?? null,
+          broadcast_phrases: finalSignal.broadcast_phrases?.length ? finalSignal.broadcast_phrases : null,
+          stats: finalSignal.stats?.length ? finalSignal.stats : null,
+          action_items: finalSignal.action_items?.length ? finalSignal.action_items : null,
+          counter_view: finalSignal.counter_view ?? null,
+          counter_view_headline: finalSignal.counter_view_headline ?? null,
+        })
+        if (storyErr) throw new Error(`Story insert failed: ${storyErr.message}`)
+      }
+
+      // neq guard: no-op if already published (idempotent on retry)
       await supabase
         .from('issues')
         .update({
@@ -638,30 +673,7 @@ export const generateDailySignal = inngest.createFunction(
             : null,
         })
         .eq('id', issueId)
-
-      const { error: storyErr } = await supabase.from('stories').insert({
-        issue_id: issueId,
-        position: 1,
-        category: finalSignal.category,
-        headline: finalSignal.headline,
-        summary: finalSignal.summary,
-        why_it_matters: finalSignal.why_it_matters,
-        pull_quote: finalSignal.pull_quote ?? null,
-        lens_pm: finalSignal.lens_pm ?? null,
-        lens_founder: finalSignal.lens_founder ?? null,
-        lens_builder: finalSignal.lens_builder ?? null,
-        sources: finalSignal.sources ?? [],
-        read_minutes: finalSignal.read_minutes ?? 4,
-        deeper_read: finalSignal.deeper_read ?? null,
-        editorial_take: finalSignal.editorial_take ?? null,
-        broadcast_phrases: finalSignal.broadcast_phrases?.length ? finalSignal.broadcast_phrases : null,
-        stats: finalSignal.stats?.length ? finalSignal.stats : null,
-        action_items: finalSignal.action_items?.length ? finalSignal.action_items : null,
-        counter_view: finalSignal.counter_view ?? null,
-        counter_view_headline: finalSignal.counter_view_headline ?? null,
-      })
-
-      if (storyErr) throw new Error(`Story insert failed: ${storyErr.message}`)
+        .neq('status', 'published')
 
       console.log(`[inngest] step "publish" complete: issue ${issueNumber} published`)
     })
