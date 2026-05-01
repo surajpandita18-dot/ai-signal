@@ -18,7 +18,7 @@ export interface Database {
           published_at: string | null
           editor_note: string | null
           long_read: LongRead | null
-          status: 'draft' | 'published' | 'no_signal'
+          status: 'draft' | 'published' | 'no_signal' | 'pending' | 'failed'
           created_at: string
           pick_reason: string | null
           rejected_alternatives: Array<{ title: string; reason: string }> | null
@@ -30,7 +30,7 @@ export interface Database {
           published_at?: string | null
           editor_note?: string | null
           long_read?: LongRead | null
-          status?: 'draft' | 'published' | 'no_signal'
+          status?: 'draft' | 'published' | 'no_signal' | 'pending' | 'failed'
           created_at?: string
           pick_reason?: string | null
           rejected_alternatives?: Array<{ title: string; reason: string }> | null
@@ -42,7 +42,7 @@ export interface Database {
           published_at?: string | null
           editor_note?: string | null
           long_read?: LongRead | null
-          status?: 'draft' | 'published' | 'no_signal'
+          status?: 'draft' | 'published' | 'no_signal' | 'pending' | 'failed'
           created_at?: string
           pick_reason?: string | null
           rejected_alternatives?: Array<{ title: string; reason: string }> | null
