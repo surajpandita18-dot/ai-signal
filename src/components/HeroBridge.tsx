@@ -39,7 +39,6 @@ export function HeroBridge() {
           justifyContent: 'center',
         }}
       >
-        <span className="hero-bridge-line" aria-hidden="true" />
         <span
           style={{
             fontFamily: 'var(--ff-display)',

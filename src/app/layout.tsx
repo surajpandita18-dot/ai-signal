@@ -1,23 +1,42 @@
 import type { Metadata } from 'next'
-import { Inter, Source_Serif_4 } from 'next/font/google'
+import { Inter, Fraunces, Instrument_Serif, JetBrains_Mono, Caveat } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({
+const inter = Inter({ subsets: ['latin'], variable: '--font-inter', display: 'swap' })
+
+const fraunces = Fraunces({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-fraunces',
+  style: ['normal', 'italic'],
+  axes: ['opsz'],
   display: 'swap',
 })
 
-const sourceSerif = Source_Serif_4({
+const instrumentSerif = Instrument_Serif({
   subsets: ['latin'],
-  variable: '--font-source-serif',
-  weight: ['400', '600', '700'],
+  variable: '--font-display',
+  weight: '400',
+  style: ['normal', 'italic'],
+  display: 'swap',
+})
+
+const jetbrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  variable: '--font-mono',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
+})
+
+const caveat = Caveat({
+  subsets: ['latin'],
+  variable: '--font-hand',
+  weight: ['500', '600', '700'],
   display: 'swap',
 })
 
 export const metadata: Metadata = {
-  title: 'AI Signal',
-  description: "One clean digest of the week's AI news. No overlap. Read in 5 minutes.",
+  title: 'AI Signal — One story. Every day. Gone in 24 hours.',
+  description: 'One story. Every day. Gone in 24 hours. The single most important thing in AI, curated daily.',
 }
 
 export default function RootLayout({
@@ -26,22 +45,12 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className={`${inter.variable} ${sourceSerif.variable}`} suppressHydrationWarning>
-      <head>
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var theme = localStorage.getItem('theme') || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
-                document.documentElement.classList.toggle('dark', theme === 'dark');
-              })();
-            `,
-          }}
-        />
-      </head>
-      <body>
-        {children}
-      </body>
+    <html
+      lang="en"
+      className={`${inter.variable} ${fraunces.variable} ${instrumentSerif.variable} ${jetbrainsMono.variable} ${caveat.variable}`}
+      suppressHydrationWarning
+    >
+      <body>{children}</body>
     </html>
   )
 }
