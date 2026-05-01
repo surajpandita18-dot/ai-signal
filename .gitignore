@@ -43,3 +43,11 @@ next-env.d.ts
 # summary cache
 lib/.summaryCache.json
 lib/processedSignals.json
+
+# internal product/design docs (local-only)
+src/IMPLEMENTATION_LOG_*.md
+system/briefs/
+system/proposals/
+design/references/
+design/reviews/
+qa/reviews/

@@ -6,23 +6,25 @@ Owner: Suraj | Status: Direction locked, ready to build | Last updated: April 27
 
 ## 1. Positioning
 
-**One-liner:** AI Signal reads the best AI newsletters of the week so you don't have to. One clean digest. No overlap. With a lens for your role.
+**One-liner:** One story. Every day. Gone in 24 hours.
 
 ### Why this exists
 
 AI news in 2026 is not undersupplied — it's oversupplied. The Rundown has 1.75M+ readers. TLDR AI, Superhuman AI each cross 1.25M. 100+ new AI newsletters launch every month. The pain isn't access to AI news. The pain is that serious professionals subscribe to 5–10 of them, get the same 6 stories repeated across all of them, and unsubscribe out of cognitive exhaustion.
 
-The third-party tools people are paying for in 2026 — Readless, Remy, Forage Mail — exist to consolidate newsletters into one digest. That market signal is the actual product opportunity. Curation of curation, not yet another curator.
+Every existing newsletter competes on breadth: more stories, more analysis, more coverage. No one competes on **scarcity and authority**. The signal is lost in the noise precisely because there's no one willing to say: this is the one thing that matters today. Everything else can wait.
+
+The FOMO mechanic is the product insight. Not manufactured scarcity — earned scarcity. If you can only pick one story from the last 24 hours of AI news, your pick means something. And if you miss it, it's gone.
 
 ### Audience, in priority order
 
-- **Primary:** AI-curious professionals already subscribed to 2+ AI newsletters who feel the overlap fatigue. PMs, founders, builders, designers in tech.
+- **Primary:** AI-curious professionals already subscribed to 2+ AI newsletters who feel the overlap fatigue. PMs, founders, builders, designers in tech — people who want to stay informed without being consumed.
 - **Secondary:** AI-curious professionals not yet subscribed to anything who want to start with one source instead of five.
 - **Explicitly not:** ML researchers (Latent Space, Import AI serve them), pure tool-discovery seekers (TAAFT serves them), enterprise buyers needing case studies (DataNorth serves them).
 
 ### What makes this different
 
-Most AI newsletters compete on speed of summary or breadth of coverage. AI Signal does neither. It assumes you already have access to the news — the problem is making sense of it across sources. The product is the de-duplication, the prioritisation, and the role lens. Mechanical aggregators (Readless, Remy) give you everyone's summary of the GPT-5 launch. AI Signal gives you the summary plus what changed across the week, why it matters, and what to do about it — with a default lens for whether you're shipping product, running a company, or building the system.
+Every other newsletter gives you everything. AI Signal gives you one thing. The constraint is the point. One story per day, scouted from the best sources across the last 24 hours, written with a role lens, and gone after 24 hours. Non-subscribers see the current signal. After 24 hours, they hit the gate — subscribe to access past signals. The FOMO is built into the model: read it now or lose it. The subscribe CTA is never a popup. It's the wall you hit when you miss the window.
 
 ---
 
@@ -39,28 +41,30 @@ Most AI newsletters compete on speed of summary or breadth of coverage. AI Signa
 
 ## 3. Scope — MVP vs deferred
 
-MVP exists to test one hypothesis: do people prefer one weekly de-duplicated digest over five separate newsletters? Everything that doesn't directly test that hypothesis is deferred.
+MVP exists to test one hypothesis: does a daily single-story pick with a 24-hour expiry create more urgency and habit than a weekly digest? Everything that doesn't directly test that hypothesis is deferred.
 
 ### In MVP (build now)
 
-- Web — homepage with the latest weekly issue rendered.
-- Web — issue page (`/issue/[slug]`) that displays a single weekly digest with 5–7 stories, hero editor's note, and a one-pick 'long read of the week' footer.
+- Web — homepage that IS today's signal. One story, fully rendered, with a visible expiry badge showing time remaining.
+- Web — signal page (`/signal/[slug]`) for direct links — same layout as homepage. After 24h, non-subscribers see a gate: "This signal has expired. Subscribe to access the archive."
 - Story card with two-layer content. Top layer: headline, summary, why it matters, sources. Expand: PM/Founder/Builder lenses + deeper read.
-- Web — archive page listing past issues by date.
-- Email — weekly digest sent every Sunday morning IST. Email version is top-layer only with 'read full version on web' link per story.
+- Expiry mechanic — `published_at + 24h` determines the window. Countdown shown on the current signal. After expiry: SignalExpired state on homepage ("Tomorrow's signal drops at 9 AM IST. Subscribe to be first.").
+- Subscriber archive gate — past signals are accessible only to subscribers. Non-subscribers see the title and expiry date of past signals, with a subscribe CTA.
+- Email — daily morning email (9 AM IST). Email version is the full story (headline, summary, why it matters, role lenses) with 'Read on web' link. One email. One story.
 - Onboarding — single-question role pick (PM / Founder / Builder / Just curious) at signup. Stored. Used to set default lens in expanded view.
 - Subscribe flow — email-only. No password. Magic link if needed for unsubscribe management.
-- Content engine — admin tool to compose an issue: paste raw input from N source newsletters, get drafted summaries with de-duplication and lens drafts, edit, publish.
+- Content engine — admin tool to compose a daily signal: paste raw newsletter text from the last 24h, Claude API drafts the pick with de-duplication and lens, edit and publish for 9 AM IST delivery.
 
 ### Deferred (post-MVP, not now)
 
 - Paid tier and any payment infrastructure.
-- Multi-category filtering on archive (Models / Tools / Business / Policy). Add when archive has 8+ issues, not before.
-- User accounts beyond email subscription. No saved favourites, no reading history, no comments.
+- Multi-category filtering. Add when there are 30+ past signals, not before.
+- User accounts beyond email subscription. No saved favourites, no reading history.
 - Mobile app, browser extension, RSS feed, podcast version.
 - Personalised feeds beyond the single role-lens choice.
-- Search across archive.
-- Native sharing tools (custom share images, copy-as-LinkedIn-post). Browser-native sharing is enough for v1.
+- Full-text search across the subscriber archive.
+- Native sharing tools. Browser-native sharing is enough for v1.
+- Weekly round-up email ("Best of the week" digest). Only if subscribers ask for it post-launch.
 
 ---
 
@@ -68,21 +72,39 @@ MVP exists to test one hypothesis: do people prefer one weekly de-duplicated dig
 
 ### 4.1 Homepage (/)
 
-Single goal: get the visitor to either read this week's issue or subscribe. Nothing else.
+Single goal: get the visitor to read today's signal or subscribe. Nothing else.
 
-- Top: brand wordmark, one-line tagline ('One clean digest of the week's AI news. No overlap. Read in 5 minutes.'), single email subscribe input. No nav menu.
-- Below fold: the full latest issue, rendered inline. The homepage IS the issue page for the current week. No separate landing/marketing page.
-- Issue header: issue number, date, one-paragraph editor's note in editorial voice.
-- 5–7 story cards stacked vertically with the two-layer pattern.
-- Footer: archive link, about link (single page), subscribe again, social link (LinkedIn primarily).
+**State A — Active signal (within 24h window):**
+- Top: wordmark `AI SIGNAL`, one-line tagline in mono ("One story. Every day. Gone in 24 hours."), no nav menu.
+- Expiry badge: `TODAY'S SIGNAL — EXPIRES IN 14H 32M` — mono font, text-secondary, live countdown on client.
+- The full signal card rendered inline — one story, StoryCard with both collapsed and expanded states.
+- Below the story: subscribe input ("Get tomorrow's signal in your inbox.") — one line, no modal.
+- Footer: about link, LinkedIn link only. No archive link (archive is subscriber-only).
 
-### 4.2 Issue page (/issue/[slug])
+**State B — Between signals (after 24h expiry, before next drop):**
+- Wordmark + tagline.
+- `SIGNAL EXPIRED` in mono with the date it dropped.
+- The expired signal's headline in italic serif — not linkable for non-subscribers.
+- CTA: "Tomorrow's signal drops at 9 AM IST. Subscribe to be first."
+- Single email input.
 
-Same layout as homepage, but for a specific past issue. Pure read view. Subscribe CTA at top and bottom only.
+**State C — No signal yet (first run, nothing published):**
+- Wordmark + tagline.
+- `FIRST SIGNAL COMING SOON.` in mono. Subscribe input.
+
+### 4.2 Signal page (/signal/[slug])
+
+Direct link to a specific signal. Within 24h: same layout as homepage State A.
+
+After 24h, non-subscriber: signal headline and drop date visible. Card is gated. Copy: "This signal has expired. Subscribers can access the full archive." Subscribe CTA. No tricks — the gate is honest.
+
+After 24h, subscriber (Phase 5+): full story visible, reading date in header, no countdown.
 
 ### 4.3 Archive (/archive)
 
-Reverse chronological list of past issues. Each entry: issue number, date, editor's note (one line), 'read issue' link. No filtering in MVP.
+Subscriber-only. Non-subscribers see signal headlines (date + headline, no body) and a subscribe gate.
+
+Subscribers: reverse-chronological list. Each entry: date, headline, 1-line summary, "read signal" link. No filtering in MVP.
 
 ### 4.4 About (/about)
 
@@ -90,29 +112,29 @@ One short page. Why this exists, who's behind it, how the curation works (build 
 
 ### 4.5 Story card (the core component)
 
-Used 5–7 times per issue. The single piece of UI that has to be exceptional.
+Used once per daily signal. The single piece of UI that has to be exceptional.
 
 **Collapsed (default)**
 
-- Category tag (Models / Tools / Business / Policy / Research) + story number + read-time estimate.
+- Category tag (Models / Tools / Business / Policy / Research) + read-time estimate. No story number (there's only one per day).
 - Headline — serif, 22px, line-height 1.3, max two lines.
 - Summary — sans, 15px, 2–3 sentences max.
-- 'Why it matters' block — soft-grey background, one short paragraph. This is the actual differentiator. It must be the strongest sentence on the card.
+- 'Why it matters' block — 3px accent left-border, one short paragraph. This is the differentiator. It must be the strongest sentence on the card.
 - 'Go deeper' button — outlined, secondary.
 
 **Expanded (after click)**
 
 - Three-lens grid: For PMs, For Founders, For Builders. Two-line take per lens. The user's chosen role (from onboarding) is highlighted; the others are still visible.
-- 'The deeper read' — one paragraph of original synthesis. Connects this story to the broader thread of the week. This is where Suraj's voice lives.
+- 'The deeper read' — one paragraph of original synthesis. This is where Suraj's voice lives.
 - Sources — labelled, 2–4 source links. Original publishers and source newsletters credited.
 
-### 4.6 Email digest
+### 4.6 Email — daily signal
 
-Email is the index, not the experience. Constraints are real: no JavaScript, inconsistent CSS support, low render fidelity across clients.
+One email per day. Sent at 9 AM IST. The full signal (not just an index).
 
 - Plain semantic HTML. No expand/collapse. Top-layer only.
-- Each story: headline + summary + why-it-matters + 'Read the full version' link to the web issue page (with anchor to that story).
-- Subject line formula: `AI Signal #N — [editor's one-phrase headline of the week]`
+- Story: headline + summary + why-it-matters + role lenses (all three, visually separated) + 'Read on web' link.
+- Subject line formula: `AI Signal — [one-phrase headline]`
 - Editor's note opens, one-pick long read closes.
 - Mobile-first layout. ~600px max width. System fonts, no web fonts.
 
@@ -173,11 +195,11 @@ Avoid: Substack defaults, gradient-heavy SaaS aesthetics, neon dark mode, AI-sta
 
 Don't over-instrument. Three numbers matter for the first 90 days.
 
-- **Weekly active readers (WARs):** unique email opens + unique web issue visits per week. Target: 200 by issue 8, 1000 by issue 20.
-- **Expand rate:** % of web readers who click 'Go deeper' on at least one story. Target: above 25%. If it's below 15% by issue 4, the deep layer isn't earning its cost — cut it.
-- **Forwarding / sharing rate:** % of issues that get one share or forward (LinkedIn post, Twitter share, email forward via a tracked link). Target: above 5%. This is the leading indicator of organic growth — without it, distribution is dead.
+- **Daily active readers (DARs):** unique email opens + unique web signal visits per day. Target: 50 by day 14, 200 by day 30. If below 20 by day 14, distribution is the problem — fix before building more.
+- **Subscribe-on-expire rate:** % of non-subscribers who hit the 24h expiry gate and subscribe. Target: above 10%. This validates the FOMO mechanic. If it's below 5% by week 3, the gate is either too aggressive or not compelling — adjust.
+- **Day-over-day return rate:** % of yesterday's web readers who come back today. Target: above 40%. This is the habit metric. Without it, the FOMO model is a leaky bucket — you're acquiring readers but not building a ritual.
 
-Vanity metrics to ignore: subscriber count, time on page, email click-through. They look good but don't drive product decisions.
+Vanity metrics to ignore: subscriber count in isolation, time on page, email click-through. They look good but don't drive product decisions.
 
 ---
 
@@ -246,29 +268,32 @@ No reading history, no favourites, no analytics tables. Email opens and click tr
 
 ---
 
-## 9. Editorial workflow — what Saturday looks like
+## 9. Editorial workflow — what every morning looks like
 
-This is the loop that has to be sustainable. If it takes more than 3 hours weekly, the newsletter dies in two months.
+This is the loop that has to be sustainable. If it takes more than 30 minutes per day, the signal dies in two months. It should not.
 
-- **Step 1. Friday:** passively read inboxes. Source newsletters: TLDR AI, The Rundown, Ben's Bites, The Neuron, Stratechery, The Pragmatic Engineer, Latent Space. Star anything notable. No writing yet.
-- **Step 2. Saturday morning (90 min):** paste starred content into the admin compose tool. Tool drafts de-duplicated summaries and clusters overlapping coverage. Pick top 5–7 by judgement, not by tool score.
-- **Step 3. Saturday afternoon (60 min):** edit drafts. Tighten 'why it matters' on each — that's the differentiator, deserves the most attention. Write the editor's note. Pick the long read.
-- **Step 4. Saturday evening (15 min):** preview both web and email versions, fix anything off, schedule for Sunday 9am IST publish.
-- **Step 5. Sunday 9am:** auto-publish. Auto-send. Take the day off.
+- **Step 1. Every morning (~15 min):** skim the last 24h of source newsletters: TLDR AI, The Rundown, Ben's Bites, The Neuron, Stratechery, The Pragmatic Engineer, Latent Space. The question is one question: *what is the single most important thing that happened in AI in the last 24 hours?* If nothing, post nothing — a missed day is better than a weak signal.
+- **Step 2. Compose (~10 min):** paste the relevant source content into the admin tool. Claude API drafts the summary, why-it-matters, and three role lenses. Review the pick one more time — if it doesn't feel important, stop and pick something else or skip.
+- **Step 3. Edit (~5 min):** tighten the 'why it matters' — that's the differentiator. Edit the lenses. Add sources.
+- **Step 4. Schedule:** set for 9 AM IST publish (or publish immediately if already past 9 AM). Done.
+
+Total target: under 30 minutes. The admin tool's Claude integration does the drafting; Suraj does the judgment and editing only.
 
 ---
 
 ## 10. Honest risks
 
-**Risk 1 — Solo content burden.** Weekly cadence with original synthesis is hard to sustain. Mitigation: the admin compose tool reduces this from 'writing 7 stories' to 'editing 7 drafts'. If that's still too much by issue 6, drop to bi-weekly without shame.
+**Risk 1 — Daily cadence is harder than it looks.** 365 picks per year, each one needs to clear the bar. Mitigation: the bar is intentionally stated as "skip the day if nothing is worth it." A missed day is honest. A weak signal destroys the brand. The admin tool + Claude API keeps editorial time to under 30 minutes.
 
-**Risk 2 — 'Aggregating curators' could be perceived as parasitic by source newsletters.** Mitigation: always credit sources prominently. Link back. Reach out personally to the writers we lean on most. Reframe as 'we make their work more valuable to readers who couldn't subscribe to all of them.'
+**Risk 2 — FOMO mechanic feels gimmicky.** If the expiry counter reads as manufactured scarcity, readers will distrust the curation. Mitigation: the gate must be earned. Every signal must genuinely clear a quality threshold. If Suraj would share this on LinkedIn unprompted, it's worth publishing. If not, skip the day.
 
-**Risk 3 — The 'expand for depth' interaction may have low engagement.** Mitigation: collapsed top-layer is designed to be complete on its own. If expand rate is below 15% by issue 4, the deep layer is dead weight — kill it and lean fully into the top layer.
+**Risk 3 — 'Aggregating curators' could be perceived as parasitic by source newsletters.** Mitigation: always credit sources prominently. Link back. Reach out personally to the writers we lean on most. Reframe as 'we make their work more valuable to readers who couldn't subscribe to all of them.'
 
-**Risk 4 — Distribution.** Building is the easy part. Getting the first 200 readers is the hard part. Mitigation: every issue must be designed to be shared on LinkedIn — not as an afterthought, as the primary distribution mechanism. Suraj's existing network is the wedge.
+**Risk 4 — The 'expand for depth' interaction may have low engagement.** Mitigation: collapsed top-layer is designed to be complete on its own. If expand rate is below 15% by day 30, the deep layer is dead weight — kill it.
 
-**Risk 5 — Naming collision with AlphaSignal.** Tolerable for now, revisit at issue 10 with reader signal. If confusion shows up in feedback, rename.
+**Risk 5 — Distribution.** Building is the easy part. Getting the first 50 daily readers is the hard part. Mitigation: every signal must be designed to be shared on LinkedIn. The format is ideal for it — one sharp take, one story, specific enough to quote. Suraj's existing network is the distribution wedge.
+
+**Risk 6 — Naming collision with AlphaSignal.** Tolerable for now, revisit at signal 30 with reader signal. If confusion shows up in feedback, rename.
 
 ---
 

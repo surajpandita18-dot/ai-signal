@@ -6,60 +6,36 @@ const config: Config = {
   theme: {
     extend: {
       colors: {
-        background: {
-          DEFAULT: '#FAFAF7',
-          dark: '#0F0F0E',
+        signal: {
+          DEFAULT: '#2B5BFF',
+          deep: '#1F44CC',
+          soft: '#E5EBFF',
+          faint: '#F4F6FF',
         },
-        'text-primary': {
-          DEFAULT: '#1A1A1A',
-          dark: '#F0EDE6',
+        warm: {
+          DEFAULT: '#FF6B35',
+          soft: '#FFE8DD',
         },
-        'text-secondary': {
-          DEFAULT: '#4A4A4A',
-          dark: '#9A9590',
+        green: {
+          DEFAULT: '#1B7A3E',
+          soft: '#E0F2E5',
         },
-        accent: {
-          DEFAULT: '#8B7355',
-          dark: '#C4A882',
-        },
-        border: {
-          DEFAULT: '#E8E4DC',
-          dark: '#2A2A28',
-        },
-        'card-bg': {
-          DEFAULT: '#F3F0E8',
-          dark: '#1A1A18',
+        ink: '#2B4A8F',
+        beige: {
+          DEFAULT: '#F0E9D8',
+          deep: '#E5DCC4',
         },
       },
       fontFamily: {
-        serif: ['var(--font-source-serif)', 'Georgia', 'serif'],
+        display: ['var(--font-display)', 'Georgia', 'serif'],
+        fraunces: ['var(--font-fraunces)', 'Georgia', 'serif'],
         sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
-        mono: ['ui-monospace', 'monospace'],
-      },
-      fontSize: {
-        xs: ['11px', { lineHeight: '1.4', letterSpacing: '0.06em' }],
-        sm: ['13px', { lineHeight: '1.5' }],
-        base: ['15px', { lineHeight: '1.6' }],
-        lg: ['17px', { lineHeight: '1.5' }],
-        xl: ['20px', { lineHeight: '1.4' }],
-        '2xl': ['24px', { lineHeight: '1.35' }],
-        '3xl': ['30px', { lineHeight: '1.2' }],
-        headline: ['22px', { lineHeight: '1.3' }],
-      },
-      spacing: {
-        // All multiples of 8px — enforce rhythm
+        mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
+        hand: ['var(--font-hand)', 'cursive'],
       },
       maxWidth: {
         content: '720px',
-      },
-      borderRadius: {
-        card: '4px',
-      },
-      transitionDuration: {
-        DEFAULT: '150ms',
-      },
-      transitionTimingFunction: {
-        DEFAULT: 'ease',
+        wire: '1280px',
       },
     },
   },

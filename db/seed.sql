@@ -1,80 +1,58 @@
 -- AI Signal v2 — seed data for local development
--- One published issue (#1) with 3 stories + one test subscriber
+-- One daily signal (#1) with 1 story + one test subscriber
+--
+-- NOTE: published_at is set to a fixed past date.
+-- For the homepage to show State A (active, countdown visible),
+-- update published_at to within the last 24h:
+--   update issues set published_at = now() where issue_number = 1;
 
--- Issue #1
+-- Signal #1
 insert into issues (issue_number, slug, published_at, editor_note, long_read, status)
 values (
   1,
   '2026-04-27',
   '2026-04-27 03:30:00+00',
-  'This week the AI labs made three moves that, taken together, suggest the game is changing faster than most product roadmaps can absorb. GPT-5 mini repriced the API market overnight. Cursor crossed 1M paying users while everyone was distracted by the model race. And the quiet capital flowing into inference infrastructure tells you where the real bets are being placed. Read on.',
-  '{"title": "The Model Is Not The Product", "url": "https://stratechery.com", "source": "Stratechery", "why_pick": "Ben Thompson''s clearest articulation yet of why foundation model commoditisation accelerates application layer value — required reading if you are deciding where to build."}',
+  null,
+  null,
   'published'
 );
 
--- Stories for issue #1
-with issue as (select id from issues where slug = '2026-04-27')
+-- 1 story for signal #1
+with issue as (select id from issues where issue_number = 1)
 
 insert into stories (
   issue_id, position, category,
   headline, summary, why_it_matters,
-  deeper_read, lens_pm, lens_founder, lens_builder,
-  sources, read_minutes
+  deeper_read, pull_quote, lens_pm, lens_founder, lens_builder,
+  sources, read_minutes,
+  stats, action_items, counter_view_headline, counter_view
 )
 select
   issue.id,
-  s.position,
-  s.category,
-  s.headline,
-  s.summary,
-  s.why_it_matters,
-  s.deeper_read,
-  s.lens_pm,
-  s.lens_founder,
-  s.lens_builder,
-  s.sources::jsonb,
-  s.read_minutes
-from issue, (values
-  (
-    1,
-    'models',
-    'GPT-5 Mini cuts API costs by 10x — and reprices every AI product budget overnight',
-    'OpenAI shipped GPT-5 Mini this week at $0.04 per million input tokens, a 10x reduction from GPT-4o Mini. Early benchmarks show it outperforms GPT-4 Turbo on most reasoning tasks while costing a fraction of the price. The Rundown, TLDR AI, and Ben''s Bites all led with this — the coverage was near-identical across sources, which is exactly the problem AI Signal exists to solve.',
-    'Every AI product budget you set in Q1 is now wrong. The cost reduction is large enough to unlock use cases that were previously uneconomical — high-volume summarisation, always-on assistants, per-user personalisation at scale. The question is not whether to reprice; it is which of your deferred features just became viable.',
-    'The timing matters: GPT-5 Mini arrives two weeks after Anthropic cut Haiku pricing. This is not coincidence — it is the opening of a price war at the commodity tier. The labs are competing on cost while differentiating on capability at the top. For builders, that means the infrastructure layer is getting cheaper faster than anyone modelled. The winners in 12 months will be the teams that moved their cost assumptions down in April.',
-    'Reprice your API cost assumptions in your roadmap this week. If you had features gated behind cost constraints, open them for re-evaluation. The 10x reduction is not a one-time event — model a scenario where costs drop another 5x by Q4.',
-    'If you are a founder, your burn rate on AI API calls just got a tailwind. More importantly, your competitors'' moat on "we can afford to do this at scale" just narrowed. Differentiate on the product layer, not the cost layer.',
-    'Pin the new pricing. Run your current production token counts against it. Identify the three highest-volume API calls in your system and model what you could do if they cost 10x less. That is your next sprint backlog.',
-    '[{"label": "OpenAI pricing page", "url": "https://openai.com/pricing"}, {"label": "The Rundown AI", "url": "https://therundown.ai"}]',
-    3
-  ),
-  (
-    2,
-    'tools',
-    'Cursor hits 1 million paying users — and the dev tool market will never look the same',
-    'Cursor announced 1 million paid subscribers this week, generating an estimated $100M+ ARR from a product that did not exist two years ago. The Pragmatic Engineer and Latent Space both covered this, with notably different takes: TPE focused on the product lessons; Latent Space on what it means for the IDE incumbents (JetBrains, VS Code).',
-    'This is the fastest B2D (business-to-developer) product to $100M ARR in history, beating even GitHub Copilot''s early growth. Developers are paying $20/month out of pocket — not expensing it, paying themselves — for a tool that makes them meaningfully faster. When developers pay personally, the product has crossed from "nice to have" to "I cannot work without this."',
-    'Cursor''s growth is not really about Cursor. It is evidence that the developer''s relationship with their tools is being renegotiated. The IDE was stable for 20 years. It is now the most contested surface in software. What Cursor proved: AI-native beats AI-bolted-on, every time. Copilot was a feature added to VS Code. Cursor built the editor around the model. The lesson transfers beyond dev tools — whatever surface you own, ask whether you are adding AI to it or rebuilding it around AI.',
-    'Your engineering team is already using Cursor, with or without your knowledge. The question for PMs is what that means for velocity estimates, PR review norms, and code quality standards. Get ahead of the policy conversation before it becomes a compliance problem.',
-    'If you are not a dev tools company, the threat is indirect but real: your competitors are shipping faster. The productivity delta between a Cursor-native team and a non-Cursor team is estimated at 1.3–1.8x. That is a compounding advantage.',
-    'If you are not already using Cursor daily, start this week. Not for productivity — for literacy. You need to understand what your PM and founder are about to ask you to do faster.',
-    '[{"label": "The Pragmatic Engineer on Cursor", "url": "https://newsletter.pragmaticengineer.com"}, {"label": "Latent Space", "url": "https://www.latent.space"}]',
-    4
-  ),
-  (
-    3,
-    'business',
-    'The quiet $8B flowing into inference infrastructure tells you where 2027 will be won',
-    'Three separate funding rounds closed this week for inference infrastructure companies — Groq ($2.8B), Cerebras ($3.1B pre-IPO), and a stealth compute startup ($2.2B). None of the major AI newsletters covered all three together. Ben''s Bites mentioned Groq. The Neuron had the Cerebras item. The stealth round came from a regulatory filing.',
-    'The labs are winning the model race. The infrastructure layer — fast inference, low latency, specialised chips — is where the next capital concentration is happening. This is not a coincidence: as models commoditise, the competitive advantage shifts to whoever can serve them cheapest and fastest at scale.',
-    'Read these three rounds together and a picture emerges: the inference layer is being treated as critical infrastructure, not just a cost centre. The companies placing these bets are not doing it to run models for $0.04 per million tokens. They are doing it because they believe latency and throughput will be the differentiator when the models themselves are interchangeable. For anyone building on top of foundation models, this means the cost curve will continue to compress — and the reliability and speed of your AI calls will matter more, not less.',
-    'When evaluating AI infrastructure vendors, start asking about their inference stack, not just their model offering. The provider that can guarantee 200ms p95 latency at your volume in 18 months is worth more than the one with the best benchmark score today.',
-    'The inference infrastructure race is a capital efficiency story. If you are raising, the investors writing these checks understand that AI is infrastructure now. Frame your AI spend as infrastructure investment, not R&D cost.',
-    'Benchmark your current inference provider on latency under load. If you have not done a load test with realistic concurrent users, do it this week. The results will tell you whether you have an infrastructure problem you have not noticed yet.',
-    '[{"label": "Ben''s Bites", "url": "https://bensbites.beehiiv.com"}, {"label": "The Neuron", "url": "https://www.theneurondaily.com"}]',
-    4
-  )
-) as s(position, category, headline, summary, why_it_matters, deeper_read, lens_pm, lens_founder, lens_builder, sources, read_minutes);
+  1,
+  'models',
+  'GPT-5 Mini cuts API costs by 10× — and every Q1 AI budget is now wrong',
+  '**$0.04 per million input tokens.** OpenAI shipped GPT-5 Mini and it outperforms GPT-4 Turbo on most reasoning tasks — at a tenth of the price. **Most product teams haven''t rerun their unit economics yet.**',
+  E'Every cost assumption in your Q1 roadmap is now wrong. The **10× price drop** unlocks use cases that were previously uneconomical — high-volume summarisation, always-on assistants, per-user personalisation at scale. The question is not whether to reprice; it is which deferred features just became viable today.\n\nGPT-5 Mini lands two weeks after Anthropic cut Haiku pricing. This is not coincidence — it is the opening of a **price war at the commodity tier**. The labs are competing on cost while differentiating on capability at the top. The infrastructure layer is getting cheaper faster than anyone modelled.\n\nThe winners in 12 months will not be the teams with the best models. They will be the teams that moved their cost assumptions down in April and shipped the features their competitors said were too expensive.',
+  'The default model is no longer a question of capability — it is a question of who notices the price change first.',
+  'We''re reopening our kill list. **Features we marked "not viable" on cost** need a second look — one of them is almost certainly profitable now. Run your production token counts against the new pricing today, not at the next sprint planning.',
+  '**Features gated by token cost** — high-frequency agents, per-user personalisation, always-on summarisation — move up the roadmap immediately. Reprice them before your competitors do.',
+  'Your burn rate on AI API calls just got a meaningful tailwind. More importantly, **your competitor''s "we can''t afford to do this at scale" moat just narrowed significantly**. Differentiation is shifting from cost to product quality — that is a race you can win.',
+  '[{"label": "OpenAI pricing page", "url": "https://openai.com/pricing"}, {"label": "The Rundown AI", "url": "https://therundown.ai"}]'::jsonb,
+  3,
+  '[
+    {"label": "Input cost", "value": "$0.04", "delta": "↓ 10×", "detail": "Per million tokens, down from GPT-4o Mini"},
+    {"label": "Reasoning", "value": "+12%", "delta": "↑", "detail": "Outperforms GPT-4 Turbo on MMLU-Pro"},
+    {"label": "Release", "value": "Silent", "delta": null, "detail": "Pricing page only — no blog post, no PR"}
+  ]'::jsonb,
+  '[
+    "**Re-run your unit economics** on every feature gated by token cost this week — there is likely one you killed last quarter that is now profitable.",
+    "**Audit your model router** today: if you are still defaulting to GPT-4-class models for tasks Mini can handle, you are burning runway on every request.",
+    "**Talk to your finance team** before they read about this in a board deck — own the narrative, this is a tailwind not a fire drill."
+  ]'::jsonb,
+  'What if you don''t switch?',
+  'Mini is cheaper, but cheaper is not always better for premium products. If your users pay for the smartest answer — legal, medical, code review — the 12% benchmark gain may hide regressions on edge cases. Run your own evals before swapping defaults. **Chasing cost without regression-testing quality is how products lose users silently.** One bad answer in a legal workflow costs more than a year of token savings.'
+from issue;
 
 -- Test subscriber
 insert into subscribers (email, role, status)
