@@ -4,7 +4,7 @@ import { inngest } from '@/inngest/client'
 
 // Thin trigger only — heavy pipeline lives in src/inngest/generate-signal.ts
 // Each Inngest step is a separate Vercel invocation; 10s is plenty for DB + send.
-export const maxDuration = 10
+export const maxDuration = 30
 
 export async function GET(request: Request) {
   const authHeader = request.headers.get('authorization')
