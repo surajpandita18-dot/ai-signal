@@ -47,7 +47,14 @@ Score the article on 6 dimensions (1-5 each):
 5. SPECIFICITY (1=generic, 5=named categories/numbers throughout)
 6. CLAIM_DEFENSE (1=signal claim unsupported, 5=signal claim defended by why_it_matters and addressed by counter_view)
 
-If ALL scores >= 4: PASS — return signal unchanged.
+If ALL scores >= 4 AND no validation violations were listed in the user message:
+PASS — return signal unchanged.
+
+If validation violations WERE listed in the user message:
+You MUST output a corrected article that addresses every violation, EVEN if all
+holistic scores are >= 4. Validation violations are non-negotiable structural
+requirements. Score-based PASS does NOT override violation fixes.
+
 If ANY score < 4: REVISE — return corrected signal.
 
 You may rewrite any field, add bold, empty stats, tighten prose, re-thread sections.

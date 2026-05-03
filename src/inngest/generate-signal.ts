@@ -619,7 +619,12 @@ export const generateDailySignal = inngest.createFunction(
         }
       }
 
-      console.log(`[inngest] step "cascade" complete: path ${path}`)
+      const finalValidation = validateArticle(current as unknown as ValidatorSignal)
+      if (!finalValidation.pass) {
+        console.warn('[cascade] PERSISTENT VIOLATIONS after ' + path + ':',
+          finalValidation.violations.map(v => `${v.field}:${v.type}`).join(', '))
+      }
+      console.log(`[inngest] step "cascade" complete: path=${path}, violations_remaining=${finalValidation.violations.length}`)
       return { finalSignal: current, qualityPath: path }
     })) as { finalSignal: GeneratedSignal; qualityPath: string }
 
