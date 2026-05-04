@@ -35,130 +35,44 @@ export function SubscribeSection() {
   }
 
   return (
-    <section id="subscribe" style={{ maxWidth: 1280, margin: '100px auto 0', padding: '0 32px' }}>
-      <div
-        style={{
-          background: 'var(--text)',
-          color: 'var(--bg)',
-          borderRadius: 24,
-          padding: '64px 56px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 64,
-          alignItems: 'center',
-          position: 'relative',
-          overflow: 'hidden',
-        }}
-      >
-        {/* Glow blob behind */}
-        <div
-          style={{
-            position: 'absolute',
-            top: '-50%',
-            right: '-20%',
-            width: 500,
-            height: 500,
-            background: 'radial-gradient(circle, var(--signal) 0%, transparent 60%)',
-            opacity: 0.4,
-            pointerEvents: 'none',
-          }}
-        />
-
+    <section id="subscribe" className="subscribe">
+      <div className="subscribe-card">
         {/* Left: headline */}
-        <h2
-          className="reveal"
-          style={{
-            fontFamily: 'var(--ff-display)',
-            fontSize: 'clamp(32px,4vw,48px)',
-            lineHeight: 1.05,
-            fontWeight: 400,
-            letterSpacing: '-0.025em',
-            position: 'relative',
-            zIndex: 1,
-          }}
-        >
+        <h2 className="sub-headline anim d1">
           Get tomorrow&apos;s signal{' '}
-          <em style={{ fontStyle: 'italic', color: 'var(--signal-soft)' }}>before</em> it expires.
+          <em className="ital">before</em> it expires.
         </h2>
 
         {/* Right: form */}
-        <div className="reveal" style={{ position: 'relative', zIndex: 1 }}>
-          <div
-            style={{
-              fontFamily: 'var(--ff-mono)',
-              fontSize: 11,
-              fontWeight: 600,
-              textTransform: 'uppercase',
-              letterSpacing: '0.16em',
-              color: 'var(--signal-soft)',
-              marginBottom: 18,
-            }}
-          >
-            — The dispatch
-          </div>
-          <p
-            style={{
-              fontSize: 16,
-              lineHeight: 1.6,
-              color: 'rgba(255,255,255,0.75)',
-              marginBottom: 28,
-            }}
-          >
+        <div className="sub-side anim d2">
+          <div className="sub-eyebrow">— The dispatch</div>
+          <p className="sub-text">
             One transmission, every morning at 06:14 IST. Built for builders, engineers, and
             product people who&apos;d rather ship than scroll.
           </p>
 
           {status === 'success' ? (
-            <p
-              style={{
-                color: 'var(--signal-soft)',
-                fontFamily: 'var(--ff-mono)',
-                fontSize: 14,
-              }}
-            >
+            <p className="sub-success">
               ✓ You&apos;re in. See you tomorrow at 06:14 IST.
             </p>
           ) : (
-            <form
-              onSubmit={handleSubmit}
-              style={{
-                display: 'flex',
-                gap: 8,
-                background: 'rgba(255,255,255,0.08)',
-                border: '1px solid rgba(255,255,255,0.15)',
-                borderRadius: 12,
-                padding: 6,
-              }}
-            >
+            <form onSubmit={handleSubmit} className="sub-form">
+              <label htmlFor="subscribe-email" className="visually-hidden">
+                Email address
+              </label>
               <input
+                id="subscribe-email"
                 type="email"
                 value={email}
                 onChange={e => setEmail(e.target.value)}
                 placeholder="your@email.com"
-                style={{
-                  flex: 1,
-                  background: 'transparent',
-                  border: 'none',
-                  outline: 'none',
-                  padding: '12px 14px',
-                  color: 'white',
-                  fontSize: 15,
-                  fontFamily: 'var(--ff-body)',
-                }}
+                className="sub-input"
+                required
               />
               <button
                 type="submit"
                 disabled={status === 'loading'}
-                style={{
-                  background: 'var(--signal)',
-                  color: 'white',
-                  border: 'none',
-                  padding: '12px 24px',
-                  borderRadius: 8,
-                  fontSize: 14,
-                  fontWeight: 600,
-                  cursor: 'pointer',
-                }}
+                className="sub-btn"
               >
                 {status === 'loading' ? '…' : 'Subscribe'}
               </button>
@@ -166,22 +80,10 @@ export function SubscribeSection() {
           )}
 
           {status === 'error' && (
-            <p style={{ marginTop: 8, fontSize: 12, color: 'rgba(255,100,100,0.9)' }}>
-              {errorMsg}
-            </p>
+            <p className="sub-error">{errorMsg}</p>
           )}
 
-          <div
-            style={{
-              marginTop: 18,
-              fontSize: 13,
-              color: 'rgba(255,255,255,0.55)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 14,
-              flexWrap: 'wrap',
-            }}
-          >
+          <div className="sub-trust">
             <span>✓ Free forever</span>
             <span>✓ No spam</span>
             <span>✓ Unsubscribe anytime</span>

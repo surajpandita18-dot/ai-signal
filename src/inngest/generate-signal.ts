@@ -623,6 +623,20 @@ export const generateDailySignal = inngest.createFunction(
       return { finalSignal: current, qualityPath: path }
     })) as { finalSignal: GeneratedSignal; qualityPath: string }
 
+    // ── Final validation gate — halts publish if story still invalid after cascade
+    const finalValidation = validateArticle(finalSignal as unknown as ValidatorSignal)
+    if (!finalValidation.pass) {
+      console.error('[inngest] FINAL GATE FAIL after 3-layer cascade:',
+        finalValidation.violations.map(v => `${v.field}:${v.type}`).join(', '))
+      const gateSupabase = createAdminSupabaseClient()
+      await gateSupabase.from('issues').update({ status: 'failed' }).eq('id', issueId)
+      throw new Error(
+        `Final validation gate: story invalid after Layer 3. Violations: ${
+          finalValidation.violations.map(v => `${v.field}:${v.type} — ${v.message}`).join(' | ')
+        }`
+      )
+    }
+
     // ── Step 4: Publish — update issue + insert story ──────────────────────────
     await step.run('publish', async () => {
       const supabase = createAdminSupabaseClient()
