@@ -60,25 +60,9 @@ export function SiteNav({ signalNumber }: SiteNavProps) {
       <nav className="nav-meta anim d1" aria-label="Site navigation">
         <Link href="/archive" className="nav-cta-link">Archive</Link>
 
-        <button
-          type="button"
-          className="nav-soon"
-          data-soon="Live with your subscription"
-          aria-disabled="true"
-          disabled
-        >
-          About<span className="nav-soon-dot" aria-hidden="true" />
-        </button>
+        <Link href="/about" className="nav-meta-link">About</Link>
 
-        <button
-          type="button"
-          className="nav-soon"
-          data-soon="Live with your subscription"
-          aria-disabled="true"
-          disabled
-        >
-          Sponsor<span className="nav-soon-dot" aria-hidden="true" />
-        </button>
+        <Link href="/sponsor" className="nav-meta-link">Sponsor</Link>
 
         <a href="#subscribe" className="nav-cta-link">Subscribe →</a>
       </nav>

@@ -523,22 +523,21 @@ export function StoryArticle({
         <ShareButtons />
       </div>
 
-      {/* ── Section 4: Signal block — para 1 of why_it_matters ── */}
-      {(() => {
-        const para1html = (story.why_it_matters.split(/\n\n+/).map(p => p.trim()).filter(Boolean)[0] ?? '')
-          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-        return (
-          <div className="signal-block">
-            <div className="signal-eyebrow">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="signal-eyebrow-icon">
-                <path d="M5 3l14 9-14 9V3z"/>
-              </svg>
-              The Signal
-            </div>
-            <div className="signal-body" dangerouslySetInnerHTML={{ __html: para1html }} />
+      {/* ── Section 4: Signal block — renders story.summary (v10 source field) ── */}
+      {story.summary && (
+        <div className="signal-block" id="sec-signal">
+          <div className="signal-eyebrow">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="signal-eyebrow-icon">
+              <path d="M5 3l14 9-14 9V3z"/>
+            </svg>
+            The Signal
           </div>
-        )
-      })()}
+          <div
+            className="signal-body"
+            dangerouslySetInnerHTML={{ __html: story.summary.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
+          />
+        </div>
+      )}
 
       {/* ── Section 5: By the Numbers ── */}
       {(() => {
@@ -575,15 +574,17 @@ export function StoryArticle({
         )
       })()}
 
-      {/* ── Section 6: Block 2 — Why it matters (paras 2+3 + pull quote) ── */}
+      {/* ── Section 6: Block 2 — Why it matters ── */}
+      {/* v10 sandwich: why_it_matters[0] → pull_quote → why_it_matters[1] */}
       {(() => {
         const paras = story.why_it_matters.split(/\n\n+/).map(p => p.trim()).filter(Boolean)
-        const para2 = paras[1]
-        const para3 = paras[2]
-        if (!para2 && !story.pull_quote) return null
+        const para1 = paras[0] ?? null
+        const para2 = paras[1] ?? null
+        const quote = story.pull_quote ?? story.editorial_take ?? null
+        if (!para1 && !quote) return null
         const toHtml = (s: string) => s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         return (
-          <div className="block">
+          <div className="block" id="sec-context">
             <div className="block-header">
               <span className="block-num">2</span>
               <div>
@@ -592,14 +593,14 @@ export function StoryArticle({
             </div>
             <h3 className="block-title">The bigger picture.</h3>
             <div className="context-body">
+              {para1 && (
+                <p dangerouslySetInnerHTML={{ __html: toHtml(para1) }} />
+              )}
+              {quote && (
+                <EditorialQuote quote={quote} />
+              )}
               {para2 && (
                 <p dangerouslySetInnerHTML={{ __html: toHtml(para2) }} />
-              )}
-              {story.pull_quote && (
-                <EditorialQuote quote={story.pull_quote} />
-              )}
-              {para3 && (
-                <p dangerouslySetInnerHTML={{ __html: toHtml(para3) }} />
               )}
             </div>
           </div>
