@@ -811,6 +811,9 @@ html, body {
   transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
   position: relative;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  min-height: 200px;
 }
 .stat-card::before {
   content: '';
@@ -834,26 +837,34 @@ html, body {
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-mute);
-  margin-bottom: 8px;
+  margin-bottom: 14px;
   font-weight: 500;
+  flex-shrink: 0;
 }
 .stat-card-value {
   font-family: var(--ff-display);
-  font-size: 30px;
-  line-height: 1;
-  margin-bottom: 6px;
+  font-size: 26px;
+  line-height: 1.2;
+  margin-bottom: 14px;
   display: flex;
   align-items: baseline;
   gap: 8px;
   flex-wrap: wrap;
+  flex-grow: 1;
+  overflow-wrap: break-word;
+  word-wrap: break-word;
+  hyphens: auto;
+  letter-spacing: -0.02em;
+  font-weight: 400;
 }
 .stat-card-delta,
 .stat-card-value .delta-down {
   font-style: italic;
   color: var(--green);
   font-size: 16px;
+  font-weight: 400;
 }
-.stat-card-detail { font-size: 13px; color: var(--text-mute); line-height: 1.4; }
+.stat-card-detail { font-size: 13px; color: var(--text-mute); line-height: 1.4; flex-shrink: 0; margin-top: auto; }
 
 @media (max-width: 880px) {
   .story-wrap { padding: 32px 24px; }
