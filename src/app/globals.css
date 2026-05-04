@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+/* OLD V10 tokens — replaced by V11 */
+/*
 :root {
   --bg: #FAFAF7;
   --bg-card: #FFFFFF;
@@ -43,10 +45,6 @@
   --ff-body: var(--font-inter), system-ui, sans-serif;
   --ff-mono: var(--font-mono), ui-monospace, monospace;
   --ff-hand: var(--font-hand), cursive;
-
-  /* Anchor scroll offset — keeps sticky nav clear */
-
-  /* Backwards compatibility aliases for existing components */
   --text-primary: var(--text);
   --text-secondary: var(--text-mute);
   --text-muted: var(--text-faint);
@@ -57,11 +55,32 @@
   --accent-glow: var(--signal-faint);
   --accent-border: var(--signal-soft);
 }
+*/
 
+:root {
+  --bg: #FAFAF7; --bg-card: #FFFFFF; --bg-soft: #F4F2EC; --bg-warm: #FBF8F1;
+  --hero-bg: #F6F7FB; --hero-tint: #EEF1FF;
+  --text: #14110F; --text-soft: #2D2A26; --text-mute: #5C574F; --text-faint: #8A847A;
+  --signal: #2B5BFF; --signal-deep: #1F44CC; --signal-soft: #E5EBFF; --signal-faint: #F4F6FF;
+  --warm: #FF6B35; --warm-soft: #FFE8DD;
+  --green: #1B7A3E; --green-soft: #E0F2E5;
+  --water: #0EA5E9; --water-soft: #E0F2FE;
+  --money: #16A34A; --money-soft: #DCFCE7;
+  --rocket: #EA580C; --rocket-soft: #FFEDD5;
+  --energy: #CA8A04; --energy-soft: #FEF9C3;
+  --paper: #FFF8DC; --paper-deep: #FAEFC1; --paper-line: #E8D88A; --ink-pen: #2B4A8F;
+  --beige: #F0E9D8; --beige-deep: #E5DCC4;
+  --border: #E5E2D9; --border-mid: #D6D2C5; --border-strong: #B8B3A3;
+  --ff-display: var(--font-display), 'Instrument Serif', serif;
+  --ff-body: var(--font-inter), 'Inter', -apple-system, sans-serif;
+  --ff-mono: var(--font-mono), 'JetBrains Mono', ui-monospace, monospace;
+  --ff-hand: var(--font-hand), 'Caveat', cursive;
+}
+
+/* OLD V10 base styles — replaced by V11 */
+/*
 #archive, #subscribe, #standup-card, #sec-top { scroll-margin-top: 80px; }
-
 * { box-sizing: border-box; margin: 0; padding: 0; }
-
 html, body {
   background: var(--bg);
   color: var(--text);
@@ -72,6 +91,13 @@ html, body {
   overflow-x: hidden;
   letter-spacing: -0.005em;
 }
+*/
+
+/* Anchored sections — keep clear of sticky nav when jumped to */
+#archive, #subscribe, #sec-top, #standupCard { scroll-margin-top: 80px; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+html, body { background: var(--bg); color: var(--text); font-family: var(--ff-body); font-weight: 400; line-height: 1.7; font-size: 18px; -webkit-font-smoothing: antialiased; overflow-x: hidden; letter-spacing: -0.005em; }
 
 @keyframes livePulse {
   0%, 100% { opacity: 1; transform: scale(1); }
