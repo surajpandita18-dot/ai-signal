@@ -168,9 +168,51 @@ export default async function HomePage() {
     )
   }
 
-  const broadcastPhrases = Array.isArray(story.broadcast_phrases) && story.broadcast_phrases.length === 3
-    ? story.broadcast_phrases
+  const broadcastPhrases = Array.isArray(story.broadcast_phrases) && story.broadcast_phrases.length > 0
+    ? story.broadcast_phrases as string[]
     : undefined
+
+  // Fetch upcoming teasers from draft issues
+  const { data: upcomingData } = await supabase
+    .from('issues')
+    .select('id, published_at, teaser, status')
+    .eq('status', 'draft')
+    .not('teaser', 'is', null)
+    .order('created_at', { ascending: true })
+    .limit(3)
+
+  const teasers = (upcomingData ?? []).map((iss, i) => ({
+    dayOfWeek: iss.published_at
+      ? new Date(iss.published_at).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()
+      : (['MON', 'TUE', 'WED'][i] ?? 'TBD'),
+    date: iss.published_at
+      ? new Date(iss.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
+      : 'Soon',
+    text: iss.teaser ?? '',
+    status: i === 0 ? 'lead' as const : 'sealed' as const,
+  }))
+
+  // Fetch past published issues for the archive section (exclude the current issue)
+  const { data: archiveData } = await supabase
+    .from('issues')
+    .select('id, issue_number, slug, published_at, teaser, stories(headline, category)')
+    .eq('status', 'published')
+    .neq('id', issue.id)
+    .order('published_at', { ascending: false })
+    .limit(3)
+
+  const archiveIssues = (archiveData ?? []).map((iss) => {
+    const storyRow = Array.isArray(iss.stories) ? iss.stories[0] : null
+    return {
+      id: iss.id,
+      issue_number: iss.issue_number,
+      slug: iss.slug,
+      published_at: iss.published_at,
+      teaser: iss.teaser,
+      headline: (storyRow as { headline?: string } | null)?.headline ?? null,
+      category: (storyRow as { category?: string } | null)?.category ?? null,
+    }
+  })
 
   return (
     <HomePageClient
@@ -178,6 +220,8 @@ export default async function HomePage() {
       publishedAt={issue.published_at ?? new Date().toISOString()}
       signalNumber={issue.issue_number}
       broadcastPhrases={broadcastPhrases}
+      teasers={teasers}
+      archiveIssues={archiveIssues}
     />
   )
 }

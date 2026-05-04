@@ -22,6 +22,7 @@ export interface Database {
           created_at: string
           pick_reason: string | null
           rejected_alternatives: Array<{ title: string; reason: string }> | null
+          teaser: string | null
         }
         Insert: {
           id?: string
@@ -34,6 +35,7 @@ export interface Database {
           created_at?: string
           pick_reason?: string | null
           rejected_alternatives?: Array<{ title: string; reason: string }> | null
+          teaser?: string | null
         }
         Update: {
           id?: string
@@ -46,6 +48,7 @@ export interface Database {
           created_at?: string
           pick_reason?: string | null
           rejected_alternatives?: Array<{ title: string; reason: string }> | null
+          teaser?: string | null
         }
       }
       stories: {

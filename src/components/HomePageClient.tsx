@@ -5,37 +5,33 @@ import type { Database } from '../../db/types/database'
 import { SiteNav } from '@/components/SiteNav'
 import { HeroZone } from '@/components/HeroZone'
 import { HeroBridge } from '@/components/HeroBridge'
-import { NotebookFacts } from '@/components/NotebookFacts'
+import { NotebookStrip } from '@/components/NotebookStrip'
 import { StoryArticle } from '@/components/StoryArticle'
 import { ReadingSidebar } from '@/components/ReadingSidebar'
-import { ArchiveSection } from '@/components/ArchiveSection'
+import { ArchiveSection, type ArchiveIssue } from '@/components/ArchiveSection'
 import { SubscribeSection } from '@/components/SubscribeSection'
 import { SiteFooter } from '@/components/SiteFooter'
 
 type StoryType = Database['public']['Tables']['stories']['Row']
+
+interface UpcomingTeaser {
+  dayOfWeek: string
+  date: string
+  text: string
+  status: 'lead' | 'sealed'
+}
 
 interface HomePageClientProps {
   story: StoryType
   publishedAt: string
   signalNumber: number
   broadcastPhrases?: string[]
+  teasers?: UpcomingTeaser[]
+  archiveIssues?: ArchiveIssue[]
 }
 
 function ProgressBar({ pct }: { pct: number }) {
-  return (
-    <div
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        height: 3,
-        zIndex: 100,
-        width: `${pct}%`,
-        background: 'linear-gradient(90deg, #2B5BFF, #FF6B35)',
-        transition: 'width 0.1s linear',
-      }}
-    />
-  )
+  return <div className="reading-progress-bar" style={{ width: `${pct}%` }} />
 }
 
 function RevealObserver() {
@@ -71,42 +67,31 @@ function RevealObserver() {
   return null
 }
 
-export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhrases }: HomePageClientProps) {
+export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhrases, teasers, archiveIssues }: HomePageClientProps) {
   const [readPct, setReadPct] = useState(0)
+
+  // Derive issueDate and publishTime from publishedAt ISO string
+  const publishedDate = publishedAt ? new Date(publishedAt) : new Date()
+  const issueDate = publishedDate.toLocaleDateString('en-GB', {
+    day: 'numeric',
+    month: 'long',
+    year: 'numeric',
+  })
+  const publishTime = '06:14 IST'
 
   return (
     <>
-      <style>{`
-        .main-article-grid {
-          max-width: 1280px;
-          margin: 60px auto 0;
-          padding: 0 32px;
-          display: grid;
-          grid-template-columns: 1fr 280px;
-          gap: 56px;
-          align-items: start;
-        }
-        @media (max-width: 1080px) {
-          .main-article-grid {
-            grid-template-columns: 1fr;
-            gap: 32px;
-          }
-          .main-article-grid aside {
-            position: static !important;
-          }
-        }
-        @media (max-width: 640px) {
-          .main-article-grid {
-            padding: 0 16px;
-            margin-top: 40px;
-          }
-        }
-      `}</style>
       <ProgressBar pct={readPct} />
       <SiteNav signalNumber={signalNumber} />
-      <HeroZone broadcastPhrases={broadcastPhrases} />
+      <HeroZone
+        issueDate={issueDate}
+        publishTime={publishTime}
+        readMinutes={story.read_minutes}
+        phrases={broadcastPhrases ?? []}
+        category={story.category ?? undefined}
+      />
       <HeroBridge />
-      <NotebookFacts />
+      <NotebookStrip />
 
       {/* Main grid: article + sidebar */}
       <div className="main-article-grid">
@@ -116,10 +101,10 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
           signalNumber={signalNumber}
           onReadPctChange={setReadPct}
         />
-        <ReadingSidebar readPct={readPct} signalNumber={signalNumber} />
+        <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} />
       </div>
 
-      <ArchiveSection />
+      <ArchiveSection issues={archiveIssues} />
       <SubscribeSection />
       <SiteFooter />
 

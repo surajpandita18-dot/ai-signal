@@ -1,36 +1,47 @@
-# IMPLEMENTATION_LOG — FORGE Fix Pass + Distribution Layer
+# Implementation Log — Block 6 + D1 Design Refresh (v10)
 
-**Date:** 2026-04-27
-**Task:** LENS/VEIL/ORACLE fixes + ExpiryBadge redesign + OG meta + robots/sitemap
+**Date:** 2026-05-03
+**Task:** Block 6 + D1: NotebookFacts verify, ArchiveSection teaser wire
 
 ---
 
-## Files created
+## TASK 1 — NotebookFacts.tsx
 
-- `src/lib/utils.ts` — shared `isWithin24h(publishedAt)` utility
-- `src/app/about/page.tsx` — static About page: server component, max-720px centred, Back link, three content paragraphs
-- `src/app/api/subscribe/route.ts` — POST subscribe API: email validation, Supabase insert, 23505 duplicate handled as success
-- `src/app/robots.ts` — Next.js robots route, allows all, points to sitemap
-- `src/app/sitemap.ts` — dynamic sitemap: homepage + about + all published signal pages
+**Finding:** Component verified clean. No `.reveal` class present anywhere in the file. Rotation interval is exactly 5500ms. The 4 category filter tabs (All / Nums / Trivia / Industry) map correctly to `FACTS` entries with cats `numbers`, `trivia`, `industry`. `changeFact()` sequences correctly: sets `animState('scribbling')` → after 380ms sets `factIndex` + `animState('writing')` → after 900ms sets `animState('idle')`.
 
-## Files edited
+**Result:** No changes needed — NotebookFacts verified, no edits made.
 
-- `src/components/ExpiryBadge.tsx` — Removed 48px clock entirely. Now single text line: `SIGNAL #N — EXPIRES IN 14H 32M`. Updates every 60s (not 1s). SSR-safe init with empty string. No visual clock.
-- `src/components/SignalExpired.tsx` — `tomorrowCategory` optional prop; tomorrow copy `font-sans 15px` sentence case; category tease line if provided
-- `src/components/SignalGate.tsx` — Gate copy updated: "This signal is in the archive. Subscribe to read past signals."
-- `src/components/SubscribeInput.tsx` — Real `fetch('/api/subscribe')`; email regex; success: "You're subscribed. First signal at 9 AM IST."; loading/error states; focus rings via state
-- `src/components/SiteShell.tsx` — `/about` → Next.js `<Link>`; LinkedIn stays `<a target="_blank">`
-- `src/app/page.tsx` — Static `export const metadata` for homepage OG; `isWithin24h` imported from utils; State D (`no_signal`) added; null guards on `published_at`
-- `src/app/signal/[number]/page.tsx` — `generateMetadata` expanded with full OG + Twitter cards per signal; `isWithin24h` from utils; `no_signal` handling; null guards
-- `db/types/database.ts` — `'no_signal'` added to issues status union (Row/Insert/Update)
+---
 
-## Key decisions
+## TASK 2 — ArchiveSection.tsx: teaser field wired
 
-- ExpiryBadge: text-only matches PRD spec and design principles ("no animation, no pulsing"). 60s interval is sufficient for HH MM display.
-- OG meta: signal page uses story headline + summary as og:title/description — makes LinkedIn shares self-contained and compelling.
-- Sitemap: signal pages get `changeFrequency: 'never'` — once published, content doesn't change.
-- robots.ts + sitemap.ts use Next.js 14 built-in Metadata API (no new dependencies).
+### Data flow traced
 
-## Typecheck
+- `page.tsx` previously had no query for past published issues — the archive section used hardcoded static data.
+- `HomePageClient.tsx` called `<ArchiveSection />` with zero props.
+- `database.ts` issues Row has `teaser: string | null` (confirmed) but no `category` column — category lives on `stories`.
 
-`npx tsc --noEmit` — 0 errors
+### Files changed
+
+**`src/components/ArchiveSection.tsx`**
+- Removed hardcoded `ARCHIVE_ITEMS` constant, `daysAgo()` helper, `CATEGORY_PILL` map, and `getCatPill()` (issues table has no `category` column — kept schema-accurate, no phantom fields)
+- Added exported `ArchiveIssue` interface: `id`, `issue_number`, `slug`, `published_at`, `teaser` (all match `database.ts` issues Row exactly)
+- Added `ArchiveSectionProps { issues?: ArchiveIssue[] }` — optional so component renders empty gracefully
+- Added `formatPublishedAt()` helper for date display
+- Cards now iterate live `issues` data; headline shows `Signal #N`, date from `published_at`
+- Teaser rendered conditionally below headline: `{issue.teaser && (<p style={{fontFamily: 'var(--ff-body)', fontSize: 13.5, ...}}>)}`
+- `className="reveal"` on `<article>` preserved for scroll-reveal observer in HomePageClient
+
+**`src/components/HomePageClient.tsx`**
+- Line 11: added `type ArchiveIssue` to import from ArchiveSection
+- Line 30: added `archiveIssues?: ArchiveIssue[]` to `HomePageClientProps`
+- Line 82: destructured `archiveIssues` from props
+- Line 150: `<ArchiveSection issues={archiveIssues} />`
+
+**`src/app/page.tsx`**
+- Added archive fetch after teasers query: `.select('id, issue_number, slug, published_at, teaser')`, status=published, excludes current issue, ordered desc by published_at, limit 3
+- Maps to `ArchiveIssue[]` shape and passes as `archiveIssues` prop to `<HomePageClient />`
+
+### Typecheck
+
+NOTE: Bash execution requires user permission. All types are derived from `database.ts` canonical source — no `any`, no unsafe casts. `ArchiveIssue` fields all present in `Database['public']['Tables']['issues']['Row']`. Run `npx tsc --noEmit` from `/Users/surajpandita/ai_signal/` to confirm. Expected: 0 errors.

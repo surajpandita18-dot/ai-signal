@@ -10,7 +10,8 @@ export interface Violation {
   type: 'BOLD_COUNT' | 'FORBIDDEN_STAT' | 'PRESS_RELEASE' |
         'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL' |
         'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB' | 'STATS_COUNT_WRONG' |
-        'WHY_IT_MATTERS_SINGLE_PARA' | 'EDITORIAL_TAKE_MISSING' | 'BROADCAST_PHRASES_INVALID'
+        'WHY_IT_MATTERS_SINGLE_PARA' | 'EDITORIAL_TAKE_MISSING' | 'BROADCAST_PHRASES_INVALID' |
+        'PULL_QUOTE_REQUIRED'
   message: string
   current?: string
 }
@@ -230,6 +231,16 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
         current: signal.why_it_matters.slice(0, 200),
       })
     }
+  }
+
+  // Check 11b: pull_quote must be present and at least 5 words
+  if (!signal.pull_quote || wordCount(signal.pull_quote) < 5) {
+    violations.push({
+      field: 'pull_quote',
+      type: 'PULL_QUOTE_REQUIRED',
+      message: `pull_quote is missing or too short. Write one killer editorial sentence under 25 words — opinion not recap. It renders between the two why_it_matters paragraphs in the design.`,
+      current: signal.pull_quote ?? '',
+    })
   }
 
   // Check 12: editorial_take must be present and at least 5 words
