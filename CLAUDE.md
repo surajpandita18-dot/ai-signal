@@ -164,3 +164,40 @@ adjacent but tempting, surface it as a separate question instead of doing it.
 - Diffs are small and every line maps to the ask.
 - Suraj rarely says "kyun ye add kiya?".
 - Clarifying questions come *before* code, not after a broken commit.
+
+## Auto-Discipline Protocol
+
+Before responding to ANY coding request from Suraj, run this mental check:
+
+**Step 1 — Is this a trivial task?**
+Trivial = typo fix, copy change, color tweak, single-line edit, throwaway script.
+If trivial → respond directly.
+
+**Step 2 — If NOT trivial, automatically invoke karpathy-discipline.**
+
+The following ALWAYS auto-invoke karpathy-discipline, no exceptions:
+- Anything touching multiple files
+- New components, pages, or features
+- Database schema or migration changes
+- API route changes
+- Authentication, freemium gating, or paywall logic
+- Cache logic or invalidation
+- Background jobs (Inngest)
+- Data fetching or server components
+- Anything Suraj describes vaguely ("fix this", "improve this", "make it better")
+- Anything where Suraj could not realistically debug the result himself
+
+**Shortcut invocations — these always trigger karpathy-discipline:**
+- "kd"
+- "plan first"
+- "discipline mode" / "discipline on"
+- "use karpathy"
+
+**Forgiveness rule:** If Suraj forgets to ask for discipline mode and the task
+clearly qualifies under the rules above, invoke karpathy-discipline anyway and
+briefly tell him "auto-invoked discipline mode because [reason]". Do not ask
+permission. Permission-seeking adds friction Suraj is paying you to remove.
+
+**Failure mode to avoid:** Writing code first, then realizing mid-task that a
+plan was needed. If that happens, STOP, show what you have, and restart with a
+proper plan. Do not silently continue.

@@ -1,6 +1,6 @@
 ---
 name: karpathy-discipline
-description: Use when implementing non-trivial features, refactors, or any change touching freemium gating, the 48-hour cache, Claude API routes, or the homepage zone logic. Forces the work to be broken into small verifiable steps before any code is written. Skip for one-line tweaks, copy changes, or throwaway experiments.
+description: Use this skill BEFORE writing or editing code for any task that touches more than one file, adds a new feature, refactors existing code, modifies database schema or migrations, changes API routes, edits authentication or freemium gating, modifies caching logic, alters background jobs (Inngest), changes data fetching, or implements anything where Suraj might struggle to debug it later. Also use when Suraj writes vague asks like "fix this", "make it better", "add X feature", "build this", or anything ambiguous. Also triggers on shortcuts "kd", "plan first", "discipline mode", "discipline on". Skip ONLY for: typo fixes, single-line copy changes, color/spacing tweaks, console.log additions, throwaway scripts. When in doubt, use this skill — false positives are cheap, false negatives let Claude over-engineer silently.
 ---
 
 # Karpathy Discipline Mode (Goal-Driven Execution)
