@@ -8,7 +8,8 @@ import { EditorialQuote } from './EditorialQuote'
 import { InsightsStrip } from './InsightsStrip'
 import { CascadeTimeline } from './CascadeTimeline'
 import { StakeholdersGrid } from './StakeholdersGrid'
-import type { InsightCell, CascadeData, StakeholdersData } from '@/lib/types/extended-data'
+import { PrimaryChart } from './PrimaryChart'
+import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
 
@@ -369,9 +370,10 @@ export function StoryArticle({
 
   // Extract V11 extended_data fields with null-safety
   const rawExt = story.extended_data as Record<string, unknown> | null
-  const insightCells    = Array.isArray(rawExt?.insights_strip) ? (rawExt!.insights_strip as InsightCell[]) : null
-  const cascadeData     = (rawExt?.cascade && typeof rawExt.cascade === 'object') ? (rawExt.cascade as CascadeData) : null
+  const insightCells     = Array.isArray(rawExt?.insights_strip) ? (rawExt!.insights_strip as InsightCell[]) : null
+  const cascadeData      = (rawExt?.cascade && typeof rawExt.cascade === 'object') ? (rawExt.cascade as CascadeData) : null
   const stakeholdersData = (rawExt?.stakeholders && typeof rawExt.stakeholders === 'object') ? (rawExt.stakeholders as StakeholdersData) : null
+  const primaryChart     = (rawExt?.primary_chart && typeof rawExt.primary_chart === 'object') ? (rawExt.primary_chart as ComparisonChart) : null
   const RING_TOTAL_MS = 24 * 60 * 60 * 1000
   const RING_CIRCUMFERENCE = 31.416 // 2π × r=5
   const articleRef = useRef<HTMLElement>(null)
@@ -584,6 +586,7 @@ export function StoryArticle({
                 </div>
               ))}
             </div>
+            {primaryChart && <PrimaryChart chart={primaryChart} />}
           </div>
         )
       })()}
