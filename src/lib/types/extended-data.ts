@@ -120,8 +120,10 @@ export type TomorrowDraft = {
   status_detail?: string;
 };
 
-/** Extended data for V11 universal article structure — 11 sections stored as jsonb */
+/** Extended data for V11 universal article structure — 13 sections stored as jsonb */
 export type ExtendedData = {
+  numbers_headline?: string;  // AI-generated block title for "By the numbers"
+  matters_headline?: string;  // AI-generated block title for "Why it matters"
   tickers: TickerData[];
   preview_cards: PreviewCard[];
   did_you_know_facts: DidYouKnowFact[];

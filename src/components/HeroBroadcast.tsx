@@ -64,8 +64,10 @@ export function HeroBroadcast({ phrases, category }: HeroBroadcastProps) {
   // Rich HTML pool — used only for showFull render, matches v10 innerHTML switch
   function buildRichPhrases(): string[] {
     const typeA = phrases.length > 0 ? phrases : FALLBACK_PHRASES
+    const numRe = /(\$[\d,.]+[A-Za-z%]*|\b\d+(?:\.\d+)?[%×xMBKk]?\b)/g
+    const richTypeA = typeA.map(p => p.replace(numRe, '<span class="num">$1</span>'))
     return [
-      ...typeA,
+      ...richTypeA,
       `While you’ve been here, AI has burned <span class="num">${liveTokensRef.current.toLocaleString()}</span> tokens for free.`,
       `<span class="num">${liveWaterRef.current.toFixed(1)}</span> gallons of water cooled GPUs in the time it took to reach this line.`,
       `<span class="num">${liveStartupsRef.current}</span> new AI startups registered globally since you opened this page.`,

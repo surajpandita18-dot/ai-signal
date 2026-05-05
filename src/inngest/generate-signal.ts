@@ -473,15 +473,17 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   "pick_reason": "1-2 sentence editorial reason this story was chosen over the others. Name the specific criterion.",
   "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}],
   "extended_data": {
+    "numbers_headline": "5–9 words. What the numbers PRICE or VALIDATE (FUNDING), what ASSUMPTION just broke (PRODUCT-PRICING), what CONSTRAINT landed (POLICY), what BASELINE cracked (RESEARCH). Specific to this signal. Do not use phrases like 'the data shifted overnight' or 'by the numbers'.",
+    "matters_headline": "5–9 words. What the reader needs to rethink — their budget, roadmap, assumption, or decision. Specific to this signal. Do not use phrases like 'the bigger picture' or 'why it matters'.",
     "tickers": [
       { "label": "Input cost", "value": "$0.04", "change": { "direction": "down", "text": "↓ 10×" }, "detail": "Per million tokens vs GPT-4 Turbo" },
       { "label": "Reasoning delta", "value": "+12%", "change": { "direction": "up", "text": "↑ vs GPT-4 Turbo" }, "detail": "MMLU-Pro benchmark" },
       { "label": "Window to act", "value": "48h", "change": { "direction": "flat", "text": "before competitors move" }, "detail": "Historical lag after OpenAI pricing changes" }
     ],
     "preview_cards": [
-      { "index": "01", "label": "By the numbers", "value": "One sharp number-led sentence drawn from the story stats" },
-      { "index": "02", "label": "Why it matters", "value": "One sentence — what shifted and why it matters right now" },
-      { "index": "03", "label": "The move", "value": "One sentence — the single action the reader should take today" }
+      { "index": "01", "label": "By the numbers", "value": "≤8 words. One sharp fact with the key number. E.g. '$950M — largest enterprise AI agent round of 2026'" },
+      { "index": "02", "label": "Why it matters", "value": "≤8 words. What assumption or dynamic just broke. E.g. 'Enterprise agent layer just went winner-take-most.'" },
+      { "index": "03", "label": "The move", "value": "≤8 words. One concrete action, time-boxed. E.g. 'Map your product overlap with Sierra this week.'" }
     ],
     "did_you_know_facts": [
       { "category": "numbers", "text": "Example: The average mid-stage AI startup routes 40M tokens/day. At GPT-4 Turbo pricing that is $1,600/day. At GPT-5 Mini it is $160." },
@@ -505,7 +507,7 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
     "cascade": {
       "direction": "forecast",
       "title": "What happens next",
-      "subtitle": "4-step ripple from today's development",
+      "subtitle": "The cascade has a shape. Read it before competitors do.",
       "steps": [
         { "marker": 1, "week": "This week", "event": "First-order effect — what the most responsive teams do immediately" },
         { "marker": 2, "week": "2–3 weeks", "event": "Second-order — what competitive pressure forces" },
@@ -516,7 +518,7 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
     "stakeholders": {
       "frame": "win_lose",
       "title": "Winners and losers",
-      "subtitle": "First-order impact",
+      "subtitle": "8–16 words. Name who is IN the 2x2 grid by naming the tension specific to this signal. Do not use 'stakeholders' as a word. Also do not use 'first-order impact' or 'winners and losers' as the subtitle phrasing.",
       "cells": [
         { "type": "win", "who": "Specific winner group", "why": "Why they benefit — concrete" },
         { "type": "win", "who": "Second winner group", "why": "Why they benefit — concrete" },
@@ -563,6 +565,126 @@ EXTENDED_DATA FALLBACK RULES — apply when story data is thin or the default st
 - tickers: if the story has fewer than 3 concrete numbers, derive a relevant third from context (market size, time window, comparison figure). Always produce exactly 3 tickers.
 - did_you_know_facts: always produce 8–12 facts. If the story is thin, draw from the broader ecosystem — pricing history, adjacent market data, audience-relevant benchmarks for Indian tech PMs/founders/engineers.
 - reactions: write as realistic industry archetypes. Do NOT use real names. Include at least one skeptic among the 3 voices.
+
+## DYNAMIC HEADLINE FIELDS
+
+Generate numbers_headline, matters_headline, and stakeholders.subtitle per signal.
+These are NOT templates and NOT type-level lookups. Examples below illustrate
+the rhetorical MOVE (the kind of implication being drawn), not the wording.
+Do not reuse phrases like "moat compounded", "sets the floor", or "budget is now
+wrong" across signals — those are illustrative of the move, not a vocabulary to
+draw from. Each headline should sound like it was written for this one signal alone.
+
+### Rhetorical lens by article_type
+
+FUNDING
+  Lens: What does this raise PRICE or VALIDATE?
+  The raise is evidence. What does it prove about a market, a thesis,
+  a category, or a competitive position?
+
+PRODUCT-PRICING
+  Lens: What ASSUMPTION, BUDGET, or DECISION just broke?
+  The product/price change is a forcing function. What does the reader
+  need to revisit because of it?
+
+POLICY-REGULATION
+  Lens: What DEADLINE, CONSTRAINT, or SHIFT just landed?
+  The policy is operational. What is now true, or now required, that
+  wasn't true yesterday?
+
+RESEARCH-BENCHMARK
+  Lens: What BASELINE, APPROACH, or ASSUMPTION just cracked?
+  The research moved a number. What was someone relying on that no
+  longer holds?
+
+### numbers_headline examples (do not copy):
+
+FUNDING:
+  "Sierra's $950M sets the enterprise agent floor."
+  "Cohere's enterprise pivot got a $2.1B rationale."
+  "The seed round is now $50M in foundation models."
+  "Enterprise AI agents aren't a pilot anymore."
+
+PRODUCT-PRICING:
+  "GPT-4o Mini just made your current model choice wrong."
+  "Gemini's $0.00 tier eliminated your free-tier moat."
+  "At these prices, your model router is now legacy."
+
+POLICY-REGULATION:
+  "The EU AI Act has a compliance date. It's six months out."
+  "The FTC audit rule adds 30 days to every enterprise deal."
+
+RESEARCH-BENCHMARK:
+  "The MMLU ceiling isn't the ceiling anymore."
+  "Your eval suite was measuring the wrong dimension."
+
+### matters_headline examples (do not copy):
+
+FUNDING:
+  "Your CX roadmap's AI timeline just compressed."
+  "The 'wait for the market to mature' window just closed."
+  "Every enterprise AI procurement process has a reference price now."
+
+PRODUCT-PRICING:
+  "Every Q1 budget is now wrong."
+  "Procurement just lost its leverage at the negotiating table."
+  "Your model vendor lock-in just got cheaper to break."
+
+POLICY-REGULATION:
+  "Legal teams now own product roadmap."
+  "Your enterprise deals just got 60 days slower."
+  "The compliance clock starts Friday. Your backlog doesn't reflect that yet."
+
+RESEARCH-BENCHMARK:
+  "The model you chose last quarter may not be the right one now."
+  "RLHF assumptions in your eval setup need revisiting."
+
+### stakeholders.subtitle examples (do not copy):
+
+8–16 words. Name who is IN the 2x2 grid by naming the tension or
+relationship specific to this signal.
+
+FUNDING:
+  "The enterprises writing CX checks, and the incumbents about to feel it."
+  "Series A founders in the same space, and VCs recalibrating their bets."
+  "Open-source maintainers who lost a funding argument, and enterprises who gained a vendor."
+
+PRODUCT-PRICING:
+  "The vendors who held pricing power, and the buyers now holding it back."
+  "Teams who budgeted this quarter on last quarter's model prices."
+
+POLICY-REGULATION:
+  "The legal teams who don't know yet, and the compliance vendors who do."
+  "Enterprise AI buyers under review, and the startups that just became compliant infrastructure."
+
+RESEARCH-BENCHMARK:
+  "The labs that set the baseline, and the teams that built on it."
+  "Applied ML engineers whose eval suites just got updated specs."
+
+### POLICY-REGULATION — Bet/Burn fallback
+
+If article_type is POLICY-REGULATION and neither bet/burn card maps cleanly
+to a product or market bet (the framing feels forced — it is a compliance
+constraint, not a choice someone is making), set that card's content to:
+
+  [FORCED — review before publish: this signal is a constraint, not a bet.
+  Bet/Burn framing may not apply. Editor should consider Adapter/Sufferer
+  variant in Phase 2.]
+
+Do not rationalize a fit. The flag is the correct output.
+
+### Self-check before finalizing headline fields
+
+For each of the three generated fields, ask:
+  "Would a different signal in the same article_type produce a noticeably
+   different version of this headline?"
+
+If the answer is no — if the headline could appear unchanged on any FUNDING
+signal or any PRODUCT signal — identify which specific fact from this signal
+makes the implication unique and rewrite once around that fact.
+
+If the rewrite still fails the test, output the headline with [GENERIC — review]
+prepended and continue. Do not loop further.
 
 ${SELF_CHECK_QUESTIONS}`
 

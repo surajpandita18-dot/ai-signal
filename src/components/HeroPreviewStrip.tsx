@@ -14,7 +14,7 @@ export function HeroPreviewStrip({ cards }: HeroPreviewStripProps) {
           <div className="hero-preview-icon">{card.index}</div>
           <div className="hero-preview-text">
             <span className="preview-label">{card.label}</span>
-            {card.value}
+            <span className="preview-value">{card.value}</span>
           </div>
         </div>
       ))}

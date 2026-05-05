@@ -380,6 +380,8 @@ export function StoryArticle({
 
   // Extract V11 extended_data fields with null-safety
   const rawExt = story.extended_data as Record<string, unknown> | null
+  const numbersHeadline  = typeof rawExt?.numbers_headline === 'string' ? rawExt.numbers_headline : null
+  const mattersHeadline  = typeof rawExt?.matters_headline === 'string' ? rawExt.matters_headline : null
   const insightCells     = Array.isArray(rawExt?.insights_strip) ? (rawExt!.insights_strip as InsightCell[]) : null
   const cascadeData      = (rawExt?.cascade && typeof rawExt.cascade === 'object') ? (rawExt.cascade as CascadeData) : null
   const stakeholdersData = (rawExt?.stakeholders && typeof rawExt.stakeholders === 'object') ? (rawExt.stakeholders as StakeholdersData) : null
@@ -580,8 +582,8 @@ export function StoryArticle({
                 <div className="block-eyebrow">By the numbers</div>
               </div>
             </div>
-            <h3 className="block-title">The data shifted overnight.</h3>
-            <div className="stat-cards">
+            {numbersHeadline && <h3 className="block-title">{numbersHeadline}</h3>}
+              <div className="stat-cards">
               {statCards.map((stat, i) => (
                 <div key={i} className="stat-card">
                   <div className="stat-card-label">{stat.label}</div>
@@ -626,7 +628,7 @@ export function StoryArticle({
                 <div className="block-eyebrow">Why it matters</div>
               </div>
             </div>
-            <h3 className="block-title">The bigger picture.</h3>
+            {mattersHeadline && <h3 className="block-title">{mattersHeadline}</h3>}
             <div className="context-body">
               {para1 && (
                 <p dangerouslySetInnerHTML={{ __html: toHtml(para1) }} />
@@ -652,11 +654,6 @@ export function StoryArticle({
         <StakeholdersGrid data={stakeholdersData} />
       )}
 
-      {/* ── V11: Decision Aid — after stakeholders, before builder ── */}
-      {decisionAidData && decisionAidData.rows?.length > 0 && (
-        <DecisionAid aid={decisionAidData} />
-      )}
-
       {/* ── Section 7: Role lenses — BuilderCard (editorial_take + bet/burn) ── */}
       {story.editorial_take && (
         <BuilderCard
@@ -664,6 +661,11 @@ export function StoryArticle({
           betQuote={story.lenses?.bet ?? story.lens_builder ?? story.lens_pm ?? ''}
           burnQuote={story.lenses?.burn ?? story.lens_founder ?? story.lens_pm ?? ''}
         />
+      )}
+
+      {/* ── V11: Decision Aid — after builder, before The Move ── */}
+      {decisionAidData && decisionAidData.rows?.length > 0 && (
+        <DecisionAid aid={decisionAidData} />
       )}
 
       {/* ── Section 8: The Move — action checklist ── */}
