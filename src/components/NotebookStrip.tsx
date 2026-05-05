@@ -1,10 +1,12 @@
 import { NotebookFacts } from './NotebookFacts'
+import type { DidYouKnowFact } from '@/lib/types/extended-data'
 
 interface NotebookStripProps {
   className?: string
+  facts?: DidYouKnowFact[]
 }
 
-export function NotebookStrip({ className }: NotebookStripProps) {
+export function NotebookStrip({ className, facts }: NotebookStripProps) {
   return (
     <section className={`notebook-strip reveal${className ? ` ${className}` : ''}`}>
       <div className="notebook">
@@ -19,7 +21,7 @@ export function NotebookStrip({ className }: NotebookStripProps) {
             <path d="M3 6 L7 10 M7 6 L3 10" strokeWidth="1" />
           </svg>
         </div>
-        <NotebookFacts />
+        <NotebookFacts facts={facts} />
       </div>
     </section>
   )

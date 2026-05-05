@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import type { Database } from '../../db/types/database'
+import type { DidYouKnowFact, TomorrowDraft } from '@/lib/types/extended-data'
 import { SiteNav } from '@/components/SiteNav'
 import { HeroZone } from '@/components/HeroZone'
 import { HeroBridge } from '@/components/HeroBridge'
@@ -70,6 +71,15 @@ function RevealObserver() {
 export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhrases, teasers, archiveIssues }: HomePageClientProps) {
   const [readPct, setReadPct] = useState(0)
 
+  // Extract extended_data fields with null-safety — DB jsonb is untyped at runtime
+  const rawExt = story.extended_data as Record<string, unknown> | null
+  const didYouKnowFacts = Array.isArray(rawExt?.did_you_know_facts)
+    ? (rawExt!.did_you_know_facts as DidYouKnowFact[])
+    : undefined
+  const tomorrowDrafts = Array.isArray(rawExt?.tomorrow_drafts)
+    ? (rawExt!.tomorrow_drafts as TomorrowDraft[])
+    : undefined
+
   // Derive issueDate and publishTime from publishedAt ISO string
   const publishedDate = publishedAt ? new Date(publishedAt) : new Date()
   const issueDate = publishedDate.toLocaleDateString('en-GB', {
@@ -91,7 +101,7 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
         category={story.category ?? undefined}
       />
       <HeroBridge />
-      <NotebookStrip />
+      <NotebookStrip facts={didYouKnowFacts} />
 
       {/* Main grid: article + sidebar */}
       <div className="main-article-grid">
@@ -101,7 +111,7 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
           signalNumber={signalNumber}
           onReadPctChange={setReadPct}
         />
-        <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} />
+        <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} drafts={tomorrowDrafts} />
       </div>
 
       <ArchiveSection issues={archiveIssues} />
