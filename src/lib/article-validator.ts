@@ -1,4 +1,5 @@
 import type { GeneratedSignal } from './journalist-agent'
+import type { ExtendedData } from './types/extended-data'
 
 export interface ValidationResult {
   pass: boolean
@@ -11,7 +12,7 @@ export interface Violation {
         'GENERIC_INDIA' | 'LENGTH_BLOAT' | 'COUNTER_LABEL' |
         'ACTION_ITEM_TOO_LONG' | 'ACTION_ITEM_NO_BOLD_VERB' | 'STATS_COUNT_WRONG' |
         'WHY_IT_MATTERS_SINGLE_PARA' | 'EDITORIAL_TAKE_MISSING' | 'BROADCAST_PHRASES_INVALID' |
-        'PULL_QUOTE_REQUIRED'
+        'PULL_QUOTE_REQUIRED' | 'EXTENDED_DATA_SHAPE_INVALID'
   message: string
   current?: string
 }
@@ -59,7 +60,7 @@ const MIN_BOLD_PER_FIELD: Record<string, number> = {
 
 const MAX_WORD_COUNT: Record<string, number> = {
   summary: 45,
-  why_it_matters: 60,
+  why_it_matters: 80,
   lens_pm: 60,
   lens_founder: 60,
   lens_builder: 60,
@@ -74,6 +75,157 @@ function countBold(text: string): number {
 
 function wordCount(text: string): number {
   return text.trim().split(/\s+/).length
+}
+
+const VALID_CHART_TYPES = ['comparison', 'trajectory', 'cap_flow', 'quote_callout']
+const VALID_CASCADE_DIRECTIONS = ['forecast', 'history']
+const VALID_STAKEHOLDER_FRAMES = ['win_lose', 'evidence_grid', 'before_after']
+const VALID_DECISION_AID_FRAMES = ['yes_no', 'segment_impact']
+const VALID_PREVIEW_LABELS = ['By the numbers', 'Why it matters', 'The move', 'The fact']
+const VALID_FACT_CATEGORIES = ['numbers', 'trivia', 'industry']
+const VALID_INSIGHT_ICONS = ['→', '◐', '⚡']
+const STANDUP_PLATFORMS = ['slack', 'email', 'whatsapp', 'linkedin']
+
+function asObj(v: unknown): Record<string, unknown> | null {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return null
+  return v as Record<string, unknown>
+}
+
+export function validateExtendedData(data: unknown): ValidationResult {
+  const violations: Violation[] = []
+
+  if (data === null || data === undefined) {
+    return { pass: true, violations: [] }
+  }
+
+  const d = asObj(data)
+  if (!d) {
+    violations.push({ field: 'extended_data', type: 'EXTENDED_DATA_SHAPE_INVALID', message: 'extended_data is not an object' })
+    return { pass: false, violations }
+  }
+
+  // tickers: exactly 3, each must have label/value/delta/detail
+  const tickers = d['tickers']
+  if (!Array.isArray(tickers) || tickers.length !== 3) {
+    violations.push({ field: 'extended_data.tickers', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `tickers must be exactly 3, got ${Array.isArray(tickers) ? tickers.length : 'non-array'}` })
+  } else {
+    tickers.forEach((t, i) => {
+      const obj = asObj(t)
+      if (!obj) { violations.push({ field: `extended_data.tickers[${i}]`, type: 'EXTENDED_DATA_SHAPE_INVALID', message: `tickers[${i}] is not an object` }); return }
+      const missing = ['label', 'value', 'detail'].filter(k => !obj[k])
+      if (!asObj(obj['delta'])) missing.push('delta')
+      if (missing.length > 0) violations.push({ field: `extended_data.tickers[${i}]`, type: 'EXTENDED_DATA_SHAPE_INVALID', message: `tickers[${i}] missing required fields: ${missing.join(', ')}` })
+    })
+  }
+
+  // preview_cards: exactly 3, label must match enum
+  const cards = d['preview_cards']
+  if (!Array.isArray(cards) || cards.length !== 3) {
+    violations.push({ field: 'extended_data.preview_cards', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `preview_cards must be exactly 3, got ${Array.isArray(cards) ? cards.length : 'non-array'}` })
+  } else {
+    cards.forEach((c, i) => {
+      const obj = asObj(c)
+      const label = typeof obj?.['label'] === 'string' ? obj['label'] : undefined
+      if (!label || !VALID_PREVIEW_LABELS.includes(label)) {
+        violations.push({ field: `extended_data.preview_cards[${i}]`, type: 'EXTENDED_DATA_SHAPE_INVALID', message: `preview_cards[${i}].label "${label ?? 'missing'}" is not valid. Must be one of: ${VALID_PREVIEW_LABELS.join(', ')}`, current: label })
+      }
+    })
+  }
+
+  // did_you_know_facts: 8-12 items, category must match enum
+  const facts = d['did_you_know_facts']
+  if (!Array.isArray(facts) || facts.length < 8 || facts.length > 12) {
+    violations.push({ field: 'extended_data.did_you_know_facts', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `did_you_know_facts must be 8–12 items, got ${Array.isArray(facts) ? facts.length : 'non-array'}` })
+  } else {
+    facts.forEach((f, i) => {
+      const obj = asObj(f)
+      const cat = typeof obj?.['category'] === 'string' ? obj['category'] : undefined
+      if (!cat || !VALID_FACT_CATEGORIES.includes(cat)) {
+        violations.push({ field: `extended_data.did_you_know_facts[${i}]`, type: 'EXTENDED_DATA_SHAPE_INVALID', message: `did_you_know_facts[${i}].category "${cat ?? 'missing'}" is not valid. Must be: numbers, trivia, or industry` })
+      }
+    })
+  }
+
+  // primary_chart: type must be valid enum, data must be non-empty
+  const chart = asObj(d['primary_chart'])
+  const chartType = typeof chart?.['type'] === 'string' ? chart['type'] : undefined
+  if (!chart || !chartType || !VALID_CHART_TYPES.includes(chartType)) {
+    violations.push({ field: 'extended_data.primary_chart', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `primary_chart.type must be one of: ${VALID_CHART_TYPES.join(', ')}. Got: ${chartType ?? 'missing'}`, current: chartType })
+  } else if (Array.isArray(chart['data']) && (chart['data'] as unknown[]).length === 0) {
+    violations.push({ field: 'extended_data.primary_chart', type: 'EXTENDED_DATA_SHAPE_INVALID', message: 'primary_chart.data is empty. Use type "quote_callout" with an editorial pull quote when no chart data exists.' })
+  }
+
+  // insights_strip: exactly 3, icon must match enum
+  const strip = d['insights_strip']
+  if (!Array.isArray(strip) || strip.length !== 3) {
+    violations.push({ field: 'extended_data.insights_strip', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `insights_strip must be exactly 3, got ${Array.isArray(strip) ? strip.length : 'non-array'}` })
+  } else {
+    strip.forEach((cell, i) => {
+      const obj = asObj(cell)
+      const icon = typeof obj?.['icon'] === 'string' ? obj['icon'] : undefined
+      if (!icon || !VALID_INSIGHT_ICONS.includes(icon)) {
+        violations.push({ field: `extended_data.insights_strip[${i}]`, type: 'EXTENDED_DATA_SHAPE_INVALID', message: `insights_strip[${i}].icon "${icon ?? 'missing'}" is not valid. Must be one of: → ◐ ⚡` })
+      }
+    })
+  }
+
+  // cascade: direction enum, steps must be exactly 4
+  const cascade = asObj(d['cascade'])
+  const cascadeDir = typeof cascade?.['direction'] === 'string' ? cascade['direction'] : undefined
+  if (!cascade || !cascadeDir || !VALID_CASCADE_DIRECTIONS.includes(cascadeDir)) {
+    violations.push({ field: 'extended_data.cascade', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `cascade.direction must be "forecast" or "history", got: ${cascadeDir ?? 'missing'}` })
+  }
+  const cascadeSteps = cascade?.['steps']
+  if (!Array.isArray(cascadeSteps) || cascadeSteps.length !== 4) {
+    violations.push({ field: 'extended_data.cascade.steps', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `cascade.steps must be exactly 4, got ${Array.isArray(cascadeSteps) ? cascadeSteps.length : 'non-array'}` })
+  }
+
+  // stakeholders: frame enum, cells must be exactly 4
+  const stakeholders = asObj(d['stakeholders'])
+  const stakeholderFrame = typeof stakeholders?.['frame'] === 'string' ? stakeholders['frame'] : undefined
+  if (!stakeholders || !stakeholderFrame || !VALID_STAKEHOLDER_FRAMES.includes(stakeholderFrame)) {
+    violations.push({ field: 'extended_data.stakeholders', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `stakeholders.frame must be one of: ${VALID_STAKEHOLDER_FRAMES.join(', ')}. Got: ${stakeholderFrame ?? 'missing'}` })
+  }
+  const stakeholderCells = stakeholders?.['cells']
+  if (!Array.isArray(stakeholderCells) || stakeholderCells.length !== 4) {
+    violations.push({ field: 'extended_data.stakeholders.cells', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `stakeholders.cells must be exactly 4, got ${Array.isArray(stakeholderCells) ? stakeholderCells.length : 'non-array'}` })
+  }
+
+  // decision_aid: frame enum, rows must be exactly 3
+  const aid = asObj(d['decision_aid'])
+  const aidFrame = typeof aid?.['frame'] === 'string' ? aid['frame'] : undefined
+  if (!aid || !aidFrame || !VALID_DECISION_AID_FRAMES.includes(aidFrame)) {
+    violations.push({ field: 'extended_data.decision_aid', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `decision_aid.frame must be "yes_no" or "segment_impact", got: ${aidFrame ?? 'missing'}` })
+  }
+  const aidRows = aid?.['rows']
+  if (!Array.isArray(aidRows) || aidRows.length !== 3) {
+    violations.push({ field: 'extended_data.decision_aid.rows', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `decision_aid.rows must be exactly 3, got ${Array.isArray(aidRows) ? aidRows.length : 'non-array'}` })
+  }
+
+  // reactions: exactly 3
+  const reactions = d['reactions']
+  if (!Array.isArray(reactions) || reactions.length !== 3) {
+    violations.push({ field: 'extended_data.reactions', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `reactions must be exactly 3, got ${Array.isArray(reactions) ? reactions.length : 'non-array'}` })
+  }
+
+  // standup_messages: all 4 platform keys must be present and non-empty
+  const sm = asObj(d['standup_messages'])
+  if (!sm) {
+    violations.push({ field: 'extended_data.standup_messages', type: 'EXTENDED_DATA_SHAPE_INVALID', message: 'standup_messages is missing or not an object' })
+  } else {
+    const missing = STANDUP_PLATFORMS.filter(p => !sm[p])
+    if (missing.length > 0) {
+      violations.push({ field: 'extended_data.standup_messages', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `standup_messages missing or empty platforms: ${missing.join(', ')}` })
+    }
+  }
+
+  // tomorrow_drafts: exactly 3
+  const drafts = d['tomorrow_drafts']
+  if (!Array.isArray(drafts) || drafts.length !== 3) {
+    violations.push({ field: 'extended_data.tomorrow_drafts', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `tomorrow_drafts must be exactly 3, got ${Array.isArray(drafts) ? drafts.length : 'non-array'}` })
+  }
+
+  return { pass: violations.length === 0, violations }
 }
 
 export function validateArticle(signal: GeneratedSignal): ValidationResult {
@@ -227,7 +379,7 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
       violations.push({
         field: 'why_it_matters',
         type: 'WHY_IT_MATTERS_SINGLE_PARA',
-        message: `why_it_matters has only ${paragraphs.length} paragraph. The component splits on \\n\\n. Single paragraph means the Why It Matters block renders an empty body below the pull quote. Required: 2-3 paragraphs separated by \\n\\n. P1 (signal block, 35-55w), P2 (why it matters body, 35-55w), P3 (optional closing, 30-40w).`,
+        message: `why_it_matters has only ${paragraphs.length} paragraph. The component splits on \\n\\n. Single paragraph renders an empty body below the pull quote. Required: 2 paragraphs separated by \\n\\n, each 2 sentences max (~30-40w each). PARA 1: what shifted and why it matters now. PARA 2: the reframe and what it means for decisions tomorrow.`,
         current: signal.why_it_matters.slice(0, 200),
       })
     }
@@ -283,6 +435,15 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
         })
       }
     })
+  }
+
+  // Check 14: extended_data — soft-fail if missing, hard-fail if present and malformed
+  const extData = (signal as unknown as { extended_data?: unknown }).extended_data
+  if (extData === undefined || extData === null) {
+    console.warn('[validator] extended_data missing — soft-fail during rollout, extended checks skipped')
+  } else {
+    const extResult = validateExtendedData(extData)
+    violations.push(...extResult.violations)
   }
 
   return {

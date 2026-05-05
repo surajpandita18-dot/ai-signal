@@ -431,6 +431,8 @@ Write the full signal as JSON.`
 
 // ─── Generator ──────────────────────────────────────────────────────────────────
 
+import type { ExtendedData } from './types/extended-data'
+
 export interface GeneratedSignal {
   category: string
   headline: string
@@ -452,6 +454,7 @@ export interface GeneratedSignal {
   broadcast_phrases?: string[]
   pick_reason?: string
   rejected_alternatives?: Array<{ title: string; reason: string }>
+  extended_data?: ExtendedData
 }
 
 export async function generateSignalWithConfig(

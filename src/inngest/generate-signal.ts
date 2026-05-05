@@ -6,6 +6,7 @@ import { fixWithHaiku, reviewWithSonnet } from '@/lib/editor-agent'
 import type { GeneratedSignal as ValidatorSignal } from '@/lib/journalist-agent'
 import { QUALITY_RULES, SELF_CHECK_QUESTIONS } from '@/lib/journalist-agent'
 import { inngest, type DailyTriggerData } from './client'
+import type { ExtendedData } from '@/lib/types/extended-data'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -39,6 +40,7 @@ interface GeneratedSignal {
   broadcast_phrases?: string[]
   pick_reason?: string
   rejected_alternatives?: Array<{ title: string; reason: string }>
+  extended_data?: ExtendedData
 }
 
 interface RecentStory {
@@ -446,7 +448,7 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   "category": "models"|"tools"|"business"|"policy"|"research",
   "headline": "Sharp, specific, max 12 words. No clickbait.",
   "summary": "2 dense sentences. What happened and why it matters. No padding.",
-  "why_it_matters": "Two distinct paragraphs separated by a blank line (\\n\\n). PARA 1 (2-3 sentences): Opening — what shifted, why it matters now, for whom. PARA 2 (2-3 sentences): Closing punch — the reframe. What this means for the reader's decisions tomorrow. Bold key phrases with **double asterisks** in both paragraphs. These two paragraphs flank the pull_quote in the rendered design.",
+  "why_it_matters": "Two distinct paragraphs separated by a blank line (\\n\\n). PARA 1 (2 sentences max): Opening — what shifted, why it matters now, for whom. PARA 2 (2 sentences max): Closing punch — the reframe. What this means for the reader's decisions tomorrow. Bold key phrases with **double asterisks** in both paragraphs. These two paragraphs flank the pull_quote in the rendered design.",
   "pull_quote": "One killer sentence under 25 words. The most quotable editorial line — opinion not recap. Renders in italic display font between Para 1 and Para 2. Must not be null.",
   "lens_pm": "1–2 sentences for a PM. Concrete. What should they rethink or do?",
   "lens_founder": "1–2 sentences for a founder. Competitive or strategic lens.",
@@ -469,15 +471,105 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts. e.g., 'The default model is no longer a question of capability — it's a question of who notices the price change first.'",
   "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + data anchor)", "Phrase 2 (6-14 words, pure data anchor — number, currency, or named entity)", "Phrase 3 (6-14 words, pure data anchor — implication or consequence)"],
   "pick_reason": "1-2 sentence editorial reason this story was chosen over the others. Name the specific criterion.",
-  "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}]
+  "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}],
+  "extended_data": {
+    "tickers": [
+      { "label": "Input cost", "value": "$0.04", "delta": { "direction": "down", "text": "↓ 10×" }, "detail": "Per million tokens vs GPT-4 Turbo" },
+      { "label": "Reasoning delta", "value": "+12%", "delta": { "direction": "up", "text": "↑ vs GPT-4 Turbo" }, "detail": "MMLU-Pro benchmark" },
+      { "label": "Window to act", "value": "48h", "delta": { "direction": "flat", "text": "before competitors move" }, "detail": "Historical lag after OpenAI pricing changes" }
+    ],
+    "preview_cards": [
+      { "index": "01", "label": "By the numbers", "value": "One sharp number-led sentence drawn from the story stats" },
+      { "index": "02", "label": "Why it matters", "value": "One sentence — what shifted and why it matters right now" },
+      { "index": "03", "label": "The move", "value": "One sentence — the single action the reader should take today" }
+    ],
+    "did_you_know_facts": [
+      { "category": "numbers", "text": "Example: The average mid-stage AI startup routes 40M tokens/day. At GPT-4 Turbo pricing that is $1,600/day. At GPT-5 Mini it is $160." },
+      { "category": "industry", "text": "Produce 8–12 facts total — mix numbers/trivia/industry, built around the story's core data and its broader ecosystem context. Each fact 1–2 sentences." }
+    ],
+    "primary_chart": {
+      "type": "comparison",
+      "title": "Cost per million tokens — major models",
+      "subtitle": "April 2026 input pricing",
+      "data": [
+        { "label": "GPT-5 Mini", "value": "$0.04", "width_pct": 4, "fill_color": "signal" },
+        { "label": "GPT-4o Mini", "value": "$0.15", "width_pct": 15, "fill_color": "warm" },
+        { "label": "GPT-4 Turbo", "value": "$0.40", "width_pct": 40, "fill_color": "mute", "opacity": 0.7 }
+      ]
+    },
+    "insights_strip": [
+      { "icon": "→", "label": "What changed", "text": "One sharp sentence: what just shifted." },
+      { "icon": "◐", "label": "Who's affected", "text": "One sharp sentence: the specific audience that must act." },
+      { "icon": "⚡", "label": "Move by", "text": "One sharp sentence: the single action and rough timeframe." }
+    ],
+    "cascade": {
+      "direction": "forecast",
+      "title": "What happens next",
+      "subtitle": "4-step ripple from today's development",
+      "steps": [
+        { "marker": 1, "week": "This week", "event": "First-order effect — what the most responsive teams do immediately" },
+        { "marker": 2, "week": "2–3 weeks", "event": "Second-order — what competitive pressure forces" },
+        { "marker": 3, "week": "6 weeks", "event": "Market response or regulatory/ecosystem reaction" },
+        { "marker": 4, "week": "3 months", "event": "The structural shift — what the landscape looks like after the dust settles" }
+      ]
+    },
+    "stakeholders": {
+      "frame": "win_lose",
+      "title": "Winners and losers",
+      "subtitle": "First-order impact",
+      "cells": [
+        { "type": "win", "who": "Specific winner group", "why": "Why they benefit — concrete" },
+        { "type": "win", "who": "Second winner group", "why": "Why they benefit — concrete" },
+        { "type": "lose", "who": "Specific loser group", "why": "Why they lose — concrete" },
+        { "type": "lose", "who": "Second loser group", "why": "Why they lose — concrete" }
+      ]
+    },
+    "decision_aid": {
+      "frame": "yes_no",
+      "title": "Decision framing headline (e.g. 'Should you switch your default model?')",
+      "question": "The core yes/no question the reader faces right now",
+      "rows": [
+        { "q_num": "Q1", "question": "First qualifying question — most common use case", "verdict": "go", "verdict_text": "Concrete guidance if yes" },
+        { "q_num": "Q2", "question": "Second qualifying question — edge case or caveat", "verdict": "wait", "verdict_text": "Concrete guidance if yes" },
+        { "q_num": "Q3", "question": "Third qualifying question — the laggard signal", "verdict": "go", "verdict_text": "Concrete guidance if yes" }
+      ],
+      "final_verdict": "One sentence summary of the overall recommendation"
+    },
+    "reactions": [
+      { "quote": "Short punchy quote under 20 words. Real industry sentiment, not generic praise.", "name": "Role archetype (not a real name)", "role": "Specific context: Series A CTO, indie hacker, principal PM at FAANG" },
+      { "quote": "Second reaction — different perspective from the first, more specific to Indian market", "name": "Role archetype", "role": "Specific context" },
+      { "quote": "Third reaction — a skeptic or contrarian voice", "name": "Role archetype", "role": "Specific context" }
+    ],
+    "standup_messages": {
+      "slack": "Today's signal: [data anchor] — [implication]. [One action question for the team]. Max 2 sentences.",
+      "email": "Quick heads up: [what happened] — [why it matters to the team]. Suggest [one action]. Professional tone, not breathless.",
+      "whatsapp": "Casual, conversational. [What happened] + [why your contact cares] + [one thing to do]. 2–3 sentences.",
+      "linkedin": "Professional thought leadership framing. [The pattern this represents] + [strategic implication] + [what winning teams do]. 2–3 sentences, no hashtags."
+    },
+    "tomorrow_drafts": [
+      { "day": "TUE", "date": "Apr 29", "text": "Headline-style story angle that follows logically from today's story", "status": "lead_candidate", "status_detail": "What signal you are watching to confirm this story develops" },
+      { "day": "WED", "date": "Apr 30", "text": "Second follow-on angle — second-order consequence of today's story", "status": "sealed" },
+      { "day": "THU", "date": "May 1", "text": "Third follow-on angle — broader market or competitive implication", "status": "sealed" }
+    ]
+  }
 }
+
+EXTENDED_DATA FALLBACK RULES — apply when story data is thin or the default structure does not fit:
+- primary_chart.type = "quote_callout" when there is no comparison, trajectory, or capital flow data. Use the editorial_take or pull_quote as the callout. NEVER omit primary_chart — it is required.
+- stakeholders.frame = "evidence_grid" when there are no clear winners/losers (policy ambiguity, early-stage research, opinion pieces). Use "evidence_strong", "evidence_weak", and "open_question" cell types.
+- stakeholders.frame = "before_after" when the story describes a transition or product change with clear before/after states. Use "before" and "after" cell types.
+- decision_aid.frame = "segment_impact" when the story has no clear yes/no decision but affects different audience segments differently. Use "segment_a", "segment_b", "segment_c" verdict types.
+- cascade.direction = "history" for retrospectives or post-mortems; "forecast" for forward-looking developments (default).
+- tickers: if the story has fewer than 3 concrete numbers, derive a relevant third from context (market size, time window, comparison figure). Always produce exactly 3 tickers.
+- did_you_know_facts: always produce 8–12 facts. If the story is thin, draw from the broader ecosystem — pricing history, adjacent market data, audience-relevant benchmarks for Indian tech PMs/founders/engineers.
+- reactions: write as realistic industry archetypes. Do NOT use real names. Include at least one skeptic among the 3 voices.
 
 ${SELF_CHECK_QUESTIONS}`
 
   const msg = await client.messages.create(
     {
       model: 'claude-sonnet-4-6',
-      max_tokens: 3500,
+      max_tokens: 7000,
       system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
       messages: [{
         role: 'user',
@@ -510,7 +602,18 @@ ${SELF_CHECK_QUESTIONS}`
   if (!Array.isArray(signal.action_items)) signal.action_items = []
   if (!Array.isArray(signal.sources)) signal.sources = []
   if (!Array.isArray(signal.broadcast_phrases)) signal.broadcast_phrases = []
-  return signal
+  return normalizeSignalNewlines(signal)
+}
+
+// ─── Newline normalizer ─────────────────────────────────────────────────────────
+// Claude consistently outputs \n (single newline) in JSON strings; the validator
+// and frontend both split why_it_matters on \n\n. This normalizes at the data
+// boundary — applied after every JSON.parse of a signal, including fixer outputs.
+function normalizeSignalNewlines(s: GeneratedSignal): GeneratedSignal {
+  if (!s.why_it_matters) return s
+  const paras = s.why_it_matters.split(/\n+/).map(p => p.trim()).filter(p => p.length > 0)
+  if (paras.length < 2) return s // genuinely single paragraph — let cascade handle structurally
+  return { ...s, why_it_matters: paras.join('\n\n') }
 }
 
 // ─── Failure helper ─────────────────────────────────────────────────────────────
@@ -589,6 +692,12 @@ export const generateDailySignal = inngest.createFunction(
       let current = signal
       let path = 'writer-direct'
 
+      // Strip extended_data before passing to cascade fixers. The full signal with
+      // extended_data is ~6000 tokens — fixer output was silently truncating at max_tokens:8000,
+      // causing JSON parse failures and leaving violations unfixed. Re-attached below.
+      const writerExtData = current.extended_data
+      current = { ...current, extended_data: undefined }
+
       const v1 = validateArticle(current as unknown as ValidatorSignal)
       console.log('[cascade] Layer 1 (validator):', v1.pass ? 'PASS' : `FAIL — ${v1.violations.length} violations`)
 
@@ -598,7 +707,7 @@ export const generateDailySignal = inngest.createFunction(
         const haikuResult = await fixWithHaiku(current as unknown as ValidatorSignal, v1.violations, anthropicClient)
 
         if (haikuResult.fixed) {
-          current = haikuResult.signal as unknown as GeneratedSignal
+          current = normalizeSignalNewlines(haikuResult.signal as unknown as GeneratedSignal)
           path = 'haiku-fix'
           const v2 = validateArticle(current as unknown as ValidatorSignal)
           console.log('[cascade] Layer 2 result:', v2.pass ? 'PASS' : `STILL FAILING — ${v2.violations.length} violations`)
@@ -606,14 +715,14 @@ export const generateDailySignal = inngest.createFunction(
           if (!v2.pass) {
             console.log('[cascade] Layer 3 (Sonnet review) attempting full review...')
             const sonnetResult = await reviewWithSonnet(current as unknown as ValidatorSignal, v2.violations, anthropicClient)
-            current = sonnetResult.signal as unknown as GeneratedSignal
+            current = normalizeSignalNewlines(sonnetResult.signal as unknown as GeneratedSignal)
             path = 'sonnet-review'
             console.log('[cascade] Layer 3 reasoning:', sonnetResult.reasoning)
           }
         } else {
           console.log('[cascade] Layer 2 failed, escalating to Layer 3...')
           const sonnetResult = await reviewWithSonnet(current as unknown as ValidatorSignal, v1.violations, anthropicClient)
-          current = sonnetResult.signal as unknown as GeneratedSignal
+          current = normalizeSignalNewlines(sonnetResult.signal as unknown as GeneratedSignal)
           path = 'sonnet-review'
           console.log('[cascade] Layer 3 reasoning:', sonnetResult.reasoning)
         }
@@ -625,7 +734,7 @@ export const generateDailySignal = inngest.createFunction(
           finalValidation.violations.map(v => `${v.field}:${v.type}`).join(', '))
       }
       console.log(`[inngest] step "cascade" complete: path=${path}, violations_remaining=${finalValidation.violations.length}`)
-      return { finalSignal: current, qualityPath: path }
+      return { finalSignal: { ...current, extended_data: writerExtData }, qualityPath: path }
     })) as { finalSignal: GeneratedSignal; qualityPath: string }
 
     // ── Final validation gate — halts publish if story still invalid after cascade
@@ -676,6 +785,7 @@ export const generateDailySignal = inngest.createFunction(
           action_items: finalSignal.action_items?.length ? finalSignal.action_items : null,
           counter_view: finalSignal.counter_view ?? null,
           counter_view_headline: finalSignal.counter_view_headline ?? null,
+          extended_data: finalSignal.extended_data ?? null,
         })
         if (storyErr) throw new Error(`Story insert failed: ${storyErr.message}`)
       }
