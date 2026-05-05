@@ -80,7 +80,11 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
     ? (rawExt!.tomorrow_drafts as TomorrowDraft[])
     : undefined
   const tickers = Array.isArray(rawExt?.tickers)
-    ? (rawExt!.tickers as TickerData[])
+    ? (rawExt!.tickers as Array<Record<string, unknown>>).map(t => ({
+        ...t,
+        // Normalize legacy 'delta' field (pre-rename) to 'change' for existing DB records
+        change: t['change'] ?? t['delta'],
+      })) as TickerData[]
     : undefined
   const previewCards = Array.isArray(rawExt?.preview_cards)
     ? (rawExt!.preview_cards as PreviewCard[])
