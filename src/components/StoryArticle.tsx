@@ -5,6 +5,10 @@ import type { Database } from '../../db/types/database'
 import { BuilderCard } from './BuilderCard'
 import { CounterView } from './CounterView'
 import { EditorialQuote } from './EditorialQuote'
+import { InsightsStrip } from './InsightsStrip'
+import { CascadeTimeline } from './CascadeTimeline'
+import { StakeholdersGrid } from './StakeholdersGrid'
+import type { InsightCell, CascadeData, StakeholdersData } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
 
@@ -362,6 +366,12 @@ export function StoryArticle({
   const [expired, setExpired] = useState(false)
   const [readPct, setReadPct] = useState(0)
   const [ringOffset, setRingOffset] = useState(0)
+
+  // Extract V11 extended_data fields with null-safety
+  const rawExt = story.extended_data as Record<string, unknown> | null
+  const insightCells    = Array.isArray(rawExt?.insights_strip) ? (rawExt!.insights_strip as InsightCell[]) : null
+  const cascadeData     = (rawExt?.cascade && typeof rawExt.cascade === 'object') ? (rawExt.cascade as CascadeData) : null
+  const stakeholdersData = (rawExt?.stakeholders && typeof rawExt.stakeholders === 'object') ? (rawExt.stakeholders as StakeholdersData) : null
   const RING_TOTAL_MS = 24 * 60 * 60 * 1000
   const RING_CIRCUMFERENCE = 31.416 // 2π × r=5
   const articleRef = useRef<HTMLElement>(null)
@@ -578,6 +588,11 @@ export function StoryArticle({
         )
       })()}
 
+      {/* ── V11: Insights strip — after "By the numbers" ── */}
+      {insightCells && insightCells.length > 0 && (
+        <InsightsStrip cells={insightCells} />
+      )}
+
       {/* ── Section 6: Block 2 — Why it matters ── */}
       {/* v10 sandwich: why_it_matters[0] → pull_quote → why_it_matters[1] */}
       {(() => {
@@ -610,6 +625,16 @@ export function StoryArticle({
           </div>
         )
       })()}
+
+      {/* ── V11: Cascade timeline — after "Why it matters" ── */}
+      {cascadeData && cascadeData.steps?.length > 0 && (
+        <CascadeTimeline data={cascadeData} />
+      )}
+
+      {/* ── V11: Stakeholders grid — after cascade ── */}
+      {stakeholdersData && stakeholdersData.cells?.length > 0 && (
+        <StakeholdersGrid data={stakeholdersData} />
+      )}
 
       {/* ── Section 7: Role lenses — BuilderCard (editorial_take + bet/burn) ── */}
       {story.editorial_take && (
