@@ -563,7 +563,11 @@ export function StoryArticle({
                   <div className="stat-card-value">
                     {stat.value}
                     {stat.delta && (
-                      <span className="delta-down">{stat.delta}</span>
+                      <span className="delta-down">
+                        {typeof stat.delta === 'object' && stat.delta !== null && 'text' in (stat.delta as object)
+                          ? (stat.delta as { text: string }).text
+                          : String(stat.delta)}
+                      </span>
                     )}
                   </div>
                   <div className="stat-card-detail">{stat.detail}</div>
