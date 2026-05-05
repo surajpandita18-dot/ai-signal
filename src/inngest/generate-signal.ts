@@ -474,9 +474,9 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}],
   "extended_data": {
     "tickers": [
-      { "label": "Input cost", "value": "$0.04", "delta": { "direction": "down", "text": "↓ 10×" }, "detail": "Per million tokens vs GPT-4 Turbo" },
-      { "label": "Reasoning delta", "value": "+12%", "delta": { "direction": "up", "text": "↑ vs GPT-4 Turbo" }, "detail": "MMLU-Pro benchmark" },
-      { "label": "Window to act", "value": "48h", "delta": { "direction": "flat", "text": "before competitors move" }, "detail": "Historical lag after OpenAI pricing changes" }
+      { "label": "Input cost", "value": "$0.04", "change": { "direction": "down", "text": "↓ 10×" }, "detail": "Per million tokens vs GPT-4 Turbo" },
+      { "label": "Reasoning delta", "value": "+12%", "change": { "direction": "up", "text": "↑ vs GPT-4 Turbo" }, "detail": "MMLU-Pro benchmark" },
+      { "label": "Window to act", "value": "48h", "change": { "direction": "flat", "text": "before competitors move" }, "detail": "Historical lag after OpenAI pricing changes" }
     ],
     "preview_cards": [
       { "index": "01", "label": "By the numbers", "value": "One sharp number-led sentence drawn from the story stats" },

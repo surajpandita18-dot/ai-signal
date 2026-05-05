@@ -104,7 +104,7 @@ export function validateExtendedData(data: unknown): ValidationResult {
     return { pass: false, violations }
   }
 
-  // tickers: exactly 3, each must have label/value/delta/detail
+  // tickers: exactly 3, each must have label/value/change/detail
   const tickers = d['tickers']
   if (!Array.isArray(tickers) || tickers.length !== 3) {
     violations.push({ field: 'extended_data.tickers', type: 'EXTENDED_DATA_SHAPE_INVALID', message: `tickers must be exactly 3, got ${Array.isArray(tickers) ? tickers.length : 'non-array'}` })
@@ -113,7 +113,7 @@ export function validateExtendedData(data: unknown): ValidationResult {
       const obj = asObj(t)
       if (!obj) { violations.push({ field: `extended_data.tickers[${i}]`, type: 'EXTENDED_DATA_SHAPE_INVALID', message: `tickers[${i}] is not an object` }); return }
       const missing = ['label', 'value', 'detail'].filter(k => !obj[k])
-      if (!asObj(obj['delta'])) missing.push('delta')
+      if (!asObj(obj['change'])) missing.push('change')
       if (missing.length > 0) violations.push({ field: `extended_data.tickers[${i}]`, type: 'EXTENDED_DATA_SHAPE_INVALID', message: `tickers[${i}] missing required fields: ${missing.join(', ')}` })
     })
   }

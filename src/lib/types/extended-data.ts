@@ -4,7 +4,7 @@
 export type TickerData = {
   label: string;
   value: string;
-  delta: { direction: 'up' | 'down' | 'flat'; text: string };
+  change: { direction: 'up' | 'down' | 'flat'; text: string };
   detail: string;
 };
 

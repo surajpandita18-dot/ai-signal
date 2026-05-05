@@ -17,8 +17,8 @@ export function HeroTickers({ tickers }: HeroTickersProps) {
           </div>
           <div className="hero-ticker-value">
             {ticker.value}{' '}
-            <span className={`hero-ticker-delta${ticker.delta.direction !== 'flat' ? ` ${ticker.delta.direction}` : ''}`}>
-              {ticker.delta.text}
+            <span className={`hero-ticker-delta${ticker.change.direction !== 'flat' ? ` ${ticker.change.direction}` : ''}`}>
+              {ticker.change.text}
             </span>
           </div>
           <div className="hero-ticker-detail">{ticker.detail}</div>
