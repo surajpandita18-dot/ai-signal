@@ -27,13 +27,14 @@ function ComparisonVariant({ data }: { data: ComparisonRow[] }) {
 }
 
 function TrajectoryVariant({ data }: { data: TrajectoryPoint[] }) {
+  const maxVal = Math.max(...data.map(d => d.value), 1)
   return (
     <div style={{ display: 'flex', flexDirection: 'column', gap: 8 }}>
       {data.map((point, i) => (
         <div key={i} className="compare-row">
           <div className="compare-label" style={{ fontVariantNumeric: 'tabular-nums' }}>{point.date}</div>
           <div className="compare-bar-track" style={{ alignSelf: 'center' }}>
-            <div className="compare-bar-fill signal" style={{ width: '60%' }} />
+            <div className="compare-bar-fill signal" style={{ width: `${Math.round((point.value / maxVal) * 100)}%` }} />
           </div>
           <div className="compare-value">{point.value}{point.label ? ` ${point.label}` : ''}</div>
         </div>

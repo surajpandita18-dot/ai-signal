@@ -9,7 +9,9 @@ import { InsightsStrip } from './InsightsStrip'
 import { CascadeTimeline } from './CascadeTimeline'
 import { StakeholdersGrid } from './StakeholdersGrid'
 import { PrimaryChart } from './PrimaryChart'
-import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart } from '@/lib/types/extended-data'
+import { DecisionAid } from './DecisionAid'
+import { ReactionsPanel } from './ReactionsPanel'
+import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart, DecisionAid as DecisionAidData, Reaction, StandupMessages } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
 
@@ -272,10 +274,18 @@ function buildStandupContent(story: Story) {
   return { getClipboard, getPreviewHtml }
 }
 
-function StandupCard({ story }: { story: Story }) {
+function StandupCard({ story, standupMessages }: { story: Story; standupMessages?: StandupMessages | null }) {
   const [activeFormat, setActiveFormat] = useState<StandupFormat>('slack')
   const [copied, setCopied] = useState(false)
   const { getClipboard, getPreviewHtml } = buildStandupContent(story)
+
+  // Use pre-formatted messages from extended_data when available
+  const getClipboardFn = (fmt: StandupFormat) =>
+    standupMessages?.[fmt] ?? getClipboard(fmt)
+  const getPreviewFn = (fmt: StandupFormat) =>
+    standupMessages?.[fmt]
+      ? standupMessages[fmt].replace(/\n/g, '<br />')
+      : getPreviewHtml(fmt)
 
   const FORMAT_LABELS: Record<StandupFormat, string> = {
     slack: 'Slack',
@@ -285,7 +295,7 @@ function StandupCard({ story }: { story: Story }) {
   }
 
   async function handleCopy() {
-    const text = getClipboard(activeFormat)
+    const text = getClipboardFn(activeFormat)
     try {
       await navigator.clipboard.writeText(text)
     } catch {
@@ -334,7 +344,7 @@ function StandupCard({ story }: { story: Story }) {
       {/* Preview */}
       <div
         className="standup-preview"
-        dangerouslySetInnerHTML={{ __html: getPreviewHtml(activeFormat) }}
+        dangerouslySetInnerHTML={{ __html: getPreviewFn(activeFormat) }}
       />
 
       {/* Copy button */}
@@ -374,6 +384,9 @@ export function StoryArticle({
   const cascadeData      = (rawExt?.cascade && typeof rawExt.cascade === 'object') ? (rawExt.cascade as CascadeData) : null
   const stakeholdersData = (rawExt?.stakeholders && typeof rawExt.stakeholders === 'object') ? (rawExt.stakeholders as StakeholdersData) : null
   const primaryChart     = (rawExt?.primary_chart && typeof rawExt.primary_chart === 'object') ? (rawExt.primary_chart as ComparisonChart) : null
+  const decisionAidData  = (rawExt?.decision_aid && typeof rawExt.decision_aid === 'object') ? (rawExt.decision_aid as DecisionAidData) : null
+  const reactions        = Array.isArray(rawExt?.reactions) ? (rawExt!.reactions as Reaction[]) : null
+  const standupMessages  = (rawExt?.standup_messages && typeof rawExt.standup_messages === 'object') ? (rawExt.standup_messages as StandupMessages) : null
   const RING_TOTAL_MS = 24 * 60 * 60 * 1000
   const RING_CIRCUMFERENCE = 31.416 // 2π × r=5
   const articleRef = useRef<HTMLElement>(null)
@@ -639,6 +652,11 @@ export function StoryArticle({
         <StakeholdersGrid data={stakeholdersData} />
       )}
 
+      {/* ── V11: Decision Aid — after stakeholders, before builder ── */}
+      {decisionAidData && decisionAidData.rows?.length > 0 && (
+        <DecisionAid aid={decisionAidData} />
+      )}
+
       {/* ── Section 7: Role lenses — BuilderCard (editorial_take + bet/burn) ── */}
       {story.editorial_take && (
         <BuilderCard
@@ -654,7 +672,7 @@ export function StoryArticle({
       )}
 
       {/* ── Section 8b: Standup snippet ── */}
-      <StandupCard story={story} />
+      <StandupCard story={story} standupMessages={standupMessages} />
 
       {/* ── Section 9: Devil's Advocate — CounterView ── */}
       {story.counter_view && (
@@ -662,6 +680,11 @@ export function StoryArticle({
           headline={story.counter_view_headline ?? 'Another angle.'}
           body={story.counter_view.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
         />
+      )}
+
+      {/* ── V11: Reaction quotes — after counter-view, before sources ── */}
+      {reactions && reactions.length > 0 && (
+        <ReactionsPanel reactions={reactions} />
       )}
 
       {/* ── Section 11: Sources ── */}
