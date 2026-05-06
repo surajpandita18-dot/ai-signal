@@ -251,7 +251,7 @@ export function validateArticle(signal: GeneratedSignal): ValidationResult {
   if (signal.stats && signal.stats.length > 0) {
     for (const stat of signal.stats) {
       const hasForbiddenWord = FORBIDDEN_STAT_WORDS.some(w =>
-        stat.label.toLowerCase().includes(w.toLowerCase())
+        new RegExp(`\\b${w}\\b`, 'i').test(stat.label)
       )
       if (hasForbiddenWord) {
         violations.push({
