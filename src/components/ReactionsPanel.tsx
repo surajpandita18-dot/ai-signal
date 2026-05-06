@@ -1,4 +1,12 @@
+import React from 'react'
 import type { Reaction } from '@/lib/types/extended-data'
+
+function parseBold(text: string): React.ReactNode {
+  if (!text.includes('**')) return text
+  return text.split(/(\*\*.*?\*\*)/g).map((p, i) =>
+    p.startsWith('**') && p.endsWith('**') ? <strong key={i}>{p.slice(2, -2)}</strong> : p
+  )
+}
 
 interface ReactionsPanelProps {
   reactions: Reaction[]
@@ -11,7 +19,7 @@ export function ReactionsPanel({ reactions }: ReactionsPanelProps) {
     <div className="reaction-grid">
       {reactions.map((r, i) => (
         <div key={i} className="reaction-card">
-          <p className="reaction-quote">&ldquo;{r.quote}&rdquo;</p>
+          <p className="reaction-quote">&ldquo;{parseBold(r.quote)}&rdquo;</p>
           <div className="reaction-attr">
             <div className="reaction-avatar" />
             <div className="reaction-meta">

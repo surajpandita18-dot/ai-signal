@@ -2119,6 +2119,7 @@ header.site-nav-inner {
   gap: 10px;
   position: relative;
   z-index: 1;
+  align-items: stretch;
 }
 .hero-preview-card {
   padding: 12px 14px;
@@ -2131,6 +2132,7 @@ header.site-nav-inner {
   gap: 10px;
   transition: border-color 0.2s, transform 0.2s;
   cursor: pointer;
+  min-height: 64px;
 }
 .hero-preview-card:hover {
   border-color: var(--border-mid);
@@ -2454,6 +2456,7 @@ header.site-nav-inner {
   line-height: 1.4;
   color: var(--text);
   font-weight: 500;
+  min-height: 72px;
 }
 
 /* ── Reaction Quotes ── */
@@ -2462,6 +2465,7 @@ header.site-nav-inner {
   grid-template-columns: repeat(3, 1fr);
   gap: 14px;
   margin: 32px 0;
+  align-items: stretch;
 }
 .reaction-card {
   padding: 20px 22px;
@@ -2469,6 +2473,8 @@ header.site-nav-inner {
   border: 1px solid var(--border);
   border-radius: 10px;
   transition: border-color 0.2s, transform 0.2s;
+  display: flex;
+  flex-direction: column;
 }
 .reaction-card:hover {
   border-color: var(--border-mid);
@@ -2481,6 +2487,7 @@ header.site-nav-inner {
   color: var(--text);
   font-style: italic;
   margin-bottom: 14px;
+  flex: 1;
 }
 .reaction-attr { display: flex; align-items: center; gap: 10px; }
 .reaction-avatar {

@@ -26,6 +26,22 @@ Load this when generating per-signal content, when adapting design across articl
 
 This is NOT a behavior file (that's this document). It's a design-sense framework.
 
+## Companion: Pre-Publish Review
+
+For the systematic editorial + design review every signal must pass before publish, see:
+
+.claude/intelligence/operating-modes/pre-publish-review.md
+
+This is the gate that prevents post-publish polish loops. Run on every newly generated signal.
+
+## Companion: Future Work — Design Rubric
+
+For the systematic mathematical design rubric system (Phase 3+ work), see:
+
+.claude/intelligence/future-work/design-rubric-system.md
+
+Strategic upgrade path that eliminates manual visual review loops. Not active yet — captured for proper execution when bandwidth allows.
+
 ---
 
 ## Always-On Verification Workflow (Non-Negotiable)
