@@ -2300,8 +2300,6 @@ header.site-nav-inner {
   font-weight: 700;
   font-size: 13px;
 }
-.insight-cell:nth-child(1) .insight-icon { background: var(--signal-soft); color: var(--signal); }
-.insight-cell:nth-child(3) .insight-icon { background: var(--green-soft, #DCFCE7); color: var(--green, #166534); }
 .insight-label {
   font-family: var(--ff-mono);
   font-size: 10px;
