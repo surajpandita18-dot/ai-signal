@@ -2608,13 +2608,6 @@ header.site-nav-inner {
 }
 .decision-row:hover { border-color: var(--border-mid); transform: translateX(2px); }
 .decision-q { font-size: 14.5px; color: var(--text); font-weight: 500; line-height: 1.4; }
-.decision-guidance {
-  font-size: 13px;
-  color: var(--text-mute);
-  margin-top: 6px;
-  line-height: 1.45;
-  font-weight: 400;
-}
 .decision-q .q-num {
   font-family: var(--ff-mono);
   font-size: 11px;

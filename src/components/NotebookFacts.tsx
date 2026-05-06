@@ -165,7 +165,7 @@ export function NotebookFacts({ facts }: NotebookFactsProps) {
       <div className="nb-left">
         <span className="nb-title">Did you know?</span>
         <span className="nb-counter">
-          Fact {pad2((safeIndex % 12) + 1)} of 12
+          Fact {pad2((safeIndex % factCountRef.current) + 1)} of {factCountRef.current}
         </span>
       </div>
 

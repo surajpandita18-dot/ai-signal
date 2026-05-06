@@ -509,10 +509,10 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       "title": "What happens next",
       "subtitle": "The cascade has a shape. Read it before competitors do.",
       "steps": [
-        { "marker": 1, "week": "This week", "event": "First-order effect — what the most responsive teams do immediately" },
-        { "marker": 2, "week": "2–3 weeks", "event": "Second-order — what competitive pressure forces" },
-        { "marker": 3, "week": "6 weeks", "event": "Market response or regulatory/ecosystem reaction" },
-        { "marker": 4, "week": "3 months", "event": "The structural shift — what the landscape looks like after the dust settles" }
+        { "marker": 1, "week": "This week", "event": "≤10 words. Declarative. What the fastest-moving teams do NOW. E.g. 'Competing vendors launch preemptive pricing conversations.'" },
+        { "marker": 2, "week": "2–3 weeks", "event": "≤10 words. Second-order move. E.g. 'Enterprise buyers use this round as negotiation leverage.'" },
+        { "marker": 3, "week": "6 weeks", "event": "≤10 words. Market or ecosystem response. E.g. '2–3 entrants raise at the implied valuation floor.'" },
+        { "marker": 4, "week": "3 months", "event": "≤10 words. Structural shift. E.g. 'Category consolidates. Fewer platforms, larger checks.'" }
       ]
     },
     "stakeholders": {
@@ -531,9 +531,9 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       "title": "Decision framing headline (e.g. 'Should you switch your default model?')",
       "question": "The core yes/no question the reader faces right now",
       "rows": [
-        { "q_num": "Q1", "question": "First qualifying question — most common use case", "verdict": "go", "verdict_text": "Concrete guidance if yes" },
-        { "q_num": "Q2", "question": "Second qualifying question — edge case or caveat", "verdict": "wait", "verdict_text": "Concrete guidance if yes" },
-        { "q_num": "Q3", "question": "Third qualifying question — the laggard signal", "verdict": "go", "verdict_text": "Concrete guidance if yes" }
+        { "q_num": "Q1", "question": "First qualifying question — most common use case", "verdict": "go", "verdict_text": "≤4 words, action-first pill label. E.g. 'Yes → Go', 'Switch now', 'Move this week'" },
+        { "q_num": "Q2", "question": "Second qualifying question — edge case or caveat", "verdict": "wait", "verdict_text": "≤4 words. E.g. 'Run evals first', 'Audit overlap', 'Check dependencies'" },
+        { "q_num": "Q3", "question": "Third qualifying question — the laggard signal", "verdict": "no", "verdict_text": "≤4 words. E.g. 'No urgency yet', 'Wait — no rush', 'Hold position'" }
       ],
       "final_verdict": "One sentence summary of the overall recommendation"
     },
@@ -543,10 +543,10 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       { "quote": "Third reaction — a skeptic or contrarian voice", "name": "Role archetype", "role": "Specific context" }
     ],
     "standup_messages": {
-      "slack": "Today's signal: [data anchor] — [implication]. [One action question for the team]. Max 2 sentences.",
-      "email": "Quick heads up: [what happened] — [why it matters to the team]. Suggest [one action]. Professional tone, not breathless.",
-      "whatsapp": "Casual, conversational. [What happened] + [why your contact cares] + [one thing to do]. 2–3 sentences.",
-      "linkedin": "Professional thought leadership framing. [The pattern this represents] + [strategic implication] + [what winning teams do]. 2–3 sentences, no hashtags."
+      "slack": "🧠 AI Signal · [Date e.g. May 6, 2026]\n\n[One sentence: what happened + the key number.]\n\n→ Why it matters: [One sentence on the implication for the team.]\n→ What I'd do: [One concrete action, time-boxed.]\n\n[X] min read · aisignal.so/signal/[N]",
+      "email": "Hey —\n\nQuick share from this morning's AI Signal: [What happened, 1 sentence.]\n\nThe implication: [Why it matters to them, 1 sentence.]\n\n[One concrete action suggestion.]\n\nFull read ([X] min): aisignal.so/signal/[N]\n\n— shared via AI Signal",
+      "whatsapp": "AI Signal · [Date] 📍\n\n[Lead with the specific number or fact. Bold the key figure.] [10× cheaper / $950M / 40 min deployment.]\n\n[Why the contact cares, 1 sentence.]\n\naisignal.so/signal/[N]",
+      "linkedin": "[Hook: the pattern this represents, 1 declarative sentence.]\n\n[What happened + why it matters, 2 sentences.]\n\nThree things winning teams are doing this week:\n\n→ [Action 1 — specific, doable in 2h]\n\n→ [Action 2 — specific, doable in 2h]\n\n→ [Action 3 — specific, doable in 2h]\n\n[Reframe sentence: the old default is now the wrong choice / the window is narrowing.]\n\n—\nRead this morning's AI Signal — one AI story every day at 6:14 AM IST. For people who ship.\n\naisignal.so"
     },
     "tomorrow_drafts": [
       { "day": "TUE", "date": "Apr 29", "text": "Headline-style story angle that follows logically from today's story", "status": "lead_candidate", "status_detail": "What signal you are watching to confirm this story develops" },
@@ -691,7 +691,7 @@ ${SELF_CHECK_QUESTIONS}`
   const msg = await client.messages.create(
     {
       model: 'claude-sonnet-4-6',
-      max_tokens: 7000,
+      max_tokens: 10000,
       system: [{ type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } }],
       messages: [{
         role: 'user',
@@ -705,6 +705,13 @@ ${SELF_CHECK_QUESTIONS}`
     console.error('[generateSignal] Claude output truncated — hit max_tokens limit. Raise the cap or shrink output schema.')
     throw new Error('Claude output truncated at max_tokens. Raise the cap.')
   }
+
+  const outputTokens = msg.usage?.output_tokens ?? 0
+  const tokenPct = Math.round((outputTokens / 10000) * 100)
+  const tokenTag = tokenPct >= 95 ? 'ERROR' : tokenPct >= 90 ? 'WARN' : 'OK'
+  console.log(`[token-usage] output=${outputTokens} / 10000 (${tokenPct}%) [${tokenTag}]`)
+  if (tokenPct >= 95) console.error('[token-usage] >95% of cap — schema may be overflowing. Consider trimming extended_data examples.')
+  else if (tokenPct >= 90) console.warn('[token-usage] >90% of cap — monitor closely. Next schema change could break generation.')
 
   const text = msg.content[0].type === 'text' ? msg.content[0].text : ''
   const jsonMatch = text.match(/\{[\s\S]*\}/)
