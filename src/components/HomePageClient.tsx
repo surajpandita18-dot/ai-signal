@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import type { Database } from '../../db/types/database'
+import type { DidYouKnowFact, TomorrowDraft, TickerData, PreviewCard } from '@/lib/types/extended-data'
 import { SiteNav } from '@/components/SiteNav'
 import { HeroZone } from '@/components/HeroZone'
 import { HeroBridge } from '@/components/HeroBridge'
@@ -70,6 +71,25 @@ function RevealObserver() {
 export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhrases, teasers, archiveIssues }: HomePageClientProps) {
   const [readPct, setReadPct] = useState(0)
 
+  // Extract extended_data fields with null-safety — DB jsonb is untyped at runtime
+  const rawExt = story.extended_data as Record<string, unknown> | null
+  const didYouKnowFacts = Array.isArray(rawExt?.did_you_know_facts)
+    ? (rawExt!.did_you_know_facts as DidYouKnowFact[])
+    : undefined
+  const tomorrowDrafts = Array.isArray(rawExt?.tomorrow_drafts)
+    ? (rawExt!.tomorrow_drafts as TomorrowDraft[])
+    : undefined
+  const tickers = Array.isArray(rawExt?.tickers)
+    ? (rawExt!.tickers as Array<Record<string, unknown>>).map(t => ({
+        ...t,
+        // Normalize legacy 'delta' field (pre-rename) to 'change' for existing DB records
+        change: t['change'] ?? t['delta'],
+      })) as TickerData[]
+    : undefined
+  const previewCards = Array.isArray(rawExt?.preview_cards)
+    ? (rawExt!.preview_cards as PreviewCard[])
+    : undefined
+
   // Derive issueDate and publishTime from publishedAt ISO string
   const publishedDate = publishedAt ? new Date(publishedAt) : new Date()
   const issueDate = publishedDate.toLocaleDateString('en-GB', {
@@ -89,9 +109,11 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
         readMinutes={story.read_minutes}
         phrases={broadcastPhrases ?? []}
         category={story.category ?? undefined}
+        tickers={tickers}
+        previewCards={previewCards}
       />
       <HeroBridge />
-      <NotebookStrip />
+      <NotebookStrip facts={didYouKnowFacts} />
 
       {/* Main grid: article + sidebar */}
       <div className="main-article-grid">
@@ -101,7 +123,7 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
           signalNumber={signalNumber}
           onReadPctChange={setReadPct}
         />
-        <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} />
+        <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} drafts={tomorrowDrafts} />
       </div>
 
       <ArchiveSection issues={archiveIssues} />

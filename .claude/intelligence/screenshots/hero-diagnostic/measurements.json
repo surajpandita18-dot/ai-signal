@@ -1,0 +1,112 @@
+{
+  "tickers": [
+    {
+      "index": 0,
+      "cardWidth": 233,
+      "cardHeight": 105,
+      "valueText": "$950M",
+      "deltaText": "↑ Top 5 AI raises 2026",
+      "val_whiteSpace": "nowrap",
+      "val_fontSize": "22px",
+      "val_flexShrink": "0",
+      "val_offsetWidth": 49,
+      "val_scrollWidth": 49,
+      "delta_whiteSpace": "nowrap",
+      "delta_overflow": "hidden",
+      "delta_textOverflow": "ellipsis",
+      "delta_offsetWidth": 144,
+      "delta_scrollWidth": 144,
+      "valueWrap_display": "flex",
+      "valueWrap_flexWrap": "nowrap",
+      "valueWrap_alignItems": "baseline",
+      "valueWrap_width": 199
+    },
+    {
+      "index": 1,
+      "cardWidth": 251,
+      "cardHeight": 105,
+      "valueText": "On track",
+      "deltaText": "↑ Blockbuster projected",
+      "val_whiteSpace": "nowrap",
+      "val_fontSize": "22px",
+      "val_flexShrink": "0",
+      "val_offsetWidth": 61,
+      "val_scrollWidth": 61,
+      "delta_whiteSpace": "nowrap",
+      "delta_overflow": "hidden",
+      "delta_textOverflow": "ellipsis",
+      "delta_offsetWidth": 151,
+      "delta_scrollWidth": 151,
+      "valueWrap_display": "flex",
+      "valueWrap_flexWrap": "nowrap",
+      "valueWrap_alignItems": "baseline",
+      "valueWrap_width": 217
+    },
+    {
+      "index": 2,
+      "cardWidth": 212,
+      "cardHeight": 105,
+      "valueText": "$50B+",
+      "deltaText": "↑ by 2028",
+      "val_whiteSpace": "nowrap",
+      "val_fontSize": "22px",
+      "val_flexShrink": "0",
+      "val_offsetWidth": 48,
+      "val_scrollWidth": 48,
+      "delta_whiteSpace": "nowrap",
+      "delta_overflow": "hidden",
+      "delta_textOverflow": "ellipsis",
+      "delta_offsetWidth": 59,
+      "delta_scrollWidth": 59,
+      "valueWrap_display": "flex",
+      "valueWrap_flexWrap": "nowrap",
+      "valueWrap_alignItems": "baseline",
+      "valueWrap_width": 178
+    }
+  ],
+  "previewCards": [
+    {
+      "index": 0,
+      "offsetHeight": 71,
+      "offsetWidth": 233,
+      "minHeight": "auto",
+      "display": "flex",
+      "alignItems": "center",
+      "text": "By the numbers$950M — largest enterprise AI agent round of 2026"
+    },
+    {
+      "index": 1,
+      "offsetHeight": 71,
+      "offsetWidth": 233,
+      "minHeight": "auto",
+      "display": "flex",
+      "alignItems": "center",
+      "text": "Why it mattersEnterprise agent layer just went winner-take-most."
+    },
+    {
+      "index": 2,
+      "offsetHeight": 71,
+      "offsetWidth": 233,
+      "minHeight": "auto",
+      "display": "flex",
+      "alignItems": "center",
+      "text": "The moveMap your product overlap with Sierra this week."
+    }
+  ],
+  "composition": {
+    "viewport": 1440,
+    "heroZoneWidth": 1440,
+    "heroBannerWidth": 1200,
+    "heroBannerMaxWidth": "1200px",
+    "heroBannerLeft": 120,
+    "heroTickersWidth": 720,
+    "heroTickersLeft": 360,
+    "heroTickersMaxWidth": "720px",
+    "heroPreviewWidth": 720,
+    "heroPreviewLeft": 360
+  },
+  "broadcastAtLoad": {
+    "text": "Sierra raises $950M as the enterprise AI agent race hits inflection",
+    "len": 67
+  }
+}

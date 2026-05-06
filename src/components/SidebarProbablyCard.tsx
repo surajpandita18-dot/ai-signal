@@ -1,11 +1,14 @@
 'use client'
 
+import type { TomorrowDraft } from '@/lib/types/extended-data'
+
 interface Teaser {
   text: string
 }
 
 interface SidebarProbablyCardProps {
   teasers?: Teaser[]
+  drafts?: TomorrowDraft[]
 }
 
 const DAY_LABELS = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT']
@@ -17,10 +20,11 @@ const FALLBACK_TEASERS = [
   "India's inference cost arbitrage is real. Here's the math.",
 ]
 
-export function SidebarProbablyCard({ teasers = [] }: SidebarProbablyCardProps) {
+export function SidebarProbablyCard({ teasers = [], drafts }: SidebarProbablyCardProps) {
   const today = new Date()
 
-  const days = [1, 2, 3].map((offset) => {
+  // Fallback computed dates used when extended_data.tomorrow_drafts is absent
+  const computedDays = [1, 2, 3].map((offset) => {
     const d = new Date(today)
     d.setDate(today.getDate() + offset)
     return {
@@ -37,8 +41,11 @@ export function SidebarProbablyCard({ teasers = [] }: SidebarProbablyCardProps) 
       </div>
       <div className="probably-stack">
         {([0, 1, 2] as const).map((i) => {
-          const teaserText = teasers[i]?.text ?? FALLBACK_TEASERS[i] ?? ''
-          const isLead = i === 0
+          const draft = drafts?.[i]
+          const teaserText = draft?.text ?? teasers[i]?.text ?? FALLBACK_TEASERS[i] ?? ''
+          const dayLabel   = draft?.day ?? computedDays[i]?.day ?? 'TBD'
+          const dateLabel  = draft?.date ?? computedDays[i]?.date ?? ''
+          const isLead     = draft ? draft.status === 'lead_candidate' : i === 0
           return (
             <div
               key={i}
@@ -46,8 +53,8 @@ export function SidebarProbablyCard({ teasers = [] }: SidebarProbablyCardProps) 
             >
               <div className="probably-env-flap" />
               <div className="probably-env-meta">
-                <span className="probably-env-day">{days[i]?.day}</span>
-                <span className="probably-env-date">{days[i]?.date}</span>
+                <span className="probably-env-day">{dayLabel}</span>
+                <span className="probably-env-date">{dateLabel}</span>
               </div>
               <div className="probably-env-text">{teaserText}</div>
               {isLead ? (

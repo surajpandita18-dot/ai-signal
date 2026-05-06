@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect, useRef, useCallback } from 'react'
+import type { DidYouKnowFact } from '@/lib/types/extended-data'
 
 // ─── facts data ──────────────────────────────────────────────────────────────
 
@@ -24,10 +25,10 @@ type Category = 'all' | FactCat
 
 type Fact = { cat: string; html: string }
 
-function filterFacts(category: Category): readonly Fact[] {
-  if (category === 'all') return FACTS
-  const filtered = (FACTS as readonly Fact[]).filter(f => f.cat === category)
-  return filtered.length > 0 ? filtered : FACTS
+function filterFacts(category: Category, source: readonly Fact[] = FACTS): readonly Fact[] {
+  if (category === 'all') return source
+  const filtered = source.filter(f => f.cat === category)
+  return filtered.length > 0 ? filtered : source
 }
 
 // ─── constants ────────────────────────────────────────────────────────────────
@@ -43,7 +44,16 @@ const ROTATION_MS = 5500
 
 // ─── component ───────────────────────────────────────────────────────────────
 
-export function NotebookFacts() {
+interface NotebookFactsProps {
+  facts?: DidYouKnowFact[]
+}
+
+export function NotebookFacts({ facts }: NotebookFactsProps) {
+  // Normalize live DB facts to internal Fact shape; fall back to hardcoded FACTS
+  const liveFacts: readonly Fact[] | null =
+    facts && facts.length > 0
+      ? facts.map(f => ({ cat: f.category, html: f.text }))
+      : null
   const [activeCategory, setActiveCategory] = useState<Category>('all')
   const [factIndex, setFactIndex]           = useState(0)
   const [isPlaying, setIsPlaying]           = useState(true)
@@ -55,7 +65,7 @@ export function NotebookFacts() {
   const factCountRef     = useRef<number>(FACTS.length)
   const factIndexRef     = useRef<number>(0)
 
-  const safeFacts = filterFacts(activeCategory)
+  const safeFacts = filterFacts(activeCategory, liveFacts ?? FACTS)
   factCountRef.current = safeFacts.length
 
   // ── animation helper ──────────────────────────────────────────────────────
@@ -155,7 +165,7 @@ export function NotebookFacts() {
       <div className="nb-left">
         <span className="nb-title">Did you know?</span>
         <span className="nb-counter">
-          Fact {pad2((safeIndex % 12) + 1)} of 12
+          Fact {pad2((safeIndex % factCountRef.current) + 1)} of {factCountRef.current}
         </span>
       </div>
 
