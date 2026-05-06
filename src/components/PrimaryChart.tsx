@@ -72,6 +72,7 @@ function QuoteCalloutVariant({ data }: { data: QuoteCallout }) {
 }
 
 export function PrimaryChart({ chart }: PrimaryChartProps) {
+  if (chart.type === 'quote_callout' && Array.isArray(chart.data)) return null
   return (
     <div className="compare-chart">
       <div className="compare-title">{chart.title}</div>

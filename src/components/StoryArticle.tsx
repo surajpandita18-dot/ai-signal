@@ -568,12 +568,8 @@ export function StoryArticle({
 
       {/* ── Section 5: By the Numbers ── */}
       {(() => {
-        const FALLBACK_STATS = [
-          { label: 'Ban scope', value: 'All AI', delta: null, detail: 'Synthetic actors + scripts ineligible' },
-          { label: 'Effective', value: 'Now', delta: null, detail: 'Effective immediately, not 2026' },
-          { label: 'Industry impact', value: '$50B+', delta: null, detail: 'Streaming + studios market affected' },
-        ]
-        const statCards = (story.stats && story.stats.length > 0) ? story.stats : FALLBACK_STATS
+        const statCards = (story.stats && story.stats.length > 0) ? story.stats : null
+        if (!statCards) return null
         return (
           <div className="block" id="sec-numbers">
             <div className="block-header">
