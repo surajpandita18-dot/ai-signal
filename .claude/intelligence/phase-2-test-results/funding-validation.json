@@ -1,0 +1,170 @@
+{
+  "article_type": "FUNDING",
+  "timestamp": "2026-05-06T19:08:52.047Z",
+  "parse_ok": true,
+  "parse_error": null,
+  "validation": {
+    "pass": false,
+    "hard_violations": [
+      {
+        "field": "signal_block_body",
+        "words": 43,
+        "soft": 36,
+        "hard": 42,
+        "severity": "HARD",
+        "excerpt": "**Greenoaks leading a $950M round** at $4.5B makes Sierra the largest "
+      },
+      {
+        "field": "block_2_prose",
+        "words": 50,
+        "soft": 38,
+        "hard": 46,
+        "severity": "HARD",
+        "excerpt": "For **Indian SaaS founders** competing in CX, ITSM, or sales automatio"
+      },
+      {
+        "field": "reaction_quote[0]",
+        "words": 27,
+        "soft": 17,
+        "hard": 22,
+        "severity": "HARD",
+        "excerpt": "**This is the Series A moment** for enterprise agents — just compresse"
+      },
+      {
+        "field": "reaction_quote[1]",
+        "words": 23,
+        "soft": 17,
+        "hard": 22,
+        "severity": "HARD",
+        "excerpt": "**Sierra's raise forces every CX PM** to answer one question on Monday"
+      }
+    ],
+    "soft_violations": [
+      {
+        "field": "summary",
+        "words": 33,
+        "soft": 25,
+        "hard": 38,
+        "severity": "SOFT",
+        "excerpt": "**CX automation** is no longer a speculative bet — investors just pric"
+      },
+      {
+        "field": "counter_view",
+        "words": 61,
+        "soft": 53,
+        "hard": 62,
+        "severity": "SOFT",
+        "excerpt": "**$950M buys distribution, not a moat.** Enterprise agent stacks are s"
+      },
+      {
+        "field": "broadcast_phrase[1]",
+        "words": 11,
+        "soft": 10,
+        "hard": 16,
+        "severity": "SOFT",
+        "excerpt": "Bret Taylor's agents round is the largest in enterprise AI history"
+      },
+      {
+        "field": "ticker_detail[0]",
+        "words": 6,
+        "soft": 5,
+        "hard": 7,
+        "severity": "SOFT",
+        "excerpt": "Largest enterprise agent valuation on record"
+      },
+      {
+        "field": "ticker_detail[1]",
+        "words": 6,
+        "soft": 5,
+        "hard": 7,
+        "severity": "SOFT",
+        "excerpt": "Biggest single raise for agent-native company"
+      },
+      {
+        "field": "ticker_detail[2]",
+        "words": 6,
+        "soft": 5,
+        "hard": 7,
+        "severity": "SOFT",
+        "excerpt": "Glean's Series E extension for context"
+      },
+      {
+        "field": "reaction_attribution[1]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Senior PM, Indian SaaS · CX platform, Series C company"
+      },
+      {
+        "field": "reaction_quote[2]",
+        "words": 22,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**$4.5B prices in a reliability curve** the models haven't proven. Unt"
+      },
+      {
+        "field": "did_you_know_fact[1]",
+        "words": 19,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Bret Taylor co-built Salesforce's Einstein AI layer before founding Si"
+      },
+      {
+        "field": "did_you_know_fact[2]",
+        "words": 22,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Enterprise CX software was a $15B market in 2020; AI agent entrants ar"
+      },
+      {
+        "field": "did_you_know_fact[4]",
+        "words": 20,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Greenoaks has backed Notion, Figma, and Coupang — their Sierra bet sig"
+      },
+      {
+        "field": "did_you_know_fact[5]",
+        "words": 18,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Sierra's founding team includes former Google and Salesforce executive"
+      },
+      {
+        "field": "did_you_know_fact[7]",
+        "words": 20,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "CX automation is the first AI vertical where ROI is measurable in week"
+      }
+    ],
+    "hard_count": 4,
+    "soft_count": 13,
+    "total": 17
+  },
+  "signal_sample": {
+    "headline": "Sierra's $950M Series C prices enterprise AI agents at $4.5B",
+    "summary": "**CX automation** is no longer a speculative bet — investors just priced it at **$4.5B**. Every Indian SaaS founder stil",
+    "numbers_headline": "Sierra's $950M agent bet",
+    "matters_headline": "CX automation valuation ceiling just reset",
+    "broadcast_phrases": [
+      "CX automation just became a $4.5B asset class",
+      "Bret Taylor's agents round is the largest in enterprise AI history",
+      "The 2027 roadmap item is now a 2025 competitive threat"
+    ],
+    "cascade_steps": [
+      "Enterprise buyers benchmark CX vendors against Sierra's capabilities.",
+      "Competitor boards demand accelerated agent roadmaps.",
+      "Indian SaaS founders face agent-readiness questions in investor calls.",
+      "Greenoaks-style LPs pressure other CX investments for timeline updates."
+    ],
+    "stakeholder_subtitle": "Who gains leverage and who loses runway in CX AI"
+  }
+}

@@ -1,0 +1,170 @@
+{
+  "article_type": "PRODUCT-PRICING",
+  "timestamp": "2026-05-06T19:07:48.580Z",
+  "parse_ok": true,
+  "parse_error": null,
+  "validation": {
+    "pass": false,
+    "hard_violations": [
+      {
+        "field": "counter_view",
+        "words": 72,
+        "soft": 53,
+        "hard": 62,
+        "severity": "HARD",
+        "excerpt": "**Price parity without distribution parity is noise.** Gemini Flash si"
+      },
+      {
+        "field": "signal_block_body",
+        "words": 48,
+        "soft": 36,
+        "hard": 42,
+        "severity": "HARD",
+        "excerpt": "OpenAI dropped **GPT-4.1 Mini input pricing from $0.15 to $0.04 per mi"
+      },
+      {
+        "field": "block_2_prose",
+        "words": 49,
+        "soft": 38,
+        "hard": 46,
+        "severity": "HARD",
+        "excerpt": "The deeper signal: OpenAI isn't ceding the **cost-sensitive mid-tier t"
+      }
+    ],
+    "soft_violations": [
+      {
+        "field": "headline",
+        "words": 13,
+        "soft": 12,
+        "hard": 14,
+        "severity": "SOFT",
+        "excerpt": "OpenAI cuts GPT-4.1 Mini input cost 83%, matching Gemini Flash at $0.0"
+      },
+      {
+        "field": "summary",
+        "words": 26,
+        "soft": 25,
+        "hard": 38,
+        "severity": "SOFT",
+        "excerpt": "**Token-heavy features** that were margin-negative yesterday are profi"
+      },
+      {
+        "field": "stat_label[0]",
+        "words": 3,
+        "soft": 2,
+        "hard": 3,
+        "severity": "SOFT",
+        "excerpt": "New input price"
+      },
+      {
+        "field": "decision_verdict_text[0]",
+        "words": 4,
+        "soft": 3,
+        "hard": 5,
+        "severity": "SOFT",
+        "excerpt": "Switch and retest now"
+      },
+      {
+        "field": "decision_question[1]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Are you on a custom enterprise rate card with OpenAI?"
+      },
+      {
+        "field": "reaction_quote[0]",
+        "words": 21,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**This is the moment** agentic features stop being R&D budget and star"
+      },
+      {
+        "field": "reaction_attribution[0]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Senior PM, Indian B2B SaaS · Building LLM-powered copilot features"
+      },
+      {
+        "field": "reaction_quote[1]",
+        "words": 20,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**We shelved three features** last quarter citing token cost. Running "
+      },
+      {
+        "field": "reaction_quote[2]",
+        "words": 21,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**Price matching is not the same** as winning. Google's distribution i"
+      },
+      {
+        "field": "reaction_attribution[2]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Cloud infrastructure analyst · Skeptic on OpenAI's enterprise share ga"
+      },
+      {
+        "field": "did_you_know_fact[1]",
+        "words": 18,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "83% is one of the steepest single-drop pricing moves in LLM API histor"
+      },
+      {
+        "field": "did_you_know_fact[3]",
+        "words": 20,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "MMLU-Pro tests multi-step reasoning across 12 domains — a 12% lift is "
+      },
+      {
+        "field": "did_you_know_fact[5]",
+        "words": 25,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "In 2023, GPT-3.5 Turbo's 90% price cut triggered a wave of consumer AI"
+      },
+      {
+        "field": "did_you_know_fact[7]",
+        "words": 19,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "An Indian SaaS team running 50M tokens/day saves roughly ₹30 lakh annu"
+      }
+    ],
+    "hard_count": 3,
+    "soft_count": 14,
+    "total": 17
+  },
+  "signal_sample": {
+    "headline": "OpenAI cuts GPT-4.1 Mini input cost 83%, matching Gemini Flash at $0.04/M tokens",
+    "summary": "**Token-heavy features** that were margin-negative yesterday are profitable today. OpenAI just **matched Gemini Flash's ",
+    "numbers_headline": "The 83% Price Drop, Unpacked",
+    "matters_headline": "Rethink Every Deferred Feature Now",
+    "broadcast_phrases": [
+      "The cost floor just dropped 83% overnight",
+      "Gemini Flash pricing, GPT reasoning quality",
+      "Your shelved features are now margin-positive"
+    ],
+    "cascade_steps": [
+      "Teams rerun unit economics; shelved features reopen.",
+      "Google faces pressure to cut Gemini Flash output pricing.",
+      "Anthropic Claude Haiku tier enters the pricing conversation.",
+      "New agentic product launches accelerate across Indian SaaS."
+    ],
+    "stakeholder_subtitle": "Who gains leverage and who loses their cost-of-model moat"
+  }
+}

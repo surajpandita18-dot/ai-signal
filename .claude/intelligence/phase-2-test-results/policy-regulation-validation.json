@@ -1,0 +1,250 @@
+{
+  "article_type": "POLICY-REGULATION",
+  "timestamp": "2026-05-06T19:09:58.121Z",
+  "parse_ok": true,
+  "parse_error": null,
+  "validation": {
+    "pass": false,
+    "hard_violations": [
+      {
+        "field": "block_2_prose",
+        "words": 48,
+        "soft": 38,
+        "hard": 46,
+        "severity": "HARD",
+        "excerpt": "For **Indian B2B SaaS companies** with EU enterprise contracts — espec"
+      },
+      {
+        "field": "stakeholder_who[3]",
+        "words": 8,
+        "soft": 4,
+        "hard": 6,
+        "severity": "HARD",
+        "excerpt": "Indian IT services firms with EU AI contracts"
+      },
+      {
+        "field": "reaction_quote[1]",
+        "words": 24,
+        "soft": 17,
+        "hard": 22,
+        "severity": "HARD",
+        "excerpt": "**Our EU buyers started asking** for AI Act readiness declarations in "
+      }
+    ],
+    "soft_violations": [
+      {
+        "field": "headline",
+        "words": 14,
+        "soft": 12,
+        "hard": 14,
+        "severity": "SOFT",
+        "excerpt": "EU AI Act enforcement locks in August 2026 — 4% global revenue at stak"
+      },
+      {
+        "field": "summary",
+        "words": 30,
+        "soft": 25,
+        "hard": 38,
+        "severity": "SOFT",
+        "excerpt": "**Indian SaaS teams** selling into EU markets have **14 months** to co"
+      },
+      {
+        "field": "pull_quote",
+        "words": 21,
+        "soft": 20,
+        "hard": 24,
+        "severity": "SOFT",
+        "excerpt": "**The 'wait and watch' window on EU AI Act just closed.** Remediation "
+      },
+      {
+        "field": "counter_view",
+        "words": 60,
+        "soft": 53,
+        "hard": 62,
+        "severity": "SOFT",
+        "excerpt": "**Enforcement reality rarely matches enforcement text.** The EU's GDPR"
+      },
+      {
+        "field": "signal_block_body",
+        "words": 42,
+        "soft": 36,
+        "hard": 42,
+        "severity": "SOFT",
+        "excerpt": "The **August 1, 2026 deadline** is confirmed, not provisional. AI syst"
+      },
+      {
+        "field": "ticker_detail[0]",
+        "words": 6,
+        "soft": 5,
+        "hard": 7,
+        "severity": "SOFT",
+        "excerpt": "Max penalty for high-risk AI violations."
+      },
+      {
+        "field": "ticker_detail[1]",
+        "words": 6,
+        "soft": 5,
+        "hard": 7,
+        "severity": "SOFT",
+        "excerpt": "August 1, 2026 is confirmed, non-negotiable."
+      },
+      {
+        "field": "insight_text[1]",
+        "words": 15,
+        "soft": 12,
+        "hard": 17,
+        "severity": "SOFT",
+        "excerpt": "Any AI touching hiring, credit, or safety for EU users — including Ind"
+      },
+      {
+        "field": "stakeholder_who[1]",
+        "words": 5,
+        "soft": 4,
+        "hard": 6,
+        "severity": "SOFT",
+        "excerpt": "AI audit and legal-tech firms"
+      },
+      {
+        "field": "stakeholder_who[2]",
+        "words": 6,
+        "soft": 4,
+        "hard": 6,
+        "severity": "SOFT",
+        "excerpt": "Series A HR-tech and fintech startups"
+      },
+      {
+        "field": "decision_question[0]",
+        "words": 12,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Does your AI touch hiring, credit, or safety decisions for EU users?"
+      },
+      {
+        "field": "decision_question[1]",
+        "words": 11,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Is EU revenue under 5% with no enterprise contracts in pipeline?"
+      },
+      {
+        "field": "decision_question[2]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Is your product purely B2C with no high-risk use-case exposure?"
+      },
+      {
+        "field": "reaction_quote[0]",
+        "words": 20,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**Conformity assessments take six to nine months.** If you haven't sco"
+      },
+      {
+        "field": "reaction_attribution[0]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Enterprise AI compliance lead · EU-market SaaS company, Series B"
+      },
+      {
+        "field": "reaction_attribution[1]",
+        "words": 11,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "VP Sales, Indian HR-tech startup · Selling to DACH enterprise market"
+      },
+      {
+        "field": "reaction_quote[2]",
+        "words": 22,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**The 4% figure gets headlines,** but realistically regulators will ch"
+      },
+      {
+        "field": "reaction_attribution[2]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Tech policy researcher · EU regulatory watch, Brussels-based think tan"
+      },
+      {
+        "field": "did_you_know_fact[0]",
+        "words": 19,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "4% of global annual revenue means a $10M ARR startup faces up to $400K"
+      },
+      {
+        "field": "did_you_know_fact[1]",
+        "words": 20,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "The EU AI Act Annex III lists 8 high-risk categories; hiring and credi"
+      },
+      {
+        "field": "did_you_know_fact[3]",
+        "words": 19,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Notified bodies — the third-party auditors for conformity — number few"
+      },
+      {
+        "field": "did_you_know_fact[4]",
+        "words": 20,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "GDPR's first major fine against a non-EU company took 4 years post-enf"
+      },
+      {
+        "field": "did_you_know_fact[6]",
+        "words": 21,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Indian IT exports to the EU crossed $12B in FY2025 — a meaningful port"
+      },
+      {
+        "field": "did_you_know_fact[7]",
+        "words": 21,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "The EU AI Act is the world's first comprehensive AI law; 27 member sta"
+      }
+    ],
+    "hard_count": 3,
+    "soft_count": 24,
+    "total": 27
+  },
+  "signal_sample": {
+    "headline": "EU AI Act enforcement locks in August 2026 — 4% global revenue at stake",
+    "summary": "**Indian SaaS teams** selling into EU markets have **14 months** to complete conformity assessments for high-risk AI. Th",
+    "numbers_headline": "4% Revenue, 14 Months Left",
+    "matters_headline": "Rethink Your EU AI Compliance Stack",
+    "broadcast_phrases": [
+      "14 months to conformity or 4% of global revenue",
+      "EU buyers are already writing compliance into contracts",
+      "Audit trails built late cost 3–5x more"
+    ],
+    "cascade_steps": [
+      "EU enterprise RFPs add AI Act compliance clauses.",
+      "Notified body queues close for 2026 deadlines.",
+      "Non-compliant vendors dropped from EU procurement shortlists.",
+      "Enforcement begins; first investigations target visible products."
+    ],
+    "stakeholder_subtitle": "Compliance-ready vendors gain; unprepared startups face deal-flow risk"
+  }
+}

@@ -7,6 +7,7 @@ import type { GeneratedSignal as ValidatorSignal } from '@/lib/journalist-agent'
 import { QUALITY_RULES, SELF_CHECK_QUESTIONS } from '@/lib/journalist-agent'
 import { inngest, type DailyTriggerData } from './client'
 import type { ExtendedData } from '@/lib/types/extended-data'
+import { validateWordCounts, type WcSignalInput } from '@/lib/word-count-validator'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -446,22 +447,27 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
 
 {
   "category": "models"|"tools"|"business"|"policy"|"research",
-  "headline": "Sharp, specific, max 12 words. No clickbait.",
-  "summary": "2 dense sentences. What happened and why it matters. No padding.",
-  "why_it_matters": "Two distinct paragraphs separated by a blank line (\\n\\n). PARA 1 (2 sentences max): Opening — what shifted, why it matters now, for whom. PARA 2 (2 sentences max): Closing punch — the reframe. What this means for the reader's decisions tomorrow. Bold key phrases with **double asterisks** in both paragraphs. These two paragraphs flank the pull_quote in the rendered design.",
-  "pull_quote": "One killer sentence under 25 words. The most quotable editorial line — opinion not recap. Renders in italic display font between Para 1 and Para 2. Must not be null.",
+  "headline": "Main article title. Sharp, verb-led, punchy. Target: 12 words. Hard cap: 14 words. No clickbait. E.g. 'GPT-5 Mini cuts API costs by 10×, repricing every AI product budget.'",
+  "summary": "TL;DR strip body. Two dense sentences: what happened + the forced action. Target: 25 words. Hard cap: 38 words. E.g. 'GPT-5 Mini ships at 10× cheaper, +12% smarter than GPT-4 Turbo, with zero fanfare. Switch defaults this week — competitors will match by Friday.'",
+  "why_it_matters": "Two distinct paragraphs separated by \\n\\n. PARA 1: What shifted, why it matters now, for whom. Target: 32 words. Hard cap: 48 words. PARA 2: The reframe — what the reader must decide tomorrow. Target: 38 words. Hard cap: 50 words. Bold key phrases with **double asterisks** in both paragraphs. These two paragraphs flank the pull_quote in the rendered design.",
+  "pull_quote": "One killer editorial sentence — opinion not recap. Target: 20 words. Hard cap: 24 words. Wrap 1–3 key words in **bold** for punch phrase emphasis (e.g. 'The default model is no longer capability — it\\'s **who notices the price change first**'). Bold the punch phrase, not entire clauses. Word count excludes asterisks. Must not be null.",
   "lens_pm": "1–2 sentences for a PM. Concrete. What should they rethink or do?",
   "lens_founder": "1–2 sentences for a founder. Competitive or strategic lens.",
   "lens_builder": "1–2 sentences for an engineer/builder. Stack, API, or workflow implication.",
   "stats": [
-    { "label": "short label", "value": "number with unit", "delta": "trend or null", "detail": "one line context" }
+    LAYER 3 — Populate 3 stats based on article_type. MANDATORY (non-null) for PRODUCT-PRICING, FUNDING, POLICY-REGULATION, RESEARCH-BENCHMARK — override the conditional rule for these types. Each stat: label (1-2 words, hard cap 3w), value (headline number or fact), delta (trend or null), detail (5-8 word context line, hard cap 10w).
+    PRODUCT-PRICING → [cost change, performance delta, release mode]. E.g. [{"label":"Input cost","value":"$0.04/1M tokens","delta":"↓ 10× vs GPT-4o Mini","detail":"Down from $0.40 — switch this week"},{"label":"Reasoning","value":"+12%","delta":"↑ vs GPT-4 Turbo","detail":"MMLU-Pro benchmark gain"},{"label":"Release mode","value":"Silent","delta":null,"detail":"Pricing page only, no press cycle"}]
+    FUNDING → [raise amount, runway implication, comparable round]. E.g. [{"label":"Raise","value":"$950M Series C","delta":null,"detail":"Largest enterprise AI agent round of 2026"},{"label":"Runway","value":"~18 months","delta":null,"detail":"At current burn rate"},{"label":"Comparable","value":"$124M","delta":null,"detail":"Anthropic at same stage, Series B"}]
+    POLICY-REGULATION → [deadline, scope, penalty]. E.g. [{"label":"Deadline","value":"Aug 1, 2026","delta":null,"detail":"EU AI Act enforcement start date"},{"label":"Scope","value":">$10M ARR","delta":null,"detail":"All AI/ML companies above threshold"},{"label":"Penalty","value":"4% revenue","delta":null,"detail":"Of global annual turnover, per violation"}]
+    RESEARCH-BENCHMARK → [SOTA result, compute cost, reproducibility]. E.g. [{"label":"SOTA","value":"84.5% MMLU","delta":"↑ from 81.2%","detail":"Prior best was Gemini Ultra"},{"label":"Compute","value":"8K H100s","delta":null,"detail":"3-month training run"},{"label":"Repro","value":"Public","delta":null,"detail":"Code and weights on HuggingFace"}]
+    If article_type does not match any above, set stats to null — the section will hide gracefully.
   ],
   "action_items": [
-    "Concrete action to take today or this week",
-    "Second action",
-    "Third action"
+    "Action body. Bold the key verb phrase at the start. Target: 20-26 words per item. Hard cap: 31 words. Action type labels (Run / Flag / Check) are assigned by position in the component — do NOT include them in the string. E.g. '**Re-run your unit economics** on every feature gated by token cost. There\\'s likely one feature you killed last quarter that just became profitable.'",
+    "Second action body — different action verb, different consequence. 20-26 words. Hard cap 31.",
+    "Third action body — closes with the ownership or narrative move. 20-26 words. Hard cap 31."
   ],
-  "counter_view": "1–2 sentences. Strongest steelman of the opposite view. Honest.",
+  "counter_view": "Devil's advocate body. 3–4 sentences. Genuine pushback — not a strawman. Target: 53 words. Hard cap: 62 words. Present the strongest case against the signal's main claim.",
   "counter_view_headline": "5–7 words for the counter view headline",
   "sources": [
     { "label": "Source name", "url": "full URL" }
@@ -469,13 +475,21 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   "read_minutes": 4,
   "deeper_read": "URL of the primary source article",
   "editorial_take": "One sharp tweetable sentence — AI Signal's editorial opinion on this story. Standalone. Not a recap of facts. e.g., 'The default model is no longer a question of capability — it's a question of who notices the price change first.'",
-  "broadcast_phrases": ["Phrase 1 (6-14 words, starts with Today's signal: + data anchor)", "Phrase 2 (6-14 words, pure data anchor — number, currency, or named entity)", "Phrase 3 (6-14 words, pure data anchor — implication or consequence)"],
+  "broadcast_phrases": [
+    LAYER 2 — Generate exactly 3 Type A editorial phrases. These are article-specific editorial commentary in the AI Signal voice. Target: 6-12 words each. Hard cap: 16 words (POLICY-REGULATION stories may need up to 16w for contextual precision). DO NOT generate counter-style phrases ('X tokens processed today', 'X startups registered') or backstory-style phrases ('Why 06:14 IST?') — those are platform templates hardcoded in the JS, not Sonnet's output.
+    Type A pattern: one editorial sentence, present-tense, specific to this story's implication.
+    Examples (do not copy): "Today's signal: pricing economics shifted overnight." | "OpenAI quietly cut model costs by 10×. Most teams haven't noticed yet." | "If you ship AI products, your unit economics changed today."
+    "Phrase 1: framing — what shifted and why it matters (start with 'Today\\'s signal:' or story-specific hook)",
+    "Phrase 2: the specific number or named fact that anchors the story",
+    "Phrase 3: the implication — consequence for the reader's decisions"
+  ],
   "pick_reason": "1-2 sentence editorial reason this story was chosen over the others. Name the specific criterion.",
   "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}],
   "extended_data": {
-    "numbers_headline": "5–9 words. What the numbers PRICE or VALIDATE (FUNDING), what ASSUMPTION just broke (PRODUCT-PRICING), what CONSTRAINT landed (POLICY), what BASELINE cracked (RESEARCH). Specific to this signal. Do not use phrases like 'the data shifted overnight' or 'by the numbers'.",
-    "matters_headline": "5–9 words. What the reader needs to rethink — their budget, roadmap, assumption, or decision. Specific to this signal. Do not use phrases like 'the bigger picture' or 'why it matters'.",
+    "numbers_headline": "Block-title for 'By the Numbers'. Target: 5 words. Hard cap: 8 words. What the numbers PRICE or VALIDATE (FUNDING), what ASSUMPTION just broke (PRODUCT-PRICING), what CONSTRAINT landed (POLICY), what BASELINE cracked (RESEARCH). Specific to this signal. Do not use 'the data shifted overnight' or 'by the numbers'.",
+    "matters_headline": "Block-title for 'Why It Matters'. Target: 6 words. Hard cap: 8 words. What the reader needs to rethink — their budget, roadmap, assumption, or decision. Specific to this signal. Do not use 'the bigger picture' or 'why it matters'.",
     "tickers": [
+      Exactly 3 tickers. label: 4-5 word metric name + timeframe (hard cap 6w). detail: 4-6 word context line (hard cap 7w).
       { "label": "Input cost", "value": "$0.04", "change": { "direction": "down", "text": "↓ 10×" }, "detail": "Per million tokens vs GPT-4 Turbo" },
       { "label": "Reasoning delta", "value": "+12%", "change": { "direction": "up", "text": "↑ vs GPT-4 Turbo" }, "detail": "MMLU-Pro benchmark" },
       { "label": "Window to act", "value": "48h", "change": { "direction": "flat", "text": "before competitors move" }, "detail": "Historical lag after OpenAI pricing changes" }
@@ -486,8 +500,11 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       { "index": "03", "label": "The move", "value": "≤8 words. One concrete action, time-boxed. E.g. 'Map your product overlap with Sierra this week.'" }
     ],
     "did_you_know_facts": [
-      { "category": "numbers", "text": "Example: The average mid-stage AI startup routes 40M tokens/day. At GPT-4 Turbo pricing that is $1,600/day. At GPT-5 Mini it is $160." },
-      { "category": "industry", "text": "Produce 8–12 facts total — mix numbers/trivia/industry, built around the story's core data and its broader ecosystem context. Each fact 1–2 sentences." }
+      LAYER 6 — Produce 8-12 facts. Each fact: 1-2 sentences. Target: 11-23 words. Hard cap: 28 words. Stat-first opener: lead with the surprising number or counterintuitive fact before the context. Quirky angle required — surprising number, historical parallel, or counterintuitive implication. Do NOT produce generic AI industry trivia. Build from the story's core data and its ecosystem ripples.
+      Example stat-first openers: "3 in 5 enterprise CTOs..." | "$1.2B was burned on..." | "The last time pricing moved this fast was..."
+      { "category": "numbers", "text": "Stat-first: surprising number → context. 11-23 words. Hard cap 28w." },
+      { "category": "industry", "text": "Stat-first: counterintuitive industry fact specific to this signal. 11-23 words. Hard cap 28w." },
+      { "category": "trivia", "text": "Stat-first: historical parallel or analogy. 11-23 words. Hard cap 28w." }
     ],
     "primary_chart": {
       "type": "comparison",
@@ -500,30 +517,33 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       ]
     },
     "insights_strip": [
-      { "icon": "→", "label": "What changed", "text": "One sharp sentence: what just shifted." },
-      { "icon": "◐", "label": "Who's affected", "text": "One sharp sentence: the specific audience that must act." },
-      { "icon": "⚡", "label": "Move by", "text": "One sharp sentence: the single action and rough timeframe." }
+      Exactly 3 cells. text: one sharp sentence. Target: 10-14 words. Hard cap: 17 words. Must fit a single scannable cell — no dependent clauses.
+      { "icon": "→", "label": "What changed", "text": "One sharp sentence on what just shifted. 10-14 words. Hard cap 17w." },
+      { "icon": "◐", "label": "Who's affected", "text": "One sharp sentence on the specific audience that must act. 10-14 words. Hard cap 17w." },
+      { "icon": "⚡", "label": "Move by", "text": "One sharp sentence: the single action + timeframe. 10-14 words. Hard cap 17w." }
     ],
     "cascade": {
       "direction": "forecast",
       "title": "What happens next",
-      "subtitle": "The cascade has a shape. Read it before competitors do.",
+      "subtitle": "LAYER 7 — subtitle: Target 10 words. Hard cap: 12 words. E.g. 'The cascade has a shape. Read it before competitors do.'",
       "steps": [
-        { "marker": 1, "week": "This week", "event": "≤10 words. Declarative. What the fastest-moving teams do NOW. E.g. 'Competing vendors launch preemptive pricing conversations.'" },
-        { "marker": 2, "week": "2–3 weeks", "event": "≤10 words. Second-order move. E.g. 'Enterprise buyers use this round as negotiation leverage.'" },
-        { "marker": 3, "week": "6 weeks", "event": "≤10 words. Market or ecosystem response. E.g. '2–3 entrants raise at the implied valuation floor.'" },
-        { "marker": 4, "week": "3 months", "event": "≤10 words. Structural shift. E.g. 'Category consolidates. Fewer platforms, larger checks.'" }
+        LAYER 7 — Exactly 4 steps, logical sequence (This week → Week 2 → Week 3 → Week 4, or Day 1 → Week 1 → Month 1 → Quarter 1 pattern). Each event: 1 declarative sentence. Target: 8-9 words. Hard cap: 11 words. No filler words ('essentially', 'basically', 'in essence'). No dependent clauses.
+        { "marker": 1, "week": "This week", "event": "8-9 words. Declarative. Fastest-moving teams act NOW. E.g. 'Competing vendors launch preemptive pricing conversations.'" },
+        { "marker": 2, "week": "Week 2", "event": "8-9 words. Second-order move. E.g. 'Enterprise buyers use this round as negotiation leverage.'" },
+        { "marker": 3, "week": "Week 3", "event": "8-9 words. Market or ecosystem response. E.g. 'Open-source equivalents close the gap further.'" },
+        { "marker": 4, "week": "Week 4", "event": "8-9 words. Structural shift. E.g. 'Pricing pages refresh again. Floor is the new ceiling.'" }
       ]
     },
     "stakeholders": {
       "frame": "win_lose",
       "title": "Winners and losers",
-      "subtitle": "8–16 words. Name who is IN the 2x2 grid by naming the tension specific to this signal. Do not use 'stakeholders' as a word. Also do not use 'first-order impact' or 'winners and losers' as the subtitle phrasing.",
+      "subtitle": "Target: 10 words. Hard cap: 14 words. Name who is IN the 2x2 grid by naming the tension specific to this signal. Do not use 'stakeholders', 'first-order impact', or 'winners and losers' as phrasing.",
       "cells": [
-        { "type": "win", "who": "Specific winner group", "why": "Why they benefit — concrete" },
-        { "type": "win", "who": "Second winner group", "why": "Why they benefit — concrete" },
-        { "type": "lose", "who": "Specific loser group", "why": "Why they lose — concrete" },
-        { "type": "lose", "who": "Second loser group", "why": "Why they lose — concrete" }
+        who: 3-5 word role/persona label (hard cap 8w). why: 1-2 sentence impact. Target: 11-18 words. Hard cap: 22 words.
+        { "type": "win", "who": "3-5 word winner group label", "why": "Why they benefit — concrete. 11-18 words. Hard cap 22w." },
+        { "type": "win", "who": "3-5 word second winner label", "why": "Why they benefit — concrete. 11-18 words. Hard cap 22w." },
+        { "type": "lose", "who": "3-5 word loser group label", "why": "Why they lose — concrete. 11-18 words. Hard cap 22w." },
+        { "type": "lose", "who": "3-5 word second loser label", "why": "Why they lose — concrete. 11-18 words. Hard cap 22w." }
       ]
     },
     "decision_aid": {
@@ -531,16 +551,18 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       "title": "Decision framing headline (e.g. 'Should you switch your default model?')",
       "question": "The core yes/no question the reader faces right now",
       "rows": [
-        { "q_num": "Q1", "question": "First qualifying question — most common use case", "verdict": "go", "verdict_text": "≤4 words, action-first pill label. E.g. 'Yes → Go', 'Switch now', 'Move this week'" },
-        { "q_num": "Q2", "question": "Second qualifying question — edge case or caveat", "verdict": "wait", "verdict_text": "≤4 words. E.g. 'Run evals first', 'Audit overlap', 'Check dependencies'" },
-        { "q_num": "Q3", "question": "Third qualifying question — the laggard signal", "verdict": "no", "verdict_text": "≤4 words. E.g. 'No urgency yet', 'Wait — no rush', 'Hold position'" }
+        question: yes/no qualifying question. Target: 8-10 words. Hard cap: 12 words. verdict_text: action-first pill label. Target: 3-4 words. Hard cap: 5 words.
+        { "q_num": "Q1", "question": "First qualifying question — most common use case. 8-10 words, hard cap 12.", "verdict": "go", "verdict_text": "3-4 words. E.g. 'Yes → Go', 'Switch now'" },
+        { "q_num": "Q2", "question": "Second qualifying question — edge case or caveat. 8-10 words, hard cap 12.", "verdict": "wait", "verdict_text": "3-4 words. E.g. 'Run evals first', 'Audit overlap'" },
+        { "q_num": "Q3", "question": "Third qualifying question — the laggard signal. 8-10 words, hard cap 12.", "verdict": "no", "verdict_text": "3-4 words. E.g. 'Wait — no urgency', 'Hold position'" }
       ],
-      "final_verdict": "One sentence summary of the overall recommendation"
+      "final_verdict": "One sentence synthesis verdict. Target: 10 words. Hard cap: 12 words. E.g. 'Switch defaults this week if cost-bound. Run evals if quality-bound.'"
     },
     "reactions": [
-      { "quote": "Short punchy quote under 20 words. Real industry sentiment, not generic praise.", "name": "Role archetype (not a real name)", "role": "Specific context: Series A CTO, indie hacker, principal PM at FAANG" },
-      { "quote": "Second reaction — different perspective from the first, more specific to Indian market", "name": "Role archetype", "role": "Specific context" },
-      { "quote": "Third reaction — a skeptic or contrarian voice", "name": "Role archetype", "role": "Specific context" }
+      LAYER 5 — Exactly 3 reactions. quote: Target 15-18 words. Hard cap: 22 words. Bold the first 3-5 words to draw the eye (e.g. '**This is the iPhone-moment** for inference cost.'). name: role archetype, not a real name. role: specific context line. name + role combined: 8-10 words. Hard cap: 12 words. Include at least one skeptic voice among the 3.
+      { "quote": "**Bold first 3-5 words.** Rest of punchy industry sentiment. 15-18 words total. Hard cap 22w.", "name": "Role archetype (not a real name)", "role": "Specific context: Series A CTO, indie hacker, principal PM" },
+      { "quote": "**Bold first 3-5 words.** Different perspective, more specific to Indian market. 15-18 words. Hard cap 22w.", "name": "Role archetype", "role": "Specific context" },
+      { "quote": "**Bold first 3-5 words.** Skeptic or contrarian voice — genuine pushback. 15-18 words. Hard cap 22w.", "name": "Role archetype", "role": "Specific context" }
     ],
     "standup_messages": {
       "slack": "🧠 AI Signal · [Date e.g. May 6, 2026]\n\n[One sentence: what happened + the key number.]\n\n→ Why it matters: [One sentence on the implication for the team.]\n→ What I'd do: [One concrete action, time-boxed.]\n\n[X] min read · aisignal.so/signal/[N]",
@@ -557,7 +579,7 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
 }
 
 EXTENDED_DATA FALLBACK RULES — apply when story data is thin or the default structure does not fit:
-- primary_chart.type = "quote_callout" when there is no comparison, trajectory, or capital flow data. Use the editorial_take or pull_quote as the callout. NEVER omit primary_chart — it is required.
+- primary_chart.type = "quote_callout" when there is no comparison, trajectory, or capital flow data. LAYER 4: quote_callout data MUST be an object, NOT an array: { "quote": "15-25 word single sentence — use editorial_take or pull_quote", "attribution": "Name · Role · Affiliation" }. If no good quote is available, set primary_chart to null rather than generating an empty quote_callout. NEVER omit primary_chart — it is required unless explicitly null.
 - stakeholders.frame = "evidence_grid" when there are no clear winners/losers (policy ambiguity, early-stage research, opinion pieces). Use "evidence_strong", "evidence_weak", and "open_question" cell types.
 - stakeholders.frame = "before_after" when the story describes a transition or product change with clear before/after states. Use "before" and "after" cell types.
 - decision_aid.frame = "segment_impact" when the story has no clear yes/no decision but affects different audience segments differently. Use "segment_a", "segment_b", "segment_c" verdict types.
@@ -745,6 +767,192 @@ function normalizeSignalNewlines(s: GeneratedSignal): GeneratedSignal {
   return { ...s, why_it_matters: paras.join('\n\n') }
 }
 
+// ─── Word-count enforcement ──────────────────────────────────────────────────────
+
+function applyFieldPatch(signal: GeneratedSignal, field: string, value: string): GeneratedSignal {
+  const indexed = field.match(/^(.+)\[(\d+)\]$/)
+  const base = indexed ? indexed[1] : field
+  const idx  = indexed ? parseInt(indexed[2], 10) : -1
+  const ed   = signal.extended_data
+
+  switch (base) {
+    case 'headline':     return { ...signal, headline: value }
+    case 'summary':      return { ...signal, summary: value }
+    case 'pull_quote':   return { ...signal, pull_quote: value }
+    case 'counter_view': return { ...signal, counter_view: value }
+
+    case 'signal_block_body': {
+      const paras = (signal.why_it_matters ?? '').split(/\n\n+/)
+      paras[0] = value
+      return { ...signal, why_it_matters: paras.join('\n\n') }
+    }
+    case 'block_2_prose': {
+      const paras = (signal.why_it_matters ?? '').split(/\n\n+/)
+      paras[1] = value
+      return { ...signal, why_it_matters: paras.join('\n\n') }
+    }
+
+    case 'broadcast_phrase': {
+      if (idx < 0 || !signal.broadcast_phrases) return signal
+      const arr = [...signal.broadcast_phrases]; arr[idx] = value
+      return { ...signal, broadcast_phrases: arr }
+    }
+    case 'stat_label': {
+      if (idx < 0 || !signal.stats) return signal
+      const arr = [...signal.stats]; arr[idx] = { ...arr[idx], label: value }
+      return { ...signal, stats: arr }
+    }
+    case 'stat_detail': {
+      if (idx < 0 || !signal.stats) return signal
+      const arr = [...signal.stats]; arr[idx] = { ...arr[idx], detail: value }
+      return { ...signal, stats: arr }
+    }
+    case 'action_body': {
+      if (idx < 0 || !signal.action_items) return signal
+      const arr = [...signal.action_items]; arr[idx] = value
+      return { ...signal, action_items: arr }
+    }
+
+    case 'numbers_headline': return ed ? { ...signal, extended_data: { ...ed, numbers_headline: value } } : signal
+    case 'matters_headline': return ed ? { ...signal, extended_data: { ...ed, matters_headline: value } } : signal
+
+    case 'ticker_label': {
+      if (idx < 0 || !ed?.tickers) return signal
+      const arr = [...ed.tickers]; arr[idx] = { ...arr[idx], label: value }
+      return { ...signal, extended_data: { ...ed, tickers: arr } }
+    }
+    case 'ticker_detail': {
+      if (idx < 0 || !ed?.tickers) return signal
+      const arr = [...ed.tickers]; arr[idx] = { ...arr[idx], detail: value }
+      return { ...signal, extended_data: { ...ed, tickers: arr } }
+    }
+    case 'insight_text': {
+      if (idx < 0 || !ed?.insights_strip) return signal
+      const arr = [...ed.insights_strip]; arr[idx] = { ...arr[idx], text: value }
+      return { ...signal, extended_data: { ...ed, insights_strip: arr } }
+    }
+    case 'cascade_subtitle':
+      return ed?.cascade ? { ...signal, extended_data: { ...ed, cascade: { ...ed.cascade, subtitle: value } } } : signal
+    case 'cascade_step': {
+      if (idx < 0 || !ed?.cascade?.steps) return signal
+      const arr = [...ed.cascade.steps]; arr[idx] = { ...arr[idx], event: value }
+      return { ...signal, extended_data: { ...ed, cascade: { ...ed.cascade, steps: arr } } }
+    }
+    case 'stakeholder_subtitle':
+      return ed?.stakeholders ? { ...signal, extended_data: { ...ed, stakeholders: { ...ed.stakeholders, subtitle: value } } } : signal
+    case 'stakeholder_who': {
+      if (idx < 0 || !ed?.stakeholders?.cells) return signal
+      const arr = [...ed.stakeholders.cells]; arr[idx] = { ...arr[idx], who: value }
+      return { ...signal, extended_data: { ...ed, stakeholders: { ...ed.stakeholders, cells: arr } } }
+    }
+    case 'stakeholder_why': {
+      if (idx < 0 || !ed?.stakeholders?.cells) return signal
+      const arr = [...ed.stakeholders.cells]; arr[idx] = { ...arr[idx], why: value }
+      return { ...signal, extended_data: { ...ed, stakeholders: { ...ed.stakeholders, cells: arr } } }
+    }
+    case 'decision_question': {
+      if (idx < 0 || !ed?.decision_aid?.rows) return signal
+      const arr = [...ed.decision_aid.rows]; arr[idx] = { ...arr[idx], question: value }
+      return { ...signal, extended_data: { ...ed, decision_aid: { ...ed.decision_aid, rows: arr } } }
+    }
+    case 'decision_verdict_text': {
+      if (idx < 0 || !ed?.decision_aid?.rows) return signal
+      const arr = [...ed.decision_aid.rows]; arr[idx] = { ...arr[idx], verdict_text: value }
+      return { ...signal, extended_data: { ...ed, decision_aid: { ...ed.decision_aid, rows: arr } } }
+    }
+    case 'reaction_quote': {
+      if (idx < 0 || !ed?.reactions) return signal
+      const arr = [...ed.reactions]; arr[idx] = { ...arr[idx], quote: value }
+      return { ...signal, extended_data: { ...ed, reactions: arr } }
+    }
+    // reaction_attribution is composite (name · role) — cannot patch individual fields
+    case 'did_you_know_fact': {
+      if (idx < 0 || !ed?.did_you_know_facts) return signal
+      const arr = [...ed.did_you_know_facts]; arr[idx] = { ...arr[idx], text: value }
+      return { ...signal, extended_data: { ...ed, did_you_know_facts: arr } }
+    }
+    default:
+      console.warn(`[VALIDATE] unknown patch field: ${field}`)
+      return signal
+  }
+}
+
+async function enforceWordCounts(signal: GeneratedSignal, client: Anthropic): Promise<GeneratedSignal> {
+  const report = validateWordCounts(signal as unknown as WcSignalInput)
+
+  if (report.all_violations.length === 0) {
+    console.log('[VALIDATE-PASS] all word counts within caps')
+    return signal
+  }
+
+  const hardCount = report.hard_violations.length
+  const softCount = report.soft_violations.length
+  console.log(`[VALIDATE-WARN] ${hardCount} HARD + ${softCount} SOFT word-count violations`)
+  report.all_violations.forEach(v =>
+    console.log(`  [${v.severity}] ${v.field}: ${v.words}w (soft:${v.soft} hard:${v.hard}) — "${v.excerpt}"`)
+  )
+
+  if (hardCount === 0) {
+    console.log('[VALIDATE-PASS] no HARD violations — soft warnings logged, proceeding')
+    return signal
+  }
+
+  // reaction_attribution is composite — cannot patch, skip from regen targets
+  const regenTargets = report.hard_violations.filter(v => !v.field.startsWith('reaction_attribution'))
+  if (regenTargets.length === 0) {
+    console.log('[VALIDATE-WARN] only attribution violations — cannot patch, proceeding')
+    return signal
+  }
+
+  const fieldLines = regenTargets.map(v =>
+    `  "${v.field}" (${v.words} words → hard cap ${v.hard}): ${v.excerpt}`
+  ).join('\n')
+
+  const regenPrompt = `Trim each article field below to meet its word-count hard cap. Return ONLY valid JSON — no markdown fences, no extra text. Keys must exactly match the field names shown (including [N] index notation).
+
+Fields to trim:
+${fieldLines}
+
+Rules:
+- Preserve **bold markers** where present
+- Keep editorial voice and meaning — cut filler, not information
+- Return only the listed fields`
+
+  try {
+    const resp = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 1500,
+      messages: [{ role: 'user', content: regenPrompt }],
+    })
+
+    const raw = resp.content[0].type === 'text' ? resp.content[0].text : ''
+    const jsonMatch = raw.match(/\{[\s\S]*\}/)
+    if (!jsonMatch) {
+      console.warn('[REGEN-FAIL] no JSON in Sonnet response — keeping original')
+      return signal
+    }
+
+    const patches = JSON.parse(jsonMatch[0]) as Record<string, string>
+    let patched = signal
+    for (const [field, value] of Object.entries(patches)) {
+      if (typeof value === 'string') patched = applyFieldPatch(patched, field, value)
+    }
+
+    const recheck = validateWordCounts(patched as unknown as WcSignalInput)
+    const stillHard = recheck.hard_violations.length
+    if (stillHard === 0) {
+      console.log('[REGEN-SUCCESS] all HARD violations fixed')
+    } else {
+      console.warn(`[REGEN-FAIL] ${stillHard} HARD violations remain:`,
+        recheck.hard_violations.map(v => v.field).join(', '))
+    }
+    return patched
+  } catch (e) {
+    console.warn('[REGEN-FAIL] error during word-count regen:', e)
+    return signal
+  }
+}
+
 // ─── Failure helper ─────────────────────────────────────────────────────────────
 
 async function markIssueFailed(issueId: string, reason: string): Promise<void> {
@@ -866,8 +1074,12 @@ export const generateDailySignal = inngest.createFunction(
       return { finalSignal: { ...current, extended_data: writerExtData }, qualityPath: path }
     })) as { finalSignal: GeneratedSignal; qualityPath: string }
 
+    // ── Word-count enforcement — trim HARD overruns before publish gate
+    const wcClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+    const publishSignal = await enforceWordCounts(finalSignal, wcClient)
+
     // ── Final validation gate — halts publish if story still invalid after cascade
-    const finalValidation = validateArticle(finalSignal as unknown as ValidatorSignal)
+    const finalValidation = validateArticle(publishSignal as unknown as ValidatorSignal)
     if (!finalValidation.pass) {
       console.error('[inngest] FINAL GATE FAIL after 3-layer cascade:',
         finalValidation.violations.map(v => `${v.field}:${v.type}`).join(', '))
@@ -897,24 +1109,24 @@ export const generateDailySignal = inngest.createFunction(
         const { error: storyErr } = await supabase.from('stories').insert({
           issue_id: issueId,
           position: 1,
-          category: finalSignal.category,
-          headline: finalSignal.headline,
-          summary: finalSignal.summary,
-          why_it_matters: finalSignal.why_it_matters,
-          pull_quote: finalSignal.pull_quote ?? null,
-          lens_pm: finalSignal.lens_pm ?? null,
-          lens_founder: finalSignal.lens_founder ?? null,
-          lens_builder: finalSignal.lens_builder ?? null,
-          sources: finalSignal.sources ?? [],
-          read_minutes: finalSignal.read_minutes ?? 4,
-          deeper_read: finalSignal.deeper_read ?? null,
-          editorial_take: finalSignal.editorial_take ?? null,
-          broadcast_phrases: finalSignal.broadcast_phrases?.length ? finalSignal.broadcast_phrases : null,
-          stats: finalSignal.stats?.length ? finalSignal.stats : null,
-          action_items: finalSignal.action_items?.length ? finalSignal.action_items : null,
-          counter_view: finalSignal.counter_view ?? null,
-          counter_view_headline: finalSignal.counter_view_headline ?? null,
-          extended_data: finalSignal.extended_data ?? null,
+          category: publishSignal.category,
+          headline: publishSignal.headline,
+          summary: publishSignal.summary,
+          why_it_matters: publishSignal.why_it_matters,
+          pull_quote: publishSignal.pull_quote ?? null,
+          lens_pm: publishSignal.lens_pm ?? null,
+          lens_founder: publishSignal.lens_founder ?? null,
+          lens_builder: publishSignal.lens_builder ?? null,
+          sources: publishSignal.sources ?? [],
+          read_minutes: publishSignal.read_minutes ?? 4,
+          deeper_read: publishSignal.deeper_read ?? null,
+          editorial_take: publishSignal.editorial_take ?? null,
+          broadcast_phrases: publishSignal.broadcast_phrases?.length ? publishSignal.broadcast_phrases : null,
+          stats: publishSignal.stats?.length ? publishSignal.stats : null,
+          action_items: publishSignal.action_items?.length ? publishSignal.action_items : null,
+          counter_view: publishSignal.counter_view ?? null,
+          counter_view_headline: publishSignal.counter_view_headline ?? null,
+          extended_data: publishSignal.extended_data ?? null,
         })
         if (storyErr) throw new Error(`Story insert failed: ${storyErr.message}`)
       }
@@ -925,9 +1137,9 @@ export const generateDailySignal = inngest.createFunction(
         .update({
           status: 'published',
           published_at: new Date().toISOString(),
-          pick_reason: finalSignal.pick_reason ?? null,
-          rejected_alternatives: finalSignal.rejected_alternatives?.length
-            ? finalSignal.rejected_alternatives
+          pick_reason: publishSignal.pick_reason ?? null,
+          rejected_alternatives: publishSignal.rejected_alternatives?.length
+            ? publishSignal.rejected_alternatives
             : null,
         })
         .eq('id', issueId)
