@@ -47,6 +47,7 @@ export function BuilderCard({ buildQuote, betQuote, burnQuote }: BuilderCardProp
           onMouseLeave={() => setBetHovered(false)}
         >
           <div className="builder-card-eyebrow">
+            <span className="builder-card-eyebrow-icon" aria-hidden="true">↑</span>
             The Bet · bull case
           </div>
           <p
@@ -66,6 +67,7 @@ export function BuilderCard({ buildQuote, betQuote, burnQuote }: BuilderCardProp
           onMouseLeave={() => setBurnHovered(false)}
         >
           <div className="builder-card-eyebrow">
+            <span className="builder-card-eyebrow-icon" aria-hidden="true">↓</span>
             The Burn · bear case
           </div>
           <p

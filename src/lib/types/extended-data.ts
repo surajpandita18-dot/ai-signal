@@ -1,5 +1,8 @@
 // V11 universal article structure — extended data types for 11 new sections
 
+/** One-breath summary for the TL;DR strip (between author row and signal block) */
+export type OneBreath = { text: string };
+
 /** Three hero-zone live data tickers */
 export type TickerData = {
   label: string;

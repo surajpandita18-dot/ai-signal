@@ -11,11 +11,11 @@ export function HeroPreviewStrip({ cards }: HeroPreviewStripProps) {
     <div className="hero-preview-strip anim d5">
       {cards.map((card) => (
         <div key={card.index} className="hero-preview-card">
-          <div className="hero-preview-icon">{card.index}</div>
-          <div className="hero-preview-text">
+          <div className="hero-preview-header">
+            <div className="hero-preview-icon">{card.index}</div>
             <span className="preview-label">{card.label}</span>
-            <span className="preview-value">{card.value}</span>
           </div>
+          <span className="preview-value">{card.value}</span>
         </div>
       ))}
     </div>

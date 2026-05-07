@@ -389,6 +389,7 @@ export function StoryArticle({
   const decisionAidData  = (rawExt?.decision_aid && typeof rawExt.decision_aid === 'object') ? (rawExt.decision_aid as DecisionAidData) : null
   const reactions        = Array.isArray(rawExt?.reactions) ? (rawExt!.reactions as Reaction[]) : null
   const standupMessages  = (rawExt?.standup_messages && typeof rawExt.standup_messages === 'object') ? (rawExt.standup_messages as StandupMessages) : null
+  const oneBreathText    = (rawExt?.one_breath && typeof (rawExt.one_breath as Record<string,unknown>)?.text === 'string') ? (rawExt.one_breath as { text: string }).text : null
   const RING_TOTAL_MS = 24 * 60 * 60 * 1000
   const RING_CIRCUMFERENCE = 31.416 // 2π × r=5
   const articleRef = useRef<HTMLElement>(null)
@@ -469,7 +470,7 @@ export function StoryArticle({
   return (
     <article
       ref={articleRef}
-      className="story-wrap reveal"
+      className="story-wrap"
     >
       {/* ── Jump link ── */}
       <a
@@ -550,7 +551,18 @@ export function StoryArticle({
         <ShareButtons />
       </div>
 
-      {/* ── Section 4: Signal block — renders story.summary (v10 source field) ── */}
+      {/* ── TL;DR strip — after author, before signal block (V11 order) ── */}
+      {oneBreathText && (
+        <div className="tldr-strip">
+          <div className="tldr-icon">TL;DR</div>
+          <div className="tldr-content">
+            <div className="tldr-label">In one breath</div>
+            <div className="tldr-text">{parseBold(oneBreathText)}</div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Section 4: Signal block ── */}
       {story.summary && (
         <div className="signal-block" id="sec-signal">
           <div className="signal-eyebrow">

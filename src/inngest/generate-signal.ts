@@ -500,11 +500,12 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       { "index": "03", "label": "The move", "value": "≤8 words. One concrete action, time-boxed. E.g. 'Map your product overlap with Sierra this week.'" }
     ],
     "did_you_know_facts": [
-      LAYER 6 — Produce 8-12 facts. Each fact: 1-2 sentences. Target: 11-23 words. Hard cap: 28 words. Stat-first opener: lead with the surprising number or counterintuitive fact before the context. Quirky angle required — surprising number, historical parallel, or counterintuitive implication. Do NOT produce generic AI industry trivia. Build from the story's core data and its ecosystem ripples.
-      Example stat-first openers: "3 in 5 enterprise CTOs..." | "$1.2B was burned on..." | "The last time pricing moved this fast was..."
-      { "category": "numbers", "text": "Stat-first: surprising number → context. 11-23 words. Hard cap 28w." },
-      { "category": "industry", "text": "Stat-first: counterintuitive industry fact specific to this signal. 11-23 words. Hard cap 28w." },
-      { "category": "trivia", "text": "Stat-first: historical parallel or analogy. 11-23 words. Hard cap 28w." }
+      LAYER 6 — Produce 8-12 facts. Each fact MUST be a complete sentence — never truncate mid-word or mid-clause. VOICE: write as if you are genuinely excited to tell the reader this fact — not a dry statement, not a headline. Think "Here's the wild part:" energy. Wrap ALL numbers, figures, and key stats in <span class="nb-num">value</span> HTML. Build from the story's core data and its ecosystem ripples — no generic AI trivia.
+      Example voice: "Elon's Colossus cluster has over <span class=\"nb-num\">100,000</span> H100s in a single building. It is the GPU equivalent of a power station — and Anthropic just plugged in." NOT: "xAI's Colossus cluster is one of the largest GPU installations."
+      FACTUAL ACCURACY: verify company names and affiliations. xAI and SpaceX are separate companies. Do not conflate them or assign subsidiaries incorrectly.
+      { "category": "numbers", "text": "Excited voice, complete sentence, nb-num spans on all numbers. 11-23 words. Hard cap 28w." },
+      { "category": "industry", "text": "Excited voice, complete sentence. Counterintuitive industry fact specific to this signal. 11-23 words. Hard cap 28w." },
+      { "category": "trivia", "text": "Excited voice, complete sentence. Historical parallel or analogy. 11-23 words. Hard cap 28w." }
     ],
     "primary_chart": {
       "type": "comparison",
@@ -516,11 +517,14 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
         { "label": "GPT-4 Turbo", "value": "$0.40", "width_pct": 40, "fill_color": "mute", "opacity": 0.7 }
       ]
     },
+    "one_breath": {
+      "text": "One punchy sentence — different from the summary. Name the entity, name the shift, name the consequence. Bold 2 key phrases with **double asterisks**. Target: 18-24 words. Hard cap: 28 words. E.g. '**Anthropic** just bought compute from a competitor — if your product depends on **Claude capacity**, your architecture assumptions just changed.'"
+    },
     "insights_strip": [
-      Exactly 3 cells. text: one sharp sentence. Target: 10-14 words. Hard cap: 17 words. Must fit a single scannable cell — no dependent clauses.
-      { "icon": "→", "label": "What changed", "text": "One sharp sentence on what just shifted. 10-14 words. Hard cap 17w." },
-      { "icon": "◐", "label": "Who's affected", "text": "One sharp sentence on the specific audience that must act. 10-14 words. Hard cap 17w." },
-      { "icon": "⚡", "label": "Move by", "text": "One sharp sentence: the single action + timeframe. 10-14 words. Hard cap 17w." }
+      Exactly 3 cells. text: one sharp sentence. Target: 10-14 words. Hard cap: 17 words. Must fit a single scannable cell — no dependent clauses. REQUIRED: wrap exactly 1 key phrase per cell in ==double equals== to highlight it (e.g. "A ==10× cost drop== on the default reasoning model — silently shipped.").
+      { "icon": "→", "label": "What changed", "text": "A ==key change== — context sentence. 10-14 words. Hard cap 17w." },
+      { "icon": "◐", "label": "Who's affected", "text": "The ==specific audience== that must act — consequence. 10-14 words. Hard cap 17w." },
+      { "icon": "⚡", "label": "Move by", "text": "==Concrete action== by [timeframe] — closing window. 10-14 words. Hard cap 17w." }
     ],
     "cascade": {
       "direction": "forecast",
@@ -539,11 +543,11 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       "title": "Winners and losers",
       "subtitle": "Target: 10 words. Hard cap: 14 words. Name who is IN the 2x2 grid by naming the tension specific to this signal. Do not use 'stakeholders', 'first-order impact', or 'winners and losers' as phrasing.",
       "cells": [
-        who: 3-5 word role/persona label (hard cap 8w). why: 1-2 sentence impact. Target: 11-18 words. Hard cap: 22 words.
-        { "type": "win", "who": "3-5 word winner group label", "why": "Why they benefit — concrete. 11-18 words. Hard cap 22w." },
-        { "type": "win", "who": "3-5 word second winner label", "why": "Why they benefit — concrete. 11-18 words. Hard cap 22w." },
-        { "type": "lose", "who": "3-5 word loser group label", "why": "Why they lose — concrete. 11-18 words. Hard cap 22w." },
-        { "type": "lose", "who": "3-5 word second loser label", "why": "Why they lose — concrete. 11-18 words. Hard cap 22w." }
+        who: 3-5 word role/persona label (hard cap 8w). why: 1-2 sentence impact. Target: 11-18 words. Hard cap: 22 words. REQUIRED: bold exactly 1 key phrase per why using **text** markers.
+        { "type": "win", "who": "3-5 word winner group label", "why": "They gain **concrete benefit** — specific outcome here." },
+        { "type": "win", "who": "3-5 word second winner label", "why": "**Key advantage** lands here — downstream effect." },
+        { "type": "lose", "who": "3-5 word loser group label", "why": "Their **structural weakness** is now exposed — consequence." },
+        { "type": "lose", "who": "3-5 word second loser label", "why": "**Risk vector** materialises — specific harm." }
       ]
     },
     "decision_aid": {
@@ -559,10 +563,10 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       "final_verdict": "One sentence synthesis verdict. Target: 10 words. Hard cap: 12 words. E.g. 'Switch defaults this week if cost-bound. Run evals if quality-bound.'"
     },
     "reactions": [
-      LAYER 5 — Exactly 3 reactions. quote: Target 15-18 words. Hard cap: 22 words. Bold the first 3-5 words to draw the eye (e.g. '**This is the iPhone-moment** for inference cost.'). name: role archetype, not a real name. role: specific context line. name + role combined: 8-10 words. Hard cap: 12 words. Include at least one skeptic voice among the 3.
-      { "quote": "**Bold first 3-5 words.** Rest of punchy industry sentiment. 15-18 words total. Hard cap 22w.", "name": "Role archetype (not a real name)", "role": "Specific context: Series A CTO, indie hacker, principal PM" },
-      { "quote": "**Bold first 3-5 words.** Different perspective, more specific to Indian market. 15-18 words. Hard cap 22w.", "name": "Role archetype", "role": "Specific context" },
-      { "quote": "**Bold first 3-5 words.** Skeptic or contrarian voice — genuine pushback. 15-18 words. Hard cap 22w.", "name": "Role archetype", "role": "Specific context" }
+      LAYER 5 — Exactly 3 reactions. CRITICAL: every quote MUST be a grammatically complete sentence — never stop mid-word, mid-clause, or mid-thought. A truncated quote is a hard failure. quote: Target 15-20 words. Hard cap: 26 words. Bold the first 3-5 words to draw the eye (e.g. '**This is the iPhone-moment** for inference cost.'). name: role archetype, not a real name. role: specific context line. name + role combined: 8-10 words. Hard cap: 12 words. Include at least one skeptic voice among the 3.
+      { "quote": "**Bold first 3-5 words.** Rest of punchy industry sentiment. Complete sentence. 15-20 words. Hard cap 26w.", "name": "Role archetype (not a real name)", "role": "Specific context: Series A CTO, indie hacker, principal PM" },
+      { "quote": "**Bold first 3-5 words.** Different perspective, more specific to Indian market. Complete sentence. 15-20 words. Hard cap 26w.", "name": "Role archetype", "role": "Specific context" },
+      { "quote": "**Bold first 3-5 words.** Skeptic or contrarian voice — genuine pushback. Complete sentence. 15-20 words. Hard cap 26w.", "name": "Role archetype", "role": "Specific context" }
     ],
     "standup_messages": {
       "slack": "🧠 AI Signal · [Date e.g. May 6, 2026]\n\n[One sentence: what happened + the key number.]\n\n→ Why it matters: [One sentence on the implication for the team.]\n→ What I'd do: [One concrete action, time-boxed.]\n\n[X] min read · aisignal.so/signal/[N]",
@@ -914,7 +918,7 @@ Fields to trim:
 ${fieldLines}
 
 Rules:
-- Preserve **bold markers** where present
+- HARD REQUIREMENT: Preserve ALL **bold markers** exactly as they appear. NEVER remove a **word** wrapped in asterisks. Word count includes bolded words.
 - Keep editorial voice and meaning — cut filler, not information
 - Return only the listed fields`
 
@@ -946,6 +950,32 @@ Rules:
       console.warn(`[REGEN-FAIL] ${stillHard} HARD violations remain:`,
         recheck.hard_violations.map(v => v.field).join(', '))
     }
+
+    // Layer B: Post-trim bold count regression check.
+    // signal_block_body / block_2_prose patches reconstruct why_it_matters.
+    // The word-trim regen can drop bold markers — catch and restore (1 retry max).
+    const wyiPatched = Object.keys(patches).some(
+      f => f === 'signal_block_body' || f === 'block_2_prose'
+    )
+    if (wyiPatched) {
+      const boldCheck = validateArticle(patched as unknown as ValidatorSignal)
+      const boldViolations = boldCheck.violations.filter(v => v.type === 'BOLD_COUNT')
+      if (boldViolations.length > 0) {
+        console.warn('[BOLD-REGRESSION] bold count dropped after word-count trim:',
+          boldViolations.map(v => `${v.field}: ${v.message}`).join(' | '))
+        const boldFix = await fixWithHaiku(patched as unknown as ValidatorSignal, boldViolations, client)
+        if (boldFix.fixed && boldFix.signal) {
+          const boldFixed = boldFix.signal as unknown as GeneratedSignal
+          const boldRecheck = validateArticle(boldFixed as unknown as ValidatorSignal)
+          if (boldRecheck.violations.filter(v => v.type === 'BOLD_COUNT').length === 0) {
+            console.log('[BOLD-REGRESSION] bold count restored via Haiku fix')
+            return boldFixed
+          }
+        }
+        console.warn('[BOLD-REGRESSION] bold count still regressed after Haiku retry — proceeding')
+      }
+    }
+
     return patched
   } catch (e) {
     console.warn('[REGEN-FAIL] error during word-count regen:', e)

@@ -21,7 +21,7 @@ export function ReactionsPanel({ reactions }: ReactionsPanelProps) {
         <div key={i} className="reaction-card">
           <p className="reaction-quote">&ldquo;{parseBold(r.quote)}&rdquo;</p>
           <div className="reaction-attr">
-            <div className="reaction-avatar" />
+            <div className="reaction-avatar" aria-hidden="true">{r.name[0]}</div>
             <div className="reaction-meta">
               <div className="reaction-name">{r.name}</div>
               <div className="reaction-role">{r.role}</div>
