@@ -3055,6 +3055,7 @@ header.site-nav-inner {
   .hero-tickers { grid-template-columns: 1fr; max-width: 100%; }
   .hero-preview-strip { grid-template-columns: 1fr; max-width: 100%; }
   .hero-banner::before { background-size: 32px 32px; }
+  .hero-banner { padding: 56px 20px 16px; }
   .insights-strip { grid-template-columns: 1fr; }
   .insight-cell { border-right: none; border-bottom: 1px solid var(--border); }
   .insight-cell:last-child { border-bottom: none; }
@@ -3065,6 +3066,8 @@ header.site-nav-inner {
   .stakeholder-matrix { grid-template-columns: 1fr; }
   .decision-row { grid-template-columns: 1fr; gap: 8px; }
   .decision-pill { justify-self: flex-start; }
+  .nav-meta a { display: none; }
+  .nav-meta .nav-cta-link { display: inline-flex; }
 }
 @media (max-width: 720px) {
   .standup-card { padding: 18px 20px; margin: 24px 0 8px; }
@@ -3233,6 +3236,8 @@ footer .links a:hover { color: var(--text); }
 @media (max-width: 720px) {
   .standup-tabs-row { display: grid !important; grid-template-columns: 1fr 1fr; }
   .standup-tab:nth-child(1), .standup-tab:nth-child(3) { border-right: 1px solid rgba(180,140,60,0.15); }
+  .standup-card { padding: 18px 20px; margin: 24px 0 8px; }
+  .standup-preview { padding: 12px 14px; font-size: 13px; }
 }
 
 /* ============ Category chip per-category colours ============ */
