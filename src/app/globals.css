@@ -169,6 +169,9 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+    animation-delay: 0ms !important;
+    transition-delay: 0ms !important;
+    scroll-behavior: auto !important;
   }
 }
 
@@ -3068,6 +3071,7 @@ header.site-nav-inner {
   .decision-pill { justify-self: flex-start; }
   .nav-meta a { display: none; }
   .nav-meta .nav-cta-link { display: inline-flex; }
+  .builder-quote { font-size: 22px; }
 }
 @media (max-width: 720px) {
   .standup-card { padding: 18px 20px; margin: 24px 0 8px; }
