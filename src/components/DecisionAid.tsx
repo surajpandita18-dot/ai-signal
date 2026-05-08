@@ -15,7 +15,8 @@ export function DecisionAid({ aid }: DecisionAidProps) {
 
   return (
     <div className="decision-aid">
-      <div className="decision-title">Decision aid</div>
+      <div className="decision-title">Editor&rsquo;s Take</div>
+      <div className="decision-subhead">Our verdict on the questions worth asking</div>
       <h4 className="decision-question">{aid.title}</h4>
       <div className="decision-flow">
         {aid.rows.map((row, i) => (
@@ -24,14 +25,17 @@ export function DecisionAid({ aid }: DecisionAidProps) {
               <span className="q-num">{row.q_num}</span>
               {row.question}
             </div>
-            <span className={`decision-pill ${row.verdict}`}>
-              {row.verdict_text || VERDICT_FALLBACK[row.verdict] || row.verdict}
-            </span>
+            <div className="decision-pill-wrap">
+              <div className="decision-our-call">Our Call →</div>
+              <span className={`decision-pill ${row.verdict}`}>
+                {row.verdict_text || VERDICT_FALLBACK[row.verdict] || row.verdict}
+              </span>
+            </div>
           </div>
         ))}
       </div>
       <div className="decision-verdict">
-        <div className="decision-verdict-label">Verdict</div>
+        <div className="decision-verdict-label">Bottom Line</div>
         <div className="decision-verdict-text">{aid.final_verdict}</div>
       </div>
     </div>

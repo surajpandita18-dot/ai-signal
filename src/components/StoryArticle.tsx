@@ -678,7 +678,9 @@ export function StoryArticle({
 
       {/* ── Section 8: The Move — action checklist ── */}
       {story.action_items && story.action_items.length > 0 && (
-        <ActionChecklist items={story.action_items.filter((item): item is string => typeof item === 'string')} />
+        <div id="sec-move">
+          <ActionChecklist items={story.action_items.filter((item): item is string => typeof item === 'string')} />
+        </div>
       )}
 
       {/* ── Section 8b: Standup snippet ── */}

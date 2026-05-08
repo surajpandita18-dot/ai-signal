@@ -1,5 +1,12 @@
 import type { PreviewCard } from '@/lib/types/extended-data'
 
+const ANCHOR_MAP: Record<string, string> = {
+  'By the numbers': '#sec-numbers',
+  'Why it matters': '#sec-context',
+  'The move':       '#sec-move',
+  'The fact':       '#sec-facts',
+}
+
 interface HeroPreviewStripProps {
   cards: PreviewCard[]
 }
@@ -10,13 +17,14 @@ export function HeroPreviewStrip({ cards }: HeroPreviewStripProps) {
   return (
     <div className="hero-preview-strip anim d5">
       {cards.map((card) => (
-        <div key={card.index} className="hero-preview-card">
+        <a key={card.index} href={ANCHOR_MAP[card.label] ?? '#'} className="hero-preview-card">
           <div className="hero-preview-header">
             <div className="hero-preview-icon">{card.index}</div>
             <span className="preview-label">{card.label}</span>
           </div>
           <span className="preview-value">{card.value}</span>
-        </div>
+          <span className="preview-arrow" aria-hidden="true">↓</span>
+        </a>
       ))}
     </div>
   )

@@ -2,6 +2,7 @@
 
 import Link from 'next/link'
 import { useEffect, useState } from 'react'
+import { usePathname } from 'next/navigation'
 
 interface SiteNavProps {
   signalNumber?: number
@@ -10,6 +11,7 @@ interface SiteNavProps {
 export function SiteNav({ signalNumber }: SiteNavProps) {
   const [scrolled, setScrolled] = useState(false)
   const [scrollPct, setScrollPct] = useState(0)
+  const pathname = usePathname()
 
   useEffect(() => {
     const onScroll = () => {
@@ -58,7 +60,15 @@ export function SiteNav({ signalNumber }: SiteNavProps) {
 
       {/* Nav links */}
       <nav className="nav-meta anim d1" aria-label="Site navigation">
-        <Link href="/archive" className="nav-cta-link">Archive</Link>
+        <Link
+          href="/"
+          className={`nav-tab${pathname === '/' ? ' nav-tab--active' : ''}`}
+        >Today</Link>
+
+        <Link
+          href="/archive"
+          className={`nav-tab${pathname.startsWith('/archive') ? ' nav-tab--active' : ''}`}
+        >Archive</Link>
 
         <Link href="/about" className="nav-meta-link">About</Link>
 

@@ -112,23 +112,25 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
         tickers={tickers}
         previewCards={previewCards}
       />
-      <HeroBridge />
-      <NotebookStrip facts={didYouKnowFacts} />
+      <div className="content-sheet">
+        <HeroBridge />
+        <NotebookStrip facts={didYouKnowFacts} />
 
-      {/* Main grid: article + sidebar */}
-      <div className="main-article-grid">
-        <StoryArticle
-          story={story}
-          publishedAt={publishedAt}
-          signalNumber={signalNumber}
-          onReadPctChange={setReadPct}
-        />
-        <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} drafts={tomorrowDrafts} />
+        {/* Main grid: article + sidebar */}
+        <div className="main-article-grid">
+          <StoryArticle
+            story={story}
+            publishedAt={publishedAt}
+            signalNumber={signalNumber}
+            onReadPctChange={setReadPct}
+          />
+          <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} drafts={tomorrowDrafts} />
+        </div>
+
+        <ArchiveSection issues={archiveIssues} />
+        <SubscribeSection />
+        <SiteFooter />
       </div>
-
-      <ArchiveSection issues={archiveIssues} />
-      <SubscribeSection />
-      <SiteFooter />
 
       <RevealObserver />
     </>
