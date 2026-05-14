@@ -3,9 +3,7 @@ import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { SiteNav } from '@/components/SiteNav'
 import { SiteFooter } from '@/components/SiteFooter'
-import { SignalGate } from '@/components/SignalGate'
 import { SignalPageClient } from '@/components/SignalPageClient'
-import { isWithin24h } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -131,28 +129,7 @@ export default async function SignalPage({ params }: PageProps) {
     )
   }
 
-  // In development always show the full article so we can iterate on design
-  const isDev = process.env.NODE_ENV !== 'production'
-  const active = isDev || (issue.published_at ? isWithin24h(issue.published_at) : false)
-
-  // Past 24h — non-subscriber gate (prod only)
-  if (!active) {
-    return (
-      <>
-        <SiteNav signalNumber={issue.issue_number} />
-        <main style={gateStyle}>
-          <SignalGate
-            headline={story?.headline ?? ''}
-            publishedAt={issue.published_at ?? new Date().toISOString()}
-            signalNumber={issue.issue_number}
-          />
-        </main>
-        <SiteFooter />
-      </>
-    )
-  }
-
-  // Active signal — full editorial layout
+  // All published signals are publicly readable
   return (
     <>
       <SiteNav signalNumber={issue.issue_number} />

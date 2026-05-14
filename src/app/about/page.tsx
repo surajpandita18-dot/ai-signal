@@ -4,7 +4,7 @@ import { SiteNav } from '@/components/SiteNav'
 import { SiteFooter } from '@/components/SiteFooter'
 
 export const metadata: Metadata = {
-  title: 'About — AI Signal',
+  title: 'About',
   description: 'One story. Every day. Gone in 24 hours. The single most important thing in AI, curated daily.',
   openGraph: {
     title: 'About AI Signal',

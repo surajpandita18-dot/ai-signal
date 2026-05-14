@@ -4,7 +4,7 @@ import { SiteNav } from '@/components/SiteNav'
 import { SiteFooter } from '@/components/SiteFooter'
 
 export const metadata: Metadata = {
-  title: 'Sponsor — AI Signal',
+  title: 'Sponsor',
   description: 'Reach 2,000+ senior engineers, PMs, and founders in the Indian AI ecosystem. One placement. High attention.',
   openGraph: {
     title: 'Sponsor AI Signal',

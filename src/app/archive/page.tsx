@@ -6,7 +6,7 @@ import { SiteFooter } from '@/components/SiteFooter'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Archive — AI Signal',
+  title: 'Archive',
   description: 'Every signal, in order. The complete AI Signal archive.',
 }
 
