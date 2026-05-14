@@ -1108,18 +1108,54 @@ export const generateDailySignal = inngest.createFunction(
     const wcClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
     const publishSignal = await enforceWordCounts(finalSignal, wcClient)
 
-    // ── Final validation gate — halts publish if story still invalid after cascade
+    // ── Tiered quality gate ────────────────────────────────────────────────────
+    // TIER 1 (always block): factual errors or violations that break the UI
+    // TIER 2 (block if ≥ 2): structural issues that degrade quality
+    // TIER 3 (warn + publish): pure style violations — length, emphasis, phrasing
     const finalValidation = validateArticle(publishSignal as unknown as ValidatorSignal)
-    if (!finalValidation.pass) {
-      console.error('[inngest] FINAL GATE FAIL after 3-layer cascade:',
-        finalValidation.violations.map(v => `${v.field}:${v.type}`).join(', '))
-      const gateSupabase = createAdminSupabaseClient()
-      await gateSupabase.from('issues').update({ status: 'failed' }).eq('id', issueId)
-      throw new Error(
-        `Final validation gate: story invalid after Layer 3. Violations: ${
-          finalValidation.violations.map(v => `${v.field}:${v.type} — ${v.message}`).join(' | ')
-        }`
-      )
+
+    if (finalValidation.violations.length > 0) {
+      type ViolationType = (typeof finalValidation.violations)[number]['type']
+
+      const ALWAYS_BLOCK = new Set<ViolationType>([
+        'FORBIDDEN_STAT',           // factual accuracy
+        'PRESS_RELEASE',            // journalistic integrity
+        'EXTENDED_DATA_SHAPE_INVALID', // crashes extended UI sections
+        'WHY_IT_MATTERS_SINGLE_PARA',  // body renders empty in component
+        'PULL_QUOTE_REQUIRED',      // missing content between paragraphs
+        'EDITORIAL_TAKE_MISSING',   // missing editorial section
+      ])
+
+      const WARN_ONLY = new Set<ViolationType>([
+        'LENGTH_BLOAT',   // wordy but readable
+        'BOLD_COUNT',     // missing emphasis but readable
+        'GENERIC_INDIA',  // phrasing preference
+      ])
+
+      const alwaysBlock  = finalValidation.violations.filter(v => ALWAYS_BLOCK.has(v.type))
+      const warnOnly     = finalValidation.violations.filter(v => WARN_ONLY.has(v.type))
+      const structural   = finalValidation.violations.filter(v => !ALWAYS_BLOCK.has(v.type) && !WARN_ONLY.has(v.type))
+
+      if (alwaysBlock.length > 0 || structural.length >= 2) {
+        const blocking = [...alwaysBlock, ...structural]
+        console.error('[QUALITY-BLOCK] article failed quality gate:',
+          blocking.map(v => `${v.field}:${v.type}`).join(', '))
+        const gateSupabase = createAdminSupabaseClient()
+        await gateSupabase.from('issues').update({ status: 'failed' }).eq('id', issueId)
+        throw new Error(
+          `Quality gate: ${alwaysBlock.length} factual/structural + ${structural.length} other violations. ` +
+          blocking.map(v => `${v.field}:${v.type} — ${v.message}`).join(' | ')
+        )
+      }
+
+      if (warnOnly.length > 0 || structural.length === 1) {
+        console.warn('[QUALITY-WARN] publishing with minor violations:', JSON.stringify({
+          issueId,
+          warnOnly: warnOnly.map(v => ({ field: v.field, type: v.type, message: v.message })),
+          structural: structural.map(v => ({ field: v.field, type: v.type, message: v.message })),
+          timestamp: new Date().toISOString(),
+        }))
+      }
     }
 
     // ── Step 4: Publish — update issue + insert story ──────────────────────────
