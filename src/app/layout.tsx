@@ -34,9 +34,22 @@ const caveat = Caveat({
   display: 'swap',
 })
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
+
 export const metadata: Metadata = {
-  title: 'AI Signal — One story. Every day. Gone in 24 hours.',
+  title: {
+    default: 'AI Signal — One story. Every day. Gone in 24 hours.',
+    template: '%s — AI Signal',
+  },
   description: 'One story. Every day. Gone in 24 hours. The single most important thing in AI, curated daily.',
+  openGraph: {
+    siteName: 'AI Signal',
+    type: 'website',
+    images: [{ url: `${SITE_URL}/og/default`, width: 1200, height: 630, alt: 'AI Signal' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+  },
 }
 
 export default function RootLayout({

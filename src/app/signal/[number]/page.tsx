@@ -33,6 +33,8 @@ async function fetchSignal(signalNumber: number) {
   return { issue, story: stories && stories.length > 0 ? stories[0] : null }
 }
 
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
+
 export async function generateMetadata({ params }: PageProps) {
   const { number } = await params
   const n = parseInt(number, 10)
@@ -43,8 +45,9 @@ export async function generateMetadata({ params }: PageProps) {
 
   const headline = result.story?.headline ?? `Signal #${n}`
   const summary = result.story?.summary ?? 'One story. Every day. Gone in 24 hours.'
-  const title = `AI Signal #${n} — ${headline}`
-  const url = `https://aisignal.so/signal/${n}`
+  const title = `Signal #${n} — ${headline}`
+  const url = `${SITE_URL}/signal/${n}`
+  const ogImage = `${SITE_URL}/og/${n}`
 
   return {
     title,
@@ -55,11 +58,13 @@ export async function generateMetadata({ params }: PageProps) {
       url,
       siteName: 'AI Signal',
       type: 'article',
+      images: [{ url: ogImage, width: 1200, height: 630, alt: headline }],
     },
     twitter: {
-      card: 'summary',
+      card: 'summary_large_image',
       title,
       description: summary,
+      images: [ogImage],
     },
   }
 }
