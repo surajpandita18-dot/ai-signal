@@ -35,6 +35,15 @@ async function fetchSignal(signalNumber: number) {
 
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
 
+function buildDescription(summary: string, whyItMatters: string): string {
+  const strip = (s: string) => s.replace(/\*\*(.*?)\*\*/g, '$1').replace(/\*(.*?)\*/g, '$1')
+  const truncate = (s: string) => s.length <= 155 ? s : s.slice(0, s.lastIndexOf(' ', 152)) + '...'
+  const s = strip(summary)
+  if (s.length >= 100) return truncate(s)
+  const first = strip(whyItMatters.split(/\.\s+/)[0].replace(/\.$/, ''))
+  return truncate(`${s}. ${first}.`)
+}
+
 export async function generateMetadata({ params }: PageProps) {
   const { number } = await params
   const n = parseInt(number, 10)
@@ -44,26 +53,33 @@ export async function generateMetadata({ params }: PageProps) {
   if (!result) return { title: 'AI Signal' }
 
   const headline = result.story?.headline ?? `Signal #${n}`
-  const summary = result.story?.summary ?? 'One story. Every day. Gone in 24 hours.'
+  const summary = result.story?.summary ?? ''
+  const whyItMatters = result.story?.why_it_matters ?? ''
+  const description = buildDescription(
+    summary || 'One story. Every day. Gone in 24 hours.',
+    whyItMatters
+  )
   const title = `Signal #${n} — ${headline}`
   const url = `${SITE_URL}/signal/${n}`
   const ogImage = `${SITE_URL}/og/${n}`
 
   return {
     title,
-    description: summary,
+    description,
     openGraph: {
       title,
-      description: summary,
+      description,
       url,
       siteName: 'AI Signal',
       type: 'article',
       images: [{ url: ogImage, width: 1200, height: 630, alt: headline }],
+      authors: ['AI Signal'],
+      publishedTime: result.issue.published_at ?? undefined,
     },
     twitter: {
       card: 'summary_large_image',
       title,
-      description: summary,
+      description,
       images: [ogImage],
     },
   }
