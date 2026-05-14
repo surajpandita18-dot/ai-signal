@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
+import { createAdminSupabaseClient } from '@/lib/supabase-admin'
 import type { SubscriberRole } from '../../../../db/types/database'
 
 const VALID_ROLES: SubscriberRole[] = ['pm', 'founder', 'builder', 'curious']
@@ -32,7 +32,7 @@ export async function POST(req: NextRequest) {
   }
 
   const unsubscribeToken = crypto.randomUUID()
-  const supabase = await createServerSupabaseClient()
+  const supabase = createAdminSupabaseClient()
   const { error } = await supabase.from('subscribers').insert({
     email: email.toLowerCase().trim(),
     role,
