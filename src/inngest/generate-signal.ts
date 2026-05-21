@@ -8,6 +8,7 @@ import { QUALITY_RULES, SELF_CHECK_QUESTIONS } from '@/lib/journalist-agent'
 import { inngest, type DailyTriggerData } from './client'
 import type { ExtendedData } from '@/lib/types/extended-data'
 import { validateWordCounts, type WcSignalInput } from '@/lib/word-count-validator'
+import { runFactCheck, type FactCheckInput } from './fact-check'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -995,9 +996,26 @@ async function markIssueFailed(issueId: string, reason: string): Promise<void> {
         editor_note: `Pipeline failed: ${reason.slice(0, 200)}`,
       })
       .eq('id', issueId)
+      .neq('status', 'pending') // never overwrite a fact-check pending decision
     console.error(`[inngest] issue ${issueId} marked as failed: ${reason.slice(0, 100)}`)
   } catch (e) {
     console.error('[inngest] markIssueFailed itself failed:', e)
+  }
+}
+
+async function markIssuePending(issueId: string, reason: string): Promise<void> {
+  try {
+    const supabase = createAdminSupabaseClient()
+    await supabase
+      .from('issues')
+      .update({
+        status: 'pending',
+        editor_note: `[FACT-CHECK] ${reason.slice(0, 200)}`,
+      })
+      .eq('id', issueId)
+    console.warn(`[inngest] issue ${issueId} held for manual review: ${reason.slice(0, 100)}`)
+  } catch (e) {
+    console.error('[inngest] markIssuePending itself failed:', e)
   }
 }
 
@@ -1106,7 +1124,73 @@ export const generateDailySignal = inngest.createFunction(
 
     // ── Word-count enforcement — trim HARD overruns before publish gate
     const wcClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-    const publishSignal = await enforceWordCounts(finalSignal, wcClient)
+    let publishSignal = await enforceWordCounts(finalSignal, wcClient)
+
+    // ── Fact-check — warn-only audit (never blocks publish) ─────────────────────
+    // Runs as advisory: all concerns logged to Vercel, article always proceeds.
+    // Check Vercel for [FACT-CHECK-ALERT] entries post-publish for reactive review.
+    try {
+      const fcResult = await runFactCheck(publishSignal as unknown as FactCheckInput, wcClient)
+
+      console.log('[FACT-CHECK]', JSON.stringify({
+        issueId,
+        overall_confidence: fcResult.overall_confidence,
+        claim_count: fcResult.verified_claims.length,
+        concern_count: fcResult.concerns.length,
+        block_publish: fcResult.block_publish,
+        summary: fcResult.summary,
+        timestamp: new Date().toISOString(),
+      }))
+
+      if (fcResult.overall_confidence < 30) {
+        // Model was uncertain about too much — results unreliable, skip analysis
+        console.warn('[FACT-CHECK-SKIP]', JSON.stringify({
+          issueId, reason: 'low_confidence',
+          overall_confidence: fcResult.overall_confidence,
+          timestamp: new Date().toISOString(),
+        }))
+      } else {
+        const highConcerns   = fcResult.concerns.filter(c => c.severity === 'high')
+        const mediumConcerns = fcResult.concerns.filter(c => c.severity === 'medium')
+        const lowConcerns    = fcResult.concerns.filter(c => c.severity === 'low')
+
+        if (fcResult.block_publish || highConcerns.length > 0) {
+          // High-severity or model-recommended block — alert loudly, still publish
+          console.error('[FACT-CHECK-ALERT]', JSON.stringify({
+            issueId,
+            high_concerns: highConcerns,
+            block_publish: fcResult.block_publish,
+            summary: fcResult.summary,
+            timestamp: new Date().toISOString(),
+          }))
+        } else if (mediumConcerns.length >= 4) {
+          // Many medium concerns — log without attempting auto-fix mutation
+          console.warn('[FACT-CHECK-FIX-SKIPPED]', JSON.stringify({
+            issueId,
+            medium_concerns: mediumConcerns,
+            summary: fcResult.summary,
+            timestamp: new Date().toISOString(),
+          }))
+        } else if (mediumConcerns.length > 0 || lowConcerns.length > 0) {
+          // Minor concerns — log for awareness
+          console.warn('[FACT-CHECK-WARN]', JSON.stringify({
+            issueId,
+            medium_concerns: mediumConcerns,
+            low_concerns: lowConcerns,
+            overall_confidence: fcResult.overall_confidence,
+            timestamp: new Date().toISOString(),
+          }))
+        }
+      }
+    } catch (fcErr) {
+      // API error or parse failure — skip, never block publish
+      console.warn('[FACT-CHECK-SKIP]', JSON.stringify({
+        issueId,
+        reason: fcErr instanceof SyntaxError ? 'parse_error' : 'api_error',
+        error: String(fcErr).slice(0, 200),
+        timestamp: new Date().toISOString(),
+      }))
+    }
 
     // ── Tiered quality gate ────────────────────────────────────────────────────
     // TIER 1 (always block): factual errors or violations that break the UI
