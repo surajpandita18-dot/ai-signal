@@ -3223,9 +3223,48 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 .footer-mark { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
 .footer-mark .mark-icon { width: 24px; height: 24px; background: var(--text); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 12px; font-weight: 800; font-family: var(--ff-mono); flex-shrink: 0; }
 .footer-mark-text { line-height: 1; }
-footer .links { display: flex; gap: 24px; }
+footer .links { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
 footer .links a { color: var(--text-mute); text-decoration: none; font-size: 13px; transition: color 0.2s; }
 footer .links a:hover { color: var(--text); }
+
+/* ── Chai button ── */
+.chai-btn {
+  background: none; border: 1px solid var(--border); border-radius: 20px;
+  padding: 4px 12px; font-size: 13px; color: var(--text-mute);
+  cursor: pointer; font-family: inherit; line-height: 1.5;
+  transition: color 0.2s, border-color 0.2s;
+}
+.chai-btn:hover { color: var(--text); border-color: var(--text-soft); }
+
+/* ── Chai modal ── */
+.chai-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  display: flex; align-items: center; justify-content: center; z-index: 1000;
+}
+.chai-modal {
+  background: var(--bg); border: 1px solid var(--border); border-radius: 12px;
+  padding: 32px 28px; display: flex; flex-direction: column; align-items: center;
+  gap: 16px; max-width: 300px; width: 90%; position: relative;
+}
+.chai-close {
+  position: absolute; top: 10px; right: 14px; background: none; border: none;
+  font-size: 22px; color: var(--text-mute); cursor: pointer; line-height: 1; padding: 4px;
+}
+.chai-close:hover { color: var(--text); }
+.chai-modal-title { font-size: 16px; font-weight: 600; color: var(--text); margin: 0; }
+.chai-qr { border-radius: 8px; border: 1px solid var(--border); display: block; }
+.chai-upi-id {
+  font-family: var(--ff-mono); font-size: 13px; color: var(--text-soft);
+  margin: 0; background: var(--surface, #f5f5f5); padding: 6px 12px; border-radius: 6px;
+  width: 100%; text-align: center;
+}
+.chai-copy {
+  background: var(--text); color: var(--bg); border: none; border-radius: 6px;
+  padding: 8px 0; font-size: 13px; font-family: inherit; cursor: pointer;
+  transition: opacity 0.2s; width: 100%;
+}
+.chai-copy:hover { opacity: 0.82; }
+.chai-note { font-size: 12px; color: var(--text-mute); margin: 0; }
 
 
 /* ============ CONTEXT BODY — Block 2 Why it matters ============ */

@@ -1,4 +1,5 @@
 import React from 'react'
+import { ChaiButton } from './ChaiButton'
 
 export function SiteFooter() {
   return (
@@ -19,6 +20,7 @@ export function SiteFooter() {
         <a href="/rss.xml">RSS</a>
         <a href="/privacy">Privacy</a>
         <a href="mailto:hello@aisignal.in">Contact</a>
+        <ChaiButton />
       </div>
     </footer>
   )
