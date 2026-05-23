@@ -450,7 +450,7 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
   "category": "models"|"tools"|"business"|"policy"|"research",
   "headline": "Main article title. Sharp, verb-led, punchy. Target: 12 words. Hard cap: 14 words. No clickbait. E.g. 'GPT-5 Mini cuts API costs by 10×, repricing every AI product budget.'",
   "summary": "TL;DR strip body. Two dense sentences: what happened + the forced action. Target: 25 words. Hard cap: 38 words. Bold 2+ key phrases with **double asterisks** on specific numbers, named entities, or the key implication. E.g. '**GPT-5 Mini** ships at **10× cheaper**, +12% smarter than GPT-4 Turbo, with zero fanfare. Switch defaults this week — competitors will match by Friday.'",
-  "why_it_matters": "Two distinct paragraphs separated by \\n\\n. PARA 1: What shifted, why it matters now, for whom. Target: 32 words. Hard cap: 48 words. PARA 2: The reframe — what the reader must decide tomorrow. Target: 38 words. Hard cap: 50 words. Bold at least 3 key phrases with **double asterisks** across both paragraphs — numbers, named entities, or key claims. These two paragraphs flank the pull_quote in the rendered design.",
+  "why_it_matters": "MANDATORY: 2 paragraphs separated by \\n\\n — DO NOT write a single block, the UI will break. PARA 1 (2 sentences, 30-40w): what shifted and why it matters NOW. Hard cap: 48 words. PARA 2 (2 sentences, 30-40w): the reframe — what the reader must build or decide tomorrow. Hard cap: 50 words. Bold at least 3 key phrases with **double asterisks** across both paragraphs — numbers, named entities, or key claims. These two paragraphs flank the pull_quote in the rendered design.",
   "pull_quote": "One killer editorial sentence — opinion not recap. Target: 20 words. Hard cap: 24 words. Wrap 1–3 key words in **bold** for punch phrase emphasis (e.g. 'The default model is no longer capability — it\\'s **who notices the price change first**'). Bold the punch phrase, not entire clauses. Word count excludes asterisks. Must not be null.",
   "lens_pm": "1–2 sentences for a PM. Concrete. What should they rethink or do?",
   "lens_founder": "1–2 sentences for a founder. Competitive or strategic lens.",
@@ -984,6 +984,48 @@ Rules:
   }
 }
 
+// ─── Paragraph-split enforcer ────────────────────────────────────────────────────
+// Runs after enforceWordCounts. If why_it_matters has no \n\n, calls Sonnet once
+// to split it. Fail-open — logs a warning and returns original if split fails.
+
+async function enforceParagraphSplit(signal: GeneratedSignal, client: Anthropic): Promise<GeneratedSignal> {
+  const paras = signal.why_it_matters.split('\n\n').map(p => p.trim()).filter(p => p.length > 0)
+  if (paras.length >= 2) return signal
+
+  console.warn('[PARA-SPLIT] why_it_matters is single paragraph — attempting split')
+
+  try {
+    const msg = await client.messages.create({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 300,
+      messages: [{
+        role: 'user',
+        content: `Split the text below into exactly 2 paragraphs separated by \\n\\n.
+PARA 1 (2 sentences, 30-40w): what shifted and why it matters NOW.
+PARA 2 (2 sentences, 30-40w): the reframe — what builders/founders must do tomorrow.
+Preserve meaning and editorial voice exactly. Return ONLY the two paragraphs with \\n\\n between them. No other text.
+
+Text:
+${signal.why_it_matters}`,
+      }],
+    })
+
+    const text = msg.content[0].type === 'text' ? msg.content[0].text.trim() : ''
+    const fixed = text.split('\n\n').map(p => p.trim()).filter(p => p.length > 0)
+
+    if (fixed.length >= 2) {
+      console.log('[PARA-SPLIT] split succeeded')
+      return { ...signal, why_it_matters: fixed.slice(0, 2).join('\n\n') }
+    }
+
+    console.warn('[PARA-SPLIT] split attempt still returned single paragraph — quality gate will catch it')
+    return signal
+  } catch (e) {
+    console.warn('[PARA-SPLIT] error during split attempt:', e)
+    return signal
+  }
+}
+
 // ─── Failure helper ─────────────────────────────────────────────────────────────
 
 async function markIssueFailed(issueId: string, reason: string): Promise<void> {
@@ -1124,6 +1166,7 @@ export const generateDailySignal = inngest.createFunction(
     // ── Word-count enforcement — trim HARD overruns before publish gate
     const wcClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
     let publishSignal = await enforceWordCounts(finalSignal, wcClient)
+    publishSignal = await enforceParagraphSplit(publishSignal, wcClient)
 
     // ── Fact-check — warn-only audit (never blocks publish) ─────────────────────
     // Runs as advisory: all concerns logged to Vercel, article always proceeds.
