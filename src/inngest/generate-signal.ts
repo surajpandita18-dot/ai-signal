@@ -996,7 +996,6 @@ async function markIssueFailed(issueId: string, reason: string): Promise<void> {
         editor_note: `Pipeline failed: ${reason.slice(0, 200)}`,
       })
       .eq('id', issueId)
-      .neq('status', 'pending') // never overwrite a fact-check pending decision
     console.error(`[inngest] issue ${issueId} marked as failed: ${reason.slice(0, 100)}`)
   } catch (e) {
     console.error('[inngest] markIssueFailed itself failed:', e)
