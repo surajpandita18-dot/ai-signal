@@ -43,7 +43,8 @@ export interface WcViolation {
   soft: number       // soft target
   hard: number       // hard cap
   severity: 'SOFT' | 'HARD'
-  excerpt: string    // first 60 chars of offending text (for log readability)
+  text: string       // full field content — used in regen prompt so Sonnet trims intelligently
+  excerpt: string    // first 60 chars (for log readability only — do NOT use in prompts)
 }
 
 export interface ValidationReport {
@@ -92,6 +93,7 @@ function check(
     soft: cap.soft,
     hard: cap.hard,
     severity: words > cap.hard ? 'HARD' : 'SOFT',
+    text,
     excerpt: text.slice(0, 60),
   })
 }

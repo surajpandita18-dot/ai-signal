@@ -910,7 +910,7 @@ async function enforceWordCounts(signal: GeneratedSignal, client: Anthropic): Pr
   }
 
   const fieldLines = regenTargets.map(v =>
-    `  "${v.field}" (${v.words} words → hard cap ${v.hard}): ${v.excerpt}`
+    `  "${v.field}" (${v.words} words → hard cap ${v.hard}): ${v.text}`
   ).join('\n')
 
   const regenPrompt = `Trim each article field below to meet its word-count hard cap. Return ONLY valid JSON — no markdown fences, no extra text. Keys must exactly match the field names shown (including [N] index notation).
