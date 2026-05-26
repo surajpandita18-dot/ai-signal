@@ -1163,82 +1163,84 @@ export const generateDailySignal = inngest.createFunction(
       return { finalSignal: { ...current, extended_data: writerExtData }, qualityPath: path }
     })) as { finalSignal: GeneratedSignal; qualityPath: string }
 
-    // ── Word-count enforcement — trim HARD overruns before publish gate
-    const wcClient = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
-    let publishSignal = await enforceWordCounts(finalSignal, wcClient)
-    publishSignal = await enforceParagraphSplit(publishSignal, wcClient)
+    // ── Step 4a: Word-count enforcement (memoized — safe on retry)
+    const wcSignal = (await step.run('enforce-word-counts', async () => {
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+      return await enforceWordCounts(finalSignal, client)
+    })) as GeneratedSignal
 
-    // ── Fact-check — warn-only audit (never blocks publish) ─────────────────────
-    // Runs as advisory: all concerns logged to Vercel, article always proceeds.
-    // Check Vercel for [FACT-CHECK-ALERT] entries post-publish for reactive review.
-    try {
-      const fcResult = await runFactCheck(publishSignal as unknown as FactCheckInput, wcClient)
+    // ── Step 4b: Paragraph-split enforcement (memoized — safe on retry)
+    const splitSignal = (await step.run('enforce-paragraph-split', async () => {
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+      return await enforceParagraphSplit(wcSignal, client)
+    })) as GeneratedSignal
 
-      console.log('[FACT-CHECK]', JSON.stringify({
-        issueId,
-        overall_confidence: fcResult.overall_confidence,
-        claim_count: fcResult.verified_claims.length,
-        concern_count: fcResult.concerns.length,
-        block_publish: fcResult.block_publish,
-        summary: fcResult.summary,
-        timestamp: new Date().toISOString(),
-      }))
+    // ── Step 4c: Fact-check audit — warn-only, all logging inside step
+    await step.run('fact-check-audit', async () => {
+      const client = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY! })
+      try {
+        const fcResult = await runFactCheck(splitSignal as unknown as FactCheckInput, client)
 
-      if (fcResult.overall_confidence < 30) {
-        // Model was uncertain about too much — results unreliable, skip analysis
-        console.warn('[FACT-CHECK-SKIP]', JSON.stringify({
-          issueId, reason: 'low_confidence',
+        console.log('[FACT-CHECK]', JSON.stringify({
+          issueId,
           overall_confidence: fcResult.overall_confidence,
+          claim_count: fcResult.verified_claims.length,
+          concern_count: fcResult.concerns.length,
+          block_publish: fcResult.block_publish,
+          summary: fcResult.summary,
           timestamp: new Date().toISOString(),
         }))
-      } else {
-        const highConcerns   = fcResult.concerns.filter(c => c.severity === 'high')
-        const mediumConcerns = fcResult.concerns.filter(c => c.severity === 'medium')
-        const lowConcerns    = fcResult.concerns.filter(c => c.severity === 'low')
 
-        if (fcResult.block_publish || highConcerns.length > 0) {
-          // High-severity or model-recommended block — alert loudly, still publish
-          console.error('[FACT-CHECK-ALERT]', JSON.stringify({
-            issueId,
-            high_concerns: highConcerns,
-            block_publish: fcResult.block_publish,
-            summary: fcResult.summary,
-            timestamp: new Date().toISOString(),
-          }))
-        } else if (mediumConcerns.length >= 4) {
-          // Many medium concerns — log without attempting auto-fix mutation
-          console.warn('[FACT-CHECK-FIX-SKIPPED]', JSON.stringify({
-            issueId,
-            medium_concerns: mediumConcerns,
-            summary: fcResult.summary,
-            timestamp: new Date().toISOString(),
-          }))
-        } else if (mediumConcerns.length > 0 || lowConcerns.length > 0) {
-          // Minor concerns — log for awareness
-          console.warn('[FACT-CHECK-WARN]', JSON.stringify({
-            issueId,
-            medium_concerns: mediumConcerns,
-            low_concerns: lowConcerns,
+        if (fcResult.overall_confidence < 30) {
+          console.warn('[FACT-CHECK-SKIP]', JSON.stringify({
+            issueId, reason: 'low_confidence',
             overall_confidence: fcResult.overall_confidence,
             timestamp: new Date().toISOString(),
           }))
-        }
-      }
-    } catch (fcErr) {
-      // API error or parse failure — skip, never block publish
-      console.warn('[FACT-CHECK-SKIP]', JSON.stringify({
-        issueId,
-        reason: fcErr instanceof SyntaxError ? 'parse_error' : 'api_error',
-        error: String(fcErr).slice(0, 200),
-        timestamp: new Date().toISOString(),
-      }))
-    }
+        } else {
+          const highConcerns   = fcResult.concerns.filter(c => c.severity === 'high')
+          const mediumConcerns = fcResult.concerns.filter(c => c.severity === 'medium')
+          const lowConcerns    = fcResult.concerns.filter(c => c.severity === 'low')
 
-    // ── Tiered quality gate ────────────────────────────────────────────────────
-    // TIER 1 (always block): factual errors or violations that break the UI
-    // TIER 2 (block if ≥ 2): structural issues that degrade quality
-    // TIER 3 (warn + publish): pure style violations — length, emphasis, phrasing
-    const finalValidation = validateArticle(publishSignal as unknown as ValidatorSignal)
+          if (fcResult.block_publish || highConcerns.length > 0) {
+            console.error('[FACT-CHECK-ALERT]', JSON.stringify({
+              issueId,
+              high_concerns: highConcerns,
+              block_publish: fcResult.block_publish,
+              summary: fcResult.summary,
+              timestamp: new Date().toISOString(),
+            }))
+          } else if (mediumConcerns.length >= 4) {
+            console.warn('[FACT-CHECK-FIX-SKIPPED]', JSON.stringify({
+              issueId,
+              medium_concerns: mediumConcerns,
+              summary: fcResult.summary,
+              timestamp: new Date().toISOString(),
+            }))
+          } else if (mediumConcerns.length > 0 || lowConcerns.length > 0) {
+            console.warn('[FACT-CHECK-WARN]', JSON.stringify({
+              issueId,
+              medium_concerns: mediumConcerns,
+              low_concerns: lowConcerns,
+              overall_confidence: fcResult.overall_confidence,
+              timestamp: new Date().toISOString(),
+            }))
+          }
+        }
+      } catch (fcErr) {
+        console.warn('[FACT-CHECK-SKIP]', JSON.stringify({
+          issueId,
+          reason: fcErr instanceof SyntaxError ? 'parse_error' : 'api_error',
+          error: String(fcErr).slice(0, 200),
+          timestamp: new Date().toISOString(),
+        }))
+      }
+    })
+
+    // ── Tiered quality gate — intentionally outside steps ─────────────────────
+    // Fast: no API calls, won't cause timeout. Kept outside so a blocking throw
+    // kills the function immediately — no step retries on structurally broken articles.
+    const finalValidation = validateArticle(splitSignal as unknown as ValidatorSignal)
 
     if (finalValidation.violations.length > 0) {
       type ViolationType = (typeof finalValidation.violations)[number]['type']
@@ -1284,7 +1286,7 @@ export const generateDailySignal = inngest.createFunction(
       }
     }
 
-    // ── Step 4: Publish — update issue + insert story ──────────────────────────
+    // ── Step 5: Publish — update issue + insert story ──────────────────────────
     await step.run('publish', async () => {
       const supabase = createAdminSupabaseClient()
 
@@ -1301,24 +1303,24 @@ export const generateDailySignal = inngest.createFunction(
         const { error: storyErr } = await supabase.from('stories').insert({
           issue_id: issueId,
           position: 1,
-          category: publishSignal.category,
-          headline: publishSignal.headline,
-          summary: publishSignal.summary,
-          why_it_matters: publishSignal.why_it_matters,
-          pull_quote: publishSignal.pull_quote ?? null,
-          lens_pm: publishSignal.lens_pm ?? null,
-          lens_founder: publishSignal.lens_founder ?? null,
-          lens_builder: publishSignal.lens_builder ?? null,
-          sources: publishSignal.sources ?? [],
-          read_minutes: publishSignal.read_minutes ?? 4,
-          deeper_read: publishSignal.deeper_read ?? null,
-          editorial_take: publishSignal.editorial_take ?? null,
-          broadcast_phrases: publishSignal.broadcast_phrases?.length ? publishSignal.broadcast_phrases : null,
-          stats: publishSignal.stats?.length ? publishSignal.stats : null,
-          action_items: publishSignal.action_items?.length ? publishSignal.action_items : null,
-          counter_view: publishSignal.counter_view ?? null,
-          counter_view_headline: publishSignal.counter_view_headline ?? null,
-          extended_data: publishSignal.extended_data ?? null,
+          category: splitSignal.category,
+          headline: splitSignal.headline,
+          summary: splitSignal.summary,
+          why_it_matters: splitSignal.why_it_matters,
+          pull_quote: splitSignal.pull_quote ?? null,
+          lens_pm: splitSignal.lens_pm ?? null,
+          lens_founder: splitSignal.lens_founder ?? null,
+          lens_builder: splitSignal.lens_builder ?? null,
+          sources: splitSignal.sources ?? [],
+          read_minutes: splitSignal.read_minutes ?? 4,
+          deeper_read: splitSignal.deeper_read ?? null,
+          editorial_take: splitSignal.editorial_take ?? null,
+          broadcast_phrases: splitSignal.broadcast_phrases?.length ? splitSignal.broadcast_phrases : null,
+          stats: splitSignal.stats?.length ? splitSignal.stats : null,
+          action_items: splitSignal.action_items?.length ? splitSignal.action_items : null,
+          counter_view: splitSignal.counter_view ?? null,
+          counter_view_headline: splitSignal.counter_view_headline ?? null,
+          extended_data: splitSignal.extended_data ?? null,
         })
         if (storyErr) throw new Error(`Story insert failed: ${storyErr.message}`)
       }
@@ -1329,9 +1331,9 @@ export const generateDailySignal = inngest.createFunction(
         .update({
           status: 'published',
           published_at: new Date().toISOString(),
-          pick_reason: publishSignal.pick_reason ?? null,
-          rejected_alternatives: publishSignal.rejected_alternatives?.length
-            ? publishSignal.rejected_alternatives
+          pick_reason: splitSignal.pick_reason ?? null,
+          rejected_alternatives: splitSignal.rejected_alternatives?.length
+            ? splitSignal.rejected_alternatives
             : null,
         })
         .eq('id', issueId)
