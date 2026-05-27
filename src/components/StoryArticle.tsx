@@ -507,21 +507,27 @@ export function StoryArticle({
         </div>
       )}
 
-      {/* ── Section 4: Signal block ── */}
-      {story.summary && (
-        <div className="signal-block" id="sec-signal">
-          <div className="signal-eyebrow">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="signal-eyebrow-icon">
-              <path d="M5 3l14 9-14 9V3z"/>
-            </svg>
-            The Signal
+      {/* ── Section 4: Signal block — shows why_it_matters para 1 (the sharp claim) ── */}
+      {(() => {
+        const para1 = story.why_it_matters
+          ? story.why_it_matters.split(/\n\n+/).map(p => p.trim()).filter(Boolean)[0] ?? null
+          : null
+        if (!para1) return null
+        return (
+          <div className="signal-block" id="sec-signal">
+            <div className="signal-eyebrow">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" className="signal-eyebrow-icon">
+                <path d="M5 3l14 9-14 9V3z"/>
+              </svg>
+              The Signal
+            </div>
+            <div
+              className="signal-body"
+              dangerouslySetInnerHTML={{ __html: para1.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
+            />
           </div>
-          <div
-            className="signal-body"
-            dangerouslySetInnerHTML={{ __html: story.summary.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }}
-          />
-        </div>
-      )}
+        )
+      })()}
 
       {/* ── Section 5: By the Numbers ── */}
       {(() => {
@@ -565,13 +571,13 @@ export function StoryArticle({
       )}
 
       {/* ── Section 6: Block 2 — Why it matters ── */}
-      {/* v10 sandwich: why_it_matters[0] → pull_quote → why_it_matters[1] */}
+      {/* para1 is shown in Signal block above; here we render para2 → pull_quote → para3 */}
       {(() => {
         const paras = story.why_it_matters.split(/\n\n+/).map(p => p.trim()).filter(Boolean)
-        const para1 = paras[0] ?? null
         const para2 = paras[1] ?? null
+        const para3 = paras[2] ?? null
         const quote = story.pull_quote ?? story.editorial_take ?? null
-        if (!para1 && !quote) return null
+        if (!para2 && !quote) return null
         const toHtml = (s: string) => s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         return (
           <div className="block" id="sec-context">
@@ -583,14 +589,14 @@ export function StoryArticle({
             </div>
             {mattersHeadline && <h3 className="block-title">{mattersHeadline}</h3>}
             <div className="context-body">
-              {para1 && (
-                <p dangerouslySetInnerHTML={{ __html: toHtml(para1) }} />
+              {para2 && (
+                <p dangerouslySetInnerHTML={{ __html: toHtml(para2) }} />
               )}
               {quote && (
                 <EditorialQuote quote={quote} />
               )}
-              {para2 && (
-                <p dangerouslySetInnerHTML={{ __html: toHtml(para2) }} />
+              {para3 && (
+                <p dangerouslySetInnerHTML={{ __html: toHtml(para3) }} />
               )}
             </div>
           </div>
