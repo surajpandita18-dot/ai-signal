@@ -285,7 +285,9 @@ function StandupCard({ story, standupMessages }: { story: Story; standupMessages
     standupMessages?.[fmt] ?? getClipboard(fmt)
   const getPreviewFn = (fmt: StandupFormat) =>
     standupMessages?.[fmt]
-      ? standupMessages[fmt].replace(/\n/g, '<br />')
+      ? standupMessages[fmt]
+          .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+          .replace(/\n/g, '<br />')
       : getPreviewHtml(fmt)
 
   const FORMAT_LABELS: Record<StandupFormat, string> = {

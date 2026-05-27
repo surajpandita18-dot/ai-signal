@@ -60,7 +60,7 @@ export async function POST(req: NextRequest) {
 
 Welcome to AI Signal.
 
-Starting tomorrow, you'll get one AI story every morning at 6:14 IST. Gone in 24 hours.
+Starting tomorrow, you'll get one AI story every morning at 6:14 IST. Signal over noise — no roundups, no hype.
 
 No noise. No hype. Just the signal that matters for builders, PMs, and founders shipping AI products.
 

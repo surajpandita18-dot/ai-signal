@@ -5,10 +5,10 @@ import { SiteFooter } from '@/components/SiteFooter'
 
 export const metadata: Metadata = {
   title: 'About',
-  description: 'One story. Every day. Gone in 24 hours. The single most important thing in AI, curated daily.',
+  description: 'One story. Every day. The single most important thing in AI, curated daily for builders.',
   openGraph: {
     title: 'About AI Signal',
-    description: 'One story. Every day. Gone in 24 hours.',
+    description: 'One story. Every day. Signal over noise.',
     url: 'https://aisignal.so/about',
     siteName: 'AI Signal',
     type: 'website',
@@ -16,7 +16,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary',
     title: 'About AI Signal',
-    description: 'One story. Every day. Gone in 24 hours.',
+    description: 'One story. Every day. Signal over noise.',
   },
 }
 
@@ -37,28 +37,28 @@ export default function AboutPage() {
           <h1 className="about-headline">
             One story.<br />
             <em>Every day.</em><br />
-            Gone in 24 hours.
+            Signal over noise.
           </h1>
           <p className="about-deck">
             AI Signal is not a roundup. Not a feed. Not a digest. It is one editorial pick — the single most
-            important thing that happened in AI in the last 24 hours — published at 06:14 IST, then gone.
+            important development in AI — curated daily and filed at 06:14 IST. For builders, engineers,
+            and founders making real product decisions.
           </p>
         </div>
 
         {/* Section 1 — The constraint */}
         <section className="about-section">
           <div className="about-section-label">01 — The constraint</div>
-          <h2 className="about-section-title">The 24-hour window is the product.</h2>
+          <h2 className="about-section-title">One story. That&apos;s the discipline.</h2>
           <div className="about-body">
             <p>
-              Most newsletters give you everything. AI Signal gives you one thing — and takes it away.
-              That pressure is intentional. If you read it, you read it with urgency. If you missed it,
-              you&apos;ll be here tomorrow.
+              Most newsletters give you everything. AI Signal gives you one thing. That constraint is
+              intentional.
             </p>
             <p>
-              The expiry is not a gimmick. It is the editorial spine. It forces a question every morning:
-              what is the one development that, if you ignored it, could cost you a decision?
-              Everything that doesn&apos;t clear that bar gets cut.
+              A single pick forces a question every morning: what is the one development that, if you
+              ignored it today, could cost you a decision this week? Everything that doesn&apos;t clear
+              that bar gets cut.
             </p>
             <p>
               If nothing clears the bar, there is no signal that day. A missed day beats a weak pick.

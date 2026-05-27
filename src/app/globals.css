@@ -2199,23 +2199,23 @@ header.site-nav-inner {
 }
 a.hero-preview-card { text-decoration: none; color: inherit; }
 .hero-preview-card {
-  padding: 14px 16px;
-  background: var(--bg-card);
+  padding: 16px 18px;
+  background: var(--bg-warm);
   border: 1px solid var(--border);
-  border-left: 2px solid var(--signal);
+  border-left: 3px solid var(--signal);
   border-radius: 10px;
   text-align: left;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 9px;
   transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
   cursor: pointer;
-  min-height: 88px;
+  min-height: 100px;
 }
 .hero-preview-card:hover {
   border-color: var(--signal);
-  transform: translateY(-2px);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 .preview-arrow {
   display: block;
@@ -2223,29 +2223,29 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   text-align: right;
   font-size: 11px;
   color: var(--signal);
-  opacity: 0.35;
+  opacity: 0.45;
   transition: opacity 0.2s;
 }
 .hero-preview-card:hover .preview-arrow { opacity: 1; }
 .hero-preview-header {
   display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 8px;
 }
 .hero-preview-icon {
   flex-shrink: 0;
-  width: 22px; height: 22px;
-  background: color-mix(in srgb, var(--signal) 10%, transparent);
+  width: 24px; height: 24px;
+  background: color-mix(in srgb, var(--signal) 12%, transparent);
   border-radius: 6px;
   display: flex; align-items: center; justify-content: center;
   font-family: var(--ff-mono);
-  font-size: 10px;
+  font-size: 11px;
   font-weight: 700;
   color: var(--signal);
 }
 .preview-label {
   font-family: var(--ff-mono);
-  font-size: 9px;
+  font-size: 10px;
   color: var(--text-mute);
   text-transform: uppercase;
   letter-spacing: 0.12em;
@@ -2253,10 +2253,11 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   min-width: 0;
 }
 .preview-value {
-  font-size: 12px;
+  font-size: 13px;
   line-height: 1.4;
   color: var(--text);
   font-weight: 500;
+  letter-spacing: -0.01em;
 }
 
 /* ── Share row ── */

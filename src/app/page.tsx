@@ -12,11 +12,11 @@ export const dynamic = 'force-dynamic'
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
 
 export const metadata: Metadata = {
-  title: 'AI Signal — One story. Every day. Gone in 24 hours.',
-  description: 'One story. Every day. Gone in 24 hours. The single most important thing in AI, curated daily.',
+  title: 'AI Signal — One story. Every day. Signal over noise.',
+  description: 'One story. Every day. The single most important thing in AI, curated daily for builders.',
   openGraph: {
-    title: 'AI Signal — One story. Every day. Gone in 24 hours.',
-    description: 'One story. Every day. Gone in 24 hours. The single most important thing in AI, curated daily.',
+    title: 'AI Signal — One story. Every day. Signal over noise.',
+    description: 'One story. Every day. The single most important thing in AI, curated daily for builders.',
     url: SITE_URL,
     siteName: 'AI Signal',
     type: 'website',
@@ -24,8 +24,8 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'AI Signal — One story. Every day. Gone in 24 hours.',
-    description: 'One story. Every day. Gone in 24 hours.',
+    title: 'AI Signal — One story. Every day. Signal over noise.',
+    description: 'One story. Every day. Signal over noise.',
     images: [`${SITE_URL}/og/default`],
   },
 }

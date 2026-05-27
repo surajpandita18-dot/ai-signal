@@ -38,10 +38,10 @@ const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.verc
 
 export const metadata: Metadata = {
   title: {
-    default: 'AI Signal — One story. Every day. Gone in 24 hours.',
+    default: 'AI Signal — One story. Every day. Signal over noise.',
     template: '%s — AI Signal',
   },
-  description: 'One story. Every day. Gone in 24 hours. The single most important thing in AI, curated daily.',
+  description: 'One story. Every day. The single most important thing in AI, curated daily for builders.',
   openGraph: {
     siteName: 'AI Signal',
     type: 'website',

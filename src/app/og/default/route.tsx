@@ -74,7 +74,7 @@ export async function GET() {
               maxWidth: '960px',
             }}
           >
-            One AI story. Every day. Gone in 24 hours.
+            One AI story. Every day. Signal over noise.
           </div>
         </div>
 

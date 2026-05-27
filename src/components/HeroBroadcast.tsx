@@ -50,7 +50,8 @@ export function HeroBroadcast({ phrases, category }: HeroBroadcastProps) {
 
   // Plain text pool — used char-by-char during typing
   function buildPhrases(): string[] {
-    const typeA = phrases.length > 0 ? phrases : FALLBACK_PHRASES
+    const typeA = (phrases.length > 0 ? phrases : FALLBACK_PHRASES)
+      .map(p => p.replace(/\*\*(.*?)\*\*/g, '$1'))
     return [
       ...typeA,
       `While you’ve been here, AI has burned ${liveTokensRef.current.toLocaleString()} tokens for free.`,
@@ -65,7 +66,10 @@ export function HeroBroadcast({ phrases, category }: HeroBroadcastProps) {
   function buildRichPhrases(): string[] {
     const typeA = phrases.length > 0 ? phrases : FALLBACK_PHRASES
     const numRe = /(\$[\d,.]+[A-Za-z%]*|\b\d+(?:\.\d+)?[%×xMBKk]?\b)/g
-    const richTypeA = typeA.map(p => p.replace(numRe, '<span class="num">$1</span>'))
+    const richTypeA = typeA.map(p =>
+      p.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+       .replace(numRe, '<span class="num">$1</span>')
+    )
     return [
       ...richTypeA,
       `While you’ve been here, AI has burned <span class="num">${liveTokensRef.current.toLocaleString()}</span> tokens for free.`,

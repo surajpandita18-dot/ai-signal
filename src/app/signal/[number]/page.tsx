@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: PageProps) {
   const summary = result.story?.summary ?? ''
   const whyItMatters = result.story?.why_it_matters ?? ''
   const description = buildDescription(
-    summary || 'One story. Every day. Gone in 24 hours.',
+    summary || 'One story. Every day. Signal over noise.',
     whyItMatters
   )
   const title = `Signal #${n} — ${headline}`

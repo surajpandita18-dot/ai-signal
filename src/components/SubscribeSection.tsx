@@ -40,7 +40,7 @@ export function SubscribeSection() {
         {/* Left: headline */}
         <h2 className="sub-headline anim d1">
           Get tomorrow&apos;s signal{' '}
-          <em className="ital">before</em> it expires.
+          <em className="ital">in your inbox</em> every morning.
         </h2>
 
         {/* Right: form */}
