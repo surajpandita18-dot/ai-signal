@@ -303,57 +303,12 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 /* ============ HEADLINE STAGE + MOTION ============ */
 
 .headline-stage {
-  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 0 auto 40px;
-  padding: 40px 0 20px;
+  margin: 0 auto 36px;
 }
 
-/* ── Breathing glow behind the title ── */
-.hs-glow {
-  position: absolute;
-  width: min(820px, 95vw);
-  height: 260px;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background:
-    radial-gradient(ellipse 55% 60% at 32% 55%, rgba(43, 91, 255, 0.13), transparent 62%),
-    radial-gradient(ellipse 42% 55% at 70% 44%, rgba(255, 107, 53, 0.09), transparent 58%);
-  filter: blur(30px);
-  pointer-events: none;
-  z-index: 0;
-  animation: hGlowBreathe 7s ease-in-out infinite;
-}
-@keyframes hGlowBreathe {
-  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
-  50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.07); }
-}
-
-/* ── Pulse rings that expand outward on load ── */
-.hs-ring {
-  position: absolute;
-  top: 50%; left: 50%;
-  border-radius: 50%;
-  pointer-events: none;
-  z-index: 0;
-}
-.hs-ring-1 {
-  width: min(680px, 90vw); height: 180px;
-  border: 1px solid rgba(43, 91, 255, 0.18);
-  animation: hRingPulse 3.8s 0.1s ease-out infinite;
-}
-.hs-ring-2 {
-  width: min(900px, 110vw); height: 240px;
-  border: 1px solid rgba(255, 107, 53, 0.10);
-  animation: hRingPulse 3.8s 0.85s ease-out infinite;
-}
-@keyframes hRingPulse {
-  0%   { transform: translate(-50%, -50%) scale(0.55); opacity: 0.85; }
-  100% { transform: translate(-50%, -50%) scale(1.18); opacity: 0; }
-}
 
 /* ============ BIG HEADLINE ============ */
 .big-headline {
@@ -377,100 +332,67 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   animation: hwRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
 
-/* "One" — outlined/stroke only, no fill — luxury editorial contrast */
-.hw1 {
-  animation-delay: 0.12s;
-  -webkit-text-stroke: 1.5px var(--text);
-  -webkit-text-fill-color: transparent;
-}
+/* "One" — solid dark */
+.hw1 { animation-delay: 0.10s; }
 
-/* "AI" — solid signal blue + warm glow halo */
+/* "AI" — signal blue, color only, no glow effects */
 .hw2 {
-  animation-delay: 0.30s;
+  animation-delay: 0.26s;
   color: var(--signal);
-  -webkit-text-fill-color: var(--signal);
-  position: relative;
-  text-shadow: 0 0 80px rgba(43,91,255,0.38), 0 0 30px rgba(43,91,255,0.18);
-}
-/* Animated gradient underline on "AI" */
-.hw2::after {
-  content: '';
-  position: absolute;
-  bottom: 0.06em;
-  left: 0; right: 0;
-  height: 0.04em;
-  min-height: 3px;
-  background: linear-gradient(90deg, var(--signal) 0%, var(--warm) 100%);
-  border-radius: 99px;
-  transform-origin: left center;
-  transform: scaleX(0);
-  opacity: 0;
-  animation: hwUnderline 0.55s 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-}
-@keyframes hwUnderline {
-  to { transform: scaleX(1); opacity: 1; }
 }
 
-.hw3 { animation-delay: 0.48s; }
+.hw3 { animation-delay: 0.44s; }
 
-/* Sub-line (hw4) inside h1 — italic, smaller, signal blue */
-.hw4 { animation-delay: 0.68s; }
+/* Sub-line (hw4) inside h1 */
+.hw4 { animation-delay: 0.64s; }
 
 @keyframes hwRise {
   to { opacity: 1; transform: translateY(0) rotate(0deg); }
 }
 
-/* .sub-line used by hw4 — restore the classic inside-h1 look */
 .big-headline .sub-line {
   font-size: 0.62em;
   color: var(--signal);
-  -webkit-text-fill-color: var(--signal);
-  -webkit-text-stroke: 0;
   letter-spacing: -0.025em;
   line-height: 1.05;
   display: inline-block;
   margin-top: 0.15em;
 }
 .big-headline .ital { font-style: italic; }
-.big-headline:hover .sub-line { text-shadow: 0 8px 30px rgba(43, 91, 255, 0.35); transform: translateY(-3px) rotate(-1.5deg); }
 
-/* ── Hero today's signal card — editorial redesign ── */
+/* ── Hero today's signal card ── */
 .hero-today-headline {
   display: block;
-  position: relative;
-  margin: 36px auto 0;
-  max-width: 620px;
+  margin: 28px auto 0;
+  max-width: 580px;
   width: calc(100% - 48px);
+  padding: 18px 22px 16px 26px;
+  background: var(--bg-card);
+  border: 1.5px solid var(--border);
+  border-left: 4px solid var(--signal);
+  border-radius: 10px;
   text-decoration: none;
   color: inherit;
-  border-radius: 14px;
-  overflow: hidden;
-  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.22s;
-  box-shadow: 0 2px 16px rgba(0,0,0,0.06);
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border-left-color 0.2s ease;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.06);
 }
 .hero-today-headline:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 14px 44px rgba(43, 91, 255, 0.13), 0 4px 10px rgba(0,0,0,0.06);
+  transform: translateY(-3px);
+  box-shadow: 0 8px 28px rgba(43, 91, 255, 0.10), 0 2px 6px rgba(0,0,0,0.05);
+  border-left-color: var(--warm);
 }
 
-/* Dark header strip */
-.hero-today-head {
+.hero-today-meta {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  padding: 9px 20px;
-  background: var(--text);
-}
-.hero-today-head-left {
-  display: flex;
-  align-items: center;
-  gap: 9px;
+  gap: 8px;
+  margin-bottom: 9px;
 }
 .hero-today-pip {
-  width: 7px; height: 7px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--signal);
-  box-shadow: 0 0 0 3px rgba(43,91,255,0.28);
   animation: livePulse 1.6s ease-in-out infinite;
   flex-shrink: 0;
 }
@@ -478,63 +400,39 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   font-family: var(--ff-mono);
   font-size: 9.5px;
   font-weight: 700;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: rgba(255,255,255,0.78);
+  color: var(--signal);
 }
 .hero-today-num {
   font-family: var(--ff-mono);
   font-size: 9.5px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: rgba(255,255,255,0.32);
-}
-
-/* Light body with gradient left border */
-.hero-today-body {
-  background: var(--bg-card);
-  border: 1.5px solid var(--border);
-  border-top: none;
-  border-radius: 0 0 14px 14px;
-  padding: 20px 24px 18px 28px;
-  position: relative;
-}
-.hero-today-body::before {
-  content: '';
-  position: absolute;
-  left: 0; top: 0; bottom: 0;
-  width: 4px;
-  background: linear-gradient(180deg, var(--signal) 0%, var(--warm) 100%);
-  border-radius: 0 0 0 14px;
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
 }
 .hero-today-text {
   font-family: var(--ff-display);
-  font-size: clamp(17px, 2.4vw, 22px);
+  font-size: clamp(16px, 2.2vw, 20px);
   font-weight: 400;
-  line-height: 1.3;
-  letter-spacing: -0.018em;
+  line-height: 1.32;
+  letter-spacing: -0.016em;
   color: var(--text);
   display: block;
-  margin: 0 0 14px;
-  text-align: left;
+  margin: 0 0 11px;
 }
 .hero-today-arrow {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
   font-family: var(--ff-mono);
   font-size: 10px;
   font-weight: 700;
-  letter-spacing: 0.13em;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--signal);
-  transition: gap 0.2s;
+  color: var(--text-faint);
+  transition: color 0.18s;
 }
-.hero-today-headline:hover .hero-today-arrow { gap: 11px; }
+.hero-today-headline:hover .hero-today-arrow { color: var(--signal); }
 
 @media (max-width: 600px) {
-  .hero-today-headline { margin: 24px 16px 0; width: auto; }
-  .hero-today-body { padding: 16px 18px 14px 22px; }
+  .hero-today-headline { margin: 20px 12px 0; width: auto; padding: 16px 18px 14px 20px; }
   .hero-today-text { font-size: 16px; }
 }
 
@@ -3496,11 +3394,7 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 
 /* ── V11 responsive additions ── */
 @media (max-width: 880px) {
-  .headline-stage { padding: 28px 0 16px; margin-bottom: 28px; }
-  .hs-glow { width: 95vw; height: 180px; }
-  .hs-ring-1 { width: 88vw; height: 120px; }
-  .hs-ring-2 { width: 110vw; height: 160px; }
-  .headline-sub { font-size: clamp(18px, 4.5vw, 28px); margin-top: 0.22em; }
+  .headline-stage { margin-bottom: 24px; }
   .hero-tickers { grid-template-columns: 1fr; max-width: 100%; padding: 0 8px; gap: 8px; }
   .hero-preview-strip { grid-template-columns: 1fr; max-width: 100%; padding: 0 8px; gap: 8px; }
   .hero-banner::before { background-size: 32px 32px; }
@@ -3704,8 +3598,8 @@ footer .links a:hover { color: var(--text); }
   .hero-banner { padding: 44px 16px 12px; }
   .hero-tickers { padding: 0 4px; }
   .hero-preview-strip { padding: 0 4px; }
-  .hero-today-headline { margin: 20px 8px 0; }
-  .headline-stage { padding: 20px 0 12px; }
+  .hero-today-headline { margin: 16px 0 0; width: 100%; }
+  .headline-stage { margin-bottom: 20px; }
   .notebook-strip { padding: 0 12px; }
 }
 

@@ -39,9 +39,6 @@ export function HeroZone({ issueDate, publishTime, readMinutes, headline, signal
         </div>
 
         <div className="headline-stage">
-          <span className="hs-glow" aria-hidden="true" />
-          <span className="hs-ring hs-ring-1" aria-hidden="true" />
-          <span className="hs-ring hs-ring-2" aria-hidden="true" />
           <h1 className="big-headline">
             <span className="hw hw1">One</span>
             {' '}
@@ -62,17 +59,13 @@ export function HeroZone({ issueDate, publishTime, readMinutes, headline, signal
               document.querySelector('.story-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
             }}
           >
-            <div className="hero-today-head">
-              <div className="hero-today-head-left">
-                <span className="hero-today-pip" aria-hidden="true" />
-                <span className="hero-today-label">Today&apos;s signal</span>
-              </div>
+            <div className="hero-today-meta">
+              <span className="hero-today-pip" aria-hidden="true" />
+              <span className="hero-today-label">Today&apos;s signal</span>
               {signalNumber && <span className="hero-today-num">#{signalNumber}</span>}
             </div>
-            <div className="hero-today-body">
-              <span className="hero-today-text">{headline}</span>
-              <span className="hero-today-arrow">Read the full signal →</span>
-            </div>
+            <span className="hero-today-text">{headline}</span>
+            <span className="hero-today-arrow">Read now →</span>
           </a>
         )}
 

@@ -2,7 +2,6 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import type { Database } from '../../db/types/database'
-import { BuilderCard } from './BuilderCard'
 import { CounterView } from './CounterView'
 import { EditorialQuote } from './EditorialQuote'
 import { InsightsStrip } from './InsightsStrip'
@@ -48,12 +47,6 @@ type Story = StoryRow & {
   action_items?: string[] | null
   counter_view?: string | null
   counter_view_headline?: string | null
-  // pull_quote and editorial_take already exist in StoryRow via database.ts
-  // lenses: optional parsed object from lens_pm / lens_founder / lens_builder
-  lenses?: {
-    bet: string
-    burn: string
-  } | null
 }
 
 interface StoryArticleProps {
@@ -631,16 +624,7 @@ export function StoryArticle({
         />
       )}
 
-      {/* ── Section 7: BuilderCard — editorial take (The Build / bet / burn) ── */}
-      {story.editorial_take && (
-        <BuilderCard
-          buildQuote={story.editorial_take}
-          betQuote={story.lenses?.bet ?? story.lens_builder ?? story.lens_pm ?? ''}
-          burnQuote={story.lenses?.burn ?? story.lens_founder ?? story.lens_pm ?? ''}
-        />
-      )}
-
-      {/* ── V11: Decision Aid — after builder, before The Move ── */}
+      {/* ── V11: Decision Aid — after role lenses, before The Move ── */}
       {decisionAidData && decisionAidData.rows?.length > 0 && (
         <DecisionAid aid={decisionAidData} />
       )}
