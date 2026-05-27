@@ -55,47 +55,67 @@ interface RecentStory {
 // ─── Source registry ────────────────────────────────────────────────────────────
 
 const RSS_SOURCES = [
-  { name: 'OpenAI Blog',      url: 'https://openai.com/blog/rss.xml',                                   tier: 5, aiOnly: true  },
-  { name: 'Anthropic Blog',   url: 'https://www.anthropic.com/rss.xml',                                 tier: 5, aiOnly: true  },
-  { name: 'Google AI',        url: 'https://blog.google/technology/ai/rss/',                             tier: 5, aiOnly: true  },
-  { name: 'DeepMind',         url: 'https://deepmind.google/discover/blog/rss.xml',                     tier: 5, aiOnly: true  },
-  { name: 'Meta AI',          url: 'https://ai.meta.com/blog/rss/',                                     tier: 5, aiOnly: true  },
-  { name: 'Mistral AI',       url: 'https://mistral.ai/news/rss.xml',                                   tier: 4, aiOnly: true  },
-  { name: 'Stability AI',     url: 'https://stability.ai/blog/rss',                                     tier: 4, aiOnly: true  },
-  { name: 'Hugging Face',     url: 'https://huggingface.co/blog/feed.xml',                              tier: 4, aiOnly: true  },
-  { name: 'VentureBeat AI',   url: 'https://venturebeat.com/category/ai/feed/',                         tier: 4, aiOnly: true  },
-  { name: 'TechCrunch AI',    url: 'https://techcrunch.com/category/artificial-intelligence/feed/',     tier: 4, aiOnly: true  },
-  { name: 'MIT Tech Review',  url: 'https://www.technologyreview.com/feed/',                            tier: 4, aiOnly: false },
-  { name: 'Wired AI',         url: 'https://www.wired.com/feed/category/artificial-intelligence/rss',  tier: 4, aiOnly: true  },
-  { name: 'Latent Space',     url: 'https://www.latent.space/feed',                                     tier: 4, aiOnly: true  },
-  { name: 'Simon Willison',   url: 'https://simonwillison.net/atom/everything/',                        tier: 4, aiOnly: false },
-  { name: 'The Batch',        url: 'https://www.deeplearning.ai/the-batch/rss/',                        tier: 4, aiOnly: true  },
-  { name: 'Ahead of AI',      url: 'https://magazine.sebastianraschka.com/feed',                        tier: 4, aiOnly: true  },
-  { name: "Ben's Bites",      url: 'https://bensbites.beehiiv.com/feed',                                tier: 3, aiOnly: true  },
-  { name: 'Import AI',        url: 'https://importai.substack.com/feed',                                tier: 3, aiOnly: true  },
-  { name: 'The Verge Tech',   url: 'https://www.theverge.com/tech/rss/index.xml',                      tier: 3, aiOnly: false },
+  // ── Tier 5: official lab / major platform blogs ──────────────────────────
+  { name: 'OpenAI Blog',        url: 'https://openai.com/blog/rss.xml',                                        tier: 5, aiOnly: true  },
+  { name: 'Anthropic Blog',     url: 'https://www.anthropic.com/rss.xml',                                      tier: 5, aiOnly: true  },
+  { name: 'Google AI',          url: 'https://blog.google/technology/ai/rss/',                                  tier: 5, aiOnly: true  },
+  { name: 'DeepMind',           url: 'https://deepmind.google/discover/blog/rss.xml',                          tier: 5, aiOnly: true  },
+  { name: 'Meta AI',            url: 'https://ai.meta.com/blog/rss/',                                          tier: 5, aiOnly: true  },
+  { name: 'Microsoft AI',       url: 'https://blogs.microsoft.com/ai/feed/',                                   tier: 5, aiOnly: true  },
+  // ── Tier 4: major labs, infrastructure, high-signal media ────────────────
+  { name: 'Mistral AI',         url: 'https://mistral.ai/news/rss.xml',                                        tier: 4, aiOnly: true  },
+  { name: 'Stability AI',       url: 'https://stability.ai/blog/rss',                                          tier: 4, aiOnly: true  },
+  { name: 'Hugging Face',       url: 'https://huggingface.co/blog/feed.xml',                                   tier: 4, aiOnly: true  },
+  { name: 'Google Research',    url: 'https://research.google/blog/rss/',                                      tier: 4, aiOnly: true  },
+  { name: 'NVIDIA Developer',   url: 'https://developer.nvidia.com/blog/feed/',                                tier: 4, aiOnly: true  },
+  { name: 'AWS ML Blog',        url: 'https://aws.amazon.com/blogs/machine-learning/feed/',                    tier: 4, aiOnly: true  },
+  { name: 'VentureBeat AI',     url: 'https://venturebeat.com/category/ai/feed/',                              tier: 4, aiOnly: true  },
+  { name: 'TechCrunch AI',      url: 'https://techcrunch.com/category/artificial-intelligence/feed/',          tier: 4, aiOnly: true  },
+  { name: 'MIT Tech Review',    url: 'https://www.technologyreview.com/feed/',                                 tier: 4, aiOnly: false },
+  { name: 'Wired AI',           url: 'https://www.wired.com/feed/category/artificial-intelligence/rss',       tier: 4, aiOnly: true  },
+  { name: 'Latent Space',       url: 'https://www.latent.space/feed',                                          tier: 4, aiOnly: true  },
+  { name: 'Simon Willison',     url: 'https://simonwillison.net/atom/everything/',                             tier: 4, aiOnly: false },
+  { name: 'The Batch',          url: 'https://www.deeplearning.ai/the-batch/rss/',                             tier: 4, aiOnly: true  },
+  { name: 'Ahead of AI',        url: 'https://magazine.sebastianraschka.com/feed',                            tier: 4, aiOnly: true  },
+  // ── Tier 3: newsletters, community, tooling ───────────────────────────────
+  { name: "Ben's Bites",        url: 'https://bensbites.beehiiv.com/feed',                                    tier: 3, aiOnly: true  },
+  { name: 'Import AI',          url: 'https://importai.substack.com/feed',                                    tier: 3, aiOnly: true  },
+  { name: 'The Verge Tech',     url: 'https://www.theverge.com/tech/rss/index.xml',                           tier: 3, aiOnly: false },
+  { name: 'LangChain Blog',     url: 'https://blog.langchain.dev/rss/',                                       tier: 3, aiOnly: true  },
+  { name: 'Towards AI',         url: 'https://pub.towardsai.net/feed',                                        tier: 3, aiOnly: true  },
 ]
 
 const AI_KEYWORDS = [
+  // labs & models
   'openai','anthropic','claude','gpt','gemini','llm','large language',
   'ai model','neural network','mistral','meta ai','deepmind','google ai',
   'machine learning','deep learning','diffusion','transformer','agi',
   'inference','fine-tun','multimodal','chatgpt','copilot','ai agent',
   'foundation model','generative ai','stable diffusion','hugging face',
   'nvidia ai','artificial intelligence','language model','grok',
-  'perplexity','cursor ai','devin','sora','dall-e','midjourney',
+  'perplexity','devin','sora','dall-e','midjourney','llama 3','llama 4',
+  'qwen','gemma','phi-','claude code','claude opus','claude sonnet',
+  'gemini 2','gemini flash','gpt-5','gpt-4o',
+  // tools & infra
+  'cursor','windsurf','groq','openrouter','cerebras','together ai',
+  'replicate','vercel ai','langchain','llamaindex','dspy',
+  // concepts
   'ai startup','ai funding','ai regulation','ai safety','alignment',
-  'benchmark','reasoning model','context window','rag','o1','o3',
+  'benchmark','reasoning model','context window','rag','o1','o3','o4',
   'papers with code','open source model','weights','tokenizer',
   'agents','agentic','vibe coding','parameters','compute cluster',
   'ai policy','ai governance','ai chip','model weights',
+  'mcp','model context protocol','computer use','tool use',
+  'test-time compute','test time scaling','multimodal agent',
 ]
 
 const IMPACT_BONUS_KEYWORDS = [
-  'releases','launch','acqui','raises','funding','bans',
-  'cuts price','price cut','new model','breakthrough','surpasses',
+  'releases','launch','acqui','acquires','raises','raises $','funding',
+  'bans','cuts price','price cut','new model','breakthrough','surpasses',
   'beats gpt','open source','open-source','layoffs','shuts down',
   'general availability','ga release','open weights',
+  'now available','deprecat','partners with','partnership',
+  'open weights','context window increase','rate limit',
 ]
 
 const TIER_BANDS: Record<number, { min: number; max: number }> = {
@@ -224,7 +244,7 @@ async function fetchFromRSS(): Promise<Candidate[]> {
 async function fetchFromHN(): Promise<Candidate[]> {
   const since = Math.floor(Date.now() / 1000) - 48 * 3600
   const query = encodeURIComponent(
-    'AI OR LLM OR GPT OR Claude OR Gemini OR OpenAI OR Anthropic OR "language model" OR "machine learning"'
+    'AI OR LLM OR GPT OR Claude OR Gemini OR OpenAI OR Anthropic OR "language model" OR Mistral OR MCP OR Cursor OR Groq OR "vibe coding" OR "AI agent"'
   )
   const res = await fetchWithTimeout(
     `https://hn.algolia.com/api/v1/search?tags=story&query=${query}&hitsPerPage=40&numericFilters=created_at_i>${since},points>2`,
@@ -257,8 +277,42 @@ async function fetchFromHN(): Promise<Candidate[]> {
   return candidates
 }
 
+async function fetchFromGitHub(): Promise<Candidate[]> {
+  const since = new Date(Date.now() - 48 * 3600 * 1000).toISOString().split('T')[0]
+  const res = await fetchWithTimeout(
+    `https://api.github.com/search/repositories?q=topic:llm+OR+topic:ai+OR+topic:machine-learning+created:>${since}&sort=stars&order=desc&per_page=15`,
+    8000
+  ).catch(() => null)
+  if (!res?.ok) return []
+
+  interface GHRepo {
+    full_name: string; description: string | null; html_url: string
+    stargazers_count: number; created_at: string; pushed_at: string
+  }
+  interface GHResponse { items?: GHRepo[] }
+  const json = await res.json() as GHResponse
+  if (!json.items?.length) return []
+
+  const now = Date.now()
+  return json.items
+    .filter(r => r.description && isAIRelevant(r.full_name + ' ' + (r.description ?? '')))
+    .map(r => {
+      const title = `[GitHub] ${r.full_name} — ${r.description ?? ''}`
+      const ageHours = (now - new Date(r.created_at).getTime()) / 3_600_000
+      return {
+        title: title.slice(0, 140),
+        url: r.html_url,
+        source: 'GitHub',
+        sourceTier: 3,
+        engagement: r.stargazers_count,
+        ageHours: Math.round(ageHours * 10) / 10,
+        finalScore: computeScore(3, r.stargazers_count, ageHours, title),
+      }
+    })
+}
+
 async function fetchFromReddit(): Promise<Candidate[]> {
-  const subreddits = 'MachineLearning+LocalLLaMA+artificial+OpenAI+ChatGPT+ArtificialIntelligence+ClaudeAI'
+  const subreddits = 'MachineLearning+LocalLLaMA+artificial+OpenAI+ChatGPT+ArtificialIntelligence+ClaudeAI+GoogleGemini'
   const res = await fetchWithTimeout(
     `https://www.reddit.com/r/${subreddits}/top.json?t=day&limit=30&raw_json=1`
   ).catch(() => null)
@@ -319,14 +373,15 @@ async function fetchFromArXiv(): Promise<Candidate[]> {
 }
 
 async function fetchAllCandidates(): Promise<Candidate[]> {
-  const [rss, hn, reddit, arxiv] = await Promise.allSettled([
-    fetchFromRSS(), fetchFromHN(), fetchFromReddit(), fetchFromArXiv(),
+  const [rss, hn, reddit, arxiv, github] = await Promise.allSettled([
+    fetchFromRSS(), fetchFromHN(), fetchFromReddit(), fetchFromArXiv(), fetchFromGitHub(),
   ])
   const all: Candidate[] = [
     ...(rss.status === 'fulfilled' ? rss.value : []),
     ...(hn.status === 'fulfilled' ? hn.value : []),
     ...(reddit.status === 'fulfilled' ? reddit.value : []),
     ...(arxiv.status === 'fulfilled' ? arxiv.value : []),
+    ...(github.status === 'fulfilled' ? github.value : []),
   ]
 
   function normalizeUrl(url: string): string {
@@ -364,7 +419,7 @@ async function fetchAllCandidates(): Promise<Candidate[]> {
     if (count >= 2) continue
     domainCounts.set(domain, count + 1)
     capped.push(c)
-    if (capped.length === 18) break
+    if (capped.length === 22) break
   }
   return capped
 }
