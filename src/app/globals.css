@@ -300,29 +300,130 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   50% { opacity: 0.42; transform: rotate(-4deg) translateY(-1px); }
 }
 
+/* ============ HEADLINE STAGE + MOTION ============ */
+
+.headline-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto 40px;
+  padding: 40px 0 20px;
+}
+
+/* ── Breathing glow behind the title ── */
+.hs-glow {
+  position: absolute;
+  width: min(820px, 95vw);
+  height: 260px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background:
+    radial-gradient(ellipse 55% 60% at 32% 55%, rgba(43, 91, 255, 0.13), transparent 62%),
+    radial-gradient(ellipse 42% 55% at 70% 44%, rgba(255, 107, 53, 0.09), transparent 58%);
+  filter: blur(30px);
+  pointer-events: none;
+  z-index: 0;
+  animation: hGlowBreathe 7s ease-in-out infinite;
+}
+@keyframes hGlowBreathe {
+  0%, 100% { opacity: 0.6; transform: translate(-50%, -50%) scale(1); }
+  50%       { opacity: 1;   transform: translate(-50%, -50%) scale(1.07); }
+}
+
+/* ── Pulse rings that expand outward on load ── */
+.hs-ring {
+  position: absolute;
+  top: 50%; left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+.hs-ring-1 {
+  width: min(680px, 90vw); height: 180px;
+  border: 1px solid rgba(43, 91, 255, 0.18);
+  animation: hRingPulse 3.8s 0.1s ease-out infinite;
+}
+.hs-ring-2 {
+  width: min(900px, 110vw); height: 240px;
+  border: 1px solid rgba(255, 107, 53, 0.10);
+  animation: hRingPulse 3.8s 0.85s ease-out infinite;
+}
+@keyframes hRingPulse {
+  0%   { transform: translate(-50%, -50%) scale(0.55); opacity: 0.85; }
+  100% { transform: translate(-50%, -50%) scale(1.18); opacity: 0; }
+}
+
 /* ============ BIG HEADLINE ============ */
 .big-headline {
   font-family: var(--ff-display);
-  font-size: clamp(48px, 7.8vw, 104px);
-  line-height: 0.98;
+  font-size: clamp(52px, 8.4vw, 108px);
+  line-height: 0.96;
   font-weight: 400;
-  letter-spacing: -0.035em;
+  letter-spacing: -0.038em;
   color: var(--text);
-  margin: 0 auto;
-  max-width: 1100px;
-  transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1);
-  will-change: transform;
+  margin: 0;
+  position: relative;
+  z-index: 1;
+  text-align: center;
 }
-.big-headline .sub-line {
-  font-size: 0.62em;
-  color: var(--signal);
-  letter-spacing: -0.025em;
-  line-height: 1.05;
+
+/* ── Per-word stagger ── */
+.hw {
   display: inline-block;
-  margin-top: 0.15em;
+  opacity: 0;
+  transform: translateY(34px) rotate(-0.4deg);
+  animation: hwRise 0.9s cubic-bezier(0.22, 1, 0.36, 1) forwards;
 }
-.big-headline .ital { font-style: italic; color: var(--signal); display: inline-block; transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
-.big-headline:hover .ital { text-shadow: 0 8px 30px rgba(43, 91, 255, 0.35); transform: translateY(-3px) rotate(-1.5deg); }
+.hw1 { animation-delay: 0.12s; }
+.hw2 {
+  animation-delay: 0.30s;
+  color: var(--signal);
+  position: relative;
+}
+/* Animated gradient underline on "AI" */
+.hw2::after {
+  content: '';
+  position: absolute;
+  bottom: 0.06em;
+  left: 0; right: 0;
+  height: 0.04em;
+  min-height: 3px;
+  background: linear-gradient(90deg, var(--signal) 0%, var(--warm) 100%);
+  border-radius: 99px;
+  transform-origin: left center;
+  transform: scaleX(0);
+  opacity: 0;
+  animation: hwUnderline 0.55s 0.72s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+@keyframes hwUnderline {
+  to { transform: scaleX(1); opacity: 1; }
+}
+.hw3 { animation-delay: 0.48s; }
+
+@keyframes hwRise {
+  to { opacity: 1; transform: translateY(0) rotate(0deg); }
+}
+
+/* ── Sub-line below h1 ── */
+.headline-sub {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: clamp(22px, 3.2vw, 42px);
+  line-height: 1.15;
+  letter-spacing: -0.022em;
+  color: var(--signal);
+  margin-top: 0.28em;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  transform: translateY(16px);
+  animation: hSubIn 0.85s 0.78s ease-out forwards;
+}
+@keyframes hSubIn {
+  to { opacity: 1; transform: translateY(0); }
+}
 
 /* ── Hero today's headline callout ── */
 .hero-today-headline {
@@ -3325,6 +3426,11 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 
 /* ── V11 responsive additions ── */
 @media (max-width: 880px) {
+  .headline-stage { padding: 28px 0 16px; margin-bottom: 28px; }
+  .hs-glow { width: 95vw; height: 180px; }
+  .hs-ring-1 { width: 88vw; height: 120px; }
+  .hs-ring-2 { width: 110vw; height: 160px; }
+  .headline-sub { font-size: clamp(18px, 4.5vw, 28px); margin-top: 0.22em; }
   .hero-tickers { grid-template-columns: 1fr; max-width: 100%; }
   .hero-preview-strip { grid-template-columns: 1fr; max-width: 100%; }
   .hero-banner::before { background-size: 32px 32px; }

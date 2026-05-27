@@ -38,11 +38,19 @@ export function HeroZone({ issueDate, publishTime, readMinutes, headline, signal
           </span>
         </div>
 
-        <h1 className="big-headline anim d3">
-          One AI story.
-          <br />
-          <span className="ital sub-line">The one worth your next 5 minutes.</span>
-        </h1>
+        <div className="headline-stage">
+          <span className="hs-glow" aria-hidden="true" />
+          <span className="hs-ring hs-ring-1" aria-hidden="true" />
+          <span className="hs-ring hs-ring-2" aria-hidden="true" />
+          <h1 className="big-headline">
+            <span className="hw hw1">One</span>
+            {' '}
+            <span className="hw hw2">AI</span>
+            {' '}
+            <span className="hw hw3">story.</span>
+          </h1>
+          <p className="headline-sub ital">The one worth your next 5 minutes.</p>
+        </div>
 
         {headline && (
           <a
