@@ -895,7 +895,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   gap: 12px;
 }
 .stat-card {
-  background: var(--bg-warm);
+  background: var(--bg-card);
   border: 1px solid var(--border);
   border-top: 3px solid var(--signal);
   border-radius: 8px;
@@ -915,13 +915,13 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   text-transform: uppercase;
   letter-spacing: 0.12em;
   color: var(--text-mute);
-  margin-bottom: 12px;
+  margin-bottom: 10px;
   font-weight: 600;
   flex-shrink: 0;
 }
 .stat-card-value {
   font-family: var(--ff-display);
-  font-size: 34px;
+  font-size: 32px;
   line-height: 1.1;
   margin-bottom: 10px;
   display: flex;
@@ -937,23 +937,26 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 }
 .stat-card-delta,
 .stat-card-value .delta-down {
-  font-size: 11px;
+  font-size: 10px;
   font-style: normal;
   font-weight: 600;
   font-family: var(--ff-mono);
   color: var(--green);
   background: color-mix(in srgb, var(--green) 10%, transparent);
-  padding: 2px 7px;
+  padding: 2px 6px;
   border-radius: 4px;
   letter-spacing: 0;
-  white-space: nowrap;
+  white-space: normal;
+  word-break: break-word;
+  max-width: 100%;
+  line-height: 1.5;
 }
 .stat-card-detail {
   font-size: 12px;
   color: var(--text-mute);
   line-height: 1.4;
   flex-shrink: 0;
-  margin-top: 14px;
+  margin-top: 12px;
   padding-top: 12px;
   border-top: 1px solid var(--border);
 }
@@ -2210,21 +2213,22 @@ footer .links a:hover { color: var(--text); }
 }
 .hero-ticker {
   padding: 14px 16px;
-  background: var(--bg-card);
+  background: var(--bg-warm);
   border: 1px solid var(--border);
-  border-left: 2px solid var(--border-mid);
-  border-radius: 10px;
+  border-top: 3px solid var(--signal);
+  border-radius: 8px;
   text-align: left;
-  transition: transform 0.2s, border-color 0.2s, box-shadow 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
   cursor: default;
   display: flex;
   flex-direction: column;
   gap: 6px;
 }
+.hero-ticker:nth-child(2) { border-top-color: var(--warm); }
+.hero-ticker:nth-child(3) { border-top-color: #22a85a; }
 .hero-ticker:hover {
   transform: translateY(-2px);
-  border-color: var(--signal);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.07);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
 }
 .hero-ticker-label {
   font-family: var(--ff-mono);
@@ -3891,76 +3895,122 @@ footer .links a:hover { color: var(--text); }
 }
 
 /* ── Track Record ──────────────────────────────────────────────────────────── */
-.track-record {
-  margin: 0 0 40px;
-  padding: 20px 24px;
-  background: var(--bg-warm);
-  border-left: 3px solid var(--signal);
-  border-radius: 2px;
+.track-record { margin: 0 0 40px; }
+.track-record-header {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 14px;
 }
 .track-record-eyebrow {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
   font-family: var(--ff-mono);
   font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.1em;
+  font-weight: 700;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--signal);
-  margin-bottom: 16px;
+  flex-shrink: 0;
 }
 .track-record-pip {
-  width: 6px;
-  height: 6px;
+  width: 6px; height: 6px;
   border-radius: 50%;
   background: var(--signal);
   flex-shrink: 0;
 }
-.track-record-list {
+.track-record-sub {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+}
+.track-record-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+}
+a.track-record-card {
   display: flex;
   flex-direction: column;
-  gap: 14px;
-}
-.track-record-item {
-  display: flex;
-  gap: 14px;
+  gap: 10px;
+  padding: 16px 16px 14px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid #22a85a;
+  border-radius: 8px;
   text-decoration: none;
   color: inherit;
+  transition: transform 0.18s, box-shadow 0.18s;
 }
-.track-record-item:hover .track-record-called { color: var(--signal); }
-.track-record-num {
+a.track-record-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+}
+.track-record-card-top {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.track-record-sig {
   font-family: var(--ff-mono);
   font-size: 10px;
   font-weight: 700;
-  color: var(--text-mute);
-  letter-spacing: 0.06em;
-  padding-top: 2px;
+  color: #22a85a;
+  background: color-mix(in srgb, #22a85a 10%, transparent);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
   flex-shrink: 0;
-  width: 26px;
 }
-.track-record-body { display: flex; flex-direction: column; gap: 3px; }
+.track-record-label {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-mute);
+  font-weight: 600;
+  min-width: 0;
+}
 .track-record-called {
   font-size: 13px;
   font-weight: 500;
   color: var(--text);
-  line-height: 1.4;
-  transition: color 0.15s;
+  line-height: 1.45;
+  margin: 0;
+  flex-grow: 1;
 }
-.track-record-outcome {
+a.track-record-card:hover .track-record-called { color: var(--signal); }
+.track-record-card-foot {
   display: flex;
-  align-items: baseline;
-  gap: 5px;
-  font-family: var(--ff-mono);
-  font-size: 11px;
-  color: var(--text-mute);
-  line-height: 1.4;
+  align-items: flex-start;
+  gap: 7px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
 }
 .track-record-check {
   color: #22a85a;
   font-weight: 700;
+  font-size: 12px;
   flex-shrink: 0;
+  margin-top: 1px;
+}
+.track-record-outcome {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text);
+  line-height: 1.35;
+}
+.track-record-detail {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  color: var(--text-mute);
+  margin-top: 2px;
+  line-height: 1.35;
 }
 @media (max-width: 640px) {
-  .track-record { padding: 16px 18px; }
+  .track-record-cards { grid-template-columns: 1fr; }
+  .track-record-header { flex-direction: column; gap: 4px; }
 }
