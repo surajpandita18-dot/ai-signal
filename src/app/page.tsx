@@ -3,9 +3,7 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { HomePageClient } from '@/components/HomePageClient'
 import { SiteNav } from '@/components/SiteNav'
 import { SiteFooter } from '@/components/SiteFooter'
-import { SignalExpired } from '@/components/SignalExpired'
 import { SubscribeInput } from '@/components/SubscribeInput'
-import { isWithin24h } from '@/lib/utils'
 
 export const dynamic = 'force-dynamic'
 
@@ -104,36 +102,6 @@ export default async function HomePage() {
           {issue.editor_note && (
             <p style={{ fontSize: 15, lineHeight: 1.6 }}>{issue.editor_note}</p>
           )}
-        </div>
-        <SiteFooter />
-      </>
-    )
-  }
-
-  const active = issue.published_at ? isWithin24h(issue.published_at) : false
-
-  // State B — signal expired
-  if (!active) {
-    const { data: storiesData } = await supabase
-      .from('stories')
-      .select('headline')
-      .eq('issue_id', issue.id)
-      .order('position', { ascending: true })
-      .limit(1)
-
-    const headline = storiesData && storiesData.length > 0 ? storiesData[0].headline : ''
-
-    return (
-      <>
-        <SiteNav />
-        <div style={{ maxWidth: 720, margin: '80px auto', padding: '0 32px' }}>
-          <SignalExpired
-            headline={headline}
-            publishedAt={issue.published_at ?? new Date().toISOString()}
-            signalNumber={issue.issue_number}
-            tomorrowCategory={undefined}
-          />
-          <SubscribeInput label="Tomorrow's signal drops at 06:14 IST. Subscribe to be first." />
         </div>
         <SiteFooter />
       </>
