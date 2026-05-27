@@ -60,11 +60,11 @@ export function HeroZone({ issueDate, publishTime, readMinutes, headline, signal
             }}
           >
             <div className="hero-today-meta">
-              <span className="hero-today-label">Today</span>
-              {signalNumber && <><span className="hero-today-sep">·</span><span className="hero-today-num">#{signalNumber}</span></>}
+              {signalNumber && <span className="hero-today-sig">Signal #{signalNumber}</span>}
+              {category && <span className="hero-today-cat">{category}</span>}
             </div>
             <span className="hero-today-text">{headline}</span>
-            <span className="hero-today-arrow">Read signal →</span>
+            <span className="hero-today-arrow">Read the signal <span className="hta-arrow">→</span></span>
           </a>
         )}
 
