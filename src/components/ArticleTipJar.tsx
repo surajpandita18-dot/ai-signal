@@ -3,10 +3,10 @@
 import { useState, useCallback } from 'react'
 
 const UPI_ID = 'suraj.pandita132@ybl'
-const UPI_LINK = 'upi://pay?pa=suraj.pandita132@ybl&pn=Suraj%20Pandita&am=&cu=INR&tn=Buy%20me%20a%20chai'
+const UPI_LINK = 'upi://pay?pa=suraj.pandita132@ybl&pn=Suraj%20Pandita&am=&cu=INR&tn=AI%20Signal%20chai'
 const QR_SRC = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(UPI_LINK)}`
 
-export function ChaiButton() {
+export function ArticleTipJar() {
   const [open, setOpen] = useState(false)
   const [copied, setCopied] = useState(false)
 
@@ -27,15 +27,31 @@ export function ChaiButton() {
 
   return (
     <>
-      <button className="chai-btn" onClick={handleClick}>
-        ☕ Support AI Signal
-      </button>
+      <div className="tip-jar-wrap">
+        <hr className="tip-jar-rule" />
+        <div className="tip-jar">
+          <p className="tip-jar-headline">Today&apos;s signal saved you 30 minutes?</p>
+          <p className="tip-jar-body">
+            AI Signal is built by one founder, read by builders.<br />
+            No team, no VCs, no ads — ever.
+          </p>
+          <p className="tip-jar-body">
+            If this saved you time, consider sending a chai.<br />
+            Pay what feels right.
+          </p>
+          <button className="tip-jar-cta" onClick={handleClick}>
+            ☕ Send Suraj a chai →
+          </button>
+          <p className="tip-jar-footnote">UPI for now · Razorpay coming soon</p>
+        </div>
+        <hr className="tip-jar-rule" />
+      </div>
 
       {open && (
         <div className="chai-backdrop" onClick={() => setOpen(false)}>
           <div className="chai-modal" onClick={e => e.stopPropagation()}>
             <button className="chai-close" onClick={() => setOpen(false)} aria-label="Close">×</button>
-            <p className="chai-modal-title">Buy me a chai ☕</p>
+            <p className="chai-modal-title">Send a chai ☕</p>
             <img className="chai-qr" src={QR_SRC} alt="Scan to pay via UPI" width={200} height={200} />
             <p className="chai-upi-id">{UPI_ID}</p>
             <button className="chai-copy" onClick={handleCopy}>

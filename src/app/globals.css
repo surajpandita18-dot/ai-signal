@@ -3229,12 +3229,15 @@ footer .links a:hover { color: var(--text); }
 
 /* ── Chai button ── */
 .chai-btn {
-  background: none; border: 1px solid var(--border); border-radius: 20px;
-  padding: 4px 12px; font-size: 13px; color: var(--text-mute);
+  background: var(--bg-soft); border: 1px solid var(--border-mid); border-radius: 20px;
+  padding: 8px 16px; font-size: 13px; color: var(--text-soft);
   cursor: pointer; font-family: inherit; line-height: 1.5;
-  transition: color 0.2s, border-color 0.2s;
+  transition: color 0.15s, border-color 0.15s, background 0.15s, transform 0.15s;
 }
-.chai-btn:hover { color: var(--text); border-color: var(--text-soft); }
+.chai-btn:hover {
+  color: var(--text); border-color: var(--border-strong);
+  background: var(--bg-warm); transform: scale(1.02);
+}
 
 /* ── Chai modal ── */
 .chai-backdrop {
@@ -3265,6 +3268,41 @@ footer .links a:hover { color: var(--text); }
 }
 .chai-copy:hover { opacity: 0.82; }
 .chai-note { font-size: 12px; color: var(--text-mute); margin: 0; }
+
+/* ── Article tip jar ── */
+.tip-jar-wrap {
+  max-width: 720px; margin: 0 auto; padding: 0 32px;
+}
+.tip-jar-rule {
+  border: none; border-top: 1px solid var(--border); margin: 0;
+}
+.tip-jar {
+  padding: 52px 0; display: flex; flex-direction: column;
+  align-items: center; text-align: center; gap: 10px;
+}
+.tip-jar-headline {
+  font-family: var(--ff-display); font-size: 22px; font-weight: 600;
+  color: var(--text); margin: 0; line-height: 1.35;
+}
+.tip-jar-body {
+  font-size: 15px; line-height: 1.75; color: var(--text-soft); margin: 0;
+}
+.tip-jar-cta {
+  margin-top: 12px; background: var(--text); color: var(--bg); border: none;
+  border-radius: 24px; padding: 14px 32px; font-size: 16px; font-family: inherit;
+  cursor: pointer; transition: opacity 0.2s; letter-spacing: -0.01em;
+}
+.tip-jar-cta:hover { opacity: 0.85; }
+.tip-jar-footnote {
+  font-family: var(--ff-mono); font-size: 11px; color: var(--text-faint);
+  letter-spacing: 0.04em; text-transform: uppercase; margin: 0;
+}
+@media (max-width: 480px) {
+  .tip-jar-wrap { padding: 0 20px; }
+  .tip-jar { padding: 40px 0; }
+  .tip-jar-headline { font-size: 19px; }
+  .tip-jar-cta { width: 100%; font-size: 15px; padding: 14px 20px; }
+}
 
 
 /* ============ CONTEXT BODY — Block 2 Why it matters ============ */
