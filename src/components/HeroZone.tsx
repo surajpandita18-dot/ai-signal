@@ -46,7 +46,7 @@ export function HeroZone({ issueDate, publishTime, readMinutes, headline, signal
             {' '}
             <span className="hw hw3">story.</span>
             <br />
-            <span className="hw hw4 ital sub-line">The one worth your next 5 minutes.</span>
+            <span className="hw hw4"><span className="sub-line-inner ital">The one worth your next 5 minutes.</span></span>
           </h1>
         </div>
 
@@ -60,12 +60,11 @@ export function HeroZone({ issueDate, publishTime, readMinutes, headline, signal
             }}
           >
             <div className="hero-today-meta">
-              <span className="hero-today-pip" aria-hidden="true" />
-              <span className="hero-today-label">Today&apos;s signal</span>
-              {signalNumber && <span className="hero-today-num">#{signalNumber}</span>}
+              <span className="hero-today-label">Today</span>
+              {signalNumber && <><span className="hero-today-sep">·</span><span className="hero-today-num">#{signalNumber}</span></>}
             </div>
             <span className="hero-today-text">{headline}</span>
-            <span className="hero-today-arrow">Read now →</span>
+            <span className="hero-today-arrow">Read signal →</span>
           </a>
         )}
 
