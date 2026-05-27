@@ -57,7 +57,7 @@ export function ArchiveSection({ issues }: ArchiveSectionProps) {
         {displayIssues.map((issue) => (
           <Link
             key={issue.id}
-            href="/archive"
+            href={`/signal/${issue.issue_number}`}
             className="archive-card-link"
           >
             <article className="archive-card anim d2">
@@ -79,7 +79,7 @@ export function ArchiveSection({ issues }: ArchiveSectionProps) {
               )}
 
               <div className="archive-card-foot">
-                <span className="expired-tag">Subscriber archive</span>
+                <span className="archive-day">Signal #{issue.issue_number}</span>
                 <span>Read →</span>
               </div>
             </article>
