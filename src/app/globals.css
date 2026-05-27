@@ -3875,3 +3875,78 @@ footer .links a:hover { color: var(--text); }
   .sponsor-stat { border-right: none; border-bottom: 1px solid var(--border); }
   .sponsor-stat:last-child { border-bottom: none; }
 }
+
+/* ── Track Record ──────────────────────────────────────────────────────────── */
+.track-record {
+  margin: 0 0 40px;
+  padding: 20px 24px;
+  background: var(--bg-warm);
+  border-left: 3px solid var(--signal);
+  border-radius: 2px;
+}
+.track-record-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--signal);
+  margin-bottom: 16px;
+}
+.track-record-pip {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--signal);
+  flex-shrink: 0;
+}
+.track-record-list {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.track-record-item {
+  display: flex;
+  gap: 14px;
+  text-decoration: none;
+  color: inherit;
+}
+.track-record-item:hover .track-record-called { color: var(--signal); }
+.track-record-num {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: var(--text-mute);
+  letter-spacing: 0.06em;
+  padding-top: 2px;
+  flex-shrink: 0;
+  width: 26px;
+}
+.track-record-body { display: flex; flex-direction: column; gap: 3px; }
+.track-record-called {
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--text);
+  line-height: 1.4;
+  transition: color 0.15s;
+}
+.track-record-outcome {
+  display: flex;
+  align-items: baseline;
+  gap: 5px;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  line-height: 1.4;
+}
+.track-record-check {
+  color: #22a85a;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+@media (max-width: 640px) {
+  .track-record { padding: 16px 18px; }
+}

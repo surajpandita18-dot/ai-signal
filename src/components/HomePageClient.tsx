@@ -12,6 +12,7 @@ import { ReadingSidebar } from '@/components/ReadingSidebar'
 import { ArchiveSection, type ArchiveIssue } from '@/components/ArchiveSection'
 import { SubscribeSection } from '@/components/SubscribeSection'
 import { SiteFooter } from '@/components/SiteFooter'
+import { TrackRecord } from '@/components/TrackRecord'
 
 type StoryType = Database['public']['Tables']['stories']['Row']
 
@@ -114,6 +115,7 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
       />
       <div className="content-sheet">
         <HeroBridge />
+        <TrackRecord />
         <NotebookStrip facts={didYouKnowFacts} />
 
         {/* Main grid: article + sidebar */}
