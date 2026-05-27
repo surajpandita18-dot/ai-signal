@@ -2,23 +2,26 @@ const CALLS = [
   {
     signal: 4,
     label: 'Funding round',
-    called: 'Anthropic nears $900B+ valuation within two weeks.',
+    date: 'Apr 30',
+    called: 'Anthropic nears $900B+ valuation — round closes within two weeks.',
     outcome: 'Closed in 10 days',
-    detail: 'Confirmed by TechCrunch & Bloomberg',
+    verify: 'TechCrunch & Bloomberg',
   },
   {
     signal: 21,
     label: 'Infrastructure deal',
-    called: 'Anthropic rents xAI GPUs, lifts Claude limits for all.',
+    date: 'May 7',
+    called: 'Anthropic rents xAI GPUs — Claude limits about to jump for everyone.',
     outcome: '$1.25B/month · limits +1,500%',
-    detail: 'Announced May 6, 2026',
+    verify: 'Announced May 6, confirmed next day',
   },
   {
     signal: 32,
     label: 'Valuation milestone',
-    called: 'OpenRouter doubles to $1.3B — routing is infrastructure.',
-    outcome: 'Exactly $1.3B Series B',
-    detail: '$113M raised, announced that week',
+    date: 'May 26',
+    called: 'OpenRouter doubles to $1.3B — model routing is becoming infrastructure.',
+    outcome: 'Exactly $1.3B Series B · $113M raised',
+    verify: 'Announced that same week',
   },
 ]
 
@@ -26,25 +29,35 @@ export function TrackRecord() {
   return (
     <div className="track-record">
       <div className="track-record-header">
-        <span className="track-record-eyebrow">
-          <span className="track-record-pip" aria-hidden="true" />
-          Called before anyone else
-        </span>
-        <span className="track-record-sub">Three signals. Three accurate calls.</span>
+        <div>
+          <span className="track-record-eyebrow">
+            <span className="track-record-pip" aria-hidden="true" />
+            Verified track record
+          </span>
+          <p className="track-record-intro">
+            We filed these signals before the story broke in mainstream tech press. Here&apos;s what we wrote — and what happened.
+          </p>
+        </div>
       </div>
       <div className="track-record-cards">
-        {CALLS.map(({ signal, label, called, outcome, detail }) => (
+        {CALLS.map(({ signal, label, date, called, outcome, verify }) => (
           <a key={signal} href={`/signal/${signal}`} className="track-record-card">
             <div className="track-record-card-top">
               <span className="track-record-sig">#{signal}</span>
               <span className="track-record-label">{label}</span>
+              <span className="track-record-date">{date}</span>
             </div>
-            <p className="track-record-called">{called}</p>
+
+            <div className="track-record-our-call">
+              <span className="track-record-call-eyebrow">What we wrote</span>
+              <p className="track-record-called">{called}</p>
+            </div>
+
             <div className="track-record-card-foot">
-              <span className="track-record-check">✓</span>
+              <span className="track-record-check" aria-hidden="true">✓</span>
               <div>
                 <div className="track-record-outcome">{outcome}</div>
-                <div className="track-record-detail">{detail}</div>
+                <div className="track-record-detail">{verify}</div>
               </div>
             </div>
           </a>

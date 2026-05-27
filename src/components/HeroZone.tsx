@@ -8,13 +8,15 @@ interface HeroZoneProps {
   issueDate: string    // e.g. "27 April 2026"
   publishTime: string  // e.g. "06:14 IST"
   readMinutes: number  // from story.read_minutes
+  headline?: string    // today's article headline
+  signalNumber?: number
   phrases?: string[]
   category?: string
   tickers?: TickerData[]
   previewCards?: PreviewCard[]
 }
 
-export function HeroZone({ issueDate, publishTime, readMinutes, phrases, category, tickers, previewCards }: HeroZoneProps) {
+export function HeroZone({ issueDate, publishTime, readMinutes, headline, signalNumber, phrases, category, tickers, previewCards }: HeroZoneProps) {
   const timeParts = publishTime.split(' ')
   const timeOnly = timeParts[0] ?? publishTime
   const tzPart = timeParts.slice(1).join(' ')
@@ -41,6 +43,21 @@ export function HeroZone({ issueDate, publishTime, readMinutes, phrases, categor
           <br />
           <span className="ital sub-line">The one worth your next 5 minutes.</span>
         </h1>
+
+        {headline && (
+          <a
+            href={signalNumber ? `#story-article` : '#'}
+            className="hero-today-headline anim d3"
+            onClick={(e) => {
+              e.preventDefault()
+              document.querySelector('.story-wrap')?.scrollIntoView({ behavior: 'smooth', block: 'start' })
+            }}
+          >
+            <span className="hero-today-label">Today&apos;s story</span>
+            <span className="hero-today-text">{headline}</span>
+            <span className="hero-today-arrow">↓ Read</span>
+          </a>
+        )}
 
         <p className="hero-sub anim d4">
           <span className="hero-sub-item">Filed <strong>{timeOnly}&nbsp;{tzPart}</strong></span>

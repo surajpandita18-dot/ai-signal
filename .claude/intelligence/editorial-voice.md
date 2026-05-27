@@ -1,5 +1,33 @@
 # AI Signal — Editorial Voice & Reader Feel
 
+## Headline rules — the 3 non-negotiables
+
+Every headline must pass all three. No exceptions.
+
+**Rule 1: Consequence-first, not source-first.**
+Never start with a company name, benchmark name, person name, or product name.
+Start with what changed for the reader.
+WRONG: "OpenAI announces..." / "ITBench-AA, a new benchmark, shows..."
+RIGHT: "Every frontier AI agent fails enterprise IT tasks — best model hits 47%"
+
+**Rule 2: Specific number OR binary outcome verb.**
+The headline must contain either a hard number ($900B, 47%, 3x, $1.3B)
+OR a binary outcome verb (fails, beats, breaks, kills, replaces, costs more, drops, doubles).
+Vague: "AI models struggle with enterprise tasks"
+Specific: "Every frontier AI agent fails enterprise IT tasks — best model hits 47%"
+
+**Rule 3: Under 12 words. Under 10 is better.**
+Every word earns its place. Cut: "now", "officially", "just announced", "has launched".
+Test: can you say it in one breath at a standup? If no — cut words.
+
+**The ideal structure:** [WHO is affected] [VERB that creates urgency] [WHAT] — [THE NUMBER]
+Example: "Every frontier AI agent fails enterprise IT tasks — best model hits 47%"
+- WHO: every frontier AI agent (the reader's tools)
+- VERB: fails (binary outcome)
+- WHAT: enterprise IT tasks (the context)
+- THE NUMBER: 47% (the specific anchor)
+
+
 ## Who is reading this
 
 A senior PM, founder, or engineer in the Indian tech ecosystem. They've shipped products.

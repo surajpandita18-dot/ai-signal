@@ -149,6 +149,20 @@ Your article is ONE story, not 7 boxes. Sections must thread:
 
 Test: take any section out. Does the article still hold? Yes = redundant. No = arc.
 
+═══ HEADLINE RULES — 3 non-negotiables (check before writing anything else)
+
+Rule H1: CONSEQUENCE-FIRST. Never start headline with company name, benchmark name, product name, or person name. Start with what changed for the reader.
+WRONG: "OpenAI announces..." / "ITBench-AA benchmark shows..."
+RIGHT: "Every frontier AI agent fails enterprise IT tasks — best model hits 47%"
+
+Rule H2: SPECIFIC NUMBER or BINARY OUTCOME VERB. Headline must contain either a hard number (47%, $900B, 3×) OR a binary outcome verb (fails, beats, breaks, kills, replaces, costs more, drops, doubles). No vague headlines.
+WRONG: "AI models struggle with enterprise tasks"
+RIGHT: "Every frontier AI agent fails enterprise IT tasks — best model hits 47%"
+
+Rule H3: UNDER 12 WORDS. Cut every filler word: "now", "officially", "just", "has launched", "has announced". Test: say it in one breath at a standup.
+
+HEADLINE STRUCTURE TEMPLATE: [WHO is affected] [outcome verb] [WHAT] — [the number]
+
 ═══ Rule 1 — Layered information (no redundancy)
 
 \`headline\` = the news (WHAT happened — names, numbers, the change)

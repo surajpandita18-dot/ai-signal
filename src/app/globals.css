@@ -324,6 +324,56 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 .big-headline .ital { font-style: italic; color: var(--signal); display: inline-block; transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1); }
 .big-headline:hover .ital { text-shadow: 0 8px 30px rgba(43, 91, 255, 0.35); transform: translateY(-3px) rotate(-1.5deg); }
 
+/* ── Hero today's headline callout ── */
+.hero-today-headline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  margin: 28px auto 0;
+  max-width: 600px;
+  padding: 18px 24px;
+  background: rgba(255,255,255,0.72);
+  backdrop-filter: blur(8px);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  text-decoration: none;
+  color: inherit;
+  cursor: pointer;
+  transition: box-shadow 0.18s, transform 0.18s;
+}
+.hero-today-headline:hover {
+  box-shadow: 0 4px 20px rgba(0,0,0,0.07);
+  transform: translateY(-1px);
+}
+.hero-today-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+.hero-today-text {
+  font-family: var(--ff-display);
+  font-size: clamp(16px, 2.2vw, 20px);
+  font-weight: 400;
+  line-height: 1.28;
+  letter-spacing: -0.015em;
+  color: var(--text);
+  text-align: center;
+}
+.hero-today-arrow {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+@media (max-width: 600px) {
+  .hero-today-headline { margin: 20px 16px 0; padding: 14px 18px; }
+  .hero-today-text { font-size: 15px; }
+}
+
 /* ============ HERO SUB ============ */
 .hero-sub {
   display: inline-flex;
@@ -721,17 +771,17 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 /* Headline + deck */
 .story-headline {
   font-family: var(--ff-display);
-  font-size: clamp(34px, 4.6vw, 52px);
-  line-height: 1.06;
-  letter-spacing: -0.025em;
+  font-size: clamp(32px, 4.4vw, 50px);
+  line-height: 1.12;
+  letter-spacing: -0.022em;
   font-weight: 400;
   margin-bottom: 0;
 }
 .story-deck {
   font-size: 19px;
-  line-height: 1.55;
+  line-height: 1.72;
   color: var(--text-soft);
-  margin: 28px 0 32px;
+  margin: 26px 0 36px;
 }
 
 /* ── TL;DR Strip ── */
@@ -851,11 +901,11 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
-.signal-body { font-size: 17px; line-height: 1.6; }
+.signal-body { font-size: 18px; line-height: 1.74; }
 .signal-body strong { font-weight: 600; }
 
 /* Block sections (numbered) */
-.block { margin-bottom: 40px; }
+.block { margin-bottom: 56px; }
 .block-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .block-num {
   width: 26px;
@@ -2527,11 +2577,11 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 /* ── Context body ── */
 .context-body {
   font-size: 18px;
-  line-height: 1.75;
+  line-height: 1.8;
   color: var(--text);
   max-width: 680px;
 }
-.context-body p + p { margin-top: 22px; }
+.context-body p + p { margin-top: 30px; }
 .context-body p { margin-bottom: 0; }
 .context-body strong { color: var(--text); font-weight: 600; }
 
@@ -3536,8 +3586,8 @@ footer .links a:hover { color: var(--text); }
 }
 
 /* ============ CONTEXT BODY — Block 2 Why it matters ============ */
-.context-body { font-size: 18px; line-height: 1.7; color: var(--text-soft); }
-.context-body p + p { margin-top: 16px; }
+.context-body { font-size: 18px; line-height: 1.8; color: var(--text); }
+.context-body p + p { margin-top: 30px; }
 .context-body strong { color: var(--text); font-weight: 600; }
 
 /* ============ SOURCES HEADER — v10 structure ============ */
@@ -3954,13 +4004,8 @@ footer .links a:hover { color: var(--text); }
 }
 
 /* ── Track Record ──────────────────────────────────────────────────────────── */
-.track-record { margin: 0 0 40px; }
-.track-record-header {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin-bottom: 14px;
-}
+.track-record { margin: 0 0 48px; }
+.track-record-header { margin-bottom: 16px; }
 .track-record-eyebrow {
   display: flex;
   align-items: center;
@@ -3970,31 +4015,32 @@ footer .links a:hover { color: var(--text); }
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--signal);
-  flex-shrink: 0;
+  color: #22a85a;
+  margin-bottom: 6px;
 }
 .track-record-pip {
   width: 6px; height: 6px;
   border-radius: 50%;
-  background: var(--signal);
+  background: #22a85a;
   flex-shrink: 0;
 }
-.track-record-sub {
-  font-family: var(--ff-mono);
-  font-size: 10px;
+.track-record-intro {
+  font-size: 13px;
   color: var(--text-mute);
-  letter-spacing: 0.04em;
+  line-height: 1.5;
+  margin: 0;
+  max-width: 520px;
 }
 .track-record-cards {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 10px;
+  gap: 12px;
 }
 a.track-record-card {
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  padding: 16px 16px 14px;
+  gap: 0;
+  padding: 16px;
   background: var(--bg-card);
   border: 1px solid var(--border);
   border-top: 3px solid #22a85a;
@@ -4005,12 +4051,13 @@ a.track-record-card {
 }
 a.track-record-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+  box-shadow: 0 6px 18px rgba(0,0,0,0.07);
 }
 .track-record-card-top {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
+  margin-bottom: 12px;
 }
 .track-record-sig {
   font-family: var(--ff-mono);
@@ -4027,49 +4074,69 @@ a.track-record-card:hover {
   font-family: var(--ff-mono);
   font-size: 9px;
   text-transform: uppercase;
-  letter-spacing: 0.12em;
+  letter-spacing: 0.1em;
   color: var(--text-mute);
   font-weight: 600;
+  flex: 1;
   min-width: 0;
+}
+.track-record-date {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  color: var(--text-faint);
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+.track-record-our-call {
+  flex: 1;
+  margin-bottom: 12px;
+}
+.track-record-call-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  display: block;
+  margin-bottom: 5px;
 }
 .track-record-called {
   font-size: 13px;
   font-weight: 500;
   color: var(--text);
-  line-height: 1.45;
+  line-height: 1.5;
   margin: 0;
-  flex-grow: 1;
 }
 a.track-record-card:hover .track-record-called { color: var(--signal); }
 .track-record-card-foot {
   display: flex;
   align-items: flex-start;
-  gap: 7px;
+  gap: 8px;
   padding-top: 10px;
   border-top: 1px solid var(--border);
 }
 .track-record-check {
   color: #22a85a;
   font-weight: 700;
-  font-size: 12px;
+  font-size: 13px;
   flex-shrink: 0;
   margin-top: 1px;
 }
 .track-record-outcome {
   font-family: var(--ff-mono);
   font-size: 11px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--text);
   line-height: 1.35;
 }
 .track-record-detail {
   font-family: var(--ff-mono);
   font-size: 10px;
-  color: var(--text-mute);
-  margin-top: 2px;
+  color: var(--text-faint);
+  margin-top: 3px;
   line-height: 1.35;
 }
 @media (max-width: 640px) {
   .track-record-cards { grid-template-columns: 1fr; }
-  .track-record-header { flex-direction: column; gap: 4px; }
 }

@@ -108,6 +108,8 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
         issueDate={issueDate}
         publishTime={publishTime}
         readMinutes={story.read_minutes}
+        headline={story.headline ?? undefined}
+        signalNumber={signalNumber}
         phrases={broadcastPhrases ?? []}
         category={story.category ?? undefined}
         tickers={tickers}
