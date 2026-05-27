@@ -77,12 +77,18 @@ const RSS_SOURCES = [
   { name: 'Simon Willison',     url: 'https://simonwillison.net/atom/everything/',                             tier: 4, aiOnly: false },
   { name: 'The Batch',          url: 'https://www.deeplearning.ai/the-batch/rss/',                             tier: 4, aiOnly: true  },
   { name: 'Ahead of AI',        url: 'https://magazine.sebastianraschka.com/feed',                            tier: 4, aiOnly: true  },
+  // ── Tier 4: high-signal researchers / thought leaders ────────────────────
+  { name: 'Lilian Weng',        url: 'https://lilianweng.github.io/index.xml',                                tier: 4, aiOnly: true  },
+  { name: 'One Useful Thing',   url: 'https://www.oneusefulthing.org/feed',                                   tier: 4, aiOnly: true  },
   // ── Tier 3: newsletters, community, tooling ───────────────────────────────
   { name: "Ben's Bites",        url: 'https://bensbites.beehiiv.com/feed',                                    tier: 3, aiOnly: true  },
   { name: 'Import AI',          url: 'https://importai.substack.com/feed',                                    tier: 3, aiOnly: true  },
   { name: 'The Verge Tech',     url: 'https://www.theverge.com/tech/rss/index.xml',                           tier: 3, aiOnly: false },
   { name: 'LangChain Blog',     url: 'https://blog.langchain.dev/rss/',                                       tier: 3, aiOnly: true  },
   { name: 'Towards AI',         url: 'https://pub.towardsai.net/feed',                                        tier: 3, aiOnly: true  },
+  { name: 'TLDR AI',            url: 'https://tldr.tech/api/rss/ai',                                         tier: 3, aiOnly: true  },
+  { name: 'The Rundown AI',     url: 'https://therundown.beehiiv.com/feed',                                   tier: 3, aiOnly: true  },
+  { name: 'ProductHunt AI',     url: 'https://www.producthunt.com/feed?category=artificial-intelligence',     tier: 3, aiOnly: true  },
 ]
 
 const AI_KEYWORDS = [
@@ -372,9 +378,78 @@ async function fetchFromArXiv(): Promise<Candidate[]> {
   return candidates
 }
 
+// High-signal accounts and the tier to assign them
+const NITTER_ACCOUNTS: Array<{ handle: string; tier: number }> = [
+  { handle: 'karpathy',     tier: 4 }, // Andrej Karpathy
+  { handle: 'ylecun',       tier: 4 }, // Yann LeCun
+  { handle: 'fchollet',     tier: 4 }, // François Chollet
+  { handle: 'swyx',         tier: 3 }, // swyx – AI engineering community
+  { handle: '_philschmid',  tier: 3 }, // Philipp Schmid – HuggingFace
+  { handle: 'reach_vb',     tier: 3 }, // Vaibhav Srivastava – AI community
+]
+
+// Public Nitter instances — tried in order, first success wins per account
+const NITTER_INSTANCES = [
+  'https://nitter.poast.org',
+  'https://nitter.privacydev.net',
+  'https://nitter.cz',
+  'https://lightbrd.com',
+]
+
+async function fetchFromNitter(): Promise<Candidate[]> {
+  const now = Date.now()
+  const candidates: Candidate[] = []
+
+  await Promise.allSettled(
+    NITTER_ACCOUNTS.map(async ({ handle, tier }) => {
+      for (const instance of NITTER_INSTANCES) {
+        try {
+          const res = await fetchWithTimeout(`${instance}/${handle}/rss`, 6000)
+          if (!res.ok) continue
+          const xml = await res.text()
+          if (!xml.includes('<item') && !xml.includes('<entry')) continue
+
+          for (const match of xml.matchAll(/<(?:item|entry)\b[^>]*>([\s\S]*?)<\/(?:item|entry)>/gi)) {
+            const block = match[1]
+            const rawTitle = block.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i)?.[1]
+            const title = rawTitle?.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").trim()
+            const url = block.match(/<link[^>]*>(https?:\/\/[^<]+)<\/link>/i)?.[1]?.trim()
+              ?? block.match(/<link[^>]*\shref=["'](https?:\/\/[^"']+)["']/i)?.[1]
+            const dateStr = block.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/i)?.[1]?.trim()
+              ?? block.match(/<published[^>]*>([\s\S]*?)<\/published>/i)?.[1]?.trim()
+
+            if (!title || !url) continue
+            // skip retweets and replies — look for original content
+            if (title.startsWith('RT @') || title.startsWith('R to @')) continue
+            if (!isAIRelevant(title)) continue
+
+            const publishedAt = dateStr ? new Date(dateStr) : new Date()
+            const ageHours = (now - publishedAt.getTime()) / 3_600_000
+            if (ageHours > 48) continue
+
+            candidates.push({
+              title: `[${handle}] ${title}`.slice(0, 160),
+              url,
+              source: `@${handle}`,
+              sourceTier: tier,
+              engagement: 0,
+              ageHours: Math.round(ageHours * 10) / 10,
+              finalScore: computeScore(tier, 0, ageHours, title),
+            })
+          }
+          break // success — no need to try next instance for this account
+        } catch {
+          // instance down, try next
+        }
+      }
+    })
+  )
+  return candidates
+}
+
 async function fetchAllCandidates(): Promise<Candidate[]> {
-  const [rss, hn, reddit, arxiv, github] = await Promise.allSettled([
-    fetchFromRSS(), fetchFromHN(), fetchFromReddit(), fetchFromArXiv(), fetchFromGitHub(),
+  const [rss, hn, reddit, arxiv, github, nitter] = await Promise.allSettled([
+    fetchFromRSS(), fetchFromHN(), fetchFromReddit(), fetchFromArXiv(), fetchFromGitHub(), fetchFromNitter(),
   ])
   const all: Candidate[] = [
     ...(rss.status === 'fulfilled' ? rss.value : []),
@@ -382,6 +457,7 @@ async function fetchAllCandidates(): Promise<Candidate[]> {
     ...(reddit.status === 'fulfilled' ? reddit.value : []),
     ...(arxiv.status === 'fulfilled' ? arxiv.value : []),
     ...(github.status === 'fulfilled' ? github.value : []),
+    ...(nitter.status === 'fulfilled' ? nitter.value : []),
   ]
 
   function normalizeUrl(url: string): string {
