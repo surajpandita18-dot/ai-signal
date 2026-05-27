@@ -20,76 +20,26 @@ export function SignalExpired({
   const formattedDate = dateFormatter.format(new Date(publishedAt))
 
   return (
-    <div style={{ marginBottom: '40px' }}>
-      {/* Label */}
-      <p
-        className="font-mono"
-        style={{
-          fontSize: '10px',
-          fontWeight: 500,
-          letterSpacing: '0.12em',
-          textTransform: 'uppercase',
-          color: 'var(--text-muted)',
-          marginBottom: '16px',
-        }}
-      >
-        Signal #{signalNumber} · {formattedDate} · Expired
-      </p>
+    <div className="signal-expired">
+      <div className="signal-expired-meta">
+        <span className="signal-expired-num">Signal #{signalNumber}</span>
+        <span className="signal-expired-dot" aria-hidden="true" />
+        <span className="signal-expired-date">{formattedDate}</span>
+        <span className="signal-expired-dot" aria-hidden="true" />
+        <span className="signal-expired-badge">Read</span>
+      </div>
 
-      {/* Expired headline — visible but not linkable */}
-      <p
-        className="font-serif"
-        style={{
-          fontSize: '22px',
-          fontWeight: 700,
-          lineHeight: 1.35,
-          letterSpacing: '-0.01em',
-          fontStyle: 'italic',
-          color: 'var(--text-primary)',
-          marginBottom: '24px',
-          opacity: 0.5,
-        }}
-      >
-        {headline}
-      </p>
+      <p className="signal-expired-headline">{headline}</p>
 
-      {/* Divider */}
-      <hr
-        style={{
-          border: 'none',
-          borderTop: '1px solid var(--border)',
-          margin: '24px 0',
-        }}
-      />
+      <hr className="signal-expired-rule" />
 
-      {/* Tomorrow tease */}
-      <p
-        className="font-sans"
-        style={{
-          fontSize: '15px',
-          lineHeight: 1.6,
-          color: 'var(--text-secondary)',
-        }}
-      >
-        Tomorrow&apos;s signal drops at 9 AM IST.
-      </p>
+      <div className="signal-expired-tomorrow">
+        <span className="signal-expired-pip" aria-hidden="true" />
+        <p className="signal-expired-next">Next signal drops at 06:14 IST tomorrow.</p>
+      </div>
 
       {tomorrowCategory && (
-        <span
-          className="font-mono"
-          style={{
-            display: 'inline-block',
-            fontSize: '11px',
-            fontWeight: 500,
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            color: 'var(--accent)',
-            border: '1px solid var(--accent-border)',
-            borderRadius: '3px',
-            padding: '2px 8px',
-            marginTop: '12px',
-          }}
-        >
+        <span className="signal-expired-cat">
           Tomorrow: {tomorrowCategory.toUpperCase()}
         </span>
       )}

@@ -552,8 +552,8 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 .hero-bridge-text {
   font-family: var(--ff-display);
   font-style: italic;
-  font-size: 14px;
-  color: var(--text-faint);
+  font-size: 13px;
+  color: var(--text-mute);
   letter-spacing: -0.005em;
   white-space: nowrap;
 }
@@ -2051,16 +2051,108 @@ header.site-nav-inner {
   flex-wrap: wrap; gap: 24px; font-size: 13px; color: var(--text-mute);
 }
 .footer-left { display: flex; flex-direction: column; gap: 8px; }
-.footer-mark-row { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
-.footer-mark-icon { width: 24px; height: 24px; background: var(--text); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 12px; font-weight: 800; font-family: var(--ff-mono); flex-shrink: 0; }
+.footer-mark { display: flex; align-items: center; gap: 10px; font-size: 14px; font-weight: 700; color: var(--text); letter-spacing: -0.02em; }
+.mark-icon { width: 26px; height: 26px; background: var(--text); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: var(--bg); font-size: 13px; font-weight: 800; font-family: var(--ff-mono); flex-shrink: 0; }
+.footer-mark-text { font-family: var(--ff-body); font-weight: 700; letter-spacing: -0.02em; color: var(--text); }
 .footer-tagline { font-family: var(--ff-display); font-size: 14px; color: var(--text-mute); font-style: normal; letter-spacing: -0.005em; }
 .footer-tagline em { font-style: italic; color: var(--text-soft); }
-.footer-links { display: flex; gap: 24px; }
-.footer-links a { color: inherit; text-decoration: none; transition: color 0.2s; }
-.footer-links a:hover { color: var(--text); }
+.links { display: flex; gap: 24px; align-items: center; flex-wrap: wrap; }
+footer .links a { color: var(--text-mute); text-decoration: none; transition: color 0.2s; font-size: 13px; }
+footer .links a:hover { color: var(--text); }
 @media (max-width: 880px) {
   .site-footer { padding: 32px 20px 48px; flex-direction: column; text-align: center; }
   .footer-links { justify-content: center; flex-wrap: wrap; }
+}
+
+/* ============ SIGNAL EXPIRED STATE ============ */
+.signal-expired { margin-bottom: 40px; }
+.signal-expired-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.signal-expired-num {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+}
+.signal-expired-date {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+.signal-expired-dot {
+  width: 3px;
+  height: 3px;
+  background: var(--border-mid);
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.signal-expired-badge {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal-deep);
+  background: var(--signal-soft);
+  padding: 2px 7px;
+  border-radius: 3px;
+}
+.signal-expired-headline {
+  font-family: var(--ff-display);
+  font-size: 26px;
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  font-style: italic;
+  color: var(--text);
+  opacity: 0.55;
+  margin-bottom: 28px;
+}
+.signal-expired-rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 0 0 24px;
+}
+.signal-expired-tomorrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.signal-expired-pip {
+  width: 6px;
+  height: 6px;
+  background: var(--warm);
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-shadow: 0 0 0 3px var(--warm-soft);
+  animation: livePulse 1.8s ease-in-out infinite;
+}
+.signal-expired-next {
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--text-soft);
+  margin: 0;
+}
+.signal-expired-cat {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--signal-deep);
+  background: var(--signal-soft);
+  border-radius: 4px;
+  padding: 3px 10px;
 }
 
 /* A11y utility */

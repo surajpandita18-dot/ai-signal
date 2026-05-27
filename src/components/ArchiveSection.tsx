@@ -43,8 +43,8 @@ export function ArchiveSection({ issues }: ArchiveSectionProps) {
             Past <em className="ital">transmissions</em>
           </h2>
           <p className="archive-subtitle">
-            The full archive — including expired signals and bonus dispatches — opens up{' '}
-            <em>when you subscribe</em>.
+            Every signal, in order. Read any of them —{' '}
+            <em>subscribe to get tomorrow&apos;s</em> before anyone else.
           </p>
         </div>
         <a href="/archive" className="archive-link">
