@@ -80,12 +80,17 @@ const RSS_SOURCES = [
   // ── Tier 4: high-signal researchers / thought leaders ────────────────────
   { name: 'Lilian Weng',        url: 'https://lilianweng.github.io/index.xml',                                tier: 4, aiOnly: true  },
   { name: 'One Useful Thing',   url: 'https://www.oneusefulthing.org/feed',                                   tier: 4, aiOnly: true  },
+  // ── Tier 4: builder-focused deep signal ──────────────────────────────────
+  { name: 'Interconnects',      url: 'https://www.interconnects.ai/feed',                                     tier: 4, aiOnly: true  }, // Nathan Lambert — RLHF, open models, training
+  { name: 'Cohere Blog',        url: 'https://cohere.com/blog/rss',                                           tier: 4, aiOnly: true  }, // enterprise RAG, embeddings
   // ── Tier 3: newsletters, community, tooling ───────────────────────────────
   { name: "Ben's Bites",        url: 'https://bensbites.beehiiv.com/feed',                                    tier: 3, aiOnly: true  },
   { name: 'Import AI',          url: 'https://importai.substack.com/feed',                                    tier: 3, aiOnly: true  },
+  { name: 'The Gradient',       url: 'https://thegradient.pub/rss/',                                          tier: 3, aiOnly: true  }, // research analysis for practitioners
   { name: 'The Verge Tech',     url: 'https://www.theverge.com/tech/rss/index.xml',                           tier: 3, aiOnly: false },
   { name: 'LangChain Blog',     url: 'https://blog.langchain.dev/rss/',                                       tier: 3, aiOnly: true  },
   { name: 'Towards AI',         url: 'https://pub.towardsai.net/feed',                                        tier: 3, aiOnly: true  },
+  { name: 'Weights & Biases',   url: 'https://wandb.ai/site/articles/feed',                                   tier: 3, aiOnly: true  }, // MLOps, LLMOps engineering
   { name: 'TLDR AI',            url: 'https://tldr.tech/api/rss/ai',                                         tier: 3, aiOnly: true  },
   { name: 'The Rundown AI',     url: 'https://therundown.beehiiv.com/feed',                                   tier: 3, aiOnly: true  },
   { name: 'ProductHunt AI',     url: 'https://www.producthunt.com/feed?category=artificial-intelligence',     tier: 3, aiOnly: true  },
@@ -137,6 +142,38 @@ const RECENCY_DECAY = Math.LN2 / 6
 function isAIRelevant(title: string): boolean {
   const t = title.toLowerCase()
   return AI_KEYWORDS.some((kw) => t.includes(kw))
+}
+
+// Stories that pass isAIRelevant but are NOT actionable for AI builders.
+// Applied as a hard pre-filter before scoring — these never reach Claude.
+const BUILDER_REJECT_PATTERNS = [
+  // Consumer subscription / social media features — not builder-actionable
+  'paid subscription', 'subscription tier', 'subscription model', 'subscription plan',
+  'instagram', 'facebook messenger', 'whatsapp subscription', 'twitter blue', 'x premium',
+  // Stock / financial news with no model/API news
+  'stock price', 'share price', 'market cap', 'quarterly earnings', 'q1 earnings', 'q2 earnings',
+  'q3 earnings', 'q4 earnings', 'revenue beat', 'revenue miss',
+  // Layoffs unless tied to a pivot
+  'mass layoff', 'lays off', '% of workforce',
+  // Consumer AI features in social/entertainment products
+  'ai filter', 'beauty filter', 'snapchat ai', 'instagram ai', 'tiktok ai',
+  // Pure opinion / think-piece patterns
+  'will ai replace', 'ai will take', 'ai threatens', 'fears about ai',
+]
+
+// Builder-actionable signal must have at least one of these.
+// Prevents think-pieces and vague "AI is changing X" stories from slipping through.
+const BUILDER_SIGNAL_REQUIRED = [
+  'api', 'model', 'pric', 'cost', 'benchmark', 'release', 'launch', 'open source',
+  'open-source', 'weight', 'inference', 'fine-tun', 'train', 'tool', 'framework',
+  'agent', 'rag', 'research', 'paper', 'regulation', 'compliance', 'deploy',
+  'performance', 'token', 'context window', 'accuracy', 'speed', 'latency',
+]
+
+function isBuilderActionable(title: string): boolean {
+  const t = title.toLowerCase()
+  if (BUILDER_REJECT_PATTERNS.some(p => t.includes(p))) return false
+  return BUILDER_SIGNAL_REQUIRED.some(p => t.includes(p))
 }
 
 function impactBonus(title: string): number {
@@ -231,6 +268,7 @@ async function fetchFromRSS(): Promise<Candidate[]> {
         const ageHours = (now - item.publishedAt.getTime()) / 3_600_000
         if (ageHours > 48) continue
         if (!src.aiOnly && !isAIRelevant(item.title)) continue
+        if (!isBuilderActionable(item.title)) continue
         candidates.push({
           title: item.title,
           url: item.url,
@@ -273,6 +311,7 @@ async function fetchFromHN(): Promise<Candidate[]> {
     const ageHours = (now - hit.created_at_i) / 3600
     if (ageHours > 48) continue
     if (!isAIRelevant(hit.title)) continue
+    if (!isBuilderActionable(hit.title)) continue
     const eng = hit.points + Math.round(Math.log10((hit.num_comments ?? 0) + 1) * 20)
     candidates.push({
       title: hit.title, url, source: 'Hacker News', sourceTier: 3,
@@ -345,7 +384,7 @@ async function fetchFromReddit(): Promise<Candidate[]> {
         finalScore: computeScore(2, p.score, ageHours, p.title),
       }
     })
-    .filter((c) => c.ageHours <= 48 && isAIRelevant(c.title))
+    .filter((c) => c.ageHours <= 48 && isAIRelevant(c.title) && isBuilderActionable(c.title))
 }
 
 async function fetchFromArXiv(): Promise<Candidate[]> {
@@ -564,7 +603,18 @@ async function generateSignal(candidates: Candidate[]): Promise<GeneratedSignal>
   const SYSTEM_PROMPT = `You are the editor of AI Signal — a daily single-story newsletter for senior PMs, founders, and engineers in the Indian tech ecosystem. Published at 06:14 IST. One pick. The story that matters most today.
 
 Your job:
-1. Pick the single most impactful story — prioritise: model releases, pricing changes, capability leaps, funding/acquisition, regulatory moves. Prefer tier 5 > tier 4 > tier 3, but a viral tier-3 story beats a stale tier-5 one. Age matters: same story older than 36h is stale.
+1. Pick the single most impactful story — prioritise: model releases, pricing changes, capability leaps, open-source weight releases, API changes, regulatory moves with direct product impact. Prefer tier 5 > tier 4 > tier 3, but a viral tier-3 story beats a stale tier-5 one. Age matters: same story older than 36h is stale.
+
+MANDATORY EDITORIAL TEST before picking: "Would an Indian AI PM or engineer do something DIFFERENT in their product, stack, or workflow in the next 48 hours because of this story?" If the answer is NO, discard it regardless of tier or score.
+
+HARD REJECT — never pick these story types even from tier-5 sources:
+- Consumer subscription tiers, social media features, or engagement metrics (Meta/Instagram subscriptions, Twitter Blue, TikTok AI features) — these are platform business stories, not AI builder stories
+- Stock price moves, quarterly earnings, or market cap news unless a model/API announcement is bundled
+- Layoffs or headcount cuts with no AI capability or strategic pivot tied to them
+- "AI will change X industry" think-pieces with no concrete product, paper, or pricing news
+- Consumer AI features (AI photo filters, AI recommendations) with no API or platform implication for builders
+- Funding rounds for AI startups with no model, product, or pricing news — money raised alone is not signal
+
 2. Write the full signal as JSON.
 3. Document your editorial decision in two metadata fields alongside the article fields:
 

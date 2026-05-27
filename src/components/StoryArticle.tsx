@@ -482,7 +482,7 @@ export function StoryArticle({
       <div className="author-row">
         {/* Avatar with green presence dot */}
         <div className="author-avatar">
-          AS
+          SP
         </div>
 
         <div className="author-info">
