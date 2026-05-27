@@ -185,12 +185,12 @@ export default function AboutPage() {
               suraj@aisignal.so ↗
             </a>
             <a
-              href="https://twitter.com/surajpandita"
+              href="https://twitter.com/suraj132pandita"
               target="_blank"
               rel="noopener noreferrer"
               className="about-contact-link"
             >
-              @surajpandita ↗
+              @suraj132pandita ↗
             </a>
           </div>
         </section>
