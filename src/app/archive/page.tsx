@@ -39,7 +39,22 @@ async function fetchArchive(): Promise<ArchiveEntry[]> {
     .select('issue_number, published_at, stories(headline, summary, category)')
     .eq('status', 'published')
     .order('issue_number', { ascending: false })
-  return ((data ?? []) as ArchiveEntry[]).filter(r => r.stories.length > 0)
+  const all = ((data ?? []) as ArchiveEntry[]).filter(r => r.stories.length > 0)
+
+  // Deduplicate: keep highest issue_number per unique headline (first 5 words, normalised)
+  const seen = new Set<string>()
+  return all.filter((issue) => {
+    const key = (issue.stories[0]?.headline ?? '')
+      .toLowerCase()
+      .replace(/[^a-z0-9\s]/g, '')
+      .trim()
+      .split(/\s+/)
+      .slice(0, 5)
+      .join(' ')
+    if (!key || seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
 }
 
 export default async function ArchivePage() {

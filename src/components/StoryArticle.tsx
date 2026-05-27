@@ -12,6 +12,7 @@ import { PrimaryChart } from './PrimaryChart'
 import { DecisionAid } from './DecisionAid'
 import { ReactionsPanel } from './ReactionsPanel'
 import { InlineChaiStrip } from './InlineChaiStrip'
+import { RoleLenses } from './RoleLenses'
 import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart, DecisionAid as DecisionAidData, Reaction, StandupMessages } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
@@ -613,7 +614,24 @@ export function StoryArticle({
         <StakeholdersGrid data={stakeholdersData} />
       )}
 
-      {/* ── Section 7: Role lenses — BuilderCard (editorial_take + bet/burn) ── */}
+      {/* ── Role Lenses — PM / Founder / Engineer — what this means for your role ── */}
+      {(story.lens_pm || story.lens_founder || story.lens_builder) && (
+        <RoleLenses
+          pm={story.lens_pm ?? ''}
+          founder={story.lens_founder ?? ''}
+          builder={story.lens_builder ?? ''}
+        />
+      )}
+
+      {/* ── Devil's Advocate — placed here so reader debates while story is fresh ── */}
+      {story.counter_view && (
+        <CounterView
+          headline={story.counter_view_headline ?? 'Another angle.'}
+          body={story.counter_view.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
+        />
+      )}
+
+      {/* ── Section 7: BuilderCard — editorial take (The Build / bet / burn) ── */}
       {story.editorial_take && (
         <BuilderCard
           buildQuote={story.editorial_take}
@@ -639,14 +657,6 @@ export function StoryArticle({
 
       {/* ── Section 8b: Standup snippet ── */}
       <StandupCard story={story} signalNumber={signalNumber} standupMessages={standupMessages} />
-
-      {/* ── Section 9: Devil's Advocate — CounterView ── */}
-      {story.counter_view && (
-        <CounterView
-          headline={story.counter_view_headline ?? 'Another angle.'}
-          body={story.counter_view.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
-        />
-      )}
 
       {/* ── V11: Reaction quotes — after counter-view, before sources ── */}
       {reactions && reactions.length > 0 && (

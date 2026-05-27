@@ -181,13 +181,17 @@ Adapt language but keep implication-first structure.
 
 why_it_matters MUST be structured as TWO OR THREE paragraphs separated by blank lines (\n\n in the JSON string).
 
-Paragraph 1 (renders as Signal block): 35-55 words. The sharp claim with evidence — your tightest version of WHY this matters.
+Paragraph 1 (renders as Signal block): 35-55 words. The sharp claim with evidence — your tightest version of WHY this matters. OPENS WITH A CONSEQUENCE, never with a company or benchmark name.
 
-Paragraph 2 (renders as Why It Matters body, shown after the pull quote): 35-55 words. Deeper analysis — the cascade, second-order effects, what this enables or breaks.
+Paragraph 2 (renders as Why It Matters body): MINIMUM 40 WORDS. Deeper analysis — cascade of effects, what this enables or breaks, second-order implications for the reader. Name specific Indian builder category if relevant. DO NOT write a single-sentence para 2. A 12-word para 2 is a failure. A 40-50 word para 2 is the standard.
 
-Paragraph 3 (optional, shown after pull quote): 30-40 words. The closing reframe or implication.
+GOOD para 2 example (48 words): "For **Indian SaaS teams** pitching IT automation to enterprise buyers, this data lands before most Q3 pilots close. If your sales deck promises autonomous IT operations, revise it now — not after a prospect runs this benchmark themselves. **Human-in-the-loop** is no longer a UX choice; it's a capability statement."
 
-Total why_it_matters: 80-150 words across 2-3 paragraphs.
+BAD para 2 (12 words, reject): "For Indian AI SaaS teams pitching IT automation, this audit precedes customer discovery."
+
+Paragraph 3 (optional, shown after pull quote): 30-40 words. The closing reframe or implication that shifts the reader's mental model.
+
+Total why_it_matters: 100-160 words across 2-3 paragraphs.
 
 Format example (exact format — use \\n\\n in the JSON string):
 "why_it_matters": "OpenAI just shifted the model cost floor. The compete...\\n\\nFor Indian SaaS teams building token-heavy features, this means Y...\\n\\nThe deeper signal is Z."
@@ -400,6 +404,7 @@ export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before
 5. \`stats\`: Are all stat objects reader-meaningful, with no filler meta-data (story age, confidence, source count)? If any stat is weak, remove it. If fewer than 2 strong stats remain, set \`"stats": []\`.
 6. \`action_items\`: Does each item specify WHEN + WHO + WHAT EXACTLY? Is it genuinely doable in 48 hours — not a reading task or a multi-week project? If not, set \`"action_items": []\`.
 7. India context: Is there at least one lens field naming a specific category of Indian builder or buyer (not just "Indian companies")?
+7a. \`why_it_matters\` para 2 word count: Count the words in paragraph 2. Is it 40 words or more? If less than 40 words — STOP, go back and expand it before returning. A 12-word para 2 is a failing response.
 8. \`pull_quote\`: Is it under 140 characters, standalone, a claim not a description, tweetable?
 9. \`counter_view\`: Does it name specific structural reasons for the counter-argument — not generic "but consider..."?
 10. Story shape: Have I included \`stats\` or \`action_items\` entries that don't genuinely satisfy their rules? If yes, remove or empty those arrays.`

@@ -165,15 +165,16 @@ export default async function HomePage() {
   }))
 
   // Fetch past published issues for the archive section (exclude the current issue)
+  // Fetch more than needed so deduplication doesn't leave fewer than 3
   const { data: archiveData } = await supabase
     .from('issues')
     .select('id, issue_number, slug, published_at, teaser, stories(headline, category)')
     .eq('status', 'published')
     .neq('id', issue.id)
     .order('published_at', { ascending: false })
-    .limit(3)
+    .limit(12)
 
-  const archiveIssues = (archiveData ?? []).map((iss) => {
+  const archiveRaw = (archiveData ?? []).map((iss) => {
     const storyRow = Array.isArray(iss.stories) ? iss.stories[0] : null
     return {
       id: iss.id,
@@ -185,6 +186,23 @@ export default async function HomePage() {
       category: (storyRow as { category?: string } | null)?.category ?? null,
     }
   })
+
+  // Deduplicate: keep highest issue_number per unique headline (first 5 words, normalised)
+  const seenHeadlines = new Set<string>()
+  const archiveIssues = archiveRaw
+    .filter((iss) => {
+      const key = (iss.headline ?? '')
+        .toLowerCase()
+        .replace(/[^a-z0-9\s]/g, '')
+        .trim()
+        .split(/\s+/)
+        .slice(0, 5)
+        .join(' ')
+      if (!key || seenHeadlines.has(key)) return false
+      seenHeadlines.add(key)
+      return true
+    })
+    .slice(0, 3)
 
   return (
     <HomePageClient
