@@ -852,7 +852,8 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   font-size: 19px;
   line-height: 1.72;
   color: var(--text-soft);
-  margin: 26px 0 36px;
+  letter-spacing: -0.012em;
+  margin: 26px 0 40px;
 }
 
 /* ── TL;DR Strip ── */
@@ -894,7 +895,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   margin-bottom: 6px;
 }
 .tldr-text {
-  font-size: 15px;
+  font-size: 16px;
   color: var(--text);
   font-weight: 500;
   line-height: 1.55;
@@ -1053,7 +1054,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   word-wrap: break-word;
   hyphens: auto;
   letter-spacing: -0.03em;
-  font-weight: 500;
+  font-weight: 400;
   color: var(--text);
 }
 .stat-card-delta,
@@ -1414,7 +1415,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   line-height: 1;
 }
 .pm-angle-body {
-  font-size: 15px;
+  font-size: 16px;
   line-height: 1.7;
   color: var(--text-soft);
   margin: 0;
@@ -1726,7 +1727,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 .editorial-quote-text {
   font-family: var(--ff-display);
   font-size: 25px;
-  line-height: 1.4;
+  line-height: 1.32;
   font-weight: 400;
   font-style: italic;
   letter-spacing: -0.012em;
@@ -2601,7 +2602,7 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   margin-bottom: 6px;
 }
 .tldr-text {
-  font-size: 15.5px;
+  font-size: 16px;
   color: var(--text);
   font-weight: 500;
   line-height: 1.55;
@@ -2633,7 +2634,7 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 /* ── Context body ── */
 .context-body {
   font-size: 18px;
-  line-height: 1.8;
+  line-height: 1.75;
   color: var(--text);
   max-width: 680px;
 }
@@ -3142,7 +3143,7 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 .action-tag.run { color: var(--rocket); background: var(--rocket-soft); }
 .action-tag.flag { color: var(--warm); background: var(--warm-soft); }
 .action-tag.check { color: var(--green); background: var(--green-soft); }
-.action-text { font-size: 15.5px; line-height: 1.55; color: var(--text); }
+.action-text { font-size: 16px; line-height: 1.55; color: var(--text); }
 .action-text strong { font-weight: 600; }
 .action-progress {
   margin-top: 14px;
@@ -3189,7 +3190,7 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   color: var(--text);
   font-weight: 500;
   letter-spacing: -0.005em;
-  line-height: 1.1;
+  line-height: 1.28;
   margin-bottom: 3px;
 }
 .standup-subtitle {
@@ -3231,8 +3232,8 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   padding: 16px 18px;
   margin-bottom: 14px;
   font-family: var(--ff-body);
-  font-size: 13.5px;
-  line-height: 1.6;
+  font-size: 14px;
+  line-height: 1.65;
   color: var(--text);
   min-height: 100px;
   white-space: pre-wrap;
@@ -3451,7 +3452,7 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 .action-tag.run { color: var(--rocket); background: var(--rocket-soft); }
 .action-tag.flag { color: var(--warm); background: var(--warm-soft); }
 .action-tag.check { color: var(--green); background: var(--green-soft); }
-.action-text { font-size: 15.5px; line-height: 1.55; color: var(--text); }
+.action-text { font-size: 16px; line-height: 1.55; color: var(--text); }
 .action-text strong { font-weight: 600; }
 .action-progress {
   margin-top: 14px;
@@ -3654,7 +3655,7 @@ footer .links a:hover { color: var(--text); }
 }
 
 /* ============ CONTEXT BODY — Block 2 Why it matters ============ */
-.context-body { font-size: 18px; line-height: 1.8; color: var(--text); }
+.context-body { font-size: 18px; line-height: 1.75; color: var(--text); }
 .context-body p + p { margin-top: 30px; }
 .context-body strong { color: var(--text); font-weight: 600; }
 
@@ -3701,13 +3702,13 @@ footer .links a:hover { color: var(--text); }
 .standup-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; }
 .standup-icon { width: 32px; height: 32px; background: rgba(180,140,60,0.15); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #8A6F2C; flex-shrink: 0; }
 .standup-header-text { line-height: 1.2; }
-.standup-title { font-family: var(--ff-display); font-style: italic; font-size: 17px; color: var(--text); font-weight: 500; letter-spacing: -0.005em; line-height: 1.1; margin-bottom: 3px; }
+.standup-title { font-family: var(--ff-display); font-style: italic; font-size: 17px; color: var(--text); font-weight: 500; letter-spacing: -0.005em; line-height: 1.28; margin-bottom: 3px; }
 .standup-subtitle { font-family: var(--ff-mono); font-size: 9.5px; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-faint); }
 .standup-tabs-row { display: flex; gap: 0; border-bottom: 1px solid rgba(180,140,60,0.2); margin-bottom: 14px; }
 .standup-tab { flex: 1; background: transparent; border: none; padding: 8px 0 10px; font-family: var(--ff-mono); font-size: 11px; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-mute); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: color 0.2s, border-color 0.2s; }
 .standup-tab:hover { color: var(--text); }
 .standup-tab.active { color: var(--text); border-bottom-color: var(--warm); }
-.standup-preview { background: #FFFFFF; border: 0.5px solid var(--border); border-radius: 6px; padding: 16px 18px; margin-bottom: 14px; font-size: 13.5px; line-height: 1.6; color: var(--text); min-height: 100px; white-space: pre-wrap; font-family: var(--ff-body); }
+.standup-preview { background: #FFFFFF; border: 0.5px solid var(--border); border-radius: 6px; padding: 16px 18px; margin-bottom: 14px; font-size: 14px; line-height: 1.65; color: var(--text); min-height: 100px; white-space: pre-wrap; font-family: var(--ff-body); }
 .standup-preview .arrow { color: var(--warm); font-weight: 600; margin-right: 4px; }
 .standup-preview .meta { color: var(--text-mute); font-style: italic; font-size: 12.5px; }
 .standup-preview .url { color: var(--signal); text-decoration: underline; }
