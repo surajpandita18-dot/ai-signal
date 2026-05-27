@@ -2,6 +2,7 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import type { Database } from '../../db/types/database'
+import { BuilderCard } from './BuilderCard'
 import { CounterView } from './CounterView'
 import { EditorialQuote } from './EditorialQuote'
 import { InsightsStrip } from './InsightsStrip'
@@ -11,7 +12,7 @@ import { PrimaryChart } from './PrimaryChart'
 import { DecisionAid } from './DecisionAid'
 import { ReactionsPanel } from './ReactionsPanel'
 import { InlineChaiStrip } from './InlineChaiStrip'
-import { RoleLenses } from './RoleLenses'
+import { PMAngle } from './PMAngle'
 import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart, DecisionAid as DecisionAidData, Reaction, StandupMessages } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
@@ -607,14 +608,8 @@ export function StoryArticle({
         <StakeholdersGrid data={stakeholdersData} />
       )}
 
-      {/* ── Role Lenses — PM / Founder / Engineer — what this means for your role ── */}
-      {(story.lens_pm || story.lens_founder || story.lens_builder) && (
-        <RoleLenses
-          pm={story.lens_pm ?? ''}
-          founder={story.lens_founder ?? ''}
-          builder={story.lens_builder ?? ''}
-        />
-      )}
+      {/* ── The PM read — strategic product implication, uses lens_pm ── */}
+      {story.lens_pm && <PMAngle text={story.lens_pm} />}
 
       {/* ── Devil's Advocate — placed here so reader debates while story is fresh ── */}
       {story.counter_view && (
@@ -624,7 +619,16 @@ export function StoryArticle({
         />
       )}
 
-      {/* ── V11: Decision Aid — after role lenses, before The Move ── */}
+      {/* ── Builder / Founder / Editorial — The Build + The Bet + The Burn ── */}
+      {story.editorial_take && (
+        <BuilderCard
+          buildQuote={story.editorial_take}
+          betQuote={story.lens_builder ?? story.lens_pm ?? ''}
+          burnQuote={story.lens_founder ?? story.lens_pm ?? ''}
+        />
+      )}
+
+      {/* ── V11: Decision Aid — after builder card, before The Move ── */}
       {decisionAidData && decisionAidData.rows?.length > 0 && (
         <DecisionAid aid={decisionAidData} />
       )}
