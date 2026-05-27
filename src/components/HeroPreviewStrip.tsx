@@ -23,7 +23,7 @@ export function HeroPreviewStrip({ cards }: HeroPreviewStripProps) {
             <span className="preview-label">{card.label}</span>
           </div>
           <span className="preview-value">{card.value}</span>
-          <span className="preview-arrow" aria-hidden="true">↓</span>
+          <span className="preview-arrow">Read section →</span>
         </a>
       ))}
     </div>
