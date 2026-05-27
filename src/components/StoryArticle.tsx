@@ -64,14 +64,13 @@ interface StoryArticleProps {
 
 // ---------- ShareButtons (internal, not exported) ----------
 
-function ShareButtons() {
+function ShareButtons({ headline, signalNumber }: { headline: string; signalNumber: number }) {
   const [copied, setCopied] = useState(false)
+  const articleUrl = `https://aisignal.so/signal/${signalNumber}`
 
   function shareX() {
-    const text = encodeURIComponent(
-      `Reading AI Signal — the one AI story that matters today.`
-    )
-    const url = encodeURIComponent(typeof window !== 'undefined' ? window.location.href : '')
+    const text = encodeURIComponent(`${headline} — via AI Signal`)
+    const url = encodeURIComponent(articleUrl)
     window.open(
       `https://twitter.com/intent/tweet?text=${text}&url=${url}`,
       '_blank',
@@ -82,7 +81,7 @@ function ShareButtons() {
   function copyLink() {
     if (typeof navigator !== 'undefined') {
       navigator.clipboard
-        .writeText(window.location.href)
+        .writeText(articleUrl)
         .then(() => {
           setCopied(true)
           setTimeout(() => setCopied(false), 2000)
@@ -91,10 +90,6 @@ function ShareButtons() {
           /* clipboard unavailable */
         })
     }
-  }
-
-  function bookmark() {
-    // Placeholder — bookmark feature coming in Phase 5
   }
 
   return (
@@ -115,13 +110,6 @@ function ShareButtons() {
           : <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
         }
       </button>
-
-      {/* Bookmark */}
-      <button type="button" onClick={bookmark} aria-label="Save" className="share-btn">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
-          <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-        </svg>
-      </button>
     </div>
   )
 }
@@ -139,8 +127,16 @@ const VOTE_BUTTONS: { key: VoteKey; icon: string; label: string }[] = [
   { key: 'irrelevant',icon: '×', label: 'Not relevant' },
 ]
 
-function FeedbackVote() {
-  const [voted, setVoted] = useState<VoteKey | null>(null)
+function FeedbackVote({ signalNumber }: { signalNumber: number }) {
+  const storageKey = `vote-${signalNumber}`
+  const [voted, setVoted] = useState<VoteKey | null>(() => {
+    try { return (localStorage.getItem(storageKey) as VoteKey | null) } catch { return null }
+  })
+
+  function handleVote(key: VoteKey) {
+    setVoted(key)
+    try { localStorage.setItem(storageKey, key) } catch {}
+  }
 
   return (
     <div className="feedback-vote">
@@ -151,7 +147,7 @@ function FeedbackVote() {
             key={key}
             type="button"
             className={`feedback-btn${voted === key ? ' voted-state' : ''}`}
-            onClick={() => setVoted(key)}
+            onClick={() => handleVote(key)}
             data-vote={key}
           >
             <span className="feedback-icon">{icon}</span>
@@ -160,7 +156,7 @@ function FeedbackVote() {
         ))}
       </div>
       <div className={`feedback-thanks${voted ? ' shown' : ''}`}>
-        Thanks — that helps shape tomorrow&apos;s signal.
+        Noted. See you tomorrow at 06:14.
       </div>
     </div>
   )
@@ -174,17 +170,21 @@ const ACTION_TAGS = [
   { label: 'Check', cls: 'check', icon: '✓' },
 ] as const
 
-function ActionChecklist({ items }: { items: string[] }) {
-  const [doneItems, setDoneItems] = useState<Set<number>>(new Set())
+function ActionChecklist({ items, signalNumber }: { items: string[]; signalNumber: number }) {
+  const storageKey = `action-done-${signalNumber}`
+  const [doneItems, setDoneItems] = useState<Set<number>>(() => {
+    try {
+      const stored = localStorage.getItem(storageKey)
+      return stored ? new Set(JSON.parse(stored) as number[]) : new Set()
+    } catch { return new Set() }
+  })
 
   function toggleItem(index: number) {
     setDoneItems((prev) => {
       const next = new Set(prev)
-      if (next.has(index)) {
-        next.delete(index)
-      } else {
-        next.add(index)
-      }
+      if (next.has(index)) next.delete(index)
+      else next.add(index)
+      try { localStorage.setItem(storageKey, JSON.stringify([...next])) } catch {}
       return next
     })
   }
@@ -236,49 +236,49 @@ function ActionChecklist({ items }: { items: string[] }) {
 
 type StandupFormat = 'slack' | 'email' | 'whatsapp' | 'linkedin'
 
-function buildStandupContent(story: Story) {
+function buildStandupContent(story: Story, signalNumber: number) {
   const tldr = story.headline
   const implication = story.summary.replace(/\*\*(.*?)\*\*/g, '$1').slice(0, 160)
   const actions = story.action_items ?? []
   const action0 = typeof actions[0] === 'string' ? actions[0].replace(/\*\*(.*?)\*\*/g, '$1') : 'Review the implications for your team.'
   const action1 = typeof actions[1] === 'string' ? actions[1].replace(/\*\*(.*?)\*\*/g, '$1') : 'Assess your current approach in light of this.'
   const action2 = typeof actions[2] === 'string' ? actions[2].replace(/\*\*(.*?)\*\*/g, '$1') : 'Share this signal with relevant stakeholders.'
-  const domain = 'aisignal.so'
+  const articleUrl = `https://aisignal.so/signal/${signalNumber}`
 
   function getClipboard(format: StandupFormat): string {
     if (format === 'slack') {
-      return `*🧠 AI Signal · Today*\n\n${tldr}\n\n→ *Why it matters:* ${implication}\n→ *What I'd do:* ${action0}\n\n_3 min read_ · ${domain}`
+      return `*🧠 AI Signal · Today*\n\n${tldr}\n\n→ *Why it matters:* ${implication}\n→ *What I'd do:* ${action0}\n\n_3 min read_ · ${articleUrl}`
     }
     if (format === 'email') {
-      return `Hey —\n\nQuick share from this morning's AI Signal: ${tldr}\n\nThe implication: ${implication}\n\n${action0}\n\nFull read (3 min): https://${domain}\n\n— shared via AI Signal`
+      return `Hey —\n\nQuick share from this morning's AI Signal: ${tldr}\n\nThe implication: ${implication}\n\n${action0}\n\nFull read (3 min): ${articleUrl}\n\n— shared via AI Signal`
     }
     if (format === 'whatsapp') {
-      return `*AI Signal · Today* 🧠\n\n${tldr.slice(0, 80)}.\n\n*Worth reading before your next meeting.*\n\nhttps://${domain}`
+      return `*AI Signal · Today* 🧠\n\n${tldr.slice(0, 80)}.\n\n*Worth reading before your next meeting.*\n\n${articleUrl}`
     }
     // linkedin
-    return `${tldr}\n\n${implication}\n\nThree things teams should do this week:\n\n→ ${action0}\n\n→ ${action1}\n\n→ ${action2}\n\nThe old defaults may now be the expensive choice.\n\nWhat's the first thing you'd change?\n\n—\nRead AI Signal — one AI story every day at 6:14 AM IST.\n\nhttps://${domain}`
+    return `${tldr}\n\n${implication}\n\nThree things teams should do this week:\n\n→ ${action0}\n\n→ ${action1}\n\n→ ${action2}\n\nThe old defaults may now be the expensive choice.\n\nWhat's the first thing you'd change?\n\n—\nRead AI Signal — one AI story every day at 6:14 AM IST.\n\n${articleUrl}`
   }
 
   function getPreviewHtml(format: StandupFormat): string {
     if (format === 'slack') {
-      return `<b>🧠 AI Signal · Today</b>\n\n${tldr}\n\n<span class="arrow">→</span> <b>Why it matters:</b> ${implication}\n<span class="arrow">→</span> <b>What I'd do:</b> ${action0}\n\n<span class="meta">3 min read</span> · <span class="url">${domain}</span>`
+      return `<b>🧠 AI Signal · Today</b>\n\n${tldr}\n\n<span class="arrow">→</span> <b>Why it matters:</b> ${implication}\n<span class="arrow">→</span> <b>What I'd do:</b> ${action0}\n\n<span class="meta">3 min read</span> · <span class="url">${articleUrl}</span>`
     }
     if (format === 'email') {
-      return `Hey —\n\nQuick share from this morning's AI Signal: ${tldr}\n\nThe implication: ${implication}\n\n${action0}\n\nFull read (3 min): <span class="url">https://${domain}</span>\n\n<span class="meta">— shared via AI Signal</span>`
+      return `Hey —\n\nQuick share from this morning's AI Signal: ${tldr}\n\nThe implication: ${implication}\n\n${action0}\n\nFull read (3 min): <span class="url">${articleUrl}</span>\n\n<span class="meta">— shared via AI Signal</span>`
     }
     if (format === 'whatsapp') {
-      return `<b>AI Signal · Today</b> 🧠\n\n${tldr.slice(0, 80)}.\n\n<b>Worth reading before your next meeting.</b>\n\n<span class="url">https://${domain}</span>`
+      return `<b>AI Signal · Today</b> 🧠\n\n${tldr.slice(0, 80)}.\n\n<b>Worth reading before your next meeting.</b>\n\n<span class="url">${articleUrl}</span>`
     }
-    return `${tldr}\n\n${implication}\n\nThree things teams should do this week:\n\n<span class="arrow">→</span> ${action0}\n\n<span class="arrow">→</span> ${action1}\n\n<span class="arrow">→</span> ${action2}\n\n<i>The old defaults may now be the expensive choice.</i>\n\n<span class="url">https://${domain}</span>`
+    return `${tldr}\n\n${implication}\n\nThree things teams should do this week:\n\n<span class="arrow">→</span> ${action0}\n\n<span class="arrow">→</span> ${action1}\n\n<span class="arrow">→</span> ${action2}\n\n<i>The old defaults may now be the expensive choice.</i>\n\n<span class="url">${articleUrl}</span>`
   }
 
   return { getClipboard, getPreviewHtml }
 }
 
-function StandupCard({ story, standupMessages }: { story: Story; standupMessages?: StandupMessages | null }) {
+function StandupCard({ story, signalNumber, standupMessages }: { story: Story; signalNumber: number; standupMessages?: StandupMessages | null }) {
   const [activeFormat, setActiveFormat] = useState<StandupFormat>('slack')
   const [copied, setCopied] = useState(false)
-  const { getClipboard, getPreviewHtml } = buildStandupContent(story)
+  const { getClipboard, getPreviewHtml } = buildStandupContent(story, signalNumber)
 
   // Use pre-formatted messages from extended_data when available
   const getClipboardFn = (fmt: StandupFormat) =>
@@ -325,7 +325,7 @@ function StandupCard({ story, standupMessages }: { story: Story; standupMessages
         </div>
         <div className="standup-header-text">
           <div className="standup-title">Bring this to your standup</div>
-          <div className="standup-subtitle">9 AM · Quotable</div>
+          <div className="standup-subtitle">06:14 IST · Quotable</div>
         </div>
       </div>
 
@@ -376,10 +376,7 @@ export function StoryArticle({
   signalNumber,
   onReadPctChange,
 }: StoryArticleProps) {
-  const [timeLeft, setTimeLeft] = useState('')
-  const [expired, setExpired] = useState(false)
   const [readPct, setReadPct] = useState(0)
-  const [ringOffset, setRingOffset] = useState(0)
 
   // Extract V11 extended_data fields with null-safety
   const rawExt = story.extended_data as Record<string, unknown> | null
@@ -393,40 +390,12 @@ export function StoryArticle({
   const reactions        = Array.isArray(rawExt?.reactions) ? (rawExt!.reactions as Reaction[]) : null
   const standupMessages  = (rawExt?.standup_messages && typeof rawExt.standup_messages === 'object') ? (rawExt.standup_messages as StandupMessages) : null
   const oneBreathText    = (rawExt?.one_breath && typeof (rawExt.one_breath as Record<string,unknown>)?.text === 'string') ? (rawExt.one_breath as { text: string }).text : null
-  const RING_TOTAL_MS = 24 * 60 * 60 * 1000
-  const RING_CIRCUMFERENCE = 31.416 // 2π × r=5
   const articleRef = useRef<HTMLElement>(null)
   // High watermark — never decreases once set, locks at 100
   const highWatermark = useRef(0)
   // Engagement: user must pause ≥1s before progress commits
   const engaged = useRef(false)
   const engageTimer = useRef<ReturnType<typeof setTimeout> | null>(null)
-
-  // Expiry countdown
-  useEffect(() => {
-    const published = new Date(publishedAt).getTime()
-    const expiry = published + 24 * 60 * 60 * 1000
-
-    function tick() {
-      const remaining = expiry - Date.now()
-      if (remaining <= 0) {
-        setExpired(true)
-        setTimeLeft('00:00:00')
-        return
-      }
-      const h = Math.floor(remaining / 3600000)
-      const m = Math.floor((remaining % 3600000) / 60000)
-      const s = Math.floor((remaining % 60000) / 1000)
-      setTimeLeft(
-        `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`
-      )
-      setRingOffset(RING_CIRCUMFERENCE * (1 - remaining / RING_TOTAL_MS))
-    }
-
-    tick()
-    const id = setInterval(tick, 1000)
-    return () => clearInterval(id)
-  }, [publishedAt])
 
   // Reading progress — monotonic high watermark + engagement gate
   useEffect(() => {
@@ -498,29 +467,6 @@ export function StoryArticle({
         <span className="meta-text">{story.read_minutes} min read</span>
 
         <span className="story-meta-spacer" />
-
-        {/* Expiry timer badge */}
-        {!expired && timeLeft && (
-          <span className="timer-bar">
-            <span className="timer-icon">
-              <svg viewBox="0 0 14 14" aria-hidden="true">
-                <circle className="timer-ring-bg" cx="7" cy="7" r="5"/>
-                <circle
-                  className="timer-ring-fill" cx="7" cy="7" r="5"
-                  style={{ strokeDasharray: RING_CIRCUMFERENCE, strokeDashoffset: ringOffset }}
-                />
-              </svg>
-            </span>
-            <span className="timer-bar-label">Expires in</span>
-            {timeLeft}
-          </span>
-        )}
-
-        {expired && (
-          <span className="timer-bar-expired">
-            Signal expired
-          </span>
-        )}
       </div>
 
       {/* ── Section 2: Headline + deck ── */}
@@ -540,18 +486,14 @@ export function StoryArticle({
         </div>
 
         <div className="author-info">
-          <div className="author-name">
-            AI Signal Editorial
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="var(--signal)" className="author-verified-icon">
-              <path d="M12 2l2.4 1.8 3-.4 1 2.8 2.8 1-.4 3L22.6 12l-1.8 2.4.4 3-2.8 1-1 2.8-3-.4L12 22.6l-2.4-1.8-3 .4-1-2.8-2.8-1 .4-3L1.4 12l1.8-2.4-.4-3 2.8-1 1-2.8 3 .4L12 2zm-1.5 13.5l6-6L15 8 10.5 12.5 8.5 10.5 7 12l3.5 3.5z"/>
-            </svg>
-          </div>
+          <div className="author-name">Suraj Pandita</div>
           <div className="author-handle">
-            @aisignal · today, 06:14 IST
+            <a href="https://twitter.com/suraj132pandita" target="_blank" rel="noopener noreferrer" className="author-handle-link">@suraj132pandita</a>
+            {' '}· today, 06:14 IST
           </div>
         </div>
 
-        <ShareButtons />
+        <ShareButtons headline={story.headline} signalNumber={signalNumber} />
       </div>
 
       {/* ── TL;DR strip — after author, before signal block (V11 order) ── */}
@@ -682,7 +624,7 @@ export function StoryArticle({
       {/* ── Section 8: The Move — action checklist ── */}
       {story.action_items && story.action_items.length > 0 && (
         <div id="sec-move">
-          <ActionChecklist items={story.action_items.filter((item): item is string => typeof item === 'string')} />
+          <ActionChecklist items={story.action_items.filter((item): item is string => typeof item === 'string')} signalNumber={signalNumber} />
         </div>
       )}
 
@@ -690,7 +632,7 @@ export function StoryArticle({
       <InlineChaiStrip />
 
       {/* ── Section 8b: Standup snippet ── */}
-      <StandupCard story={story} standupMessages={standupMessages} />
+      <StandupCard story={story} signalNumber={signalNumber} standupMessages={standupMessages} />
 
       {/* ── Section 9: Devil's Advocate — CounterView ── */}
       {story.counter_view && (
@@ -749,13 +691,11 @@ export function StoryArticle({
       <div className="read-stamp">
         You read{' '}
         <strong>{readPct}%</strong>{' '}
-        of today&apos;s signal.
-        <br />
-        That puts you ahead of most readers.
+        of Signal #{signalNumber}.
       </div>
 
       {/* ── Section 13: Feedback vote ── */}
-      <FeedbackVote />
+      <FeedbackVote signalNumber={signalNumber} />
     </article>
   )
 }

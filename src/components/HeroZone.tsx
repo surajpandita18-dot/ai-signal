@@ -37,9 +37,9 @@ export function HeroZone({ issueDate, publishTime, readMinutes, phrases, categor
         </div>
 
         <h1 className="big-headline anim d3">
-          Today&apos;s one AI story.
+          One AI story.
           <br />
-          <span className="ital sub-line">The one that should change a decision.</span>
+          <span className="ital sub-line">The one worth your next 5 minutes.</span>
         </h1>
 
         <p className="hero-sub anim d4">

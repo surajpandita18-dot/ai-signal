@@ -84,7 +84,7 @@ export function SubscribeSection() {
           )}
 
           <div className="sub-trust">
-            <span>✓ Free forever</span>
+            <span>✓ Free to read</span>
             <span>✓ No spam</span>
             <span>✓ Unsubscribe anytime</span>
           </div>

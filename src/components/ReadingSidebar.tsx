@@ -21,10 +21,12 @@ interface ReadingSidebarProps {
 export function ReadingSidebar({ readPct, teasers, drafts }: ReadingSidebarProps) {
   const envelopes = teasers ?? []
 
+  const hasRealContent = (drafts && drafts.length > 0) || envelopes.length > 0
+
   return (
     <aside className="sidebar">
       <SidebarScoreCard readPct={readPct} />
-      <SidebarProbablyCard teasers={envelopes} drafts={drafts} />
+      {hasRealContent && <SidebarProbablyCard teasers={envelopes} drafts={drafts} />}
     </aside>
   )
 }
