@@ -851,7 +851,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 .story-deck {
   font-size: 19px;
   line-height: 1.72;
-  color: var(--text);
+  color: var(--text-soft);
   letter-spacing: -0.012em;
   margin: 26px 0 40px;
 }
@@ -973,8 +973,8 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   letter-spacing: 0.16em;
   text-transform: uppercase;
 }
-.signal-body { font-size: 18px; line-height: 1.74; color: var(--text); }
-.signal-body strong { font-weight: 600; color: var(--text); }
+.signal-body { font-size: 18px; line-height: 1.74; }
+.signal-body strong { font-weight: 600; }
 
 /* Block sections (numbered) */
 .block { margin-bottom: 56px; }
@@ -1417,7 +1417,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 .pm-angle-body {
   font-size: 16px;
   line-height: 1.7;
-  color: var(--text);
+  color: var(--text-soft);
   margin: 0;
 }
 .pm-angle-body strong {
@@ -1707,7 +1707,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 }
 .counter-body {
   font-size: 16px;
-  line-height: 1.7;
+  line-height: 1.6;
   color: var(--text-soft, #2D2A26);
 }
 .counter-body strong {
