@@ -58,7 +58,7 @@ export function ExpiryBadge({ publishedAt, signalNumber }: ExpiryBadgeProps) {
             fontWeight: 500,
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
-            color: 'var(--text-muted)',
+            color: 'var(--text-mute)',
           }}
         >
           Signal #{num}
@@ -107,7 +107,7 @@ export function ExpiryBadge({ publishedAt, signalNumber }: ExpiryBadgeProps) {
             fontWeight: 700,
             letterSpacing: '-0.04em',
             lineHeight: 1,
-            color: 'var(--text-primary)',
+            color: 'var(--text)',
             display: 'block',
             fontVariantNumeric: 'tabular-nums',
           }}
@@ -124,7 +124,7 @@ export function ExpiryBadge({ publishedAt, signalNumber }: ExpiryBadgeProps) {
           fontWeight: 500,
           letterSpacing: '0.12em',
           textTransform: 'uppercase',
-          color: 'var(--text-muted)',
+          color: 'var(--text-mute)',
           marginBottom: '20px',
         }}
       >
@@ -154,9 +154,9 @@ export function ExpiryBadge({ publishedAt, signalNumber }: ExpiryBadgeProps) {
             />
           </div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '6px' }}>
-            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>PUBLISHED</span>
-            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>{remaining.pct}% elapsed</span>
-            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-muted)', letterSpacing: '0.06em' }}>EXPIRES</span>
+            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-mute)', letterSpacing: '0.06em' }}>PUBLISHED</span>
+            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-mute)', letterSpacing: '0.06em' }}>{remaining.pct}% elapsed</span>
+            <span className="font-mono" style={{ fontSize: '10px', color: 'var(--text-mute)', letterSpacing: '0.06em' }}>EXPIRES</span>
           </div>
         </div>
       )}

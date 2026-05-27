@@ -133,7 +133,7 @@ export default async function HomePage() {
             signalNumber={issue.issue_number}
             tomorrowCategory={undefined}
           />
-          <SubscribeInput label="Tomorrow's signal drops at 9 AM IST. Subscribe to be first." />
+          <SubscribeInput label="Tomorrow's signal drops at 06:14 IST. Subscribe to be first." />
         </div>
         <SiteFooter />
       </>

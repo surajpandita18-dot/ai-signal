@@ -60,7 +60,7 @@ export function SidebarProbablyCard({ teasers = [], drafts }: SidebarProbablyCar
               {isLead ? (
                 <div className="probably-env-status">Lead candidate · 06:14 IST</div>
               ) : (
-                <div className="probably-env-lock">Sealed · subscribe to peek</div>
+                <div className="probably-env-lock">Sealed · in the pipeline</div>
               )}
             </div>
           )
