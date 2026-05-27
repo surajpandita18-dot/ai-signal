@@ -11,6 +11,7 @@ import { StakeholdersGrid } from './StakeholdersGrid'
 import { PrimaryChart } from './PrimaryChart'
 import { DecisionAid } from './DecisionAid'
 import { ReactionsPanel } from './ReactionsPanel'
+import { InlineChaiStrip } from './InlineChaiStrip'
 import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart, DecisionAid as DecisionAidData, Reaction, StandupMessages } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
@@ -682,6 +683,9 @@ export function StoryArticle({
           <ActionChecklist items={story.action_items.filter((item): item is string => typeof item === 'string')} />
         </div>
       )}
+
+      {/* ── Inline chai ask — after action checklist, peak reader value ── */}
+      <InlineChaiStrip />
 
       {/* ── Section 8b: Standup snippet ── */}
       <StandupCard story={story} standupMessages={standupMessages} />

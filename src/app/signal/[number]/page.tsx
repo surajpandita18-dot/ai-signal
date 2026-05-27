@@ -4,7 +4,6 @@ import { createServerSupabaseClient } from '@/lib/supabase-server'
 import { SiteNav } from '@/components/SiteNav'
 import { SiteFooter } from '@/components/SiteFooter'
 import { SignalPageClient } from '@/components/SignalPageClient'
-import { ArticleTipJar } from '@/components/ArticleTipJar'
 
 export const dynamic = 'force-dynamic'
 
@@ -139,7 +138,6 @@ export default async function SignalPage({ params }: PageProps) {
         issue={issue}
         signalNumber={issue.issue_number}
       />
-      <ArticleTipJar />
       <SiteFooter />
     </>
   )
