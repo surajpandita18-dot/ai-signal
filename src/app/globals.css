@@ -3397,6 +3397,8 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   .headline-stage { margin-bottom: 24px; }
   .hero-tickers { grid-template-columns: 1fr; max-width: 100%; padding: 0 8px; gap: 8px; }
   .hero-preview-strip { grid-template-columns: 1fr; max-width: 100%; padding: 0 8px; gap: 8px; }
+  .track-record { padding: 0 20px; }
+  .track-record-cards { grid-template-columns: 1fr; }
   .hero-banner::before { background-size: 32px 32px; }
   .hero-banner { padding: 56px 20px 16px; }
   .insights-strip { grid-template-columns: 1fr; }
@@ -4083,7 +4085,7 @@ footer .links a:hover { color: var(--text); }
 }
 
 /* ── Track Record ──────────────────────────────────────────────────────────── */
-.track-record { margin: 0 0 48px; }
+.track-record { max-width: 1280px; margin: 0 auto 48px; padding: 0 32px; }
 .track-record-header { margin-bottom: 16px; }
 .track-record-eyebrow {
   display: flex;
