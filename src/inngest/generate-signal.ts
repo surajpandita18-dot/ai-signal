@@ -1678,13 +1678,23 @@ export const generateDailySignal = inngest.createFunction(
       const emailFrom = process.env.EMAIL_FROM ?? 'AI Signal <onboarding@resend.dev>'
       const resend = new Resend(resendKey)
 
-      const { data: subscribers, error: subErr } = await supabase
+      const { data: allSubscribers, error: subErr } = await supabase
         .from('subscribers')
         .select('email, unsubscribe_token')
         .eq('status', 'active')
-      if (subErr || !subscribers?.length) {
+      if (subErr || !allSubscribers?.length) {
         console.log(`[inngest] send-newsletter: no active subscribers or fetch error — ${subErr?.message ?? 'empty list'}`)
         return
+      }
+
+      // Test-only mode: send to owner email only (set NEWSLETTER_TEST_ONLY=true in Vercel)
+      const testOnly = process.env.NEWSLETTER_TEST_ONLY === 'true'
+      const ownerEmail = process.env.NEWSLETTER_OWNER_EMAIL ?? 'surajpandita18@gmail.com'
+      const subscribers = testOnly
+        ? allSubscribers.filter(s => s.email === ownerEmail)
+        : allSubscribers
+      if (testOnly) {
+        console.log(`[inngest] send-newsletter: TEST_ONLY mode — sending only to ${ownerEmail}`)
       }
 
       const now = new Date()

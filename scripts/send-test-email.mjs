@@ -33,7 +33,7 @@ const SB_URL     = get('NEXT_PUBLIC_SUPABASE_URL')     || 'https://xswfsnnghlosl
 const SB_KEY     = get('SUPABASE_SERVICE_ROLE_KEY')    || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd2Zzbm5naGxvc2x6eW5rd25pIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzE5NzgxOCwiZXhwIjoyMDkyNzczODE4fQ.P0ghCk98rYuZFq_XAInyVbQat-xW_BexDBhLnBFIMao'
 if (!RESEND_KEY) { console.error('RESEND_API_KEY not found in .env.local'); process.exit(1) }
 
-const FROM = get('EMAIL_FROM') || 'AI Signal <onboarding@resend.dev>'
+const FROM = get('EMAIL_FROM') || 'Suraj @ AI Signal <delta@getaisignal.org>'
 
 // ── Inline minimal template (avoids TS import issues in .mjs) ───────────────
 // Duplicates the core logic from email-templates.ts as plain JS.
@@ -133,15 +133,15 @@ function buildWelcomeHtml(unsubUrl) {
     <p style="margin:0;font-family:${SANS};font-size:17px;color:${MUTED_DARK};line-height:1.65;">First signal lands tomorrow at <strong style="color:${BLACK};">6:14 AM IST.</strong> Here's what to expect.</p>
   </td></tr>
   <tr><td style="padding-bottom:0;"><hr style="border:none;border-top:1px solid ${BORDER};margin:0;"/></td></tr>
-  <tr><td style="padding:22px 0 6px;">
-    <p style="margin:0;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:${MUTED};">WHAT YOU GET EVERY MORNING</p>
+  <tr><td style="padding:22px 0 8px;">
+    <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">WHAT YOU GET EVERY MORNING</p>
   </td></tr>
   <tr><td style="padding:14px 0;border-top:1px solid ${BORDER};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
       <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">01</span></td>
       <td style="padding-left:12px;">
-        <p style="margin:0 0 3px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">THE SIGNAL</p>
-        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">One AI story — the one that forces a decision. Not 10 headlines. Not a roundup.</p>
+        <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">THE SIGNAL</p>
+        <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.55;">One AI story — the one that forces a decision. Not 10 headlines. Not a roundup.</p>
       </td>
     </tr></table>
   </td></tr>
@@ -149,8 +149,8 @@ function buildWelcomeHtml(unsubUrl) {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
       <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">02</span></td>
       <td style="padding-left:12px;">
-        <p style="margin:0 0 3px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">THE NUMBER</p>
-        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">The one figure that changes your assumptions. With context to know what to do about it.</p>
+        <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">THE NUMBER</p>
+        <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.55;">The one figure that changes your assumptions. With context to know what to do about it.</p>
       </td>
     </tr></table>
   </td></tr>
@@ -158,8 +158,8 @@ function buildWelcomeHtml(unsubUrl) {
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
       <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">03</span></td>
       <td style="padding-left:12px;">
-        <p style="margin:0 0 3px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">THE MOVE</p>
-        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">What to do in the next 48 hours. A concrete action — not a reading list.</p>
+        <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">THE MOVE</p>
+        <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.55;">What to do in the next 48 hours. A concrete action — not a reading list.</p>
       </td>
     </tr></table>
   </td></tr>
@@ -219,9 +219,10 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
   </td></tr>
   <tr><td style="padding-bottom:28px;"><hr style="border:none;border-top:1px solid ${BORDER};margin:0;"/></td></tr>
 
+  <!-- Category pill -->
   <tr><td style="padding-bottom:18px;">
-    <span style="font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;color:${BLUE};">${categoryTag}</span>
-    <span style="font-family:${MONO};font-size:10px;color:${MUTED};letter-spacing:0.1em;"> · ${story.read_minutes} MIN</span>
+    <span style="display:inline-block;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.14em;background:#EEF3FF;color:${BLUE};padding:4px 10px;border-radius:2px;">${categoryTag}</span>
+    <span style="font-family:${MONO};font-size:10px;color:${MUTED};letter-spacing:0.1em;"> &nbsp;· ${story.read_minutes} MIN</span>
   </td></tr>
 
   ${opener ? `<tr><td style="padding-bottom:14px;">
@@ -236,62 +237,70 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     <p style="margin:0;font-family:${SANS};font-size:17px;color:${BODY_TEXT};line-height:1.65;">${hook}</p>
   </td></tr>
   ${implication ? `<tr><td style="padding-bottom:24px;">
-    <p style="margin:0;font-family:${SANS};font-size:16px;color:${MUTED_DARK};line-height:1.65;">${implication}</p>
+    <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.65;">${implication}</p>
   </td></tr>` : ''}
 
+  <!-- THE NUMBER — callout block -->
   ${statValue ? `
-  ${divider(4, 16)}
-  <tr><td style="padding-bottom:6px;">
-    <p style="margin:0;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:${MUTED};">THE NUMBER</p>
-  </td></tr>
-  <tr><td style="padding-bottom:4px;">
-    <p style="margin:0;font-family:${SERIF};font-size:42px;font-weight:400;color:${BLACK};line-height:1.0;">${statValue}</p>
-  </td></tr>
-  ${statLabel ? `<tr><td style="padding-bottom:2px;"><p style="margin:0;font-family:${MONO};font-size:11px;color:${MUTED};letter-spacing:0.04em;">${statLabel}</p></td></tr>` : ''}
-  ${statNote  ? `<tr><td style="padding-bottom:6px;"><p style="margin:0;font-family:${SANS};font-size:13px;color:${MUTED_DARK};line-height:1.55;">${statNote}</p></td></tr>` : ''}` : ''}
+  ${divider(4, 8)}
+  <tr><td style="padding-bottom:16px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr><td style="background:#EEF3FF;border-left:3px solid ${BLUE};padding:18px 22px;">
+        <p style="margin:0 0 10px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${BLUE};">THE NUMBER</p>
+        <p style="margin:0 0 6px;font-family:${SERIF};font-size:44px;font-weight:400;color:${BLACK};line-height:1.0;">${statValue}</p>
+        ${statLabel ? `<p style="margin:0 0 6px;font-family:${MONO};font-size:11px;color:${MUTED};letter-spacing:0.04em;">${statLabel}</p>` : ''}
+        ${statNote  ? `<p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.6;">${statNote}</p>` : ''}
+      </td></tr>
+    </table>
+  </td></tr>` : ''}
 
+  <!-- INSIDE THIS SIGNAL — hierarchy: numbers=plain, matters=callout, move=dark -->
   ${(numbersCard||mattersCard||moveCard) ? `
   ${divider(18, 18)}
-  <tr><td style="padding-bottom:14px;">
-    <p style="margin:0;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:${MUTED};">INSIDE THIS SIGNAL</p>
+  <tr><td style="padding-bottom:16px;">
+    <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">INSIDE THIS SIGNAL</p>
   </td></tr>
-  ${numbersCard ? `<tr><td style="padding:11px 0;border-top:1px solid ${BORDER};">
+  ${numbersCard ? `<tr><td style="padding:13px 0;border-top:1px solid ${BORDER};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
       <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">01</span></td>
-      <td style="padding-left:10px;">
-        <p style="margin:0 0 2px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">By the numbers</p>
-        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.5;">${numbersCard.value}</p>
+      <td style="padding-left:12px;">
+        <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">By the numbers</p>
+        <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.55;">${numbersCard.value}</p>
       </td>
     </tr></table>
   </td></tr>` : ''}
-  ${mattersCard ? `<tr><td style="padding:11px 0;border-top:1px solid ${BORDER};">
+  ${mattersCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">02</span></td>
-      <td style="padding-left:10px;">
-        <p style="margin:0 0 2px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">Why it matters</p>
-        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.5;">${mattersCard.value}</p>
+      <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">02</span></td>
+      <td style="padding:0 0 0 12px;">
+        <div style="border-left:3px solid ${BLUE};background:#EEF3FF;padding:12px 16px;margin:8px 0;">
+          <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${BLUE};">Why it matters</p>
+          <p style="margin:0;font-family:${SANS};font-size:17px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${mattersCard.value}</p>
+        </div>
       </td>
     </tr></table>
   </td></tr>` : ''}
-  ${moveCard ? `<tr><td style="padding:11px 0;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+  ${moveCard ? `<tr><td style="padding:13px 0;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
       <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">03</span></td>
-      <td style="padding-left:10px;">
-        <p style="margin:0 0 2px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">The move</p>
-        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.5;">${moveCard.value}</p>
+      <td style="padding-left:12px;">
+        <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">The move</p>
+        <p style="margin:0;font-family:${SANS};font-size:16px;color:${BLACK};line-height:1.55;font-weight:500;">${moveCard.value}</p>
       </td>
     </tr></table>
   </td></tr>` : ''}` : ''}
 
+  <!-- ONE OPEN QUESTION — callout box before CTA -->
   ${openQ ? `
-  ${divider(22, 16)}
-  <tr><td style="padding-bottom:10px;">
-    <p style="margin:0;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:${MUTED};">ONE OPEN QUESTION</p>
-  </td></tr>
-  <tr><td style="padding-bottom:6px;">
-    <p style="margin:0;font-family:${SERIF};font-size:20px;font-weight:400;color:${BLACK};line-height:1.5;font-style:italic;">"${openQ}"</p>
-  </td></tr>
-  <tr><td style="padding-top:4px;"></td></tr>` : '<tr><td style="padding-top:22px;"></td></tr>'}
+  ${divider(22, 12)}
+  <tr><td style="padding-bottom:16px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
+      <tr><td style="background:#F5F5F0;border-left:3px solid #333333;padding:18px 22px;">
+        <p style="margin:0 0 10px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#333333;">ONE OPEN QUESTION</p>
+        <p style="margin:0;font-family:${SERIF};font-size:22px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${openQ}"</p>
+      </td></tr>
+    </table>
+  </td></tr>` : '<tr><td style="padding-top:22px;"></td></tr>'}
 
   ${ctaButton(articleUrl, `Read the full signal &nbsp;— ${story.read_minutes} min →`)}
 
