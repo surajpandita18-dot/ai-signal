@@ -1620,6 +1620,7 @@ export const generateDailySignal = inngest.createFunction(
       }
       const subscriberCount = subscribers.length
 
+      const sleep = (ms: number) => new Promise(r => setTimeout(r, ms))
       let ok = 0, fail = 0
       for (const sub of subscribers) {
         try {
@@ -1627,6 +1628,7 @@ export const generateDailySignal = inngest.createFunction(
           const { subject, html, text } = dailyNewsletterEmail(story, issueNumber, unsubscribeUrl, dateStr, subscriberCount)
           await resend.emails.send({ from: emailFrom, to: sub.email, subject, html, text })
           ok++
+          await sleep(600) // stay under Resend 2 req/s limit
         } catch (err) {
           console.error(`[inngest] send-newsletter: failed for ${sub.email} — ${String(err)}`)
           fail++
