@@ -429,17 +429,33 @@ async function fetchFromArXiv(): Promise<Candidate[]> {
 
 // High-signal accounts and the tier to assign them
 const NITTER_ACCOUNTS: Array<{ handle: string; tier: number }> = [
-  { handle: 'sama',         tier: 5 }, // Sam Altman — OpenAI CEO
-  { handle: 'DarioAmodei',  tier: 5 }, // Dario Amodei — Anthropic CEO
-  { handle: 'karpathy',     tier: 4 }, // Andrej Karpathy
-  { handle: 'ylecun',       tier: 4 }, // Yann LeCun
-  { handle: 'fchollet',     tier: 4 }, // François Chollet
+  // Tier 5 — lab leaders, every tweet is potential news
+  { handle: 'sama',          tier: 5 }, // Sam Altman — OpenAI CEO
+  { handle: 'DarioAmodei',   tier: 5 }, // Dario Amodei — Anthropic CEO
+  { handle: 'ilyasut',       tier: 5 }, // Ilya Sutskever — SSI, ex-OpenAI chief scientist
+  { handle: 'emollick',      tier: 5 }, // Ethan Mollick — Wharton, best practical AI research coverage
+
+  // Tier 4 — primary signal, shapes roadmaps
+  { handle: 'karpathy',      tier: 4 }, // Andrej Karpathy — gold standard for builders
+  { handle: 'ylecun',        tier: 4 }, // Yann LeCun — Meta AI chief, contrarian views that matter
+  { handle: 'fchollet',      tier: 4 }, // François Chollet — deep AI thinking
   { handle: 'demishassabis', tier: 4 }, // Demis Hassabis — Google DeepMind CEO
-  { handle: 'gdb',          tier: 4 }, // Greg Brockman — OpenAI
+  { handle: 'gdb',           tier: 4 }, // Greg Brockman — OpenAI
   { handle: 'SemiAnalysis_', tier: 4 }, // Dylan Patel — semiconductor + AI infrastructure
-  { handle: 'swyx',         tier: 3 }, // swyx – AI engineering community
-  { handle: '_philschmid',  tier: 3 }, // Philipp Schmid – HuggingFace
-  { handle: 'reach_vb',     tier: 3 }, // Vaibhav Srivastava – AI community
+  { handle: 'simonw',        tier: 4 }, // Simon Willison — most reliable practical AI tools coverage
+  { handle: 'benedictevans', tier: 4 }, // Benedict Evans — strategic tech analysis, VC must-read
+  { handle: 'paulg',         tier: 4 }, // Paul Graham — YC, shapes startup thinking on AI
+  { handle: 'sriramk',       tier: 4 }, // Sriram Krishnan — a16z, Indian-American, very relevant
+  { handle: 'hwchase17',     tier: 4 }, // Harrison Chase — LangChain CEO, agentic ecosystem
+  { handle: 'jerryjliu0',    tier: 4 }, // Jerry Liu — LlamaIndex CEO, RAG/enterprise AI
+  { handle: 'levelsio',      tier: 4 }, // Pieter Levels — what's actually shipping and making money
+
+  // Tier 3 — practitioner signal
+  { handle: 'swyx',          tier: 3 }, // swyx — AI engineering community
+  { handle: '_philschmid',   tier: 3 }, // Philipp Schmid — HuggingFace
+  { handle: 'mckaywrigley',  tier: 3 }, // McKay Wrigley — AI tools builder
+  { handle: 'skirano',       tier: 3 }, // Pietro Schirano — design + AI intersection
+  { handle: 'reach_vb',      tier: 3 }, // Vaibhav Srivastava — AI community
 ]
 
 // Public Nitter instances — tried in order, first success wins per account
