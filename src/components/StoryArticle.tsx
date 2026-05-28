@@ -13,7 +13,7 @@ import { DecisionAid } from './DecisionAid'
 import { ReactionsPanel } from './ReactionsPanel'
 import { InlineChaiStrip } from './InlineChaiStrip'
 import { PMAngle } from './PMAngle'
-import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart, DecisionAid as DecisionAidData, Reaction, StandupMessages } from '@/lib/types/extended-data'
+import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart, DecisionAid as DecisionAidData, Reaction, StandupMessages, ReplacesData, ReadinessLevel } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
 
@@ -376,6 +376,9 @@ export function StoryArticle({
   const reactions        = Array.isArray(rawExt?.reactions) ? (rawExt!.reactions as Reaction[]) : null
   const standupMessages  = (rawExt?.standup_messages && typeof rawExt.standup_messages === 'object') ? (rawExt.standup_messages as StandupMessages) : null
   const oneBreathText    = (rawExt?.one_breath && typeof (rawExt.one_breath as Record<string,unknown>)?.text === 'string') ? (rawExt.one_breath as { text: string }).text : null
+  const openQuestion     = typeof rawExt?.open_question === 'string' ? rawExt.open_question : null
+  const replacesData     = (rawExt?.replaces && typeof rawExt.replaces === 'object') ? (rawExt.replaces as ReplacesData) : null
+  const readinessLevel   = typeof rawExt?.readiness_level === 'string' ? rawExt.readiness_level as ReadinessLevel : null
   const articleRef = useRef<HTMLElement>(null)
   // High watermark — never decreases once set, locks at 100
   const highWatermark = useRef(0)
@@ -502,6 +505,41 @@ export function StoryArticle({
         )
       })()}
 
+      {/* ── Tools: What this replaces (tools category only) ── */}
+      {story.category === 'tools' && replacesData && (
+        <div className="replaces-block">
+          <div className="replaces-cell replaces-yes">
+            <div className="replaces-label">✓ Replaces</div>
+            <div className="replaces-text">{replacesData.yes}</div>
+          </div>
+          <div className="replaces-cell replaces-no">
+            <div className="replaces-label">Not yet</div>
+            <div className="replaces-text">{replacesData.not_yet}</div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Research: Readiness level (research category only) ── */}
+      {story.category === 'research' && readinessLevel && (() => {
+        const STEPS: ReadinessLevel[] = ['lab', 'paper', 'prototype', 'product', 'deployed']
+        const LABELS = ['Lab', 'Paper', 'Prototype', 'Product', 'Deployed']
+        const activeIdx = STEPS.indexOf(readinessLevel)
+        return (
+          <div className="readiness-strip">
+            <div className="readiness-eyebrow">Readiness level</div>
+            <div className="readiness-steps">
+              {STEPS.map((step, i) => (
+                <div key={step} className={`readiness-step${i === activeIdx ? ' active' : i < activeIdx ? ' past' : ''}`}>
+                  <div className="readiness-dot" />
+                  {i < STEPS.length - 1 && <div className="readiness-line" />}
+                  <div className="readiness-step-label">{LABELS[i]}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        )
+      })()}
+
       {/* ── Insights strip — claim → pattern → proof ── */}
       {insightCells && insightCells.length > 0 && (
         <InsightsStrip cells={insightCells} />
@@ -607,6 +645,17 @@ export function StoryArticle({
           betQuote={story.lens_builder ?? story.lens_pm ?? ''}
           burnQuote={story.lens_founder ?? story.lens_pm ?? ''}
         />
+      )}
+
+      {/* ── The Open Question — the one thing nobody knows yet ── */}
+      {openQuestion && (
+        <div className="open-question">
+          <div className="open-question-eyebrow">
+            <span className="open-question-pip">?</span>
+            The open question
+          </div>
+          <p className="open-question-text">{openQuestion}</p>
+        </div>
       )}
 
       {/* ── V11: Decision Aid — after builder card, before The Move ── */}

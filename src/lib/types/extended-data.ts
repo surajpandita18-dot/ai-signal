@@ -123,6 +123,15 @@ export type TomorrowDraft = {
   status_detail?: string;
 };
 
+/** The one unresolved question that changes everything about this story */
+export type OpenQuestion = { text: string };
+
+/** What a tool replaces vs. what it doesn't yet (tools category only) */
+export type ReplacesData = { yes: string; not_yet: string };
+
+/** How close research is to real-world deployment (research category only) */
+export type ReadinessLevel = 'lab' | 'paper' | 'prototype' | 'product' | 'deployed';
+
 /** Extended data for V11 universal article structure — 13 sections stored as jsonb */
 export type ExtendedData = {
   numbers_headline?: string;  // AI-generated block title for "By the numbers"
@@ -138,4 +147,7 @@ export type ExtendedData = {
   reactions: Reaction[];
   standup_messages: StandupMessages;
   tomorrow_drafts: TomorrowDraft[];
+  open_question?: string;
+  replaces?: ReplacesData;
+  readiness_level?: ReadinessLevel;
 };
