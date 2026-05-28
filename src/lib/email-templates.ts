@@ -487,7 +487,7 @@ export function dailyNewsletterEmail(
 ): { subject: string; html: string; text: string } {
 
   const base       = siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
-  const articleUrl = `${base}/signal/${issueNumber}`
+  const articleUrl = `${base}/goto/${issueNumber}`
   const ext        = story.extended_data
 
   const cards       = ext?.preview_cards ?? []
@@ -552,7 +552,7 @@ THE SIGNAL:
 ${story.summary}
 ${insights.length > 0 ? `\nAT A GLANCE:\n${insights.map(i => `${i.icon} ${i.label}: ${i.text}`).join('\n')}\n` : ''}${whySubHead ? `\nWHY IT MATTERS:\n${whySubHead}${whyBody ? `\n${whyBody}` : ''}\n` : ''}${story.editorial_take ? `\nEDITOR'S TAKE:\n${story.editorial_take}\n` : ''}${moveCard?.value ? `\nTHE MOVE:\n${moveCard.value}\n` : ''}
 Read the full analysis (${story.read_minutes} min):
-${articleUrl}
+${base}/goto/${issueNumber}
 ${reactions.length > 0 ? `\n${'─'.repeat(48)}\nCOUNTER VIEW:\n${reactions.slice(0, 3).map(r => `"${r.quote}"\n— ${r.name}, ${r.role}`).join('\n\n')}\n` : ''}
 ${'─'.repeat(48)}
 — Suraj

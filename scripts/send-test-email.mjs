@@ -476,7 +476,7 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     research: `Someone on your team will rediscover this in 6 months and call it a new idea. Forward it now.`,
   }
   const psText = PS_LINES[story.category] ?? `Know someone who'd find this useful? They can subscribe at getaisignal.org — free, every morning.`
-  const articleUrl = `${SITE_URL}/signal/${issueNumber}`
+  const articleUrl = `${SITE_URL}/goto/${issueNumber}`
 
   const body = `
     ${sMasthead(issueNumber, dateStr, story.read_minutes)}
