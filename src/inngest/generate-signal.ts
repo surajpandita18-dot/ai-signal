@@ -1,4 +1,5 @@
 import Anthropic from '@anthropic-ai/sdk'
+import { Resend } from 'resend'
 import { createAdminSupabaseClient } from '@/lib/supabase-admin'
 import type { StoryCategory, StoryStats, StorySource } from '../../db/types/database'
 import { validateArticle } from '@/lib/article-validator'
@@ -9,6 +10,7 @@ import { inngest, type DailyTriggerData } from './client'
 import type { ExtendedData } from '@/lib/types/extended-data'
 import { validateWordCounts, type WcSignalInput } from '@/lib/word-count-validator'
 import { runFactCheck, type FactCheckInput } from './fact-check'
+import { dailyNewsletterEmail } from '@/lib/email-templates'
 
 // ─── Types ─────────────────────────────────────────────────────────────────────
 
@@ -1551,6 +1553,57 @@ export const generateDailySignal = inngest.createFunction(
         .neq('status', 'published')
 
       console.log(`[inngest] step "publish" complete: issue ${issueNumber} published`)
+    })
+
+    // ── Step 6: Send newsletter to active subscribers ──────────────────────────
+    await step.run('send-newsletter', async () => {
+      const resendKey = process.env.RESEND_API_KEY
+      if (!resendKey) {
+        console.warn('[inngest] send-newsletter: RESEND_API_KEY not set — skipping')
+        return
+      }
+
+      const supabase = createAdminSupabaseClient()
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aisignal.so'
+      const emailFrom = process.env.EMAIL_FROM ?? 'AI Signal <onboarding@resend.dev>'
+      const resend = new Resend(resendKey)
+
+      const { data: subscribers, error: subErr } = await supabase
+        .from('subscribers')
+        .select('email, unsubscribe_token')
+        .eq('status', 'active')
+      if (subErr || !subscribers?.length) {
+        console.log(`[inngest] send-newsletter: no active subscribers or fetch error — ${subErr?.message ?? 'empty list'}`)
+        return
+      }
+
+      const now = new Date()
+      const dateStr = now.toLocaleDateString('en-IN', {
+        timeZone: 'Asia/Kolkata',
+        year: 'numeric', month: 'long', day: 'numeric',
+      })
+
+      const story = {
+        headline: splitSignal.headline,
+        summary: splitSignal.summary,
+        read_minutes: splitSignal.read_minutes ?? 4,
+        category: splitSignal.category,
+        extended_data: splitSignal.extended_data ?? null,
+      }
+
+      let ok = 0, fail = 0
+      for (const sub of subscribers) {
+        try {
+          const unsubscribeUrl = `${siteUrl}/unsubscribe?token=${sub.unsubscribe_token}`
+          const { subject, html, text } = dailyNewsletterEmail(story, issueNumber, unsubscribeUrl, dateStr)
+          await resend.emails.send({ from: emailFrom, to: sub.email, subject, html, text })
+          ok++
+        } catch (err) {
+          console.error(`[inngest] send-newsletter: failed for ${sub.email} — ${String(err)}`)
+          fail++
+        }
+      }
+      console.log(`[inngest] send-newsletter: sent ${ok}, failed ${fail} of ${subscribers.length}`)
     })
 
     return { ok: true, issueId, issueNumber, qualityPath }

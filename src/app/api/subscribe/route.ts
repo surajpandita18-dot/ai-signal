@@ -1,10 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { Resend } from 'resend'
 import { createAdminSupabaseClient } from '@/lib/supabase-admin'
+import { welcomeEmail } from '@/lib/email-templates'
 import type { SubscriberRole } from '../../../../db/types/database'
 
 const VALID_ROLES: SubscriberRole[] = ['pm', 'founder', 'builder', 'curious']
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
+const EMAIL_FROM = process.env.EMAIL_FROM ?? 'AI Signal <onboarding@resend.dev>'
 
 export async function POST(req: NextRequest) {
   let email: string
@@ -52,25 +54,13 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${unsubscribeToken}`
+    const { subject, html, text } = welcomeEmail(unsubscribeUrl)
     await resend.emails.send({
-      from: 'AI Signal <onboarding@resend.dev>',
+      from: EMAIL_FROM,
       to: email.toLowerCase().trim(),
-      subject: 'Welcome to AI Signal ☕',
-      text: `Hey,
-
-Welcome to AI Signal.
-
-Starting tomorrow, you'll get one AI story every morning at 6:14 IST. Signal over noise — no roundups, no hype.
-
-No noise. No hype. Just the signal that matters for builders, PMs, and founders shipping AI products.
-
-First signal arrives tomorrow.
-
-— Suraj
-
-P.S. Reply anytime. I read every message.
-
-Unsubscribe: ${unsubscribeUrl}`,
+      subject,
+      html,
+      text,
     })
   } catch (emailError) {
     console.error('[subscribe] welcome email failed:', emailError)
