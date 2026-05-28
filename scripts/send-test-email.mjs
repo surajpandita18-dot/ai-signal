@@ -28,6 +28,7 @@ const KEY_ARG  = process.argv[3]
 if (!TO_EMAIL) { console.error('Usage: node scripts/send-test-email.mjs <email> [resend-api-key]'); process.exit(1) }
 
 const RESEND_KEY = KEY_ARG || get('RESEND_API_KEY')
+const SITE_URL   = get('NEXT_PUBLIC_SITE_URL') || 'https://ai-signal-eta.vercel.app'
 const SB_URL     = get('NEXT_PUBLIC_SUPABASE_URL')  || 'https://xswfsnnghloslzynkwni.supabase.co'
 const SB_KEY     = get('SUPABASE_SERVICE_ROLE_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd2Zzbm5naGxvc2x6eW5rd25pIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzE5NzgxOCwiZXhwIjoyMDkyNzczODE4fQ.P0ghCk98rYuZFq_XAInyVbQat-xW_BexDBhLnBFIMao'
 if (!RESEND_KEY) { console.error('RESEND_API_KEY not found in .env.local'); process.exit(1) }
@@ -348,7 +349,7 @@ function sTipJar() {
   <tr class="upi-row" style="display:none;"><td class="px" align="center" style="padding:14px 44px 0 44px;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
       <td style="background-color:${BUTTON}; border-radius:5px;">
-        <a href="upi://pay?pa=suraj.pandita132@ybl&amp;pn=AI%20Signal&amp;cu=INR" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
+        <a href="${SITE_URL}/pay" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
       </td>
     </tr></table>
     <p style="margin:10px 0 2px 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Opens PhonePe &middot; GPay &middot; any UPI app</p>
@@ -475,7 +476,7 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     research: `Someone on your team will rediscover this in 6 months and call it a new idea. Forward it now.`,
   }
   const psText = PS_LINES[story.category] ?? `Know someone who'd find this useful? They can subscribe at getaisignal.org — free, every morning.`
-  const articleUrl = `https://getaisignal.org/signal/${issueNumber}`
+  const articleUrl = `${SITE_URL}/signal/${issueNumber}`
 
   const body = `
     ${sMasthead(issueNumber, dateStr, story.read_minutes)}

@@ -54,7 +54,7 @@ export async function POST(req: NextRequest) {
   try {
     const resend = new Resend(process.env.RESEND_API_KEY)
     const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${unsubscribeToken}`
-    const { subject, html, text } = welcomeEmail(unsubscribeUrl)
+    const { subject, html, text } = welcomeEmail(unsubscribeUrl, SITE_URL)
     await resend.emails.send({
       from: EMAIL_FROM,
       to: email.toLowerCase().trim(),

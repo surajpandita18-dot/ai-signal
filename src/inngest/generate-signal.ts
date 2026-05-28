@@ -1725,7 +1725,7 @@ export const generateDailySignal = inngest.createFunction(
       for (const sub of subscribers) {
         try {
           const unsubscribeUrl = `${siteUrl}/unsubscribe?token=${sub.unsubscribe_token}`
-          const { subject, html, text } = dailyNewsletterEmail(story, issueNumber, unsubscribeUrl, dateStr, subscriberCount)
+          const { subject, html, text } = dailyNewsletterEmail(story, issueNumber, unsubscribeUrl, dateStr, subscriberCount, siteUrl)
           await resend.emails.send({ from: emailFrom, to: sub.email, subject, html, text })
           ok++
           await sleep(600) // stay under Resend 2 req/s limit

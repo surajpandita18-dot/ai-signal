@@ -317,8 +317,9 @@ function sSurajTake(note?: string, category?: string): string {
   </td></tr>`
 }
 
-function sTipJar(): string {
-  const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&ecc=M&data=upi%3A%2F%2Fpay%3Fpa%3Dsuraj.pandita132%40ybl%26pn%3DAI%2520Signal%26cu%3DINR`
+function sTipJar(base = 'https://ai-signal-eta.vercel.app'): string {
+  const qrSrc  = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&ecc=M&data=upi%3A%2F%2Fpay%3Fpa%3Dsuraj.pandita132%40ybl%26pn%3DAI%2520Signal%26cu%3DINR`
+  const payUrl = `${base}/pay`
   return `
   ${sHairline(34)}
   <tr><td class="px" align="center" style="padding:22px 44px 12px 44px;">
@@ -333,7 +334,7 @@ function sTipJar(): string {
   <tr class="upi-row" style="display:none;"><td class="px" align="center" style="padding:14px 44px 0 44px;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
       <td style="background-color:${BUTTON}; border-radius:5px;">
-        <a href="upi://pay?pa=suraj.pandita132@ybl&amp;pn=AI%20Signal&amp;cu=INR" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
+        <a href="${payUrl}" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
       </td>
     </tr></table>
     <p style="margin:10px 0 2px 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Opens PhonePe &middot; GPay &middot; any UPI app</p>
@@ -392,9 +393,11 @@ function sFooter(unsubscribeUrl: string): string {
 // ─── Welcome email ─────────────────────────────────────────────────────────────
 
 export function welcomeEmail(
-  unsubscribeUrl: string
+  unsubscribeUrl: string,
+  siteUrl?: string
 ): { subject: string; html: string; text: string } {
 
+  const base      = siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
   const subject   = `You're in. First signal tomorrow at 6:14 AM IST.`
   const preheader = `One AI story. Every morning. For people who ship.`
   const today     = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
@@ -431,10 +434,10 @@ export function welcomeEmail(
       </tr></table>
     </td></tr>
     <tr><td class="px" align="center" style="padding:20px 44px 0 44px;">
-      <a href="https://getaisignal.org" class="cta-btn" style="display:inline-block; background-color:${BUTTON}; color:${WHITE}; font-family:${SANS}; font-size:15px; font-weight:700; text-decoration:none; padding:15px 34px; border-radius:5px; letter-spacing:0.2px;">Read today's signal&nbsp;&#8594;</a>
+      <a href="${base}" class="cta-btn" style="display:inline-block; background-color:${BUTTON}; color:${WHITE}; font-family:${SANS}; font-size:15px; font-weight:700; text-decoration:none; padding:15px 34px; border-radius:5px; letter-spacing:0.2px;">Read today's signal&nbsp;&#8594;</a>
     </td></tr>
     ${sSurajTake()}
-    ${sTipJar()}
+    ${sTipJar(base)}
     ${sPS('Reply to this email anytime. I read every message — it shapes what gets covered.')}
     ${sFooter(unsubscribeUrl)}`
 
@@ -451,7 +454,7 @@ WHAT YOU GET EVERY MORNING
 
 4 minutes. Every morning. In your inbox by 6:14 AM IST.
 
-Read today's signal: https://getaisignal.org
+Read today's signal: ${base}
 
 — Suraj
 Founder · writes this solo
@@ -479,10 +482,12 @@ export function dailyNewsletterEmail(
   issueNumber: number,
   unsubscribeUrl: string,
   dateStr: string,
-  subscriberCount?: number
+  subscriberCount?: number,
+  siteUrl?: string
 ): { subject: string; html: string; text: string } {
 
-  const articleUrl = `https://getaisignal.org/signal/${issueNumber}`
+  const base       = siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
+  const articleUrl = `${base}/signal/${issueNumber}`
   const ext        = story.extended_data
 
   const cards       = ext?.preview_cards ?? []
@@ -531,7 +536,7 @@ export function dailyNewsletterEmail(
     ${sCtaButton(articleUrl)}
     ${reactions.length > 0 ? sCounterView(reactions) : sHairline(32)}
     ${sSurajTake(ext?.suraj_note ?? undefined, story.category)}
-    ${sTipJar()}
+    ${sTipJar(base)}
     ${sAIFact(issueNumber)}
     ${sPS(psText)}
     ${sFooter(unsubscribeUrl)}`
