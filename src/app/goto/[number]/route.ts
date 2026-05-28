@@ -1,5 +1,22 @@
 import { NextRequest, NextResponse } from 'next/server'
+import { unstable_cache } from 'next/cache'
 import { createAdminSupabaseClient } from '@/lib/supabase-admin'
+
+const getLatestIssueNumber = unstable_cache(
+  async (): Promise<number | null> => {
+    const supabase = createAdminSupabaseClient()
+    const { data } = await supabase
+      .from('issues')
+      .select('issue_number')
+      .eq('status', 'published')
+      .order('published_at', { ascending: false })
+      .limit(1)
+      .maybeSingle()
+    return data?.issue_number ?? null
+  },
+  ['latest-issue-number'],
+  { revalidate: 300 }
+)
 
 export async function GET(
   _req: NextRequest,
@@ -10,23 +27,13 @@ export async function GET(
   const base = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
 
   try {
-    const supabase = createAdminSupabaseClient()
-    const { data: latest } = await supabase
-      .from('issues')
-      .select('issue_number')
-      .eq('status', 'published')
-      .order('published_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
-
-    if (latest?.issue_number === issueNumber) {
-      // Still the active story — homepage features it
+    const latest = await getLatestIssueNumber()
+    if (latest === issueNumber) {
       return NextResponse.redirect(base, { status: 302 })
     }
   } catch {
-    // On any DB error, fall through to article page
+    // DB error — fall through to article page
   }
 
-  // Old story — go to specific article
   return NextResponse.redirect(`${base}/signal/${issueNumber}`, { status: 302 })
 }
