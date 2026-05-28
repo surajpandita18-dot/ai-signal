@@ -4346,3 +4346,85 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 @media (max-width: 640px) {
   .track-record-cards { grid-template-columns: 1fr; }
 }
+
+/* ── Signal Boost ─────────────────────────────────────────────────────────── */
+.signal-boost {
+  margin-top: 36px;
+  padding: 24px 28px;
+  background: var(--surface-raised, #F8F8F7);
+  border-radius: 10px;
+  border: 1px solid var(--border-soft, #E8E5E0);
+}
+.signal-boost-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.signal-boost-pip {
+  font-size: 16px;
+  line-height: 1;
+}
+.signal-boost-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--signal);
+}
+.signal-boost-body.prompt .signal-boost-content {
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--text);
+  background: var(--bg);
+  border: 1px solid var(--border-mid);
+  border-radius: 6px;
+  padding: 14px 16px;
+  margin: 0;
+  white-space: pre-wrap;
+}
+.signal-boost-body.quote .signal-boost-quote-text {
+  font-family: var(--ff-serif);
+  font-size: 18px;
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.6;
+  color: var(--text);
+  margin: 0 0 8px;
+}
+.signal-boost-body.fact .signal-boost-content {
+  font-family: var(--ff-sans);
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text);
+  margin: 0;
+}
+.signal-boost-attribution {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  color: var(--text-mute);
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+.signal-boost-copy {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  margin-top: 14px;
+  padding: 9px 16px;
+  background: var(--signal);
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+.signal-boost-copy:hover { opacity: 0.85; }
+.signal-boost-copy.copied { background: #2a9d5c; }

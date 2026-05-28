@@ -132,6 +132,20 @@ export type ReplacesData = { yes: string; not_yet: string };
 /** How close research is to real-world deployment (research category only) */
 export type ReadinessLevel = 'lab' | 'paper' | 'prototype' | 'product' | 'deployed';
 
+/**
+ * End-of-article bonus section.
+ * type="prompt"  — models/tools: a copy-paste prompt related to today's story
+ * type="quote"   — business/policy: sharp quote from a founder/thinker + why it applies today
+ * type="fact"    — research: a surprising related fact that puts the research in context
+ */
+export type SignalBoost = {
+  type: 'prompt' | 'quote' | 'fact'
+  title: string         // e.g. "Try this prompt" / "Worth remembering" / "Puts it in context"
+  content: string       // the prompt text / quote / fact
+  attribution?: string  // for quotes only: "Sam Altman · OpenAI CEO"
+  cta_text?: string     // optional: "Copy into ChatGPT →"
+}
+
 /** Extended data for V11 universal article structure — 13 sections stored as jsonb */
 export type ExtendedData = {
   numbers_headline?: string;  // AI-generated block title for "By the numbers"
@@ -150,4 +164,5 @@ export type ExtendedData = {
   open_question?: string;
   replaces?: ReplacesData;
   readiness_level?: ReadinessLevel;
+  signal_boost?: SignalBoost;
 };

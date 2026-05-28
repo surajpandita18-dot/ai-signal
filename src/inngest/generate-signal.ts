@@ -777,7 +777,8 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       { "day": "WED", "date": "Apr 30", "text": "Second follow-on angle — second-order consequence of today's story", "status": "sealed" },
       { "day": "THU", "date": "May 1", "text": "Third follow-on angle — broader market or competitive implication", "status": "sealed" }
     ],
-    "open_question": "The single unresolved question that changes everything about this story. Forward-looking, specific to this signal. Must feel genuinely uncertain — not rhetorical. Target: 12-20 words. Hard cap: 25 words. Must end with ?"
+    "open_question": "The single unresolved question that changes everything about this story. Forward-looking, specific to this signal. Must feel genuinely uncertain — not rhetorical. Target: 12-20 words. Hard cap: 25 words. Must end with ?",
+    "signal_boost": { "see SIGNAL_BOOST RULES below" }
     [IF category=tools, also add: "replaces": { "yes": "...", "not_yet": "..." }]
     [IF category=research, also add: "readiness_level": "lab|paper|prototype|product|deployed"]
   }
@@ -790,6 +791,32 @@ IF category = "tools":
 
 IF category = "research":
   Add to extended_data: "readiness_level": "One of: lab | paper | prototype | product | deployed. lab=initial experiments only, paper=published findings but no build yet, prototype=working demo exists, product=limited/beta release, deployed=in production at scale."
+
+SIGNAL_BOOST RULES — always produce signal_boost, every article:
+signal_boost is the "bonus at the end" — a quick-win the reader can act on in the next 5 minutes, directly tied to today's story. Choose type based on category:
+
+IF category = "models" OR category = "tools":
+  type = "prompt"
+  title = "Try this prompt" (or a more specific variant if it fits better)
+  content = A concrete copy-paste prompt (for Claude/ChatGPT) that lets the reader immediately explore or apply the story's core insight. 2-4 sentences. Should feel like: "Given today's story, here's the first thing a smart PM/builder would actually type."
+  cta_text = "Copy into Claude →" or "Copy into ChatGPT →" depending on the story
+
+IF category = "business" OR category = "policy":
+  type = "quote"
+  title = "Worth remembering"
+  content = A sharp, real quote from a well-known person (founder, investor, thinker) that reframes today's story in a memorable way. Must be a real quote, properly attributed. 15-30 words.
+  attribution = "Full Name · Role · Affiliation" (e.g. "Jeff Bezos · Founder · Amazon")
+
+IF category = "research":
+  type = "fact"
+  title = "Puts it in context"
+  content = One surprising, specific fact from the broader ecosystem that makes this research feel more real or more urgent. Not from the article itself — a related data point the reader probably doesn't know. 1-2 sentences.
+
+SIGNAL_BOOST CONSTRAINTS:
+- content must be directly tied to THIS story — not generic AI trivia.
+- For prompts: the prompt must be immediately runnable. Avoid vague asks like "tell me about X". Write the actual prompt a PM would send.
+- For quotes: real person only, real quote only. Do not invent quotes. If no good quote exists, default to type="fact" instead.
+- For facts: surprising and specific. Numbers preferred. "As of 2024" or equivalent temporal anchor required.
 
 OPEN_QUESTION RULES:
 - Must be unique to THIS story — if it could appear unchanged on any AI article, rewrite it.
