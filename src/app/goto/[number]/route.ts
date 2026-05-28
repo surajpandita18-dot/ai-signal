@@ -72,7 +72,7 @@ function buildPage(destination: string, issueNumber: number): string {
 <body>
   <div class="card" id="c">
     <div class="brand">AI Signal</div>
-    <div class="status">&#9889;&nbsp; Your signal is loading &mdash; here's something worth knowing</div>
+    <div class="status">Redirecting you in a moment &mdash; until then, read this</div>
     <div class="label" id="lbl"></div>
     <p class="fact" id="txt"></p>
     <div class="dots"><span></span><span></span><span></span></div>
