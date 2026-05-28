@@ -407,7 +407,26 @@ TALENT (e.g., "OpenAI co-founder leaves"):
 - Action items: ALWAYS []
 - Counter-view: hire-driven vs strategy-driven move
 
-CRITICAL: BETTER A MISSING BLOCK THAN A WEAK BLOCK.`
+CRITICAL: BETTER A MISSING BLOCK THAN A WEAK BLOCK.
+
+═══ Rule 10 — No field may echo another field ═══
+
+Every field must carry UNIQUE information not already stated by another field. Failing this rule makes the article feel padded and repetitive.
+
+- \`summary\` must not restate the headline in different words
+- \`why_it_matters\` para 1 must not restate the \`summary\` — it must go DEEPER (evidence, cascade, mechanism)
+- \`lens_pm\`, \`lens_founder\`, \`lens_builder\` must each name a DIFFERENT specific decision or action
+  BAD: all three end with "...rethink their roadmap / strategy / approach" — that's one idea in three costumes
+  GOOD: PM → budget/procurement decision; Founder → competitive positioning; Builder → stack/API change
+- \`pull_quote\` must not be a cleaned-up version of the headline. It should make the reader feel something the headline didn't.
+
+═══ Rule 11 — \`reactions\` must ADD perspective, not echo the article ═══
+
+Reactions are practitioner voices — not the article author agreeing with itself.
+- At least 2 of the 3 quotes must hold a perspective NOT already stated in the article's main body
+- A reaction that agrees with the signal in different words is a paraphrase, not a reaction — rewrite it
+- The skeptic voice (required) must challenge the MAIN CLAIM specifically, not a secondary detail
+- Each quote must feel like a different human wrote it — different sentence structure, different vocabulary, different stakes`
 
 export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before returning your JSON output. If any answer is NO, revise that field first.
 

@@ -83,17 +83,25 @@ const RSS_SOURCES = [
   // ── Tier 4: builder-focused deep signal ──────────────────────────────────
   { name: 'Interconnects',      url: 'https://www.interconnects.ai/feed',                                     tier: 4, aiOnly: true  }, // Nathan Lambert — RLHF, open models, training
   { name: 'Cohere Blog',        url: 'https://cohere.com/blog/rss',                                           tier: 4, aiOnly: true  }, // enterprise RAG, embeddings
+  // ── Tier 4: practitioner blogs + VC + developer platforms ────────────────
+  { name: 'a16z Blog',          url: 'https://a16z.com/feed/',                                                tier: 4, aiOnly: false }, // VC lens — deal context, market thesis
+  { name: 'GitHub Blog',        url: 'https://github.blog/feed/',                                             tier: 4, aiOnly: false }, // Copilot, Actions, model announcements
+  { name: 'Chip Huyen',         url: 'https://huyenchip.com/feed.xml',                                       tier: 4, aiOnly: true  }, // ML systems, production inference
+  { name: 'Eugene Yan',         url: 'https://eugeneyan.com/feed.xml',                                       tier: 4, aiOnly: true  }, // applied ML, LLM evals
+  { name: 'Pragmatic Engineer', url: 'https://newsletter.pragmaticengineer.com/feed',                         tier: 4, aiOnly: false }, // engineering leadership, highest-signal eng newsletter
+  { name: 'Apple ML Research',  url: 'https://machinelearning.apple.com/research.rss',                       tier: 4, aiOnly: true  }, // on-device ML, privacy-preserving inference
   // ── Tier 3: newsletters, community, tooling ───────────────────────────────
-  { name: "Ben's Bites",        url: 'https://bensbites.beehiiv.com/feed',                                    tier: 3, aiOnly: true  },
   { name: 'Import AI',          url: 'https://importai.substack.com/feed',                                    tier: 3, aiOnly: true  },
   { name: 'The Gradient',       url: 'https://thegradient.pub/rss/',                                          tier: 3, aiOnly: true  }, // research analysis for practitioners
   { name: 'The Verge Tech',     url: 'https://www.theverge.com/tech/rss/index.xml',                           tier: 3, aiOnly: false },
   { name: 'LangChain Blog',     url: 'https://blog.langchain.dev/rss/',                                       tier: 3, aiOnly: true  },
   { name: 'Towards AI',         url: 'https://pub.towardsai.net/feed',                                        tier: 3, aiOnly: true  },
   { name: 'Weights & Biases',   url: 'https://wandb.ai/site/articles/feed',                                   tier: 3, aiOnly: true  }, // MLOps, LLMOps engineering
-  { name: 'TLDR AI',            url: 'https://tldr.tech/api/rss/ai',                                         tier: 3, aiOnly: true  },
-  { name: 'The Rundown AI',     url: 'https://therundown.beehiiv.com/feed',                                   tier: 3, aiOnly: true  },
   { name: 'ProductHunt AI',     url: 'https://www.producthunt.com/feed?category=artificial-intelligence',     tier: 3, aiOnly: true  },
+  // ── Tier 2: aggregators (useful for viral signal, not primary source) ─────
+  { name: "Ben's Bites",        url: 'https://bensbites.beehiiv.com/feed',                                    tier: 2, aiOnly: true  }, // aggregator — downgraded; useful for viral stories
+  { name: 'TLDR AI',            url: 'https://tldr.tech/api/rss/ai',                                         tier: 2, aiOnly: true  }, // aggregator — downgraded
+  { name: 'The Rundown AI',     url: 'https://therundown.beehiiv.com/feed',                                   tier: 2, aiOnly: true  }, // aggregator — downgraded
 ]
 
 const AI_KEYWORDS = [
@@ -357,7 +365,7 @@ async function fetchFromGitHub(): Promise<Candidate[]> {
 }
 
 async function fetchFromReddit(): Promise<Candidate[]> {
-  const subreddits = 'MachineLearning+LocalLLaMA+artificial+OpenAI+ChatGPT+ArtificialIntelligence+ClaudeAI+GoogleGemini'
+  const subreddits = 'MachineLearning+LocalLLaMA+artificial+OpenAI+ChatGPT+ArtificialIntelligence+ClaudeAI+GoogleGemini+singularity+mlscaling'
   const res = await fetchWithTimeout(
     `https://www.reddit.com/r/${subreddits}/top.json?t=day&limit=30&raw_json=1`
   ).catch(() => null)
@@ -406,7 +414,7 @@ async function fetchFromArXiv(): Promise<Candidate[]> {
     if (!title || !url) continue
     const publishedAt = dateStr ? new Date(dateStr) : new Date()
     const ageHours = (now - publishedAt.getTime()) / 3_600_000
-    if (ageHours > 72) continue
+    if (ageHours > 96) continue
     candidates.push({
       title, url: url.replace('/pdf/', '/abs/').replace(/v\d+$/, ''),
       source: 'arXiv', sourceTier: 3, engagement: 0,
@@ -419,9 +427,14 @@ async function fetchFromArXiv(): Promise<Candidate[]> {
 
 // High-signal accounts and the tier to assign them
 const NITTER_ACCOUNTS: Array<{ handle: string; tier: number }> = [
+  { handle: 'sama',         tier: 5 }, // Sam Altman — OpenAI CEO
+  { handle: 'DarioAmodei',  tier: 5 }, // Dario Amodei — Anthropic CEO
   { handle: 'karpathy',     tier: 4 }, // Andrej Karpathy
   { handle: 'ylecun',       tier: 4 }, // Yann LeCun
   { handle: 'fchollet',     tier: 4 }, // François Chollet
+  { handle: 'demishassabis', tier: 4 }, // Demis Hassabis — Google DeepMind CEO
+  { handle: 'gdb',          tier: 4 }, // Greg Brockman — OpenAI
+  { handle: 'SemiAnalysis_', tier: 4 }, // Dylan Patel — semiconductor + AI infrastructure
   { handle: 'swyx',         tier: 3 }, // swyx – AI engineering community
   { handle: '_philschmid',  tier: 3 }, // Philipp Schmid – HuggingFace
   { handle: 'reach_vb',     tier: 3 }, // Vaibhav Srivastava – AI community
@@ -534,7 +547,7 @@ async function fetchAllCandidates(): Promise<Candidate[]> {
     if (count >= 2) continue
     domainCounts.set(domain, count + 1)
     capped.push(c)
-    if (capped.length === 22) break
+    if (capped.length === 30) break
   }
   return capped
 }
@@ -704,6 +717,7 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
     },
     "insights_strip": [
       Exactly 3 cells. text: one sharp sentence. Target: 10-14 words. Hard cap: 17 words. Must fit a single scannable cell — no dependent clauses. REQUIRED: wrap exactly 1 key phrase per cell in ==double equals== to highlight it (e.g. "A ==10× cost drop== on the default reasoning model — silently shipped.").
+      ORIGINALITY RULE: each cell must say something the headline does NOT say. A cell that recaps the headline event in different words is a failure — push to the implication, the mechanism, or the closing window. Test: if the cell could be a sub-headline on the same article, rewrite it deeper.
       { "icon": "→", "label": "What changed", "text": "A ==key change== — context sentence. 10-14 words. Hard cap 17w." },
       { "icon": "◐", "label": "Who's affected", "text": "The ==specific audience== that must act — consequence. 10-14 words. Hard cap 17w." },
       { "icon": "⚡", "label": "Move by", "text": "==Concrete action== by [timeframe] — closing window. 10-14 words. Hard cap 17w." }
