@@ -130,14 +130,40 @@ const AI_KEYWORDS = [
   'test-time compute','test time scaling','multimodal agent',
 ]
 
-const IMPACT_BONUS_KEYWORDS = [
-  'releases','launch','acqui','acquires','raises','raises $','funding',
-  'bans','cuts price','price cut','new model','breakthrough','surpasses',
-  'beats gpt','open source','open-source','layoffs','shuts down',
-  'general availability','ga release','open weights',
-  'now available','deprecat','partners with','partnership',
-  'open weights','context window increase','rate limit',
+// Tiered impact bonuses — higher weight = more decision-forcing
+// Each array: [keywords, bonus]. Applied additively (a story can score multiple tiers).
+const IMPACT_TIERS: Array<{ keywords: string[]; bonus: number }> = [
+  // Tier A (+35) — forces immediate product/cost/compliance decision
+  {
+    keywords: ['cuts price','price cut','pricing change','cost per','$/million','per million tokens',
+               'deprecat','end of life','breaking change','migration required','shutting down',
+               'now free','open source weights','open-source weights','weights released',
+               'context window increase','rate limit lifted','rate limit removed'],
+    bonus: 35,
+  },
+  // Tier B (+20) — new capability or release that changes the stack
+  {
+    keywords: ['new model','model release','general availability','ga release','now available',
+               'open weights','beats gpt','surpasses','new sota','state-of-the-art','benchmark',
+               'acqui','acquires','shuts down','bans','regulatory deadline','compliance required'],
+    bonus: 20,
+  },
+  // Tier C (+8) — awareness with some product implication
+  {
+    keywords: ['raises','funding','launch','releases','breakthrough','partners with'],
+    bonus: 8,
+  },
 ]
+
+function impactBonus(title: string): number {
+  const t = title.toLowerCase()
+  return IMPACT_TIERS.reduce((sum, tier) =>
+    tier.keywords.some(kw => t.includes(kw)) ? sum + tier.bonus : sum, 0
+  )
+}
+
+// Keep for backward compat — not used directly anymore
+const IMPACT_BONUS_KEYWORDS: string[] = IMPACT_TIERS.flatMap(t => t.keywords)
 
 const TIER_BANDS: Record<number, { min: number; max: number }> = {
   5: { min: 150, max: 245 },
@@ -169,6 +195,19 @@ const BUILDER_REJECT_PATTERNS = [
   'ai filter', 'beauty filter', 'snapchat ai', 'instagram ai', 'tiktok ai',
   // Pure opinion / think-piece patterns
   'will ai replace', 'ai will take', 'ai threatens', 'fears about ai',
+  // Conference/event announcements — awareness not signal
+  'annual conference', 'summit 2026', 'summit 2025', 'keynote at', 'speaking at',
+  'will present at', 'registration open', 'call for papers', 'cfp deadline',
+  // Vague "AI is changing X" think-pieces with no concrete product
+  'ai is transforming', 'ai is revolutionizing', 'ai is reshaping', 'ai is changing the way',
+  'future of ai in', 'ai in healthcare is', 'ai in education is',
+  // Hiring / job posts disguised as news
+  'is hiring', 'now hiring', 'job opening', 'open roles', 'join our team',
+  // Awards and rankings with no product news
+  'best ai company', 'top ai startup', 'ranked #1', 'named a leader in',
+  'magic quadrant', 'gartner report',
+  // Consumer product UI updates with no API/platform implication
+  'new look', 'redesigned interface', 'dark mode', 'ui refresh', 'accessibility update',
 ]
 
 // Builder-actionable signal must have at least one of these.
@@ -186,10 +225,7 @@ function isBuilderActionable(title: string): boolean {
   return BUILDER_SIGNAL_REQUIRED.some(p => t.includes(p))
 }
 
-function impactBonus(title: string): number {
-  const t = title.toLowerCase()
-  return IMPACT_BONUS_KEYWORDS.some((kw) => t.includes(kw)) ? 20 : 0
-}
+// impactBonus is defined above with the IMPACT_TIERS constant
 
 function computeScore(tier: number, engagement: number, ageHours: number, title: string): number {
   const band = TIER_BANDS[tier] ?? TIER_BANDS[3]
@@ -634,9 +670,35 @@ async function generateSignal(candidates: Candidate[]): Promise<GeneratedSignal>
   const SYSTEM_PROMPT = `You are the editor of AI Signal — a daily single-story newsletter for senior PMs, founders, and engineers in the Indian tech ecosystem. Published at 06:14 IST. One pick. The story that matters most today.
 
 Your job:
-1. Pick the single most impactful story — prioritise: model releases, pricing changes, capability leaps, open-source weight releases, API changes, regulatory moves with direct product impact. Prefer tier 5 > tier 4 > tier 3, but a viral tier-3 story beats a stale tier-5 one. Age matters: same story older than 36h is stale.
+1. Pick the single story that forces the most important decision for Indian AI builders today.
 
-MANDATORY EDITORIAL TEST before picking: "Would an Indian AI PM or engineer do something DIFFERENT in their product, stack, or workflow in the next 48 hours because of this story?" If the answer is NO, discard it regardless of tier or score.
+DECISION-FORCING HIERARCHY — apply this in order. Pick the highest tier story present:
+
+  TIER A — Pick immediately if present (forces a decision TODAY):
+  • Pricing or cost change on any model/API builders actively use
+  • API deprecation, breaking change, or migration deadline
+  • Model weights released open-source (changes build-vs-buy instantly)
+  • Regulatory compliance deadline with concrete penalty
+  • Rate limit change that affects production systems
+
+  TIER B — Pick if no Tier A exists (changes the roadmap this week):
+  • New model release with benchmarks that beat the current default
+  • Capability leap that unlocks a previously impossible use case
+  • Major acquisition that changes platform dependencies
+  • Open-source tool release that replaces a paid API
+
+  TIER C — Pick if no Tier A or B exists (changes how you think, not just what you know):
+  • Research paper with clear product implication (not just academic)
+  • Benchmark result that inverts an assumption builders had
+  • Strategic move that reveals where the market is going in 6 months
+
+  TIER D — Last resort only (awareness, not action):
+  • Funding rounds, hiring news, partnerships with no product/API change
+  • Consumer product updates with no API or platform implication
+
+Prefer tier 5 > tier 4 > tier 3 sources, but a Tier A story from a tier-3 source beats a Tier D story from tier-5. Age matters: same story older than 36h is stale.
+
+MANDATORY EDITORIAL TEST: "Would a senior Indian PM or engineer do something DIFFERENT in their product, stack, or workflow in the next 48 hours because of this story?" If the answer is NO, it is Tier D — only pick if nothing better exists.
 
 HARD REJECT — never pick these story types even from tier-5 sources:
 - Consumer subscription tiers, social media features, or engagement metrics (Meta/Instagram subscriptions, Twitter Blue, TikTok AI features) — these are platform business stories, not AI builder stories
