@@ -1,4 +1,4 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextRequest } from 'next/server'
 
 export const runtime = 'edge'
 
@@ -7,19 +7,21 @@ async function getLatestIssueNumber(): Promise<number | null> {
   const key = process.env.SUPABASE_SERVICE_ROLE_KEY
   if (!url || !key) return null
 
-  const ac = new AbortController()
-  const timer = setTimeout(() => ac.abort(), 2000)
-
   try {
     const res = await fetch(
       `${url}/rest/v1/issues?select=issue_number&status=eq.published&order=published_at.desc&limit=1`,
-      { headers: { apikey: key, Authorization: `Bearer ${key}` }, signal: ac.signal }
+      {
+        headers: { apikey: key, Authorization: `Bearer ${key}` },
+        // Vercel Data Cache: shared across ALL Edge instances globally.
+        // Only ONE real DB call per 5 min worldwide — everyone else hits cache.
+        next: { revalidate: 300 },
+      }
     )
     if (!res.ok) return null
     const rows = (await res.json()) as Array<{ issue_number: number }>
     return rows[0]?.issue_number ?? null
-  } finally {
-    clearTimeout(timer)
+  } catch {
+    return null
   }
 }
 
@@ -37,13 +39,15 @@ export async function GET(
     const latest = await getLatestIssueNumber()
     if (latest === issueNumber) destination = base
   } catch {
-    // timed out or DB error — fall through to article page
+    // fall through to article page
   }
 
-  return NextResponse.redirect(destination, {
+  // Use native Response (not NextResponse) to prevent Next.js from
+  // overriding Cache-Control. Header is also set in next.config.mjs.
+  return new Response(null, {
     status: 302,
     headers: {
-      // CDN caches this redirect for 5 min — function only runs once per URL per 5 min
+      Location: destination,
       'Cache-Control': 's-maxage=300, stale-while-revalidate=86400',
     },
   })

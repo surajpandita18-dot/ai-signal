@@ -12,6 +12,13 @@ const nextConfig = {
           { key: 'X-DNS-Prefetch-Control', value: 'on' },
         ],
       },
+      {
+        // CDN caches the redirect for 5 min — overrides Next.js default max-age=0
+        source: '/goto/:number',
+        headers: [
+          { key: 'Cache-Control', value: 's-maxage=300, stale-while-revalidate=86400' },
+        ],
+      },
     ]
   },
 }
