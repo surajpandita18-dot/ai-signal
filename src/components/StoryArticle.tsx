@@ -189,7 +189,6 @@ function ActionChecklist({ items, signalNumber }: { items: string[]; signalNumbe
   return (
     <div className="block">
       <div className="block-header">
-        <span className="block-num">3</span>
         <div><div className="block-eyebrow">The move · next 48h</div></div>
       </div>
       <h3 className="block-title">Three things to do tomorrow.</h3>
@@ -439,19 +438,6 @@ export function StoryArticle({
       ref={articleRef}
       className="story-wrap"
     >
-      {/* ── Jump link ── */}
-      <a
-        href="#standup-card"
-        className="story-jump-link"
-        onClick={(e) => {
-          e.preventDefault()
-          document.getElementById('standup-card')?.scrollIntoView({ behavior: 'smooth', block: 'center' })
-        }}
-      >
-        <span className="jump-icon">↓</span>
-        Bring this to standup
-      </a>
-
       {/* ── Section 1: Story meta bar ── */}
       <div className="story-meta">
         {/* Category chip */}
@@ -473,7 +459,18 @@ export function StoryArticle({
         {parseBold(story.summary)}
       </p>
 
-      {/* ── Section 3: Author row ── */}
+      {/* ── TL;DR strip — before author row so speed readers can exit early ── */}
+      {oneBreathText && (
+        <div className="tldr-strip">
+          <div className="tldr-icon">TL;DR</div>
+          <div className="tldr-content">
+            <div className="tldr-label">In one breath</div>
+            <div className="tldr-text">{parseBold(oneBreathText)}</div>
+          </div>
+        </div>
+      )}
+
+      {/* ── Author row ── */}
       <div className="author-row">
         {/* Avatar with green presence dot */}
         <div className="author-avatar">
@@ -490,17 +487,6 @@ export function StoryArticle({
 
         <ShareButtons headline={story.headline} signalNumber={signalNumber} />
       </div>
-
-      {/* ── TL;DR strip — after author, before signal block (V11 order) ── */}
-      {oneBreathText && (
-        <div className="tldr-strip">
-          <div className="tldr-icon">TL;DR</div>
-          <div className="tldr-content">
-            <div className="tldr-label">In one breath</div>
-            <div className="tldr-text">{parseBold(oneBreathText)}</div>
-          </div>
-        </div>
-      )}
 
       {/* ── Section 4: Signal block — shows why_it_matters para 1 (the sharp claim) ── */}
       {(() => {
@@ -524,6 +510,11 @@ export function StoryArticle({
         )
       })()}
 
+      {/* ── Insights strip — claim → pattern → proof ── */}
+      {insightCells && insightCells.length > 0 && (
+        <InsightsStrip cells={insightCells} />
+      )}
+
       {/* ── Section 5: By the Numbers ── */}
       {(() => {
         const statCards = (story.stats && story.stats.length > 0) ? story.stats : null
@@ -531,7 +522,6 @@ export function StoryArticle({
         return (
           <div className="block" id="sec-numbers">
             <div className="block-header">
-              <span className="block-num">1</span>
               <div>
                 <div className="block-eyebrow">By the numbers</div>
               </div>
@@ -560,11 +550,6 @@ export function StoryArticle({
         )
       })()}
 
-      {/* ── V11: Insights strip — after "By the numbers" ── */}
-      {insightCells && insightCells.length > 0 && (
-        <InsightsStrip cells={insightCells} />
-      )}
-
       {/* ── Section 6: Block 2 — Why it matters ── */}
       {/* para1 is shown in Signal block above; here we render para2 → pull_quote → para3 */}
       {(() => {
@@ -577,7 +562,6 @@ export function StoryArticle({
         return (
           <div className="block" id="sec-context">
             <div className="block-header">
-              <span className="block-num">2</span>
               <div>
                 <div className="block-eyebrow">Why it matters</div>
               </div>
@@ -619,6 +603,11 @@ export function StoryArticle({
         />
       )}
 
+      {/* ── Reactions — debate cluster after counter-view ── */}
+      {reactions && reactions.length > 0 && (
+        <ReactionsPanel reactions={reactions} />
+      )}
+
       {/* ── Builder / Founder / Editorial — The Build + The Bet + The Burn ── */}
       {story.editorial_take && (
         <BuilderCard
@@ -640,16 +629,11 @@ export function StoryArticle({
         </div>
       )}
 
-      {/* ── Inline chai ask — after action checklist, peak reader value ── */}
-      <InlineChaiStrip />
-
       {/* ── Section 8b: Standup snippet ── */}
       <StandupCard story={story} signalNumber={signalNumber} standupMessages={standupMessages} />
 
-      {/* ── V11: Reaction quotes — after counter-view, before sources ── */}
-      {reactions && reactions.length > 0 && (
-        <ReactionsPanel reactions={reactions} />
-      )}
+      {/* ── Inline chai ask — after standup, action momentum unbroken ── */}
+      <InlineChaiStrip />
 
       {/* ── Section 11: Sources ── */}
       {story.sources && story.sources.length > 0 && (
