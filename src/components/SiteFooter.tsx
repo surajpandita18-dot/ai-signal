@@ -18,8 +18,9 @@ export function SiteFooter() {
       <div className="links">
         <a href="https://twitter.com/aisignal" rel="noopener">Twitter</a>
         <a href="/rss.xml">RSS</a>
-        <a href="/privacy">Privacy</a>
-        <a href="mailto:hello@aisignal.in">Contact</a>
+        <a href="/about">About</a>
+        <a href="/feedback">Feedback</a>
+        <a href="mailto:hi@getaisignal.org">Contact</a>
         <ChaiButton />
       </div>
     </footer>
