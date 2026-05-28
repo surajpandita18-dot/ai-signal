@@ -1589,13 +1589,15 @@ export const generateDailySignal = inngest.createFunction(
         read_minutes: splitSignal.read_minutes ?? 4,
         category: splitSignal.category,
         extended_data: splitSignal.extended_data ?? null,
+        editorial_take: splitSignal.editorial_take ?? null,
       }
+      const subscriberCount = subscribers.length
 
       let ok = 0, fail = 0
       for (const sub of subscribers) {
         try {
           const unsubscribeUrl = `${siteUrl}/unsubscribe?token=${sub.unsubscribe_token}`
-          const { subject, html, text } = dailyNewsletterEmail(story, issueNumber, unsubscribeUrl, dateStr)
+          const { subject, html, text } = dailyNewsletterEmail(story, issueNumber, unsubscribeUrl, dateStr, subscriberCount)
           await resend.emails.send({ from: emailFrom, to: sub.email, subject, html, text })
           ok++
         } catch (err) {

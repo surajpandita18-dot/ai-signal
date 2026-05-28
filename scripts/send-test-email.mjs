@@ -29,8 +29,8 @@ const KEY_ARG    = process.argv[3]   // optional: pass key directly
 if (!TO_EMAIL) { console.error('Usage: node scripts/send-test-email.mjs <email> [resend-api-key]'); process.exit(1) }
 
 const RESEND_KEY = KEY_ARG || get('RESEND_API_KEY')
-const SB_URL     = get('NEXT_PUBLIC_SUPABASE_URL')
-const SB_KEY     = get('SUPABASE_SERVICE_ROLE_KEY')
+const SB_URL     = get('NEXT_PUBLIC_SUPABASE_URL')     || 'https://xswfsnnghloslzynkwni.supabase.co'
+const SB_KEY     = get('SUPABASE_SERVICE_ROLE_KEY')    || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd2Zzbm5naGxvc2x6eW5rd25pIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzE5NzgxOCwiZXhwIjoyMDkyNzczODE4fQ.P0ghCk98rYuZFq_XAInyVbQat-xW_BexDBhLnBFIMao'
 if (!RESEND_KEY) { console.error('RESEND_API_KEY not found in .env.local'); process.exit(1) }
 
 const FROM = get('EMAIL_FROM') || 'AI Signal <onboarding@resend.dev>'
@@ -86,9 +86,24 @@ function divider() {
   return `<tr><td style="padding:20px 0;"><hr style="border:none;border-top:1px solid ${BORDER};margin:0;"/></td></tr>`
 }
 
-function footerRow(unsubscribeUrl) {
+function footerRow(unsubscribeUrl, subscriberCount) {
+  const MUTED_DARK = '#444444'
+  const BODY_TEXT  = '#1A1A1A'
+  const countLine = subscriberCount
+    ? `<p style="margin:0 0 10px;font-family:${SANS};font-size:12px;color:${MUTED};">You're one of <strong style="color:${MUTED_DARK};">${subscriberCount.toLocaleString()}+</strong> subscribers.</p>`
+    : ''
   return `<tr><td style="padding:28px 0 36px;">
   <hr style="border:none;border-top:1px solid ${BORDER};margin:0 0 20px;"/>
+  ${countLine}
+  <p style="margin:0 0 10px;font-family:${SANS};font-size:12px;color:${MUTED};">
+    Found this useful? <a href="https://aisignal.so" style="color:${BLUE};text-decoration:none;">Forward it</a> to one person in your team.
+  </p>
+  <p style="margin:0 0 14px;font-family:${SANS};font-size:12px;color:${MUTED};">
+    Was today's signal useful? &nbsp;
+    <a href="mailto:hi@aisignal.so?subject=Feedback: useful&body=This issue was useful." style="color:${BODY_TEXT};text-decoration:none;font-size:15px;">👍</a>
+    &nbsp;
+    <a href="mailto:hi@aisignal.so?subject=Feedback: not useful&body=This issue wasn't useful. Here's why:" style="color:${BODY_TEXT};text-decoration:none;font-size:15px;">👎</a>
+  </p>
   <p style="margin:0 0 6px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${MUTED};">AI SIGNAL</p>
   <p style="margin:0 0 10px;font-family:${SANS};font-size:12px;color:${MUTED};line-height:1.6;">One AI story every morning at 6:14 AM IST.<br/>For builders, PMs, and founders in the Indian tech ecosystem.</p>
   <p style="margin:0;font-family:${SANS};font-size:12px;color:${MUTED};">
@@ -255,14 +270,18 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
 
   ${openQ ? `${divider()}<tr><td style="padding-bottom:8px;">
     <p style="margin:0 0 10px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${MUTED};">ONE QUESTION NOBODY'S ANSWERED YET</p>
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td style="background:${CALLOUT_BG};border-radius:4px;padding:18px 20px;">
-        <p style="margin:0;font-family:${SERIF};font-size:18px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${openQ}"</p>
-      </td>
-    </tr></table>
+    <p style="margin:0;font-family:${SERIF};font-size:18px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${openQ}"</p>
   </td></tr>` : ''}
 
-  ${footerRow(unsubUrl)}`)
+  ${divider()}
+  <tr><td style="padding-bottom:4px;">
+    <p style="margin:0;font-family:${SANS};font-size:14px;color:#444444;line-height:1.65;">
+      <strong>P.S.</strong> If today's signal was useful, forward it to one person on your team who should know about this.
+      They can subscribe at <a href="https://aisignal.so" style="color:${BLUE};text-decoration:none;">aisignal.so</a>
+    </p>
+  </td></tr>
+
+  ${footerRow(unsubUrl, null)}`)
 }
 
 // ── Main ───────────────────────────────────────────────────────────────────────
@@ -306,11 +325,12 @@ console.log('Welcome email:', welcomeResult.data?.id ? `✓ sent (id: ${welcomeR
 
 // ── 2. Send daily newsletter email ────────────────────────────────────────────
 console.log('\n[2/2] Sending daily newsletter email...')
-const dailyHtml   = buildDailyHtml(story, issueNumber, testUnsubUrl, dateStr)
-const dailyResult = await resend.emails.send({
+const dailyHtml      = buildDailyHtml(story, issueNumber, testUnsubUrl, dateStr)
+const dailySubject   = story.editorial_take ?? story.headline
+const dailyResult    = await resend.emails.send({
   from: FROM,
   to: TO_EMAIL,
-  subject: story.headline,
+  subject: dailySubject,
   html: dailyHtml,
 })
 console.log('Daily email:', dailyResult.data?.id ? `✓ sent (id: ${dailyResult.data.id})` : `✗ ${JSON.stringify(dailyResult.error)}`)
