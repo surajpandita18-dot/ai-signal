@@ -292,7 +292,7 @@ const SURAJ_NOTES: Record<string, string> = {
 function sSurajTake(note?: string, category?: string): string {
   const body = note
     ? md(note)
-    : md(SURAJ_NOTES[category ?? ''] ?? `Yaar, one story. Every morning. The one that actually changes what you'd build this week — not just what you'd tweet about. If today's landed, someone on your team should probably see it too. Not because I'm asking — because *they'll* be behind if they don't.`)
+    : md(SURAJ_NOTES[category ?? ''] ?? `Yaar, one story. Every morning. The one that actually changes what you'd build this week — not just what you'd tweet about. If it landed for you, it'll land for someone on your team too. You already know who.`)
   return `
   <tr><td class="px" style="padding:30px 44px 0 44px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${TAN}; border:1px solid ${TAN_LINE}; border-top:3px solid ${INK}; border-radius:2px 2px 6px 6px;"><tr>
@@ -352,8 +352,9 @@ const AI_FACTS = [
   { label: 'Etymology', fact: `"Robot" comes from 'robota' — Czech for drudgery or forced labor — coined in a 1920 sci-fi play. The author later said he regretted introducing the word to the world.` },
 ]
 
-function sAIFact(issueNumber: number): string {
-  const f = AI_FACTS[issueNumber % AI_FACTS.length]
+function sAIFact(issueNumber?: number): string {
+  const idx = issueNumber != null ? issueNumber % AI_FACTS.length : new Date().getDate() % AI_FACTS.length
+  const f = AI_FACTS[idx]
   return `
   <tr><td class="px" style="padding:26px 44px 0 44px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${FILL}; border:1px solid ${LINE}; border-radius:5px;"><tr>
@@ -438,6 +439,7 @@ export function welcomeEmail(
     </td></tr>
     ${sSurajTake()}
     ${sTipJar(base)}
+    ${sAIFact()}
     ${sPS('Reply to this email anytime. I read every message — it shapes what gets covered.')}
     ${sFooter(unsubscribeUrl)}`
 

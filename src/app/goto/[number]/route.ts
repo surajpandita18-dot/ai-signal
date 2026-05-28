@@ -1,22 +1,23 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { unstable_cache } from 'next/cache'
-import { createAdminSupabaseClient } from '@/lib/supabase-admin'
 
-const getLatestIssueNumber = unstable_cache(
-  async (): Promise<number | null> => {
-    const supabase = createAdminSupabaseClient()
-    const { data } = await supabase
-      .from('issues')
-      .select('issue_number')
-      .eq('status', 'published')
-      .order('published_at', { ascending: false })
-      .limit(1)
-      .maybeSingle()
-    return data?.issue_number ?? null
-  },
-  ['latest-issue-number'],
-  { revalidate: 300 }
-)
+export const runtime = 'edge'
+
+async function getLatestIssueNumber(): Promise<number | null> {
+  const url = process.env.NEXT_PUBLIC_SUPABASE_URL
+  const key = process.env.SUPABASE_SERVICE_ROLE_KEY
+  if (!url || !key) return null
+
+  const res = await fetch(
+    `${url}/rest/v1/issues?select=issue_number&status=eq.published&order=published_at.desc&limit=1`,
+    {
+      headers: { apikey: key, Authorization: `Bearer ${key}` },
+      next: { revalidate: 300 },
+    }
+  )
+  if (!res.ok) return null
+  const rows = (await res.json()) as Array<{ issue_number: number }>
+  return rows[0]?.issue_number ?? null
+}
 
 export async function GET(
   _req: NextRequest,

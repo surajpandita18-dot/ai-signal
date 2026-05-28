@@ -307,7 +307,7 @@ const SURAJ_NOTES = {
 }
 
 function sSurajTake(noteText, category) {
-  const rawNote = noteText || SURAJ_NOTES[category] || `Yaar, one story. Every morning. The one that actually changes what you'd build this week — not just what you'd tweet about. If today's landed, someone on your team should probably see it too. Not because I'm asking — because *they'll* be behind if they don't.`
+  const rawNote = noteText || SURAJ_NOTES[category] || `Yaar, one story. Every morning. The one that actually changes what you'd build this week — not just what you'd tweet about. If it landed for you, it'll land for someone on your team too. You already know who.`
   const body = md(rawNote)
   return `
   <tr><td class="px" style="padding:30px 44px 0 44px;">
@@ -368,7 +368,8 @@ const AI_FACTS = [
 ]
 
 function sAIFact(issueNumber) {
-  const f = AI_FACTS[issueNumber % AI_FACTS.length]
+  const idx = issueNumber != null ? issueNumber % AI_FACTS.length : new Date().getDate() % AI_FACTS.length
+  const f = AI_FACTS[idx]
   return `
   <tr><td class="px" style="padding:26px 44px 0 44px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${FILL}; border:1px solid ${LINE}; border-radius:5px;"><tr>
@@ -441,10 +442,11 @@ function buildWelcomeHtml(unsubUrl) {
       </tr></table>
     </td></tr>
     <tr><td class="px" align="center" style="padding:20px 44px 0 44px;">
-      <a href="https://getaisignal.org" class="cta-btn" style="display:inline-block; background-color:${BUTTON}; color:${WHITE}; font-family:${SANS}; font-size:15px; font-weight:700; text-decoration:none; padding:15px 34px; border-radius:5px; letter-spacing:0.2px;">Read today's signal&nbsp;&#8594;</a>
+      <a href="${SITE_URL}" class="cta-btn" style="display:inline-block; background-color:${BUTTON}; color:${WHITE}; font-family:${SANS}; font-size:15px; font-weight:700; text-decoration:none; padding:15px 34px; border-radius:5px; letter-spacing:0.2px;">Read today's signal&nbsp;&#8594;</a>
     </td></tr>
     ${sSurajTake(null, null)}
     ${sTipJar()}
+    ${sAIFact()}
     ${sPS('Reply to this email anytime. I read every message — it shapes what gets covered.')}
     ${sFooter(unsubUrl)}`
   return wrap("One AI story. Every morning. For people who ship.", body)
