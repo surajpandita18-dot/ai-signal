@@ -1674,7 +1674,7 @@ export const generateDailySignal = inngest.createFunction(
       }
 
       const supabase = createAdminSupabaseClient()
-      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aisignal.so'
+      const siteUrl = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://getaisignal.org'
       const emailFrom = process.env.EMAIL_FROM ?? 'AI Signal <onboarding@resend.dev>'
       const resend = new Resend(resendKey)
 

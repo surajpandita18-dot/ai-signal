@@ -193,7 +193,8 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
   const statValue = ticker?.value ?? null
   const statLabel = ticker ? `${ticker.change?.text ?? ''} · ${ticker.label}` : null
   const statNote  = ticker?.detail ?? null
-  const openQ     = ext.open_question ?? null
+  const openQ          = ext.open_question ?? null
+  const insightsStrip  = ext.insights_strip ?? []
   const articleUrl = `https://getaisignal.org/signal/${issueNumber}`
 
   const opener = ext.one_breath?.text?.replace(/\*\*(.*?)\*\*/g, '$1')
@@ -254,18 +255,20 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     </table>
   </td></tr>` : ''}
 
-  <!-- INSIDE THIS SIGNAL — hierarchy: numbers=plain, matters=callout, move=dark -->
+  <!-- INSIDE THIS SIGNAL — 3 color-coded callout cards: amber / blue / green -->
   ${(numbersCard||mattersCard||moveCard) ? `
   ${divider(18, 18)}
   <tr><td style="padding-bottom:16px;">
     <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">INSIDE THIS SIGNAL</p>
   </td></tr>
-  ${numbersCard ? `<tr><td style="padding:13px 0;border-top:1px solid ${BORDER};">
+  ${numbersCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">01</span></td>
-      <td style="padding-left:12px;">
-        <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">By the numbers</p>
-        <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.55;">${numbersCard.value}</p>
+      <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:#D97706;">01</span></td>
+      <td style="padding:0 0 0 12px;">
+        <div style="border-left:3px solid #D97706;background:#FFFBF0;padding:12px 16px;margin:8px 0;">
+          <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#D97706;">By the numbers</p>
+          <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${numbersCard.value}</p>
+        </div>
       </td>
     </tr></table>
   </td></tr>` : ''}
@@ -280,15 +283,37 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
       </td>
     </tr></table>
   </td></tr>` : ''}
-  ${moveCard ? `<tr><td style="padding:13px 0;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+  ${moveCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">03</span></td>
-      <td style="padding-left:12px;">
-        <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">The move</p>
-        <p style="margin:0;font-family:${SANS};font-size:16px;color:${BLACK};line-height:1.55;font-weight:500;">${moveCard.value}</p>
+      <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:#00923B;">03</span></td>
+      <td style="padding:0 0 0 12px;">
+        <div style="border-left:3px solid #00923B;background:#F0FFF4;padding:12px 16px;margin:8px 0;">
+          <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#00923B;">The move</p>
+          <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${moveCard.value}</p>
+        </div>
       </td>
     </tr></table>
   </td></tr>` : ''}` : ''}
+
+  <!-- THE CONTEXT — insights strip -->
+  ${insightsStrip.length > 0 ? `
+  ${divider(18, 18)}
+  <tr><td style="padding-bottom:16px;">
+    <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">THE CONTEXT</p>
+  </td></tr>
+  ${insightsStrip.map(cell => `
+  <tr><td style="padding:11px 0;border-top:1px solid ${BORDER};">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+      <td width="24" valign="top" style="padding-top:1px;">
+        <span style="font-family:${MONO};font-size:13px;color:${MUTED};">${cell.icon}</span>
+      </td>
+      <td style="padding-left:10px;">
+        <p style="margin:0 0 3px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:${MUTED_DARK};">${cell.label}</p>
+        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">${(cell.text||'').replace(/==(.*?)==/g,'$1')}</p>
+      </td>
+    </tr></table>
+  </td></tr>`).join('')}
+  ` : ''}
 
   <!-- ONE OPEN QUESTION — callout box before CTA -->
   ${openQ ? `
@@ -340,7 +365,7 @@ const now = new Date()
 const dateStr = now.toLocaleDateString('en-IN', {
   timeZone: 'Asia/Kolkata', year: 'numeric', month: 'long', day: 'numeric'
 })
-const testUnsubUrl = 'https://aisignal.so/unsubscribe?token=test-token'
+const testUnsubUrl = 'https://getaisignal.org/unsubscribe?token=test-token'
 
 // ── 1. Send welcome email ──────────────────────────────────────────────────────
 console.log('\n[1/2] Sending welcome email...')

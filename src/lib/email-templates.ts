@@ -303,6 +303,9 @@ export function dailyNewsletterEmail(
   // Open question — cliffhanger BEFORE CTA drives clicks
   const openQuestion = ext?.open_question ?? null
 
+  // Insights strip — "What changed / Who's affected / Move by"
+  const insightsStrip = ext?.insights_strip ?? []
+
   // Category-specific P.S.
   const PS_LINES: Record<string, string> = {
     models:   `Teams who act on this today have a head start. Forward it to one engineer before standup.`,
@@ -355,18 +358,20 @@ export function dailyNewsletterEmail(
       </table>
     </td></tr>` : ''}
 
-    <!-- Inside this signal — visual hierarchy: numbers=plain, matters=callout, move=dark -->
+    <!-- Inside this signal — 3 color-coded callout cards: amber / blue / green -->
     ${(numbersCard || mattersCard || moveCard) ? `
     ${divider(18, 18)}
     <tr><td style="padding-bottom:16px;">
       <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">INSIDE THIS SIGNAL</p>
     </td></tr>
-    ${numbersCard ? `<tr><td style="padding:13px 0;border-top:1px solid ${BORDER};">
+    ${numbersCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">01</span></td>
-        <td style="padding-left:12px;">
-          <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">By the numbers</p>
-          <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.55;">${numbersCard.value}</p>
+        <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:#D97706;">01</span></td>
+        <td style="padding:0 0 0 12px;">
+          <div style="border-left:3px solid #D97706;background:#FFFBF0;padding:12px 16px;margin:8px 0;">
+            <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#D97706;">By the numbers</p>
+            <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${numbersCard.value}</p>
+          </div>
         </td>
       </tr></table>
     </td></tr>` : ''}
@@ -381,15 +386,37 @@ export function dailyNewsletterEmail(
         </td>
       </tr></table>
     </td></tr>` : ''}
-    ${moveCard ? `<tr><td style="padding:13px 0;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
+    ${moveCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">03</span></td>
-        <td style="padding-left:12px;">
-          <p style="margin:0 0 4px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${MUTED};">The move</p>
-          <p style="margin:0;font-family:${SANS};font-size:16px;color:${BLACK};line-height:1.55;font-weight:500;">${moveCard.value}</p>
+        <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:#00923B;">03</span></td>
+        <td style="padding:0 0 0 12px;">
+          <div style="border-left:3px solid #00923B;background:#F0FFF4;padding:12px 16px;margin:8px 0;">
+            <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#00923B;">The move</p>
+            <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${moveCard.value}</p>
+          </div>
         </td>
       </tr></table>
     </td></tr>` : ''}` : ''}
+
+    <!-- The context — insights strip: what changed / who's affected / move by -->
+    ${insightsStrip.length > 0 ? `
+    ${divider(18, 18)}
+    <tr><td style="padding-bottom:16px;">
+      <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">THE CONTEXT</p>
+    </td></tr>
+    ${insightsStrip.map(cell => `
+    <tr><td style="padding:11px 0;border-top:1px solid ${BORDER};">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
+        <td width="24" valign="top" style="padding-top:1px;">
+          <span style="font-family:${MONO};font-size:13px;color:${MUTED};">${cell.icon}</span>
+        </td>
+        <td style="padding-left:10px;">
+          <p style="margin:0 0 3px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:${MUTED_DARK};">${cell.label}</p>
+          <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">${cell.text.replace(/==(.*?)==/g, '$1')}</p>
+        </td>
+      </tr></table>
+    </td></tr>`).join('')}
+    ` : ''}
 
     <!-- Open question — callout box before CTA, visual cliffhanger -->
     ${openQuestion ? `
