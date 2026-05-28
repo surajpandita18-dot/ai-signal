@@ -75,8 +75,8 @@ function wrap(preheader: string, body: string): string {
   <title>AI Signal</title>
   <style>
     :root { color-scheme: light; }
-    .qr-block  { display:block;  }
-    .upi-block { display:none;   }
+    .qr-row  { display:table-row; }
+    .upi-row { display:none; }
     @media only screen and (max-width:600px) {
       .container { width:100% !important; }
       .px { padding-left:22px !important; padding-right:22px !important; }
@@ -85,8 +85,8 @@ function wrap(preheader: string, body: string): string {
       .h-headline { font-size:25px !important; line-height:1.18 !important; }
       .h-sub { font-size:21px !important; }
       .cta-btn { display:block !important; width:100% !important; box-sizing:border-box !important; text-align:center !important; }
-      .qr-block  { display:none !important; max-height:0 !important; overflow:hidden !important; }
-      .upi-block { display:block !important; }
+      .qr-row  { display:none !important; }
+      .upi-row { display:table-row !important; }
     }
   </style>
 </head>
@@ -321,22 +321,22 @@ function sTipJar(): string {
   const qrSrc = `https://api.qrserver.com/v1/create-qr-code/?size=160x160&ecc=M&data=upi%3A%2F%2Fpay%3Fpa%3Dsuraj.pandita132%40ybl%26pn%3DAI%2520Signal%26cu%3DINR`
   return `
   ${sHairline(34)}
-  <tr><td class="px" align="center" style="padding:22px 44px 0 44px;">
+  <tr><td class="px" align="center" style="padding:22px 44px 12px 44px;">
     <p style="margin:0; font-family:${SERIF}; font-size:15px; line-height:1.5; color:${INK};">Built by one founder. Read by builders.</p>
-    <p style="margin:6px 0 16px 0; font-family:${SANS}; font-size:14px; line-height:1.5; color:#6b6b6b;">If today saved you 30 minutes, &#9749; send a chai &#8594;</p>
-    <div class="qr-block" style="display:block;">
-      <img src="${qrSrc}" width="140" height="140" alt="Scan to pay via UPI" style="display:block; margin:0 auto; border:1px solid ${LINE}; border-radius:8px; padding:8px; background:${WHITE};">
-      <p style="margin:10px 0 2px 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Scan with PhonePe &middot; GPay &middot; any UPI app</p>
-      <p style="margin:0; font-family:${MONO}; font-size:11px; color:${META}; letter-spacing:0.5px;">suraj.pandita132@ybl</p>
-    </div>
-    <div class="upi-block" style="display:none;">
-      <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
-        <td style="background-color:${BUTTON}; border-radius:5px;">
-          <a href="upi://pay?pa=suraj.pandita132@ybl&amp;pn=AI%20Signal&amp;cu=INR" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
-        </td>
-      </tr></table>
-      <p style="margin:10px 0 0 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Opens PhonePe &middot; GPay &middot; any UPI app</p>
-    </div>
+    <p style="margin:6px 0 0 0; font-family:${SANS}; font-size:14px; line-height:1.5; color:#6b6b6b;">If today saved you 30 minutes, &#9749; send a chai &#8594;</p>
+  </td></tr>
+  <tr class="qr-row" style="display:table-row;"><td class="px" align="center" style="padding:14px 44px 0 44px;">
+    <img src="${qrSrc}" width="140" height="140" alt="Scan to pay via UPI" style="display:block; margin:0 auto; border:1px solid ${LINE}; border-radius:8px; padding:8px; background:${WHITE};">
+    <p style="margin:10px 0 2px 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Scan with PhonePe &middot; GPay &middot; any UPI app</p>
+    <p style="margin:0; font-family:${MONO}; font-size:11px; color:${META}; letter-spacing:0.5px;">suraj.pandita132@ybl</p>
+  </td></tr>
+  <tr class="upi-row" style="display:none;"><td class="px" align="center" style="padding:14px 44px 0 44px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
+      <td style="background-color:${BUTTON}; border-radius:5px;">
+        <a href="upi://pay?pa=suraj.pandita132@ybl&amp;pn=AI%20Signal&amp;cu=INR" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
+      </td>
+    </tr></table>
+    <p style="margin:10px 0 0 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Opens PhonePe &middot; GPay &middot; any UPI app</p>
   </td></tr>`
 }
 
