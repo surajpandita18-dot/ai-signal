@@ -54,3 +54,4 @@ qa/reviews/
 
 # Local backup files from manual merge workflows
 CLAUDE.md.backup-*
+.env*.local

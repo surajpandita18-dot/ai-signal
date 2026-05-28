@@ -798,14 +798,15 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       ]
     },
     "one_breath": {
-      "text": "One punchy sentence — different from the summary. Name the entity, name the shift, name the consequence. Bold 2 key phrases with **double asterisks**. Target: 18-24 words. Hard cap: 28 words. E.g. '**Anthropic** just bought compute from a competitor — if your product depends on **Claude capacity**, your architecture assumptions just changed.'"
+      "text": "One punchy sentence — the BROKEN ASSUMPTION, not the event. What did the reader believe that is now wrong? Bold 2 key phrases with **double asterisks** on the most surprising entities. Target: 18-24 words. Hard cap: 28 words. NEVER start with a company name. Start with the consequence or the cracked assumption. GOOD: '**Every model-selection framework** your team built last year assumes static pricing — that assumption cracked today.' BAD: 'Anthropic launched a new workflow tool for agent orchestration.'"
     },
     "insights_strip": [
       Exactly 3 cells. text: one sharp sentence. Target: 10-14 words. Hard cap: 17 words. Must fit a single scannable cell — no dependent clauses. REQUIRED: wrap exactly 1 key phrase per cell in ==double equals== to highlight it (e.g. "A ==10× cost drop== on the default reasoning model — silently shipped.").
       ORIGINALITY RULE: each cell must say something the headline does NOT say. A cell that recaps the headline event in different words is a failure — push to the implication, the mechanism, or the closing window. Test: if the cell could be a sub-headline on the same article, rewrite it deeper.
-      { "icon": "→", "label": "What changed", "text": "A ==key change== — context sentence. 10-14 words. Hard cap 17w." },
-      { "icon": "◐", "label": "Who's affected", "text": "The ==specific audience== that must act — consequence. 10-14 words. Hard cap 17w." },
-      { "icon": "⚡", "label": "Move by", "text": "==Concrete action== by [timeframe] — closing window. 10-14 words. Hard cap 17w." }
+      NAME SPECIFIC ENTITIES: each cell must name a specific company, product, team type, or number — never generic phrases like "teams must adapt" or "this is important".
+      { "icon": "→", "label": "What changed", "text": "A ==key change== — name the specific product/company/number. 10-14 words. Hard cap 17w." },
+      { "icon": "◐", "label": "Who's affected", "text": "The ==specific audience== that must act — name the role + consequence. 10-14 words. Hard cap 17w." },
+      { "icon": "⚡", "label": "Move by", "text": "==Concrete action== by [specific timeframe] — name the closing window. 10-14 words. Hard cap 17w." }
     ],
     "cascade": {
       "direction": "forecast",
@@ -844,10 +845,15 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       "final_verdict": "One sentence synthesis verdict. Target: 10 words. Hard cap: 12 words. E.g. 'Switch defaults this week if cost-bound. Run evals if quality-bound.'"
     },
     "reactions": [
-      LAYER 5 — Exactly 3 reactions. CRITICAL: every quote MUST be a grammatically complete sentence — never stop mid-word, mid-clause, or mid-thought. A truncated quote is a hard failure. quote: Target 15-20 words. Hard cap: 26 words. Bold the first 3-5 words to draw the eye (e.g. '**This is the iPhone-moment** for inference cost.'). name: role archetype, not a real name. role: specific context line. name + role combined: 8-10 words. Hard cap: 12 words. Include at least one skeptic voice among the 3.
-      { "quote": "**Bold first 3-5 words.** Rest of punchy industry sentiment. Complete sentence. 15-20 words. Hard cap 26w.", "name": "Role archetype (not a real name)", "role": "Specific context: Series A CTO, indie hacker, principal PM" },
-      { "quote": "**Bold first 3-5 words.** Different perspective, more specific to Indian market. Complete sentence. 15-20 words. Hard cap 26w.", "name": "Role archetype", "role": "Specific context" },
-      { "quote": "**Bold first 3-5 words.** Skeptic or contrarian voice — genuine pushback. Complete sentence. 15-20 words. Hard cap 26w.", "name": "Role archetype", "role": "Specific context" }
+      LAYER 5 — Exactly 3 reactions from 3 DIFFERENT perspectives. CRITICAL: every quote MUST be a grammatically complete sentence — never stop mid-word, mid-clause, or mid-thought. A truncated quote is a hard failure.
+      VOICE RULES: each quote must sound like a genuinely different human — different vocabulary, different stakes, different sentence rhythm. If quotes 1 and 2 could be swapped without loss, rewrite one.
+      quote: Target 15-20 words. Hard cap: 26 words. Bold the first 3-5 words — these are the "eye-catch" for scanning. E.g. '**We shipped this in March** — the teams still debating it are already behind.' The bold phrase must make the skeptic or the believer uncomfortable, not just restate the headline.
+      name: role archetype, NOT a real person name. E.g. "Bengaluru PM", "Series B CTO", "Indie ML Engineer".
+      role: 4-6 word specific context. Must include location (Bengaluru, Mumbai, SF, London) OR company stage (Series A infra startup, bootstrapped SaaS). E.g. "Anthropic API power user, Bengaluru" or "Head of AI, Series B SaaS".
+      REQUIRED VOICE MIX: quote 1 = believer/early-mover (already doing this), quote 2 = pragmatic-skeptic (seen the hype before), quote 3 = structural-contrarian (challenges the main claim directly, not just adds nuance).
+      { "quote": "**Bold first 3-5 words.** Believer voice — specific to what they've already done or seen. Complete sentence. 15-20 words.", "name": "Role archetype", "role": "Stage + location. E.g. 'Head of AI, Series B, Bengaluru'" },
+      { "quote": "**Bold first 3-5 words.** Pragmatic skeptic — been here before, specific past experience. Complete sentence. 15-20 words.", "name": "Role archetype", "role": "Stage + location" },
+      { "quote": "**Bold first 3-5 words.** Structural contrarian — challenges the MAIN CLAIM of this story specifically. Complete sentence. 15-20 words.", "name": "Role archetype", "role": "Stage + location" }
     ],
     "standup_messages": {
       "slack": "🧠 AI Signal · [Date e.g. May 6, 2026]\n\n[One sentence: what happened + the key number.]\n\n→ Why it matters: [One sentence on the implication for the team.]\n→ What I'd do: [One concrete action, time-boxed.]\n\n[X] min read · aisignal.so/signal/[N]",
@@ -861,6 +867,7 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       { "day": "THU", "date": "May 1", "text": "Third follow-on angle — broader market or competitive implication", "status": "sealed" }
     ],
     "open_question": "The single unresolved question that changes everything about this story. Forward-looking, specific to this signal. Must feel genuinely uncertain — not rhetorical. Target: 12-20 words. Hard cap: 25 words. Must end with ?",
+    "suraj_note": "A SHORT personal note from Suraj in his voice — casual, direct, a little impatient. NOT a summary of the article. This is the 'chai-stand moment': what personal observation, frustration, or realisation does THIS specific story trigger? Reference a specific detail from today's story. Use 'yaar' or 'bhai' once. Bold 1-2 phrases. Target: 40-55 words. Hard cap: 65 words. MUST reference something specific to this signal — generic notes ('I read every story so you don't have to') are failures. E.g. 'Yaar, I spent an hour trying to get this to work in a side project. The **orchestration layer** is the part nobody's talking about — and it's the part that will break your timeline. **Map your agent loops** before you commit to any Q3 deadline.'",
     "signal_boost": { "see SIGNAL_BOOST RULES below" }
     [IF category=tools, also add: "replaces": { "yes": "...", "not_yet": "..." }]
     [IF category=research, also add: "readiness_level": "lab|paper|prototype|product|deployed"]

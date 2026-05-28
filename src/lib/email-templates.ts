@@ -1,79 +1,97 @@
-/**
- * AI Signal email templates — premium editorial design.
- *
- * Design principles (Morning Brew / Lenny / WSJ editorial research):
- * - Warm cream background — not cold corporate grey
- * - Stat displayed typographically (big number) — no blue boxes
- * - Single accent color used sparingly
- * - Generous whitespace — breathing room signals premium
- * - Personal sign-off from Suraj on every email
- * - Category tag inline text, no pill backgrounds
- * - Preheader = "The move: {action}" — urgency over raw numbers
- * - P.S. category-specific — urgency tuned to story type
- */
+import type { ExtendedData, Reaction, InsightCell } from '@/lib/types/extended-data'
 
-import type { ExtendedData } from '@/lib/types/extended-data'
+// ─── Design tokens (AI Signal Design System v1) ────────────────────────────────
 
-// ─── Design tokens ─────────────────────────────────────────────────────────────
+const INK         = '#1c1a17'
+const BODY_CLR    = '#3d3a34'
+const META        = '#8a857d'
+const FAINT       = '#a8a297'
+const CANVAS      = '#ece9e3'
+const FILL        = '#fbfaf8'
+const LINE        = '#e7e3db'
+const LINE_2      = '#ddd8cf'
+const WHITE       = '#ffffff'
+const INDIGO      = '#4F46E5'
+const INDIGO_TINT = '#EEF2FF'
+const INDIGO_TEXT = '#312e6b'
+const ORANGE      = '#F97316'
+const ORANGE_TINT = '#FFF7ED'
+const ORANGE_INK  = '#7c2d12'
+const ORANGE_LBL  = '#c2410c'
+const TAN         = '#FBF6EE'
+const TAN_LINE    = '#E8DFC9'
+const TAN_INK     = '#9a7b3f'
+const BUTTON      = '#0F172A'
 
-const BLUE       = '#0047FF'
-const BLACK      = '#111111'
-const BODY_TEXT  = '#1A1A1A'
-const MUTED      = '#777777'
-const MUTED_DARK = '#444444'
-const BORDER     = '#E8E8E8'
-const PAGE_BG    = '#F5F5F0'   // warm cream — not cold grey
-const WHITE      = '#ffffff'
-
-const MONO  = `'Courier New',Courier,monospace`
+const MONO  = `'SF Mono','JetBrains Mono',ui-monospace,Menlo,Consolas,monospace`
 const SERIF = `Georgia,'Times New Roman',serif`
-const SANS  = `-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif`
+const SANS  = `-apple-system,system-ui,'Segoe UI',Helvetica,Arial,sans-serif`
 
-const CATEGORY_LABELS: Record<string, string> = {
-  models: 'MODELS', tools: 'TOOLS', business: 'BUSINESS',
-  policy: 'POLICY', research: 'RESEARCH',
+// ─── Category color system ─────────────────────────────────────────────────────
+
+type CatColors = { accent: string; tint: string; label: string }
+
+const CATEGORY_COLORS: Record<string, CatColors> = {
+  models:   { accent: '#4F46E5', tint: '#EEF2FF', label: 'Models' },
+  tools:    { accent: '#F97316', tint: '#FFF1E6', label: 'Tools' },
+  business: { accent: '#10B981', tint: '#E7F8F0', label: 'Funding' },
+  funding:  { accent: '#10B981', tint: '#E7F8F0', label: 'Funding' },
+  research: { accent: '#8B5CF6', tint: '#F2EDFE', label: 'Research' },
+  infra:    { accent: '#6B7280', tint: '#F1F1F0', label: 'Infra' },
+  policy:   { accent: '#EF4444', tint: '#FDECEC', label: 'Safety' },
+  safety:   { accent: '#EF4444', tint: '#FDECEC', label: 'Safety' },
+  product:  { accent: '#EC4899', tint: '#FCEAF3', label: 'Product' },
 }
 
-const FEEDBACK_EMAIL = 'hi@getaisignal.org'
+function getCat(category: string): CatColors {
+  return CATEGORY_COLORS[category.toLowerCase()] ?? {
+    accent: INDIGO, tint: INDIGO_TINT,
+    label: category.charAt(0).toUpperCase() + category.slice(1),
+  }
+}
 
-// ─── Preheader ─────────────────────────────────────────────────────────────────
+// ─── Text helpers ──────────────────────────────────────────────────────────────
 
-function preheaderHtml(text: string): string {
-  const pad = '&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;'
-  return `<span style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;color:${PAGE_BG};">${text}${pad}</span>`
+function md(text: string): string {
+  return text
+    .replace(/\*\*(.*?)\*\*/g, `<strong style="color:${INK};">$1</strong>`)
+    .replace(/==(.*?)==/g, '$1')
+    .replace(/\*(.*?)\*/g, '<em>$1</em>')
 }
 
 // ─── Outer wrapper ─────────────────────────────────────────────────────────────
 
 function wrap(preheader: string, body: string): string {
+  const pad = '&nbsp;&zwnj;'.repeat(9)
   return `<!DOCTYPE html>
-<html lang="en" xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
-  <meta name="color-scheme" content="light"/>
-  <meta name="x-apple-disable-message-reformatting"/>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="color-scheme" content="light">
+  <meta name="supported-color-schemes" content="light">
   <title>AI Signal</title>
+  <style>
+    :root { color-scheme: light; }
+    @media only screen and (max-width:600px) {
+      .container { width:100% !important; }
+      .px { padding-left:22px !important; padding-right:22px !important; }
+      .stack { display:block !important; width:100% !important; box-sizing:border-box !important; }
+      .stack-gap { height:12px !important; line-height:12px !important; font-size:12px !important; }
+      .h-headline { font-size:25px !important; line-height:1.18 !important; }
+      .h-sub { font-size:21px !important; }
+      .cta-btn { display:block !important; width:100% !important; box-sizing:border-box !important; text-align:center !important; }
+    }
+  </style>
 </head>
-<body style="margin:0;padding:0;background:${PAGE_BG};-webkit-text-size-adjust:100%;mso-line-height-rule:exactly;">
-  ${preheaderHtml(preheader)}
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:${PAGE_BG};">
-    <tr><td align="center" style="padding:32px 16px 48px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;background:${WHITE};">
-        <!-- 3px brand bar -->
-        <tr><td height="3" style="background:${BLUE};font-size:0;line-height:0;">&nbsp;</td></tr>
-        <!-- Content -->
-        <tr><td style="padding:36px 44px 0 44px;">
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-            ${body}
-          </table>
-        </td></tr>
-      </table>
-      <!-- Below-card tagline -->
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:600px;">
-        <tr><td style="padding:14px 0 0;text-align:center;">
-          <p style="margin:0;font-family:${SANS};font-size:11px;color:#aaaaaa;">AI Signal &nbsp;·&nbsp; getaisignal.org &nbsp;·&nbsp; 6:14 AM IST every morning</p>
-        </td></tr>
+<body style="margin:0; padding:0; background-color:${CANVAS}; color-scheme:light; -webkit-text-size-adjust:100%; -ms-text-size-adjust:100%;">
+  <div style="display:none; max-height:0; overflow:hidden; mso-hide:all; font-size:1px; line-height:1px; color:${CANVAS}; opacity:0;">${preheader}${pad}</div>
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${CANVAS};">
+    <tr><td align="center" style="padding:28px 12px 40px 12px;">
+      <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" class="container" style="width:600px; max-width:600px; background-color:${WHITE};">
+        <tbody>${body}</tbody>
       </table>
     </td></tr>
   </table>
@@ -81,65 +99,256 @@ function wrap(preheader: string, body: string): string {
 </html>`
 }
 
-// ─── Shared blocks ─────────────────────────────────────────────────────────────
+// ─── Section builders ──────────────────────────────────────────────────────────
 
-function headerRow(dateStr?: string): string {
+function sMasthead(issueNumber: number | null, dateStr: string, readMinutes?: number): string {
+  const metaRow = issueNumber !== null
+    ? `Signal&nbsp;#${issueNumber}&nbsp;&nbsp;·&nbsp;&nbsp;${dateStr}&nbsp;&nbsp;·&nbsp;&nbsp;${readMinutes ?? 4}&nbsp;min&nbsp;read`
+    : `Welcome&nbsp;Edition&nbsp;&nbsp;·&nbsp;&nbsp;${dateStr}`
   return `
-  <tr><td style="padding-bottom:16px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td><span style="font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.22em;text-transform:uppercase;color:${BLUE};">AI SIGNAL</span></td>
-      ${dateStr ? `<td align="right"><span style="font-family:${MONO};font-size:11px;color:${MUTED};letter-spacing:0.06em;">${dateStr}</span></td>` : ''}
+  <tr><td class="px" style="padding:30px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td align="left" style="font-family:${SERIF}; font-style:italic; font-size:19px; color:${INK};">AI&nbsp;Signal</td>
+      <td align="right" style="font-family:${MONO}; font-size:10px; letter-spacing:1.2px; color:${META}; text-transform:uppercase;">signal@getaisignal.org</td>
     </tr></table>
   </td></tr>
-  <tr><td style="padding-bottom:28px;"><hr style="border:none;border-top:1px solid ${BORDER};margin:0;"/></td></tr>`
-}
-
-function divider(top = 20, bottom = 20): string {
-  return `<tr><td style="padding:${top}px 0 ${bottom}px;"><hr style="border:none;border-top:1px solid ${BORDER};margin:0;"/></td></tr>`
-}
-
-function ctaButton(href: string, label: string): string {
-  return `<tr><td style="padding:6px 0 22px;">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-      <tr><td style="background:${BLUE};border-radius:4px;text-align:center;">
-        <a href="${href}" style="display:block;padding:16px 24px;font-family:${MONO};font-size:12px;font-weight:700;letter-spacing:0.08em;color:${WHITE};text-decoration:none;text-transform:uppercase;">${label}</a>
-      </td></tr>
-    </table>
+  <tr><td class="px" style="padding:14px 44px 0 44px;">
+    <div style="font-family:${MONO}; font-size:11px; letter-spacing:1.8px; color:${META}; text-transform:uppercase;">${metaRow}</div>
+  </td></tr>
+  <tr><td class="px" style="padding:18px 44px 0 44px;">
+    <div style="border-top:1px solid ${LINE}; font-size:0; line-height:0;">&nbsp;</div>
   </td></tr>`
 }
 
-function surajSignoff(): string {
+function sCategoryBadge(category: string): string {
+  const cat = getCat(category)
   return `
-  <tr><td style="padding:6px 0 4px;">
-    <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.75;">
-      — Suraj<br/>
-      <span style="font-family:${SANS};font-size:14px;color:${MUTED};line-height:1.65;">Building AI Signal from Bengaluru. I read every AI story so you don't have to — and only send the one worth acting on.</span>
+  <tr><td class="px" style="padding:26px 44px 0 44px;">
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="background-color:${cat.tint}; border-radius:3px; padding:6px 11px; font-family:${MONO}; font-size:11px; letter-spacing:2px; color:${cat.accent}; text-transform:uppercase; font-weight:700;">${cat.label}</td>
+    </tr></table>
+  </td></tr>`
+}
+
+function sHeadline(text: string): string {
+  return `
+  <tr><td class="px" style="padding:16px 44px 0 44px;">
+    <h1 class="h-headline" style="margin:0; font-family:${SERIF}; font-weight:700; font-size:31px; line-height:1.2; letter-spacing:-0.3px; color:${INK};">${text}</h1>
+  </td></tr>`
+}
+
+function sOneBreath(text: string): string {
+  return `
+  <tr><td class="px" style="padding:26px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${ORANGE_TINT}; border-left:4px solid ${ORANGE}; border-radius:0 4px 4px 0;"><tr>
+      <td style="padding:16px 20px 18px 20px;">
+        <div style="font-family:${MONO}; font-size:10px; letter-spacing:2px; color:${ORANGE_LBL}; text-transform:uppercase; font-weight:700;">&#9680;&nbsp;&nbsp;In one breath</div>
+        <p style="margin:8px 0 0 0; font-family:${SERIF}; font-size:16px; line-height:1.5; color:${ORANGE_INK};">${md(text)}</p>
+      </td>
+    </tr></table>
+  </td></tr>`
+}
+
+function sTheSignal(text: string): string {
+  return `
+  <tr><td class="px" style="padding:16px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${INDIGO_TINT}; border-left:4px solid ${INDIGO}; border-radius:0 4px 4px 0;"><tr>
+      <td style="padding:18px 22px 20px 22px;">
+        <div style="font-family:${MONO}; font-size:10px; letter-spacing:2px; color:${INDIGO}; text-transform:uppercase; font-weight:700;">&#9655;&nbsp;&nbsp;The signal</div>
+        <p style="margin:9px 0 0 0; font-family:${SERIF}; font-size:16px; line-height:1.62; color:${INDIGO_TEXT};">${md(text)}</p>
+      </td>
+    </tr></table>
+  </td></tr>`
+}
+
+function sStatsGrid(insights: InsightCell[]): string {
+  if (insights.length === 0) return ''
+  const cells = insights.slice(0, 3)
+  const cards = cells.map((cell, i) => {
+    const labelColor = i === 2 ? INDIGO : META
+    return `<td class="stack" valign="top" style="background-color:${FILL}; border:1px solid ${LINE}; border-radius:5px; padding:15px 15px 16px 15px;">
+        <div style="font-family:${MONO}; font-size:10px; letter-spacing:1.5px; color:${labelColor}; text-transform:uppercase; font-weight:700;">${cell.icon}&nbsp;&nbsp;${cell.label}</div>
+        <p style="margin:8px 0 0 0; font-family:${SANS}; font-size:14px; line-height:1.5; color:${BODY_CLR};">${md(cell.text)}</p>
+      </td>`
+  })
+  const rowParts: string[] = []
+  cards.forEach((card, i) => {
+    rowParts.push(card)
+    if (i < cards.length - 1) rowParts.push(`<td class="stack-gap" width="12" style="font-size:0; line-height:0;">&nbsp;</td>`)
+  })
+  return `
+  <tr><td class="px" style="padding:28px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed;"><tr>
+      ${rowParts.join('\n      ')}
+    </tr></table>
+  </td></tr>`
+}
+
+function sWhyItMatters(subHead: string, bodyText: string): string {
+  if (!bodyText) return ''
+  return `
+  <tr><td class="px" style="padding:34px 44px 0 44px;">
+    <div style="font-family:${MONO}; font-size:10px; letter-spacing:2px; color:${META}; text-transform:uppercase; font-weight:700;">Why it matters</div>
+  </td></tr>
+  <tr><td class="px" style="padding:12px 44px 0 44px;">
+    <h2 class="h-sub" style="margin:0; font-family:${SERIF}; font-weight:700; font-size:23px; line-height:1.28; letter-spacing:-0.2px; color:${INK};">${md(subHead)}</h2>
+  </td></tr>
+  <tr><td class="px" style="padding:14px 44px 0 44px;">
+    <p style="margin:0; font-family:${SANS}; font-size:15px; line-height:1.65; color:${BODY_CLR};">${md(bodyText)}</p>
+  </td></tr>
+  <tr><td class="px" style="padding:12px 44px 0 44px;">
+    <p style="margin:0; font-family:${SERIF}; font-style:italic; font-size:15px; line-height:1.6; color:${META};">The full breakdown — and what to build next — is in today's analysis. &#8595;</p>
+  </td></tr>`
+}
+
+function sEditorsTake(text: string): string {
+  return `
+  <tr><td class="px" style="padding:28px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${FILL}; border:1px solid ${LINE_2}; border-radius:5px;"><tr>
+      <td style="padding:20px 22px 22px 22px;">
+        <div style="font-family:${MONO}; font-size:10px; letter-spacing:2px; color:${META}; text-transform:uppercase; font-weight:700;">Editor's take</div>
+        <p style="margin:10px 0 0 0; font-family:${SERIF}; font-size:16px; line-height:1.58; color:${BODY_CLR};"><strong style="color:${INDIGO};">My call &#8594;</strong> ${md(text)}</p>
+      </td>
+    </tr></table>
+  </td></tr>`
+}
+
+function sPlaybook(moveText: string): string {
+  return `
+  <tr><td class="px" style="padding:16px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${FILL}; border:1px solid ${LINE_2}; border-radius:6px;"><tr>
+      <td style="padding:20px 22px 22px 22px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td style="font-family:${MONO}; font-size:11px; letter-spacing:2px; color:${META}; text-transform:uppercase; font-weight:700;">What you should do</td>
+          <td align="right" style="font-family:${MONO}; font-size:10px; letter-spacing:1.5px; color:${INDIGO}; text-transform:uppercase; font-weight:700;">&#10697;&nbsp;The move</td>
+        </tr></table>
+        <p style="margin:13px 0 0 0; font-family:${SANS}; font-size:15px; line-height:1.5; color:${INK}; font-weight:600;">${md(moveText)}</p>
+        <div style="border-top:1px dashed ${LINE_2}; margin-top:15px; font-size:0; line-height:0;">&nbsp;</div>
+        <p style="margin:13px 0 0 0; font-family:${MONO}; font-size:11px; line-height:1.55; letter-spacing:0.5px; color:${META}; text-transform:uppercase;">The how-to — with examples — is in the full analysis &#8595;</p>
+      </td>
+    </tr></table>
+  </td></tr>`
+}
+
+function sCtaButton(href: string): string {
+  return `
+  <tr><td class="px" align="center" style="padding:20px 44px 0 44px;">
+    <!--[if mso]>
+    <v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="${href}" style="height:48px;v-text-anchor:middle;width:340px;" arcsize="9%" fillcolor="${BUTTON}" stroke="f">
+    <w:anchorlock/><center style="color:#ffffff;font-family:sans-serif;font-size:15px;font-weight:bold;">Read the full analysis &#8594;</center>
+    </v:roundrect>
+    <![endif]-->
+    <!--[if !mso]><!-->
+    <a href="${href}" class="cta-btn" style="display:inline-block; background-color:${BUTTON}; color:${WHITE}; font-family:${SANS}; font-size:15px; font-weight:700; text-decoration:none; padding:15px 34px; border-radius:5px; letter-spacing:0.2px;">Read the full analysis&nbsp;&#8594;</a>
+    <!--<![endif]-->
+  </td></tr>`
+}
+
+function sHairline(paddingTop = 32): string {
+  return `
+  <tr><td class="px" style="padding:${paddingTop}px 44px 0 44px;">
+    <div style="border-top:1px solid ${LINE}; font-size:0; line-height:0;">&nbsp;</div>
+  </td></tr>`
+}
+
+function sCounterView(reactions: Reaction[]): string {
+  if (reactions.length === 0) return ''
+  const cards = reactions.slice(0, 3).map(r =>
+    `<td class="stack" valign="top" style="border:1px solid ${LINE}; border-radius:5px; padding:15px 15px 16px 15px;">
+      <div style="font-family:${SERIF}; font-size:26px; line-height:0.6; color:#cfc7b8;">&#8220;</div>
+      <p style="margin:4px 0 0 0; font-family:${SERIF}; font-style:italic; font-size:14px; line-height:1.5; color:${BODY_CLR};">${md(r.quote)}</p>
+      <p style="margin:12px 0 0 0; font-family:${MONO}; font-size:9px; line-height:1.5; letter-spacing:0.5px; color:${META}; text-transform:uppercase;">${r.name}<br>${r.role}</p>
+    </td>`
+  )
+  const rowParts: string[] = []
+  cards.forEach((card, i) => {
+    rowParts.push(card)
+    if (i < cards.length - 1) rowParts.push(`<td class="stack-gap" width="12" style="font-size:0; line-height:0;">&nbsp;</td>`)
+  })
+  return `
+  ${sHairline(24)}
+  <tr><td class="px" style="padding:24px 44px 0 44px;">
+    <div style="font-family:${MONO}; font-size:11px; letter-spacing:2px; color:${META}; text-transform:uppercase; font-weight:700;">In the field</div>
+  </td></tr>
+  <tr><td class="px" style="padding:14px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="table-layout:fixed;"><tr>
+      ${rowParts.join('\n      ')}
+    </tr></table>
+  </td></tr>`
+}
+
+const SURAJ_NOTES: Record<string, string> = {
+  models:   `Yaar, every week a new model drops and everyone scrambles to update their benchmarks. But the real question isn't which model is best right now — it's which *architectural decision* you're making that locks you into one. That's the thing to audit before you do anything else.`,
+  tools:    `Yaar, the tool that looked like a nice-to-have last quarter is now quietly becoming table stakes. I've seen this pattern before — the builders who tried it early are already two iterations ahead. If you're reading this, you're not late. But you will be if you wait another week.`,
+  business: `Yaar, funding rounds feel like noise until they shift the floor under your pricing assumptions. This one did that. The valuation tells you what the smart money believes will be worth owning in 18 months. It's worth 10 minutes to ask if your roadmap is building toward that or away from it.`,
+  research: `Yaar, most research takes 18 months to become something you can actually ship. This one has a shorter runway than that. The signal I look for is when a benchmark result changes what you'd build this week — not just what you'd talk about. This one passed that test.`,
+  policy:   `Yaar, regulation feels abstract until it hits your compliance checklist. The teams that read these signals early write the playbook. The ones that wait inherit someone else's interpretation. This is one of those moments where getting ahead of it is the entire advantage.`,
+}
+
+function sSurajTake(note?: string, category?: string): string {
+  const body = note
+    ? md(note)
+    : md(SURAJ_NOTES[category ?? ''] ?? `Yaar, I curate one story every morning — the one that actually changes what you should build. If this resonated, forward it to one person on your team. That's the best way to grow this thing.`)
+  return `
+  <tr><td class="px" style="padding:30px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${TAN}; border:1px solid ${TAN_LINE}; border-top:3px solid ${INK}; border-radius:2px 2px 6px 6px;"><tr>
+      <td style="padding:24px 26px 26px 26px;">
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+          <td valign="middle" width="38" style="width:38px;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr>
+              <td style="width:38px; height:38px; background-color:${INK}; border-radius:50%; text-align:center; font-family:${SERIF}; font-style:italic; font-size:18px; color:${TAN};">S</td>
+            </tr></table>
+          </td>
+          <td valign="middle" style="padding-left:12px; font-family:${SANS}; font-size:14px; font-weight:700; color:${INK};">
+            Suraj<br><span style="font-family:${MONO}; font-size:9px; letter-spacing:1px; color:${TAN_INK}; text-transform:uppercase; font-weight:700;">Founder &middot; writes this solo</span>
+          </td>
+          <td valign="middle" align="right" style="font-family:${MONO}; font-size:9px; letter-spacing:1.5px; color:#b09257; text-transform:uppercase; font-weight:700; white-space:nowrap;">&#9993;&nbsp; Email-only</td>
+        </tr></table>
+        <p style="margin:18px 0 0 0; font-family:${SERIF}; font-style:italic; font-size:17px; line-height:1.68; color:#46402f;">${body}</p>
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin-top:16px;"><tr>
+          <td style="font-family:${SERIF}; font-style:italic; font-size:22px; color:${INK};">&#8212;&nbsp;Suraj</td>
+        </tr></table>
+      </td>
+    </tr></table>
+  </td></tr>`
+}
+
+function sTipJar(): string {
+  return `
+  ${sHairline(34)}
+  <tr><td class="px" align="center" style="padding:22px 44px 0 44px;">
+    <p style="margin:0; font-family:${SERIF}; font-size:15px; line-height:1.5; color:${INK};">Built by one founder. Read by builders.</p>
+    <p style="margin:5px 0 0 0; font-family:${SANS}; font-size:14px; line-height:1.5; color:#6b6b6b;">If today saved you 30 minutes, &#9749; send a chai &#8594;</p>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:14px auto 0 auto;"><tr>
+      <td style="border:1px solid #d8d3ca; border-radius:5px;">
+        <a href="upi://pay?pa=suraj.pandita132@ybl&amp;pn=AI%20Signal&amp;cu=INR" style="display:inline-block; font-family:${MONO}; font-size:12px; letter-spacing:1px; color:${BODY_CLR}; text-decoration:none; padding:9px 18px; text-transform:uppercase; font-weight:700;">Send a chai via UPI&nbsp;&#8594;</a>
+      </td>
+    </tr></table>
+    <p style="margin:9px 0 0 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Secure UPI &middot; takes 10 seconds</p>
+  </td></tr>`
+}
+
+function sPS(text: string): string {
+  return `
+  <tr><td class="px" style="padding:26px 44px 0 44px;">
+    <p style="margin:0; font-family:${SERIF}; font-size:16px; line-height:1.5; color:${BODY_CLR};">
+      <em style="color:${INK};">P.S.</em>&nbsp; ${text}
     </p>
   </td></tr>`
 }
 
-function footerRow(unsubscribeUrl: string, subscriberCount?: number): string {
-  const countLine = subscriberCount
-    ? `<p style="margin:0 0 8px;font-family:${SANS};font-size:12px;color:${MUTED};">You're one of <strong style="color:${MUTED_DARK};">${subscriberCount.toLocaleString()}+</strong> subscribers.</p>`
-    : ''
+function sFooter(unsubscribeUrl: string): string {
   return `
-  <tr><td style="padding:24px 0 36px;">
-    <hr style="border:none;border-top:1px solid ${BORDER};margin:0 0 20px;"/>
-    ${countLine}
-    <p style="margin:0 0 8px;font-family:${SANS};font-size:12px;color:${MUTED};">
-      Found this useful? <a href="https://getaisignal.org" style="color:${BLUE};text-decoration:none;">Forward it</a> to one person who should know.
+  ${sHairline(34)}
+  <tr><td class="px" align="center" style="padding:24px 44px 34px 44px;">
+    <div style="font-family:${SERIF}; font-style:italic; font-size:16px; color:${INK};">AI&nbsp;Signal</div>
+    <p style="margin:6px 0 0 0; font-family:${SANS}; font-size:12px; line-height:1.5; color:${META};">Made with care in Bengaluru &middot; 06:14 IST, every morning<br>Bengaluru, Karnataka, India</p>
+    <p style="margin:14px 0 0 0; font-family:${MONO}; font-size:11px; letter-spacing:1px; color:#6b6b6b; text-transform:uppercase;">
+      <a href="https://twitter.com/getaisignal" style="color:#6b6b6b; text-decoration:none;">Twitter</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://getaisignal.org/rss" style="color:#6b6b6b; text-decoration:none;">RSS</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://getaisignal.org/privacy" style="color:#6b6b6b; text-decoration:none;">Privacy</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="mailto:signal@getaisignal.org" style="color:#6b6b6b; text-decoration:none;">Contact</a>
     </p>
-    <p style="margin:0 0 14px;font-family:${SANS};font-size:12px;color:${MUTED};">
-      Was today's signal useful? &nbsp;
-      <a href="mailto:${FEEDBACK_EMAIL}?subject=Feedback: useful&body=This issue was useful." style="color:${BODY_TEXT};text-decoration:none;font-size:15px;">👍</a>
-      &nbsp;
-      <a href="mailto:${FEEDBACK_EMAIL}?subject=Feedback: not useful&body=This issue wasn't useful. Here's why:" style="color:${BODY_TEXT};text-decoration:none;font-size:15px;">👎</a>
-    </p>
-    <p style="margin:0 0 10px;font-family:${SANS};font-size:12px;color:${MUTED};line-height:1.6;">One AI story every morning at 6:14 AM IST. Made with care in Bengaluru.</p>
-    <p style="margin:0;font-family:${SANS};font-size:12px;color:${MUTED};">
-      <a href="${unsubscribeUrl}" style="color:${MUTED};text-decoration:underline;">Unsubscribe</a>
-      &nbsp;·&nbsp;
-      <a href="https://getaisignal.org" style="color:${MUTED};text-decoration:underline;">getaisignal.org</a>
+    <p style="margin:14px 0 0 0; font-family:${SANS}; font-size:11px; line-height:1.6; color:${FAINT};">
+      <a href="https://getaisignal.org/manage" style="color:${FAINT}; text-decoration:underline;">Manage preferences</a>&nbsp;&middot;&nbsp;<a href="${unsubscribeUrl}" style="color:${FAINT}; text-decoration:underline;">Unsubscribe</a>
+      <br>You're receiving this because you signed up at getaisignal.org
     </p>
   </td></tr>`
 }
@@ -152,98 +361,72 @@ export function welcomeEmail(
 
   const subject   = `You're in. First signal tomorrow at 6:14 AM IST.`
   const preheader = `One AI story. Every morning. For people who ship.`
+  const today     = new Date().toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' })
 
-  const html = wrap(preheader, `
-    ${headerRow()}
-
-    <tr><td style="padding-bottom:8px;">
-      <h1 style="margin:0;font-family:${SERIF};font-size:30px;font-weight:400;letter-spacing:-0.025em;color:${BLACK};line-height:1.2;">You're in.</h1>
+  const body = `
+    ${sMasthead(null, today)}
+    <tr><td class="px" style="padding:26px 44px 0 44px;">
+      <h1 class="h-headline" style="margin:0; font-family:${SERIF}; font-weight:700; font-size:31px; line-height:1.2; letter-spacing:-0.3px; color:${INK};">You're in.</h1>
     </td></tr>
-    <tr><td style="padding-bottom:28px;">
-      <p style="margin:0;font-family:${SANS};font-size:17px;color:${MUTED_DARK};line-height:1.65;">
-        First signal lands tomorrow at <strong style="color:${BLACK};">6:14 AM IST.</strong> Here's what to expect.
-      </p>
+    <tr><td class="px" style="padding:16px 44px 0 44px;">
+      <p style="margin:0; font-family:${SERIF}; font-size:18px; line-height:1.55; color:${BODY_CLR};">First signal lands tomorrow at <strong style="color:${INK};">6:14 AM IST.</strong> One AI story, every morning — the one worth acting on.</p>
     </td></tr>
-
-    ${divider(0, 4)}
-
-    <tr><td style="padding:22px 0 6px;">
-      <p style="margin:0;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:${MUTED};">WHAT YOU GET EVERY MORNING</p>
-    </td></tr>
-
-    <tr><td style="padding:14px 0;border-top:1px solid ${BORDER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">01</span></td>
-        <td style="padding-left:12px;">
-          <p style="margin:0 0 3px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">THE SIGNAL</p>
-          <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">One AI story — the one that forces a decision. Not 10 headlines. Not a roundup.</p>
+    <tr><td class="px" style="padding:28px 44px 0 44px;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${FILL}; border:1px solid ${LINE_2}; border-radius:6px;"><tr>
+        <td style="padding:20px 22px 22px 22px;">
+          <div style="font-family:${MONO}; font-size:11px; letter-spacing:2px; color:${META}; text-transform:uppercase; font-weight:700;">What you get every morning</div>
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-top:14px;">
+            <tr>
+              <td valign="top" width="26" style="font-family:${MONO}; font-size:13px; font-weight:700; color:${INDIGO}; padding-top:1px;">01</td>
+              <td style="font-family:${SANS}; font-size:15px; line-height:1.5; color:${INK}; font-weight:600; padding-bottom:9px;">The Signal — one AI story that forces a decision</td>
+            </tr>
+            <tr>
+              <td valign="top" width="26" style="font-family:${MONO}; font-size:13px; font-weight:700; color:${INDIGO}; padding-top:1px;">02</td>
+              <td style="font-family:${SANS}; font-size:15px; line-height:1.5; color:${INK}; font-weight:600; padding-bottom:9px;">Why it matters — the implication you can't ignore</td>
+            </tr>
+            <tr>
+              <td valign="top" width="26" style="font-family:${MONO}; font-size:13px; font-weight:700; color:${INDIGO}; padding-top:1px;">03</td>
+              <td style="font-family:${SANS}; font-size:15px; line-height:1.5; color:${INK}; font-weight:600;">The Move — what to do in the next 48 hours</td>
+            </tr>
+          </table>
+          <div style="border-top:1px dashed ${LINE_2}; margin-top:15px; font-size:0; line-height:0;">&nbsp;</div>
+          <p style="margin:13px 0 0 0; font-family:${MONO}; font-size:11px; line-height:1.55; letter-spacing:0.5px; color:${META}; text-transform:uppercase;">4 minutes. Every morning. In your inbox by 6:14 AM IST.</p>
         </td>
       </tr></table>
     </td></tr>
-
-    <tr><td style="padding:14px 0;border-top:1px solid ${BORDER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">02</span></td>
-        <td style="padding-left:12px;">
-          <p style="margin:0 0 3px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">THE NUMBER</p>
-          <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">The one figure that changes your assumptions. With the context to know what to do about it.</p>
-        </td>
-      </tr></table>
+    <tr><td class="px" align="center" style="padding:20px 44px 0 44px;">
+      <a href="https://getaisignal.org" class="cta-btn" style="display:inline-block; background-color:${BUTTON}; color:${WHITE}; font-family:${SANS}; font-size:15px; font-weight:700; text-decoration:none; padding:15px 34px; border-radius:5px; letter-spacing:0.2px;">Read today's signal&nbsp;&#8594;</a>
     </td></tr>
-
-    <tr><td style="padding:14px 0 28px;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding-top:2px;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">03</span></td>
-        <td style="padding-left:12px;">
-          <p style="margin:0 0 3px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:${MUTED};">THE MOVE</p>
-          <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">What to do in the next 48 hours. A concrete action — not a reading list.</p>
-        </td>
-      </tr></table>
-    </td></tr>
-
-    <tr><td style="padding:22px 0 18px;">
-      <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.7;">
-        While you wait — today's signal is already live. Something shifted overnight that most teams haven't seen yet.
-      </p>
-    </td></tr>
-
-    ${ctaButton('https://getaisignal.org', "Read today's signal →")}
-
-    ${surajSignoff()}
-
-    <tr><td style="padding:16px 0 4px;">
-      <p style="margin:0;font-family:${SANS};font-size:14px;color:${MUTED_DARK};line-height:1.65;">
-        <strong>P.S.</strong> Reply to this email. I read every message — and it actually shapes what gets covered.
-      </p>
-    </td></tr>
-
-    ${footerRow(unsubscribeUrl)}
-  `)
+    ${sSurajTake()}
+    ${sTipJar()}
+    ${sPS('Reply to this email anytime. I read every message — it shapes what gets covered.')}
+    ${sFooter(unsubscribeUrl)}`
 
   const text = `AI SIGNAL
 ${'─'.repeat(48)}
 You're in.
 
-First signal lands tomorrow at 6:14 AM IST.
+First signal lands tomorrow at 6:14 AM IST. One AI story, every morning — the one worth acting on.
 
 WHAT YOU GET EVERY MORNING
-01 — THE SIGNAL: One AI story that forces a decision. Not 10 headlines.
-02 — THE NUMBER: The one figure that changes your assumptions.
-03 — THE MOVE: What to do in the next 48 hours. A concrete action.
+01 — The Signal: one AI story that forces a decision
+02 — Why it matters: the implication you can't ignore
+03 — The Move: what to do in the next 48 hours
 
-While you wait — today's signal is live: https://getaisignal.org
+4 minutes. Every morning. In your inbox by 6:14 AM IST.
+
+Read today's signal: https://getaisignal.org
 
 — Suraj
-Building AI Signal from Bengaluru. I read every AI story so you don't have to.
+Founder · writes this solo
 
-P.S. Reply to this email. I read every message.
+P.S. Reply to this email anytime. I read every message — it shapes what gets covered.
 
 ${'─'.repeat(48)}
-AI Signal · getaisignal.org · 6:14 AM IST every morning
-Made with care in Bengaluru.
+Made with care in Bengaluru · 06:14 IST, every morning
 Unsubscribe: ${unsubscribeUrl}`
 
-  return { subject, html, text }
+  return { subject, html: wrap(preheader, body), text }
 }
 
 // ─── Daily newsletter email ────────────────────────────────────────────────────
@@ -263,49 +446,32 @@ export function dailyNewsletterEmail(
   subscriberCount?: number
 ): { subject: string; html: string; text: string } {
 
-  const articleUrl  = `https://getaisignal.org/signal/${issueNumber}`
-  const ext         = story.extended_data
-  const categoryTag = CATEGORY_LABELS[story.category] ?? story.category.toUpperCase()
+  const articleUrl = `https://getaisignal.org/signal/${issueNumber}`
+  const ext        = story.extended_data
 
-  // Subject: editorial_take is punchier than the headline
-  const subject = story.editorial_take ?? story.headline
-
-  // Preview cards (needed early for preheader)
   const cards       = ext?.preview_cards ?? []
-  const numbersCard = cards.find(c => c.label === 'By the numbers')
   const mattersCard = cards.find(c => c.label === 'Why it matters')
   const moveCard    = cards.find(c => c.label === 'The move')
+  const numbersCard = cards.find(c => c.label === 'By the numbers')
 
-  // Preheader: "The move: {action}" — urgency complement to curiosity subject
-  const ticker    = ext?.tickers?.[0]
+  const reactions = ext?.reactions ?? []
+  const insights  = ext?.insights_strip ?? []
+
+  const subject   = story.headline
   const preheader = moveCard?.value
-    ? `The move: ${moveCard.value}`
-    : ticker
-      ? `${ticker.value} — ${ticker.label.replace(/ (today|this week|this month)$/i, '')}`
-      : story.headline
+    ? `The move: ${moveCard.value.slice(0, 90)}`
+    : ext?.one_breath?.text
+    ? ext.one_breath.text.slice(0, 110)
+    : story.headline
 
-  // Summary: strip markdown, split hook + implication
-  const summaryClean = story.summary.replace(/\*\*(.*?)\*\*/g, '$1')
-  const sentences    = summaryClean.split(/(?<=[.!?])\s+/)
-  const hook         = sentences[0] ?? summaryClean
-  const implication  = sentences[1] ?? null
+  // Why it matters — compute sub-headline and body separately to avoid repeat
+  const rawMatters   = mattersCard?.value ?? ''
+  const whySubHead   = ext?.matters_headline
+    ?? (rawMatters ? rawMatters.split(/(?<=[.!?])\s+/)[0].trim() : '')
+  const whyBody      = ext?.matters_headline
+    ? rawMatters
+    : rawMatters.split(/(?<=[.!?])\s+/).slice(1).join(' ').trim()
 
-  // Personal opener — one_breath or insights_strip "What changed"
-  const opener = ext?.one_breath?.text?.replace(/\*\*(.*?)\*\*/g, '$1')
-    ?? ext?.insights_strip?.[0]?.text?.replace(/==(.*?)==/g, '$1').trim()
-    ?? null
-
-  // All tickers — ticker[0] is featured, [1] and [2] are secondary strip
-  const tickers   = ext?.tickers ?? []
-  const statValue = ticker?.value ?? null
-  const statLabel = ticker ? `${ticker.change.text} · ${ticker.label}` : null
-  const statNote  = ticker?.detail ?? null
-
-  // Open question — cliffhanger BEFORE CTA drives clicks
-  const openQuestion = ext?.open_question ?? null
-
-
-  // Category-specific P.S.
   const PS_LINES: Record<string, string> = {
     models:   `Teams who act on this today have a head start. Forward it to one engineer before standup.`,
     tools:    `The gap between builders who've tried this and those who haven't is growing. Forward to one person now.`,
@@ -313,166 +479,47 @@ export function dailyNewsletterEmail(
     policy:   `Forward this to your legal or compliance lead. If they haven't seen it, they're behind.`,
     research: `Research-to-product lag is a real competitive gap. The teams reading this now are 2 weeks ahead.`,
   }
-  const psLine = PS_LINES[story.category]
-    ?? `Forward this to one person who should see it. They can subscribe at <a href="https://getaisignal.org" style="color:${BLUE};text-decoration:none;">getaisignal.org</a>`
+  const psText = PS_LINES[story.category]
+    ?? `Forward this to one person who should see it — they can subscribe at getaisignal.org`
 
-  const html = wrap(preheader, `
-    ${headerRow(dateStr)}
+  const body = `
+    ${sMasthead(issueNumber, dateStr, story.read_minutes)}
+    ${sCategoryBadge(story.category)}
+    ${sHeadline(story.headline)}
+    ${ext?.one_breath?.text ? sOneBreath(ext.one_breath.text) : ''}
+    ${sTheSignal(story.summary)}
+    ${insights.length > 0 ? sStatsGrid(insights) : ''}
+    ${(whySubHead && whyBody) ? sWhyItMatters(whySubHead, whyBody) : whySubHead ? sWhyItMatters(whySubHead, rawMatters) : ''}
+    ${story.editorial_take ? sEditorsTake(story.editorial_take) : ''}
+    ${moveCard?.value ? sPlaybook(moveCard.value) : ''}
+    ${sCtaButton(articleUrl)}
+    ${reactions.length > 0 ? sCounterView(reactions) : sHairline(32)}
+    ${sSurajTake(ext?.suraj_note ?? undefined, story.category)}
+    ${sTipJar()}
+    ${sPS(psText)}
+    ${sFooter(unsubscribeUrl)}`
 
-    <!-- Category tag — pill background for visual weight -->
-    <tr><td style="padding-bottom:18px;">
-      <span style="display:inline-block;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.14em;background:#EEF3FF;color:${BLUE};padding:4px 10px;border-radius:2px;">${categoryTag}</span>
-      <span style="font-family:${MONO};font-size:10px;color:${MUTED};letter-spacing:0.1em;"> &nbsp;· ${story.read_minutes} MIN</span>
-    </td></tr>
-
-    <!-- One-breath opener — sets context before the headline -->
-    ${opener ? `<tr><td style="padding-bottom:14px;">
-      <p style="margin:0;font-family:${SANS};font-size:15px;color:${MUTED};line-height:1.65;font-style:italic;">${opener}</p>
-    </td></tr>` : ''}
-
-    <!-- Headline — commanding, editorial -->
-    <tr><td style="padding-bottom:18px;">
-      <h1 style="margin:0;font-family:${SERIF};font-size:30px;font-weight:400;letter-spacing:-0.03em;color:${BLACK};line-height:1.2;">${story.headline}</h1>
-    </td></tr>
-
-    <!-- Summary hook -->
-    <tr><td style="padding-bottom:${implication ? '8' : '22'}px;">
-      <p style="margin:0;font-family:${SANS};font-size:17px;color:${BODY_TEXT};line-height:1.65;">${hook}</p>
-    </td></tr>
-    ${implication ? `<tr><td style="padding-bottom:24px;">
-      <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.65;">${implication}</p>
-    </td></tr>` : ''}
-
-    <!-- The number — featured stat + secondary ticker strip inside same callout -->
-    ${statValue ? `
-    ${divider(4, 8)}
-    <tr><td style="padding-bottom:16px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr><td style="background:#EEF3FF;border-left:3px solid ${BLUE};padding:18px 22px;">
-          <p style="margin:0 0 10px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${BLUE};">THE NUMBER</p>
-          <p style="margin:0 0 6px;font-family:${SERIF};font-size:44px;font-weight:400;color:${BLACK};line-height:1.0;">${statValue}</p>
-          ${statLabel ? `<p style="margin:0 0 6px;font-family:${MONO};font-size:11px;color:${MUTED};letter-spacing:0.04em;">${statLabel}</p>` : ''}
-          ${statNote ? `<p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.6;">${statNote}</p>` : ''}
-          ${tickers.length > 1 ? `
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px;border-top:1px solid rgba(0,71,255,0.15);">
-            <tr>
-              ${tickers.slice(1, 3).map(t => `<td style="padding-top:12px;padding-right:20px;width:50%;">
-                <p style="margin:0 0 2px;font-family:${SERIF};font-size:24px;color:${BLACK};line-height:1.0;">${t.value}</p>
-                <p style="margin:0 0 2px;font-family:${MONO};font-size:10px;color:${MUTED};letter-spacing:0.04em;">${t.change.text} · ${t.label}</p>
-                <p style="margin:0;font-family:${SANS};font-size:12px;color:${MUTED_DARK};line-height:1.4;">${t.detail}</p>
-              </td>`).join('')}
-            </tr>
-          </table>` : ''}
-        </td></tr>
-      </table>
-    </td></tr>` : ''}
-
-    <!-- Inside this signal — 3 color-coded callout cards: amber / blue / green -->
-    ${(numbersCard || mattersCard || moveCard) ? `
-    ${divider(18, 18)}
-    <tr><td style="padding-bottom:16px;">
-      <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">INSIDE THIS SIGNAL</p>
-    </td></tr>
-    ${numbersCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:#D97706;">01</span></td>
-        <td style="padding:0 0 0 12px;">
-          <div style="border-left:3px solid #D97706;background:#FFFBF0;padding:12px 16px;margin:8px 0;">
-            <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#D97706;">By the numbers</p>
-            <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${numbersCard.value}</p>
-          </div>
-        </td>
-      </tr></table>
-    </td></tr>` : ''}
-    ${mattersCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:${BLUE};">02</span></td>
-        <td style="padding:0 0 0 12px;">
-          <div style="border-left:3px solid ${BLUE};background:#EEF3FF;padding:12px 16px;margin:8px 0;">
-            <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:${BLUE};">Why it matters</p>
-            <p style="margin:0;font-family:${SANS};font-size:17px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${mattersCard.value}</p>
-          </div>
-        </td>
-      </tr></table>
-    </td></tr>` : ''}
-    ${moveCard ? `<tr><td style="padding:0;border-top:1px solid ${BORDER};border-bottom:1px solid ${BORDER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="28" valign="top" style="padding:14px 0;"><span style="font-family:${MONO};font-size:11px;font-weight:700;color:#00923B;">03</span></td>
-        <td style="padding:0 0 0 12px;">
-          <div style="border-left:3px solid #00923B;background:#F0FFF4;padding:12px 16px;margin:8px 0;">
-            <p style="margin:0 0 5px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:#00923B;">The move</p>
-            <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.6;font-weight:500;">${moveCard.value}</p>
-          </div>
-        </td>
-      </tr></table>
-    </td></tr>` : ''}` : ''}
-
-
-    <!-- Editorial take — AI Signal's sharpest line, styled as pull quote -->
-    ${story.editorial_take ? `
-    ${divider(20, 16)}
-    <tr><td style="padding-left:16px;border-left:3px solid ${BLUE};">
-      <p style="margin:0 0 7px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${BLUE};">AI SIGNAL TAKE</p>
-      <p style="margin:0;font-family:${SERIF};font-size:20px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${story.editorial_take}"</p>
-    </td></tr>` : ''}
-
-    <!-- Open question — callout box before CTA, visual cliffhanger -->
-    ${openQuestion ? `
-    ${divider(22, 12)}
-    <tr><td style="padding-bottom:16px;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0">
-        <tr><td style="background:#F5F5F0;border-left:3px solid #333333;padding:18px 22px;">
-          <p style="margin:0 0 10px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:#333333;">ONE OPEN QUESTION</p>
-          <p style="margin:0;font-family:${SERIF};font-size:22px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${openQuestion}"</p>
-        </td></tr>
-      </table>
-    </td></tr>` : `<tr><td style="padding-top:22px;"></td></tr>`}
-
-    <!-- CTA -->
-    ${ctaButton(articleUrl, `Read the full signal &nbsp;— ${story.read_minutes} min →`)}
-
-    <!-- Suraj personal sign-off -->
-    ${divider(14, 16)}
-    ${surajSignoff()}
-
-    <!-- P.S. — category-specific urgency -->
-    <tr><td style="padding:14px 0 4px;">
-      <p style="margin:0;font-family:${SANS};font-size:14px;color:${MUTED_DARK};line-height:1.65;">
-        <strong>P.S.</strong> ${psLine}
-      </p>
-    </td></tr>
-
-    ${footerRow(unsubscribeUrl, subscriberCount)}
-  `)
-
-  const psLineText = PS_LINES[story.category]
-    ?? `Forward this to one person who should see it. They can subscribe at getaisignal.org`
-
-  const text = `AI SIGNAL · ${dateStr}
+  const text = `AI SIGNAL — Signal #${issueNumber}
+${dateStr} · ${story.read_minutes} min read
 ${'─'.repeat(48)}
-[${categoryTag}] ${story.read_minutes} MIN
-${opener ? `\n${opener}\n` : ''}
+[${story.category.toUpperCase()}]
+
 ${story.headline}
-
-${hook}${implication ? `\n${implication}` : ''}
-${statValue ? `\nTHE NUMBER: ${statValue}${statLabel ? ` — ${statLabel}` : ''}${statNote ? `\n${statNote}` : ''}` : ''}
-
-INSIDE THIS SIGNAL
-${numbersCard ? `01 By the numbers: ${numbersCard.value}` : ''}
-${mattersCard ? `02 Why it matters: ${mattersCard.value}` : ''}
-${moveCard    ? `03 The move:       ${moveCard.value}` : ''}
-${openQuestion ? `\nONE OPEN QUESTION:\n"${openQuestion}"\n` : ''}
-Read the full signal (${story.read_minutes} min):
+${ext?.one_breath?.text ? `\nIN ONE BREATH:\n${ext.one_breath.text}\n` : ''}
+THE SIGNAL:
+${story.summary}
+${insights.length > 0 ? `\nAT A GLANCE:\n${insights.map(i => `${i.icon} ${i.label}: ${i.text}`).join('\n')}\n` : ''}${whySubHead ? `\nWHY IT MATTERS:\n${whySubHead}${whyBody ? `\n${whyBody}` : ''}\n` : ''}${story.editorial_take ? `\nEDITOR'S TAKE:\n${story.editorial_take}\n` : ''}${moveCard?.value ? `\nTHE MOVE:\n${moveCard.value}\n` : ''}
+Read the full analysis (${story.read_minutes} min):
 ${articleUrl}
-
+${reactions.length > 0 ? `\n${'─'.repeat(48)}\nCOUNTER VIEW:\n${reactions.slice(0, 3).map(r => `"${r.quote}"\n— ${r.name}, ${r.role}`).join('\n\n')}\n` : ''}
 ${'─'.repeat(48)}
 — Suraj
-Building AI Signal from Bengaluru. I read every AI story so you don't have to — and only send the one worth acting on.
+Founder · writes this solo
 
-P.S. ${psLineText}
+P.S. ${psText}
 
-${subscriberCount ? `You're one of ${subscriberCount.toLocaleString()}+ subscribers.\n` : ''}Made with care in Bengaluru. · getaisignal.org
-Unsubscribe: ${unsubscribeUrl}`
+Made with care in Bengaluru · getaisignal.org
+${subscriberCount ? `You're one of ${subscriberCount.toLocaleString()}+ subscribers.\n` : ''}Unsubscribe: ${unsubscribeUrl}`
 
-  return { subject, html, text }
+  return { subject, html: wrap(preheader, body), text }
 }

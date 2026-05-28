@@ -166,4 +166,5 @@ export type ExtendedData = {
   replaces?: ReplacesData;
   readiness_level?: ReadinessLevel;
   signal_boost?: SignalBoost;
+  suraj_note?: string;
 };
