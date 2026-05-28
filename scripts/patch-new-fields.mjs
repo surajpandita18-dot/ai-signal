@@ -17,14 +17,13 @@ const SINGLE_ID = (() => {
   return idx !== -1 ? process.argv[idx + 1] : null
 })()
 
-const sb = createClient(
-  'https://xswfsnnghloslzynkwni.supabase.co',
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd2Zzbm5naGxvc2x6eW5rd25pIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzE5NzgxOCwiZXhwIjoyMDkyNzczODE4fQ.P0ghCk98rYuZFq_XAInyVbQat-xW_BexDBhLnBFIMao'
-)
+const SB_URL = process.env.NEXT_PUBLIC_SUPABASE_URL
+const SB_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY
+if (!SB_URL || !SB_KEY) { console.error('Set NEXT_PUBLIC_SUPABASE_URL and SUPABASE_SERVICE_ROLE_KEY'); process.exit(1) }
 
-const claude = new Anthropic({
-  apiKey: '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',
-})
+const sb = createClient(SB_URL, SB_KEY)
+
+const claude = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY })
 
 // ─── Fetch stories ──────────────────────────────────────────────────────────────
 
