@@ -159,12 +159,6 @@ function FeedbackVote({ signalNumber }: { signalNumber: number }) {
 
 // ---------- ActionChecklist ----------
 
-const ACTION_TAGS = [
-  { label: 'Run',   cls: 'run',   icon: '▶' },
-  { label: 'Flag',  cls: 'flag',  icon: '⚑' },
-  { label: 'Check', cls: 'check', icon: '✓' },
-] as const
-
 function ActionChecklist({ items, signalNumber }: { items: string[]; signalNumber: number }) {
   const storageKey = `action-done-${signalNumber}`
   const [doneItems, setDoneItems] = useState<Set<number>>(() => {
@@ -195,7 +189,6 @@ function ActionChecklist({ items, signalNumber }: { items: string[]; signalNumbe
       <ul className="action-list">
         {items.map((item, i) => {
           const done = doneItems.has(i)
-          const tag = ACTION_TAGS[i % 3]!
           return (
             <li
               key={i}
@@ -206,7 +199,6 @@ function ActionChecklist({ items, signalNumber }: { items: string[]; signalNumbe
                 <span>{i + 1}</span>
               </span>
               <div className="action-content">
-                <span className={`action-tag ${tag.cls}`}>{tag.icon} {tag.label}</span>
                 <div className="action-text">{renderAction(item)}</div>
               </div>
             </li>
