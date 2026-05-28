@@ -295,7 +295,8 @@ export function dailyNewsletterEmail(
     ?? ext?.insights_strip?.[0]?.text?.replace(/==(.*?)==/g, '$1').trim()
     ?? null
 
-  // Key stat — displayed typographically, no colored box
+  // All tickers — ticker[0] is featured, [1] and [2] are secondary strip
+  const tickers   = ext?.tickers ?? []
   const statValue = ticker?.value ?? null
   const statLabel = ticker ? `${ticker.change.text} · ${ticker.label}` : null
   const statNote  = ticker?.detail ?? null
@@ -342,7 +343,7 @@ export function dailyNewsletterEmail(
       <p style="margin:0;font-family:${SANS};font-size:16px;color:${BODY_TEXT};line-height:1.65;">${implication}</p>
     </td></tr>` : ''}
 
-    <!-- The number — callout block with left border and tinted background -->
+    <!-- The number — featured stat + secondary ticker strip inside same callout -->
     ${statValue ? `
     ${divider(4, 8)}
     <tr><td style="padding-bottom:16px;">
@@ -352,6 +353,16 @@ export function dailyNewsletterEmail(
           <p style="margin:0 0 6px;font-family:${SERIF};font-size:44px;font-weight:400;color:${BLACK};line-height:1.0;">${statValue}</p>
           ${statLabel ? `<p style="margin:0 0 6px;font-family:${MONO};font-size:11px;color:${MUTED};letter-spacing:0.04em;">${statLabel}</p>` : ''}
           ${statNote ? `<p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.6;">${statNote}</p>` : ''}
+          ${tickers.length > 1 ? `
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin-top:14px;border-top:1px solid rgba(0,71,255,0.15);">
+            <tr>
+              ${tickers.slice(1, 3).map(t => `<td style="padding-top:12px;padding-right:20px;width:50%;">
+                <p style="margin:0 0 2px;font-family:${SERIF};font-size:24px;color:${BLACK};line-height:1.0;">${t.value}</p>
+                <p style="margin:0 0 2px;font-family:${MONO};font-size:10px;color:${MUTED};letter-spacing:0.04em;">${t.change.text} · ${t.label}</p>
+                <p style="margin:0;font-family:${SANS};font-size:12px;color:${MUTED_DARK};line-height:1.4;">${t.detail}</p>
+              </td>`).join('')}
+            </tr>
+          </table>` : ''}
         </td></tr>
       </table>
     </td></tr>` : ''}
@@ -396,6 +407,14 @@ export function dailyNewsletterEmail(
       </tr></table>
     </td></tr>` : ''}` : ''}
 
+
+    <!-- Editorial take — AI Signal's sharpest line, styled as pull quote -->
+    ${story.editorial_take ? `
+    ${divider(20, 16)}
+    <tr><td style="padding-left:16px;border-left:3px solid ${BLUE};">
+      <p style="margin:0 0 7px;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${BLUE};">AI SIGNAL TAKE</p>
+      <p style="margin:0;font-family:${SERIF};font-size:20px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${story.editorial_take}"</p>
+    </td></tr>` : ''}
 
     <!-- Open question — callout box before CTA, visual cliffhanger -->
     ${openQuestion ? `
