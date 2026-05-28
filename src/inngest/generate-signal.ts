@@ -760,9 +760,25 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
       { "day": "TUE", "date": "Apr 29", "text": "Headline-style story angle that follows logically from today's story", "status": "lead_candidate", "status_detail": "What signal you are watching to confirm this story develops" },
       { "day": "WED", "date": "Apr 30", "text": "Second follow-on angle — second-order consequence of today's story", "status": "sealed" },
       { "day": "THU", "date": "May 1", "text": "Third follow-on angle — broader market or competitive implication", "status": "sealed" }
-    ]
+    ],
+    "open_question": "The single unresolved question that changes everything about this story. Forward-looking, specific to this signal. Must feel genuinely uncertain — not rhetorical. Target: 12-20 words. Hard cap: 25 words. Must end with ?"
+    [IF category=tools, also add: "replaces": { "yes": "...", "not_yet": "..." }]
+    [IF category=research, also add: "readiness_level": "lab|paper|prototype|product|deployed"]
   }
 }
+
+CATEGORY-SPECIFIC FIELDS — generate these only when category matches:
+
+IF category = "tools":
+  Add to extended_data: "replaces": { "yes": "What workflow or behavior this tool concretely replaces. Be specific — name the tool or process. 8-15 words.", "not_yet": "The specific gap that keeps the old way alive — what it still can't do. 8-15 words." }
+
+IF category = "research":
+  Add to extended_data: "readiness_level": "One of: lab | paper | prototype | product | deployed. lab=initial experiments only, paper=published findings but no build yet, prototype=working demo exists, product=limited/beta release, deployed=in production at scale."
+
+OPEN_QUESTION RULES:
+- Must be unique to THIS story — if it could appear unchanged on any AI article, rewrite it.
+- Name the specific entity, capability, or outcome this story hinges on.
+- Do NOT use generic templates like "Will X succeed?" or "How will Y respond?"
 
 EXTENDED_DATA FALLBACK RULES — apply when story data is thin or the default structure does not fit:
 - primary_chart.type = "quote_callout" when there is no comparison, trajectory, or capital flow data. LAYER 4: quote_callout data MUST be an object, NOT an array: { "quote": "15-25 word single sentence — use editorial_take or pull_quote", "attribution": "Name · Role · Affiliation" }. If no good quote is available, set primary_chart to null rather than generating an empty quote_callout. NEVER omit primary_chart — it is required unless explicitly null.
