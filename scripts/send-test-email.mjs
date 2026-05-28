@@ -193,8 +193,7 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
   const statValue = ticker?.value ?? null
   const statLabel = ticker ? `${ticker.change?.text ?? ''} · ${ticker.label}` : null
   const statNote  = ticker?.detail ?? null
-  const openQ          = ext.open_question ?? null
-  const insightsStrip  = ext.insights_strip ?? []
+  const openQ = ext.open_question ?? null
   const articleUrl = `https://getaisignal.org/signal/${issueNumber}`
 
   const opener = ext.one_breath?.text?.replace(/\*\*(.*?)\*\*/g, '$1')
@@ -295,25 +294,6 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     </tr></table>
   </td></tr>` : ''}` : ''}
 
-  <!-- THE CONTEXT — insights strip -->
-  ${insightsStrip.length > 0 ? `
-  ${divider(18, 18)}
-  <tr><td style="padding-bottom:16px;">
-    <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">THE CONTEXT</p>
-  </td></tr>
-  ${insightsStrip.map(cell => `
-  <tr><td style="padding:11px 0;border-top:1px solid ${BORDER};">
-    <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-      <td width="24" valign="top" style="padding-top:1px;">
-        <span style="font-family:${MONO};font-size:13px;color:${MUTED};">${cell.icon}</span>
-      </td>
-      <td style="padding-left:10px;">
-        <p style="margin:0 0 3px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:${MUTED_DARK};">${cell.label}</p>
-        <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">${(cell.text||'').replace(/==(.*?)==/g,'$1')}</p>
-      </td>
-    </tr></table>
-  </td></tr>`).join('')}
-  ` : ''}
 
   <!-- ONE OPEN QUESTION — callout box before CTA -->
   ${openQ ? `

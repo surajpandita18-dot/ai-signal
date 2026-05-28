@@ -454,7 +454,20 @@ export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before
 10. Story shape: Have I included \`stats\` or \`action_items\` entries that don't genuinely satisfy their rules? If yes, remove or empty those arrays.
 11. \`signal_boost\` quality: If type is "prompt" — is the prompt immediately runnable by pasting into Claude/ChatGPT? No vague asks ("tell me about X"). If type is "quote" — is this a REAL quote by a REAL named person? If you cannot verify it is real, switch to type="fact". If type is "fact" — is it surprising, specific, and does it include a number or temporal anchor?
 12. \`pick_reason\`: Does it name the Decision-Forcing Tier (A, B, C, or D), the specific criterion the winner satisfied, and why the strongest alternative did NOT win? A generic "most relevant story" response fails this check.
-13. \`reactions\`: Do at least 2 of the 3 quotes add a perspective NOT already stated in the main article body? If a quote is just the article's main claim in different words, rewrite it with a different angle, stake, or consequence.`
+13. \`reactions\`: Do at least 2 of the 3 quotes add a perspective NOT already stated in the main article body? If a quote is just the article's main claim in different words, rewrite it with a different angle, stake, or consequence.
+
+EMAIL COHERENCE SELF-CHECK — Read the assembled email sections in order, like a subscriber would. This is a holistic pass. If ANY check below fails, revise before returning.
+
+14. REPEAT TEST — Read these in sequence: \`one_breath\` → \`summary\` sentence 1 → \`preview_cards[0]\` (By the numbers) → \`preview_cards[1]\` (Why it matters) → \`preview_cards[2]\` (The move) → \`open_question\`. Does any field say the same thing as a previous field in different words? Specific failure cases:
+    (a) \`one_breath\` vs \`summary\` sentence 1: if both state the same event (WHAT happened), rewrite \`one_breath\` to state the SO WHAT — the consequence or the broken assumption, not the event itself.
+    (b) \`preview_cards[2]\` (The move) vs \`insights_strip[2]\` (Move by): if they prescribe the same action or use overlapping verbs, rewrite Move by to cover a different time-horizon, a different stakeholder, or the cost of NOT acting.
+    (c) \`preview_cards[0]\` (By the numbers) vs \`tickers[0]\`: if they cite the exact same number, rewrite preview_cards[0] to give a different angle — percentage change instead of absolute, comparative figure, or downstream consequence number.
+
+15. FLOW TEST — Mentally walk through: opener → headline → summary → THE NUMBER → card 01 → card 02 → card 03 → open question. Ask: does each step add genuinely new information? Is the reader pulled forward or stalled? If any section repeats what came before it, it is broken — revise it.
+
+16. CLIFFHANGER TEST — \`open_question\`: is the answer to this question already implied or obvious from the email content above it? If yes, it is not a cliffhanger — it is padding. Rewrite as a question whose answer is genuinely unknown and requires reading the full article to resolve.
+
+17. TONE CONSISTENCY — Does the email read with one consistent voice throughout — signal-editor, not a listicle? If any section switches to listicle phrasing ("here are X things"), promotional phrasing ("you won't believe"), or vague hedging ("it remains to be seen"), rewrite it in declarative editorial voice.`
 
 const JSON_SCHEMA = `{
   "category": "models"|"tools"|"business"|"policy"|"research",

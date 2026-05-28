@@ -303,8 +303,6 @@ export function dailyNewsletterEmail(
   // Open question — cliffhanger BEFORE CTA drives clicks
   const openQuestion = ext?.open_question ?? null
 
-  // Insights strip — "What changed / Who's affected / Move by"
-  const insightsStrip = ext?.insights_strip ?? []
 
   // Category-specific P.S.
   const PS_LINES: Record<string, string> = {
@@ -398,25 +396,6 @@ export function dailyNewsletterEmail(
       </tr></table>
     </td></tr>` : ''}` : ''}
 
-    <!-- The context — insights strip: what changed / who's affected / move by -->
-    ${insightsStrip.length > 0 ? `
-    ${divider(18, 18)}
-    <tr><td style="padding-bottom:16px;">
-      <p style="margin:0;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;color:#222222;">THE CONTEXT</p>
-    </td></tr>
-    ${insightsStrip.map(cell => `
-    <tr><td style="padding:11px 0;border-top:1px solid ${BORDER};">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-        <td width="24" valign="top" style="padding-top:1px;">
-          <span style="font-family:${MONO};font-size:13px;color:${MUTED};">${cell.icon}</span>
-        </td>
-        <td style="padding-left:10px;">
-          <p style="margin:0 0 3px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;color:${MUTED_DARK};">${cell.label}</p>
-          <p style="margin:0;font-family:${SANS};font-size:15px;color:${BODY_TEXT};line-height:1.55;">${cell.text.replace(/==(.*?)==/g, '$1')}</p>
-        </td>
-      </tr></table>
-    </td></tr>`).join('')}
-    ` : ''}
 
     <!-- Open question — callout box before CTA, visual cliffhanger -->
     ${openQuestion ? `
