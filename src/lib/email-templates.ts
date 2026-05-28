@@ -264,11 +264,20 @@ export function dailyNewsletterEmail(
   // Fallback to headline if not available
   const subject = story.editorial_take ?? story.headline
 
-  // Preheader: first ticker value + label — the key number as inbox hook
+  // Preview cards (needed early for preheader)
+  const cards       = ext?.preview_cards ?? []
+  const numbersCard = cards.find(c => c.label === 'By the numbers')
+  const mattersCard = cards.find(c => c.label === 'Why it matters')
+  const moveCard    = cards.find(c => c.label === 'The move')
+
+  // Preheader: "The move: {action}" creates urgency and complements editorial_take subject
+  // Falls back to ticker number (inbox hook) if no move card
   const ticker   = ext?.tickers?.[0]
-  const preheader = ticker
-    ? `${ticker.value} — ${ticker.label.replace(/ (today|this week|this month)$/i, '')}`
-    : ext?.preview_cards?.find(c => c.label === 'By the numbers')?.value ?? story.headline
+  const preheader = moveCard?.value
+    ? `The move: ${moveCard.value}`
+    : ticker
+      ? `${ticker.value} — ${ticker.label.replace(/ (today|this week|this month)$/i, '')}`
+      : story.headline
 
   // Hook: strip markdown bold, split into hook + implication
   const summaryClean = story.summary.replace(/\*\*(.*?)\*\*/g, '$1')
@@ -276,19 +285,30 @@ export function dailyNewsletterEmail(
   const hook         = sentences[0] ?? summaryClean
   const implication  = sentences[1] ?? null
 
+  // Personal opener — one_breath gives a punchy human sentence before the headline.
+  // Falls back to insights_strip "What changed" cell if one_breath not present.
+  const opener = ext?.one_breath?.text?.replace(/\*\*(.*?)\*\*/g, '$1')
+    ?? ext?.insights_strip?.[0]?.text?.replace(/==(.*?)==/g, '$1').trim()
+    ?? null
+
   // Key stat
   const statValue = ticker?.value ?? null
   const statLabel = ticker ? `${ticker.change.text} — ${ticker.label}` : null
   const statNote  = ticker?.detail ?? null
 
-  // Preview cards
-  const cards       = ext?.preview_cards ?? []
-  const numbersCard = cards.find(c => c.label === 'By the numbers')
-  const mattersCard = cards.find(c => c.label === 'Why it matters')
-  const moveCard    = cards.find(c => c.label === 'The move')
-
-  // Open question
+  // Open question — cliffhanger shown BEFORE the CTA to drive clicks
   const openQuestion = ext?.open_question ?? null
+
+  // Category-specific P.S. — urgency tuned to story type
+  const PS_LINES: Record<string, string> = {
+    models:   `Teams who act on this today have a head start. Forward it to one engineer before standup.`,
+    tools:    `The gap between builders who've tried this and builders who haven't is growing fast. Forward this to one person.`,
+    business: `Send this to one founder peer or your team lead. They need to see it.`,
+    policy:   `Forward this to your legal or compliance lead. If they haven't seen it, they're behind.`,
+    research: `Research-to-product lag is a real competitive gap. The teams reading this now are 2 weeks ahead.`,
+  }
+  const psLine = PS_LINES[story.category]
+    ?? `Forward this to one person on your team who should see it. They can subscribe at <a href="https://aisignal.so" style="color:${BLUE};text-decoration:none;">aisignal.so</a>`
 
   const html = wrap(preheader, `
     ${headerRow(dateStr)}
@@ -304,6 +324,11 @@ export function dailyNewsletterEmail(
         </td>
       </tr></table>
     </td></tr>
+
+    <!-- One-breath opener — human, sets context before the headline -->
+    ${opener ? `<tr><td style="padding-bottom:14px;">
+      <p style="margin:0;font-family:${SANS};font-size:15px;color:${MUTED_DARK};line-height:1.65;font-style:italic;">${opener}</p>
+    </td></tr>` : ''}
 
     <!-- Headline -->
     <tr><td style="padding-bottom:14px;">
@@ -367,34 +392,36 @@ export function dailyNewsletterEmail(
       </table>
     </td></tr>` : ''}
 
-    <!-- Primary CTA -->
-    <tr><td style="padding-top:16px;"></td></tr>
-    ${ctaButton(articleUrl, `Read the full signal &nbsp;—&nbsp; ${story.read_minutes} min →`)}
-
-    <!-- Open question — cliffhanger AFTER cta; drives click-back -->
+    <!-- Open question — cliffhanger BEFORE cta; unresolved question makes the click feel necessary -->
     ${openQuestion ? `
-    ${divider(6, 16)}
+    ${divider(8, 16)}
     <tr><td style="padding-bottom:4px;">
       <p style="margin:0 0 8px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${MUTED};">ONE QUESTION NOBODY'S ANSWERED YET</p>
       <p style="margin:0;font-family:${SERIF};font-size:18px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${openQuestion}"</p>
-    </td></tr>` : ''}
+    </td></tr>
+    <tr><td style="padding-top:8px;"></td></tr>` : '<tr><td style="padding-top:16px;"></td></tr>'}
 
-    <!-- P.S. line — research shows highest CTR after subject line -->
-    ${divider(20, 16)}
+    <!-- Primary CTA — after the cliffhanger, click feels like the resolution -->
+    ${ctaButton(articleUrl, `Read the full signal &nbsp;—&nbsp; ${story.read_minutes} min →`)}
+
+    <!-- P.S. line — category-specific urgency; highest CTR after subject line -->
+    ${divider(12, 16)}
     <tr><td style="padding-bottom:4px;">
       <p style="margin:0;font-family:${SANS};font-size:14px;color:${MUTED_DARK};line-height:1.65;">
-        <strong>P.S.</strong> If today's signal was useful, forward it to one person on your team who should know about this.
-        They can subscribe at <a href="https://aisignal.so" style="color:${BLUE};text-decoration:none;">aisignal.so</a>
+        <strong>P.S.</strong> ${psLine}
       </p>
     </td></tr>
 
     ${footerRow(unsubscribeUrl, subscriberCount)}
   `)
 
+  const psLineText = PS_LINES[story.category]
+    ?? `Forward this to one person on your team. They can subscribe at aisignal.so`
+
   const text = `AI SIGNAL · ${dateStr}
 ${'─'.repeat(48)}
 [${categoryTag}] ${story.read_minutes} MIN READ
-
+${opener ? `\n${opener}\n` : ''}
 ${story.headline}
 
 ${hook}${implication ? `\n${implication}` : ''}
@@ -404,12 +431,12 @@ WHAT'S INSIDE TODAY
 ${numbersCard ? `→ By the numbers: ${numbersCard.value}` : ''}
 ${mattersCard ? `→ Why it matters: ${mattersCard.value}` : ''}
 ${moveCard    ? `→ The move: ${moveCard.value}` : ''}
-
+${openQuestion ? `\nOne question nobody's answered yet:\n"${openQuestion}"\n` : ''}
 Read the full signal (${story.read_minutes} min):
 ${articleUrl}
-${openQuestion ? `\nOne question nobody's answered yet:\n"${openQuestion}"\n` : ''}
+
 ${'─'.repeat(48)}
-P.S. Forward this to one person on your team who should know. They can subscribe at aisignal.so
+P.S. ${psLineText}
 
 ${subscriberCount ? `You're one of ${subscriberCount.toLocaleString()}+ subscribers.\n` : ''}AI Signal · aisignal.so
 Unsubscribe: ${unsubscribeUrl}`

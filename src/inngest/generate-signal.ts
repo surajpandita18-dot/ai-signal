@@ -711,10 +711,15 @@ HARD REJECT — never pick these story types even from tier-5 sources:
 2. Write the full signal as JSON.
 3. Document your editorial decision in two metadata fields alongside the article fields:
 
-   - pick_reason: 1-2 sentence explanation of WHY this story beat the others. Be specific about the editorial criterion (e.g., "Highest leverage for Indian SaaS unit economics — pricing disruption beats scaling stories this week. Anthropic funding story loses because funding rounds are rarely 48h-actionable for builders.").
+   - pick_reason: REQUIRED FORMAT — name the Decision-Forcing Tier (A, B, C, or D) the winner satisfies, the specific criterion, and why the runner-up lost. 1-2 sentences.
+     BAD: "Most impactful story today." / "Chosen for builder relevance."
+     GOOD: "Tier A — pricing change forces cost forecast revision TODAY for any team billing on this API. Runner-up was a Tier C benchmark result: changes how you think but not what you build this week."
+     If you cannot name a Tier and a runner-up, keep writing until you can.
 
-   - rejected_alternatives: Array of 2-4 candidates you did NOT pick, each with title (verbatim from the input list) and a 1-line editorial reason. Keep reasons sharp and decision-quality.
-     Format: [{"title": "...", "reason": "..."}, ...]
+   - rejected_alternatives: Array of 2-4 candidates you did NOT pick. Each entry MUST include the Tier label in the reason field. Keep reasons sharp.
+     Format: [{"title": "...", "reason": "Tier B — new model, but no pricing data yet; can't reprice unit economics without the benchmark."}]
+     BAD reason: "Less relevant." / "Not as impactful."
+     GOOD reason: "Tier C — benchmark result inverts an assumption but no 48h action follows; Tier A pricing story beats it."
 
 ${QUALITY_RULES}
 
@@ -758,8 +763,8 @@ Return ONLY valid JSON. No markdown fences. No explanation before or after.
     "Phrase 2: the specific number or named fact that anchors the story",
     "Phrase 3: the implication — consequence for the reader's decisions"
   ],
-  "pick_reason": "1-2 sentence editorial reason this story was chosen over the others. Name the specific criterion.",
-  "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "1-line editorial reason this candidate lost"}],
+  "pick_reason": "REQUIRED: name the Decision-Forcing Tier (A/B/C/D), the specific criterion, and why the runner-up lost. E.g. 'Tier A — API pricing change forces cost reforecast TODAY. Tier C benchmark story loses: changes thinking, not the 48h build queue.'",
+  "rejected_alternatives": [{"title": "Verbatim candidate title", "reason": "Include Tier label. E.g. 'Tier C — research paper; no 48h action. Tier A pricing story outranks it.'"}],
   "extended_data": {
     "numbers_headline": "Block-title for 'By the Numbers'. Target: 5 words. Hard cap: 8 words. What the numbers PRICE or VALIDATE (FUNDING), what ASSUMPTION just broke (PRODUCT-PRICING), what CONSTRAINT landed (POLICY), what BASELINE cracked (RESEARCH). Specific to this signal. Do not use 'the data shifted overnight' or 'by the numbers'.",
     "matters_headline": "Block-title for 'Why It Matters'. Target: 6 words. Hard cap: 8 words. What the reader needs to rethink — their budget, roadmap, assumption, or decision. Specific to this signal. Do not use 'the bigger picture' or 'why it matters'.",

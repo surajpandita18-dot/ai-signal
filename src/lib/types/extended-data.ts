@@ -150,6 +150,7 @@ export type SignalBoost = {
 export type ExtendedData = {
   numbers_headline?: string;  // AI-generated block title for "By the numbers"
   matters_headline?: string;  // AI-generated block title for "Why it matters"
+  one_breath?: OneBreath;     // 18-24 word punchy opener sentence
   tickers: TickerData[];
   preview_cards: PreviewCard[];
   did_you_know_facts: DidYouKnowFact[];

@@ -426,7 +426,18 @@ Reactions are practitioner voices — not the article author agreeing with itsel
 - At least 2 of the 3 quotes must hold a perspective NOT already stated in the article's main body
 - A reaction that agrees with the signal in different words is a paraphrase, not a reaction — rewrite it
 - The skeptic voice (required) must challenge the MAIN CLAIM specifically, not a secondary detail
-- Each quote must feel like a different human wrote it — different sentence structure, different vocabulary, different stakes`
+- Each quote must feel like a different human wrote it — different sentence structure, different vocabulary, different stakes
+
+═══ Rule 12 — \`pick_reason\` must cite the Decision-Forcing Tier ═══
+
+\`pick_reason\` is not a polite editorial note. It is the audit trail of your selection logic.
+REQUIRED format: name the Tier (A, B, C, or D) that won, the specific criterion it satisfied, and why the runner-up lost.
+
+BAD: "This was the most relevant story today." (No tier, no criterion, no comparison.)
+BAD: "Chosen for its impact on builders." (Generic — could describe any story.)
+GOOD: "Tier A pick — pricing change on a model builders actively use forces a cost forecast revision TODAY. The only competitor was a Tier C benchmark result that changes how you think but not what you build this week."
+
+If you cannot name the tier or the runner-up, your selection is not yet justified — keep writing until it is.`
 
 export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before returning your JSON output. If any answer is NO, revise that field first.
 
@@ -440,7 +451,10 @@ export const SELF_CHECK_QUESTIONS = `SELF-CHECK — answer these silently before
 7a. \`why_it_matters\` para 2 word count: Count the words in paragraph 2. Is it 40 words or more? If less than 40 words — STOP, go back and expand it before returning. A 12-word para 2 is a failing response.
 8. \`pull_quote\`: Is it under 140 characters, standalone, a claim not a description, tweetable?
 9. \`counter_view\`: Does it name specific structural reasons for the counter-argument — not generic "but consider..."?
-10. Story shape: Have I included \`stats\` or \`action_items\` entries that don't genuinely satisfy their rules? If yes, remove or empty those arrays.`
+10. Story shape: Have I included \`stats\` or \`action_items\` entries that don't genuinely satisfy their rules? If yes, remove or empty those arrays.
+11. \`signal_boost\` quality: If type is "prompt" — is the prompt immediately runnable by pasting into Claude/ChatGPT? No vague asks ("tell me about X"). If type is "quote" — is this a REAL quote by a REAL named person? If you cannot verify it is real, switch to type="fact". If type is "fact" — is it surprising, specific, and does it include a number or temporal anchor?
+12. \`pick_reason\`: Does it name the Decision-Forcing Tier (A, B, C, or D), the specific criterion the winner satisfied, and why the strongest alternative did NOT win? A generic "most relevant story" response fails this check.
+13. \`reactions\`: Do at least 2 of the 3 quotes add a perspective NOT already stated in the main article body? If a quote is just the article's main claim in different words, rewrite it with a different angle, stake, or consequence.`
 
 const JSON_SCHEMA = `{
   "category": "models"|"tools"|"business"|"policy"|"research",

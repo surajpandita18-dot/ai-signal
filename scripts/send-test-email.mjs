@@ -176,17 +176,33 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
   const hook          = sentences[0] ?? summaryClean
   const implication   = sentences[1] ?? null
 
-  const ticker    = ext.tickers?.[0]
-  const statValue = ticker?.value ?? null
-  const statLabel = ticker ? `${ticker.change?.text ?? ''} · ${ticker.label}` : null
-  const statNote  = ticker?.detail ?? null
-
   const cards       = ext.preview_cards ?? []
   const numbersCard = cards.find(c => c.label === 'By the numbers')
   const mattersCard = cards.find(c => c.label === 'Why it matters')
   const moveCard    = cards.find(c => c.label === 'The move')
-  const openQ       = ext.open_question ?? null
-  const articleUrl  = `https://aisignal.so/signal/${issueNumber}`
+
+  const ticker    = ext.tickers?.[0]
+  const statValue = ticker?.value ?? null
+  const statLabel = ticker ? `${ticker.change?.text ?? ''} · ${ticker.label}` : null
+  const statNote  = ticker?.detail ?? null
+  const openQ     = ext.open_question ?? null
+  const articleUrl = `https://aisignal.so/signal/${issueNumber}`
+
+  // Personal opener — one_breath or insights_strip "What changed"
+  const opener = ext.one_breath?.text?.replace(/\*\*(.*?)\*\*/g, '$1')
+    ?? ext.insights_strip?.[0]?.text?.replace(/==(.*?)==/g, '$1').trim()
+    ?? null
+
+  // Category-specific P.S.
+  const PS_LINES = {
+    models:   `Teams who act on this today have a head start. Forward it to one engineer before standup.`,
+    tools:    `The gap between builders who've tried this and builders who haven't is growing fast. Forward this to one person.`,
+    business: `Send this to one founder peer or your team lead. They need to see it.`,
+    policy:   `Forward this to your legal or compliance lead. If they haven't seen it, they're behind.`,
+    research: `Research-to-product lag is a real competitive gap. The teams reading this now are 2 weeks ahead.`,
+  }
+  const psLine = PS_LINES[story.category]
+    ?? `Forward this to one person on your team who should see it. They can subscribe at <a href="https://aisignal.so" style="color:${BLUE};text-decoration:none;">aisignal.so</a>`
 
   return wrap(`
   <tr><td style="padding-bottom:20px;">
@@ -207,6 +223,10 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
       </td>
     </tr></table>
   </td></tr>
+
+  ${opener ? `<tr><td style="padding-bottom:14px;">
+    <p style="margin:0;font-family:${SANS};font-size:15px;color:#444444;line-height:1.65;font-style:italic;">${opener}</p>
+  </td></tr>` : ''}
 
   <tr><td style="padding-bottom:14px;">
     <h1 style="margin:0;font-family:${SERIF};font-size:28px;font-weight:400;letter-spacing:-0.025em;color:${BLACK};line-height:1.2;">${story.headline}</h1>
@@ -265,19 +285,17 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     </table>
   </td></tr>` : ''}
 
-  <tr><td style="padding-top:20px;"></td></tr>
-  ${ctaButton(articleUrl, `Read today's signal &nbsp;— ${story.read_minutes} min →`)}
-
   ${openQ ? `${divider()}<tr><td style="padding-bottom:8px;">
     <p style="margin:0 0 10px;font-family:${MONO};font-size:10px;font-weight:700;letter-spacing:0.18em;text-transform:uppercase;color:${MUTED};">ONE QUESTION NOBODY'S ANSWERED YET</p>
     <p style="margin:0;font-family:${SERIF};font-size:18px;font-weight:400;color:${BLACK};line-height:1.55;font-style:italic;">"${openQ}"</p>
-  </td></tr>` : ''}
+  </td></tr><tr><td style="padding-top:8px;"></td></tr>` : '<tr><td style="padding-top:20px;"></td></tr>'}
+
+  ${ctaButton(articleUrl, `Read today's signal &nbsp;— ${story.read_minutes} min →`)}
 
   ${divider()}
   <tr><td style="padding-bottom:4px;">
     <p style="margin:0;font-family:${SANS};font-size:14px;color:#444444;line-height:1.65;">
-      <strong>P.S.</strong> If today's signal was useful, forward it to one person on your team who should know about this.
-      They can subscribe at <a href="https://aisignal.so" style="color:${BLUE};text-decoration:none;">aisignal.so</a>
+      <strong>P.S.</strong> ${psLine}
     </p>
   </td></tr>
 
