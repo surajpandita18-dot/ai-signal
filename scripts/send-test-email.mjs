@@ -104,11 +104,12 @@ function wrap(preheader, body) {
     .upi-row { display:none; }
     @media only screen and (max-width:600px) {
       .container { width:100% !important; }
-      .px { padding-left:22px !important; padding-right:22px !important; }
-      .stack { display:block !important; width:100% !important; box-sizing:border-box !important; }
-      .stack-gap { height:12px !important; line-height:12px !important; font-size:12px !important; }
-      .h-headline { font-size:25px !important; line-height:1.18 !important; }
-      .cta-btn { display:block !important; width:100% !important; box-sizing:border-box !important; text-align:center !important; }
+      .px { padding-left:16px !important; padding-right:16px !important; }
+      .stack { display:block !important; width:100% !important; box-sizing:border-box !important; margin-bottom:12px !important; }
+      .stack-gap { display:none !important; }
+      .h-headline { font-size:24px !important; line-height:1.2 !important; }
+      .h-sub { font-size:20px !important; }
+      .cta-btn { display:block !important; width:100% !important; box-sizing:border-box !important; text-align:center !important; padding-left:0 !important; padding-right:0 !important; }
       .qr-row  { display:none !important; }
       .upi-row { display:table-row !important; }
     }
@@ -346,14 +347,14 @@ function sTipJar() {
     <p style="margin:10px 0 2px 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Scan with PhonePe &middot; GPay &middot; any UPI app</p>
     <p style="margin:0; font-family:${MONO}; font-size:11px; color:${META}; letter-spacing:0.5px;">suraj.pandita132@ybl</p>
   </td></tr>
-  <tr class="upi-row" style="display:none;"><td class="px" align="center" style="padding:14px 44px 0 44px;">
-    <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="margin:0 auto;"><tr>
-      <td style="background-color:${BUTTON}; border-radius:5px;">
-        <a href="${SITE_URL}/pay" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
+  <tr class="upi-row" style="display:none;"><td class="px" align="center" style="padding:14px 16px 0 16px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
+      <td style="background-color:${TAN}; border:1px dashed ${TAN_LINE}; border-radius:8px; padding:16px 18px; text-align:center;">
+        <div style="font-family:${MONO}; font-size:10px; letter-spacing:1.5px; color:${TAN_INK}; text-transform:uppercase; margin-bottom:10px;">&#9749;&nbsp; Send a chai &mdash; UPI ID</div>
+        <div style="font-family:${MONO}; font-size:17px; font-weight:700; color:${INK}; letter-spacing:0.5px; -webkit-user-select:all; user-select:all;">suraj.pandita132@ybl</div>
+        <div style="font-family:${SANS}; font-size:12px; color:${META}; margin-top:10px; line-height:1.5;">Tap &amp; hold to copy &rarr; open PhonePe or GPay &rarr; paste in &ldquo;Pay&rdquo;</div>
       </td>
     </tr></table>
-    <p style="margin:10px 0 2px 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Opens PhonePe &middot; GPay &middot; any UPI app</p>
-    <p style="margin:0; font-family:${MONO}; font-size:12px; color:${META}; letter-spacing:0.5px;">Or pay directly: suraj.pandita132@ybl</p>
   </td></tr>`
 }
 
