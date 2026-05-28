@@ -34,7 +34,7 @@ export default async function HomePage() {
     return (
       <>
         <SiteNav />
-        <div style={{ maxWidth: 720, margin: '80px auto', padding: '0 32px' }}>
+        <div className="page-fallback">
           <p style={{ fontFamily: 'var(--ff-mono)', fontSize: 11, color: 'var(--text-mute)' }}>
             Dev mode — no Supabase credentials. Copy .env.local.example → .env.local.
           </p>
@@ -59,7 +59,7 @@ export default async function HomePage() {
     return (
       <>
         <SiteNav />
-        <div style={{ maxWidth: 720, margin: '80px auto', padding: '0 32px' }}>
+        <div className="page-fallback">
           <p
             style={{
               fontFamily: 'var(--ff-mono)',
@@ -85,7 +85,7 @@ export default async function HomePage() {
     return (
       <>
         <SiteNav />
-        <div style={{ maxWidth: 720, margin: '80px auto', padding: '0 32px' }}>
+        <div className="page-fallback">
           <p
             style={{
               fontFamily: 'var(--ff-mono)',
@@ -122,7 +122,7 @@ export default async function HomePage() {
     return (
       <>
         <SiteNav signalNumber={issue.issue_number} />
-        <div style={{ maxWidth: 720, margin: '80px auto', padding: '0 32px' }}>
+        <div className="page-fallback">
           <p
             style={{
               fontFamily: 'var(--ff-mono)',

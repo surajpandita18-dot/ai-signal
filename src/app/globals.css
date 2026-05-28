@@ -4606,3 +4606,43 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   .feedback-page { padding: 0 20px; margin-top: 48px; }
   .feedback-page-title { font-size: 26px; }
 }
+
+/* Page fallback states (dev/no-signal/loading) */
+.page-fallback { max-width: 720px; margin: 80px auto; padding: 0 32px; }
+@media (max-width: 640px) { .page-fallback { padding: 0 16px; margin-top: 48px; } }
+
+/* ============ MOBILE POLISH — 640px ============ */
+@media (max-width: 640px) {
+  /* Subscribe card — reduce inner padding so content isn't squeezed */
+  .subscribe { padding: 0 14px; margin-top: 60px; }
+  .subscribe-card { padding: 32px 20px; gap: 24px; border-radius: 18px; }
+  .sub-headline { font-size: clamp(26px, 7vw, 36px); }
+  .sub-text { font-size: 14px; margin-bottom: 20px; }
+  .sub-trust { font-size: 12px; gap: 10px; }
+
+  /* Footer — tighter on small screens */
+  .site-footer { padding: 28px 16px 40px; gap: 16px; }
+  .links { gap: 16px; }
+
+  /* Main grid wrapper */
+  .main-grid { padding: 0 14px; }
+
+  /* Archive — a bit more breathing room than 20px default */
+  .archive { padding: 48px 14px 0; }
+  .archive-card { padding: 18px 16px; }
+}
+
+/* ============ MOBILE POLISH — 480px ============ */
+@media (max-width: 480px) {
+  /* Hero tickers: 4px was too tight */
+  .hero-tickers { padding: 0 14px; gap: 10px; }
+  .hero-preview-strip { padding: 0 14px; gap: 10px; }
+
+  /* Subscribe card on very small phones */
+  .subscribe { padding: 0 10px; }
+  .subscribe-card { padding: 28px 16px; }
+  .sub-form { gap: 6px; }
+
+  /* Standup card */
+  .standup-card { transform: none; } /* kill the tilt on small phones */
+}
