@@ -306,7 +306,7 @@ const SURAJ_NOTES = {
 }
 
 function sSurajTake(noteText, category) {
-  const rawNote = noteText || SURAJ_NOTES[category] || `Yaar, I curate one story every morning — the one that actually changes what you should build. If this resonated, forward it to one person on your team. That's the best way to grow this thing.`
+  const rawNote = noteText || SURAJ_NOTES[category] || `Yaar, one story. Every morning. The one that actually changes what you'd build this week — not just what you'd tweet about. If today's landed, someone on your team should probably see it too. Not because I'm asking — because *they'll* be behind if they don't.`
   const body = md(rawNote)
   return `
   <tr><td class="px" style="padding:30px 44px 0 44px;">
@@ -351,7 +351,31 @@ function sTipJar() {
         <a href="upi://pay?pa=suraj.pandita132@ybl&amp;pn=AI%20Signal&amp;cu=INR" style="display:inline-block; font-family:${MONO}; font-size:13px; letter-spacing:1px; color:${WHITE}; text-decoration:none; padding:11px 22px; text-transform:uppercase; font-weight:700;">&#9749;&nbsp; Send a chai via UPI</a>
       </td>
     </tr></table>
-    <p style="margin:10px 0 0 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Opens PhonePe &middot; GPay &middot; any UPI app</p>
+    <p style="margin:10px 0 2px 0; font-family:${MONO}; font-size:10px; letter-spacing:1px; color:${FAINT}; text-transform:uppercase;">Opens PhonePe &middot; GPay &middot; any UPI app</p>
+    <p style="margin:0; font-family:${MONO}; font-size:12px; color:${META}; letter-spacing:0.5px;">Or pay directly: suraj.pandita132@ybl</p>
+  </td></tr>`
+}
+
+const AI_FACTS = [
+  { label: 'Origin story', fact: `The paper that powers every AI today — "Attention Is All You Need" — was written by 8 Google researchers in 2017. All 8 left Google within 5 years to found or join rival AI labs.` },
+  { label: 'Scale check', fact: `GPT-4 has ~1.8 trillion parameters. The human brain has ~86 billion neurons — but each neuron connects to 7,000 others dynamically. Parameters don't come close to that richness.` },
+  { label: 'Real cost', fact: `Training a single frontier model can cost over $100 million and use as much electricity as 1,000 US homes consume in a year. Inference — every query you run — adds to that.` },
+  { label: 'First chatbot', fact: `ELIZA (1966), the first chatbot, simulated a therapist so convincingly that its creator's own secretary asked him to leave the room so she could speak to it in private.` },
+  { label: 'Real impact', fact: `DeepMind's AlphaFold 2 solved protein-structure prediction in 2020 — a problem biologists had worked on for 50 years. It's now accelerating drug discovery at hundreds of labs.` },
+  { label: 'Word of the era', fact: `The term "hallucination" appeared in fewer than 10 AI papers before 2018. By 2023, it appeared in over 10,000. The problem didn't get worse — we just started talking about it.` },
+  { label: 'Etymology', fact: `"Robot" comes from 'robota' — Czech for drudgery or forced labor — coined in a 1920 sci-fi play. The author later said he regretted introducing the word to the world.` },
+]
+
+function sAIFact(issueNumber) {
+  const f = AI_FACTS[issueNumber % AI_FACTS.length]
+  return `
+  <tr><td class="px" style="padding:26px 44px 0 44px;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background-color:${FILL}; border:1px solid ${LINE}; border-radius:5px;"><tr>
+      <td style="padding:14px 18px 16px 18px;">
+        <div style="font-family:${MONO}; font-size:9px; letter-spacing:2px; color:${META}; text-transform:uppercase; font-weight:700;">&#9889;&nbsp; Did you know &middot; ${f.label}</div>
+        <p style="margin:8px 0 0 0; font-family:${SANS}; font-size:13px; line-height:1.58; color:${BODY_CLR};">${f.fact}</p>
+      </td>
+    </tr></table>
   </td></tr>`
 }
 
@@ -444,13 +468,13 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     : rawMatters.split(/(?<=[.!?])\s+/).slice(1).join(' ').trim()
 
   const PS_LINES = {
-    models:   `Teams who act on this today have a head start. Forward it to one engineer before standup.`,
-    tools:    `The gap between builders who've tried this and those who haven't is growing. Forward to one person now.`,
-    business: `Send this to one founder peer or team lead. They need to see it.`,
-    policy:   `Forward this to your legal or compliance lead. If they haven't seen it, they're behind.`,
-    research: `Research-to-product lag is a real competitive gap. The teams reading this now are 2 weeks ahead.`,
+    models:   `One engineer on your team is about to make an architecture decision without seeing this. You know who.`,
+    tools:    `Someone you work with is about to spend a week building something this tool already does. Worth a forward.`,
+    business: `If someone on your team is writing a roadmap or pitch this week, they should read this first.`,
+    policy:   `Your compliance or legal lead will hear about this eventually — better from you, with context, than cold.`,
+    research: `Someone on your team will rediscover this in 6 months and call it a new idea. Forward it now.`,
   }
-  const psText = PS_LINES[story.category] ?? `Forward this to one person who should see it — they can subscribe at getaisignal.org`
+  const psText = PS_LINES[story.category] ?? `Know someone who'd find this useful? They can subscribe at getaisignal.org — free, every morning.`
   const articleUrl = `https://getaisignal.org/signal/${issueNumber}`
 
   const body = `
@@ -467,6 +491,7 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     ${reactions.length > 0 ? sCounterView(reactions) : sHairline(32)}
     ${sSurajTake(ext.suraj_note, story.category)}
     ${sTipJar()}
+    ${sAIFact(issueNumber)}
     ${sPS(psText)}
     ${sFooter(unsubUrl)}`
 
