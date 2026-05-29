@@ -33,7 +33,7 @@ const SB_URL     = get('NEXT_PUBLIC_SUPABASE_URL')  || 'https://xswfsnnghloslzyn
 const SB_KEY     = get('SUPABASE_SERVICE_ROLE_KEY') || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inhzd2Zzbm5naGxvc2x6eW5rd25pIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3NzE5NzgxOCwiZXhwIjoyMDkyNzczODE4fQ.P0ghCk98rYuZFq_XAInyVbQat-xW_BexDBhLnBFIMao'
 if (!RESEND_KEY) { console.error('RESEND_API_KEY not found in .env.local'); process.exit(1) }
 
-const FROM = get('EMAIL_FROM') || 'Suraj @ AI Signal <delta@getaisignal.org>'
+const FROM = get('EMAIL_FROM') || 'Suraj @ AI Signal <delta@aisignal.so>'
 
 // ── Design tokens (AI Signal Design System v1) ────────────────────────────────
 
@@ -138,7 +138,7 @@ function sMasthead(issueNumber, dateStr, readMinutes) {
   <tr><td class="px" style="padding:30px 44px 0 44px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
       <td align="left" style="font-family:${SERIF}; font-style:italic; font-size:19px; color:${INK};">AI&nbsp;Signal</td>
-      <td align="right" style="font-family:${MONO}; font-size:10px; letter-spacing:1.2px; color:${META}; text-transform:uppercase;">signal@getaisignal.org</td>
+      <td align="right" style="font-family:${MONO}; font-size:10px; letter-spacing:1.2px; color:${META}; text-transform:uppercase;">signal@aisignal.so</td>
     </tr></table>
   </td></tr>
   <tr><td class="px" style="padding:14px 44px 0 44px;">
@@ -398,11 +398,11 @@ function sFooter(unsubUrl) {
     <div style="font-family:${SERIF}; font-style:italic; font-size:16px; color:${INK};">AI&nbsp;Signal</div>
     <p style="margin:6px 0 0 0; font-family:${SANS}; font-size:12px; line-height:1.5; color:${META};">Made with care in Bengaluru &middot; 06:14 IST, every morning<br>Bengaluru, Karnataka, India</p>
     <p style="margin:14px 0 0 0; font-family:${MONO}; font-size:11px; letter-spacing:1px; color:#6b6b6b; text-transform:uppercase;">
-      <a href="https://twitter.com/getaisignal" style="color:#6b6b6b; text-decoration:none;">Twitter</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://getaisignal.org/rss" style="color:#6b6b6b; text-decoration:none;">RSS</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://getaisignal.org/privacy" style="color:#6b6b6b; text-decoration:none;">Privacy</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="mailto:signal@getaisignal.org" style="color:#6b6b6b; text-decoration:none;">Contact</a>
+      <a href="https://twitter.com/aisignal" style="color:#6b6b6b; text-decoration:none;">Twitter</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://aisignal.so/rss.xml" style="color:#6b6b6b; text-decoration:none;">RSS</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://aisignal.so/privacy" style="color:#6b6b6b; text-decoration:none;">Privacy</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="mailto:hi@aisignal.so" style="color:#6b6b6b; text-decoration:none;">Contact</a>
     </p>
     <p style="margin:14px 0 0 0; font-family:${SANS}; font-size:11px; line-height:1.6; color:${FAINT};">
-      <a href="https://getaisignal.org/manage" style="color:${FAINT}; text-decoration:underline;">Manage preferences</a>&nbsp;&middot;&nbsp;<a href="${unsubUrl}" style="color:${FAINT}; text-decoration:underline;">Unsubscribe</a>
-      <br>You're receiving this because you signed up at getaisignal.org
+      <a href="https://aisignal.so/manage" style="color:${FAINT}; text-decoration:underline;">Manage preferences</a>&nbsp;&middot;&nbsp;<a href="${unsubUrl}" style="color:${FAINT}; text-decoration:underline;">Unsubscribe</a>
+      <br>You're receiving this because you signed up at aisignal.so
     </p>
   </td></tr>`
 }
@@ -478,7 +478,7 @@ function buildDailyHtml(story, issueNumber, unsubUrl, dateStr) {
     policy:   `Your compliance or legal lead will hear about this eventually — better from you, with context, than cold.`,
     research: `Someone on your team will rediscover this in 6 months and call it a new idea. Forward it now.`,
   }
-  const psText = PS_LINES[story.category] ?? `Know someone who'd find this useful? They can subscribe at getaisignal.org — free, every morning.`
+  const psText = PS_LINES[story.category] ?? `Know someone who'd find this useful? They can subscribe at aisignal.so — free, every morning.`
   const articleUrl = `${SITE_URL}/goto/${issueNumber}`
 
   const body = `
@@ -531,7 +531,7 @@ const now = new Date()
 const dateStr = now.toLocaleDateString('en-IN', {
   timeZone: 'Asia/Kolkata', year: 'numeric', month: 'long', day: 'numeric'
 })
-const testUnsubUrl = 'https://getaisignal.org/unsubscribe?token=test-token'
+const testUnsubUrl = 'https://aisignal.so/unsubscribe?token=test-token'
 
 console.log('\n[1/2] Sending welcome email...')
 const welcomeHtml   = buildWelcomeHtml(testUnsubUrl)

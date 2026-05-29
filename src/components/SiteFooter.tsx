@@ -20,7 +20,7 @@ export function SiteFooter() {
         <a href="/rss.xml">RSS</a>
         <a href="/about">About</a>
         <a href="/feedback">Feedback</a>
-        <a href="mailto:hi@getaisignal.org">Contact</a>
+        <a href="mailto:hi@aisignal.so">Contact</a>
         <ChaiButton />
       </div>
     </footer>

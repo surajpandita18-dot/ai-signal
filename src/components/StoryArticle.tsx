@@ -61,7 +61,7 @@ interface StoryArticleProps {
 
 function ShareButtons({ headline, signalNumber }: { headline: string; signalNumber: number }) {
   const [copied, setCopied] = useState(false)
-  const articleUrl = `https://aisignal.so/signal/${signalNumber}`
+  const articleUrl = `https://aisignal.so/goto/${signalNumber}`
 
   function shareX() {
     const text = encodeURIComponent(`${headline} — via AI Signal`)
@@ -247,7 +247,7 @@ function buildStandupContent(story: Story, signalNumber: number) {
   const action0 = typeof actions[0] === 'string' ? actions[0].replace(/\*\*(.*?)\*\*/g, '$1') : 'Review the implications for your team.'
   const action1 = typeof actions[1] === 'string' ? actions[1].replace(/\*\*(.*?)\*\*/g, '$1') : 'Assess your current approach in light of this.'
   const action2 = typeof actions[2] === 'string' ? actions[2].replace(/\*\*(.*?)\*\*/g, '$1') : 'Share this signal with relevant stakeholders.'
-  const articleUrl = `https://aisignal.so/signal/${signalNumber}`
+  const articleUrl = `https://aisignal.so/goto/${signalNumber}`
 
   function getClipboard(format: StandupFormat): string {
     if (format === 'slack') {

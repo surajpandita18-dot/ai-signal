@@ -113,7 +113,7 @@ function sMasthead(issueNumber: number | null, dateStr: string, readMinutes?: nu
   <tr><td class="px" style="padding:30px 44px 0 44px;">
     <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0"><tr>
       <td align="left" style="font-family:${SERIF}; font-style:italic; font-size:19px; color:${INK};">AI&nbsp;Signal</td>
-      <td align="right" style="font-family:${MONO}; font-size:10px; letter-spacing:1.2px; color:${META}; text-transform:uppercase;">signal@getaisignal.org</td>
+      <td align="right" style="font-family:${MONO}; font-size:10px; letter-spacing:1.2px; color:${META}; text-transform:uppercase;">signal@aisignal.so</td>
     </tr></table>
   </td></tr>
   <tr><td class="px" style="padding:14px 44px 0 44px;">
@@ -382,11 +382,11 @@ function sFooter(unsubscribeUrl: string): string {
     <div style="font-family:${SERIF}; font-style:italic; font-size:16px; color:${INK};">AI&nbsp;Signal</div>
     <p style="margin:6px 0 0 0; font-family:${SANS}; font-size:12px; line-height:1.5; color:${META};">Made with care in Bengaluru &middot; 06:14 IST, every morning<br>Bengaluru, Karnataka, India</p>
     <p style="margin:14px 0 0 0; font-family:${MONO}; font-size:11px; letter-spacing:1px; color:#6b6b6b; text-transform:uppercase;">
-      <a href="https://twitter.com/getaisignal" style="color:#6b6b6b; text-decoration:none;">Twitter</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://getaisignal.org/rss" style="color:#6b6b6b; text-decoration:none;">RSS</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://getaisignal.org/privacy" style="color:#6b6b6b; text-decoration:none;">Privacy</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="mailto:signal@getaisignal.org" style="color:#6b6b6b; text-decoration:none;">Contact</a>
+      <a href="https://twitter.com/aisignal" style="color:#6b6b6b; text-decoration:none;">Twitter</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://aisignal.so/rss.xml" style="color:#6b6b6b; text-decoration:none;">RSS</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="https://aisignal.so/privacy" style="color:#6b6b6b; text-decoration:none;">Privacy</a>&nbsp;&nbsp;&middot;&nbsp;&nbsp;<a href="mailto:hi@aisignal.so" style="color:#6b6b6b; text-decoration:none;">Contact</a>
     </p>
     <p style="margin:14px 0 0 0; font-family:${SANS}; font-size:11px; line-height:1.6; color:${FAINT};">
-      <a href="https://getaisignal.org/manage" style="color:${FAINT}; text-decoration:underline;">Manage preferences</a>&nbsp;&middot;&nbsp;<a href="${unsubscribeUrl}" style="color:${FAINT}; text-decoration:underline;">Unsubscribe</a>
-      <br>You're receiving this because you signed up at getaisignal.org
+      <a href="https://aisignal.so/manage" style="color:${FAINT}; text-decoration:underline;">Manage preferences</a>&nbsp;&middot;&nbsp;<a href="${unsubscribeUrl}" style="color:${FAINT}; text-decoration:underline;">Unsubscribe</a>
+      <br>You're receiving this because you signed up at aisignal.so
     </p>
   </td></tr>`
 }
@@ -523,7 +523,7 @@ export function dailyNewsletterEmail(
     research: `Someone on your team will rediscover this in 6 months and call it a new idea. Forward it now.`,
   }
   const psText = PS_LINES[story.category]
-    ?? `Know someone who'd find this useful? They can subscribe at getaisignal.org — free, every morning.`
+    ?? `Know someone who'd find this useful? They can subscribe at aisignal.so — free, every morning.`
 
   const body = `
     ${sMasthead(issueNumber, dateStr, story.read_minutes)}
@@ -562,7 +562,7 @@ Founder · writes this solo
 
 P.S. ${psText}
 
-Made with care in Bengaluru · getaisignal.org
+Made with care in Bengaluru · aisignal.so
 ${subscriberCount ? `You're one of ${subscriberCount.toLocaleString()}+ subscribers.\n` : ''}Unsubscribe: ${unsubscribeUrl}`
 
   return { subject, html: wrap(preheader, body), text }
