@@ -93,18 +93,12 @@ export default async function SignalPage({ params }: PageProps) {
 
   const { issue, story } = result
 
-  const gateStyle: React.CSSProperties = {
-    maxWidth: 720,
-    margin: '64px auto 80px',
-    padding: '0 32px',
-  }
-
   // No signal day
   if (issue.status === 'no_signal') {
     return (
       <>
         <SiteNav signalNumber={issue.issue_number} />
-        <main style={gateStyle}>
+        <main className="page-fallback" style={{ margin: '64px auto 80px' }}>
           <p
             style={{
               fontFamily: 'var(--ff-mono)',

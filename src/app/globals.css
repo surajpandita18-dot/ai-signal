@@ -1269,6 +1269,8 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
   color: var(--ink-pen);
   font-weight: 600;
   position: relative;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 /* scribble-out state */
@@ -1376,7 +1378,7 @@ html, body { background: var(--bg); color: var(--text); font-family: var(--ff-bo
 
 /* responsive — tablet */
 @media (max-width: 1080px) {
-  .nb-row { grid-template-columns: 1fr; gap: 16px; padding-left: 16px; }
+  .nb-row { grid-template-columns: 1fr; gap: 16px; padding: 0 16px; }
   .nb-actions { flex-direction: row; justify-content: space-between; width: 100%; }
 }
 
@@ -2774,6 +2776,8 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   line-height: 1.75;
   color: var(--text);
   max-width: 680px;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 .context-body p + p { margin-top: 30px; }
 .context-body p { margin-bottom: 0; }
