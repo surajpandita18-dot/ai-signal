@@ -25,25 +25,25 @@ export function QuirkyFactBanner({ sidebar = false }: QuirkyFactBannerProps) {
     return (
       <div className="qf-sidebar-card">
         <div className="qf-sidebar-head">
-          <span className="qf-sidebar-badge">Signal Static</span>
+          <span className="qf-sidebar-badge">&#9889; Static</span>
           <span className="qf-sidebar-counter">{idx + 1} / {TOTAL}</span>
         </div>
-        <div className="qf-sidebar-label">{fact.label}</div>
-        <p className="qf-sidebar-text">{fact.text}</p>
+        <div key={`lbl-${idx}`} className="qf-sidebar-label qf-animate">{fact.label}</div>
+        <p key={`txt-${idx}`} className="qf-sidebar-text qf-animate">{fact.text}</p>
         <div className="qf-sidebar-nav">
           <button
             className="qf-sidebar-btn"
             onClick={() => setOffset(o => o - 1)}
             aria-label="Previous fact"
           >
-            &larr;
+            &larr; Prev
           </button>
           <button
             className="qf-sidebar-btn"
             onClick={() => setOffset(o => o + 1)}
             aria-label="Next fact"
           >
-            &rarr;
+            Next &rarr;
           </button>
         </div>
       </div>
@@ -54,11 +54,11 @@ export function QuirkyFactBanner({ sidebar = false }: QuirkyFactBannerProps) {
     <div className="qf-section reveal">
       <div className="quirky-fact">
         <div className="quirky-fact-head">
-          <span className="quirky-fact-badge">Signal Static</span>
+          <span className="quirky-fact-badge">&#9889; Static</span>
           <span className="quirky-fact-counter">{idx + 1} / {TOTAL}</span>
         </div>
-        <div className="quirky-fact-label">{fact.label}</div>
-        <p className="quirky-fact-text">{fact.text}</p>
+        <div key={`lbl-${idx}`} className="quirky-fact-label qf-animate">{fact.label}</div>
+        <p key={`txt-${idx}`} className="quirky-fact-text qf-animate">{fact.text}</p>
         <div className="quirky-fact-nav">
           <button
             className="quirky-fact-btn"

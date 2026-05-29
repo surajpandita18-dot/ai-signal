@@ -4716,7 +4716,7 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   font-size: 18px;
   line-height: 1.7;
   color: var(--text);
-  font-weight: 400;
+  font-weight: 500;
   margin: 0 0 22px;
   overflow-wrap: break-word;
 }
@@ -4747,6 +4747,15 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   .quirky-fact { padding: 20px 20px 18px; }
   .quirky-fact-text { font-size: 16px; }
   .quirky-fact-btn { padding: 7px 12px; font-size: 10px; }
+}
+
+/* ── Shared animation ── */
+@keyframes qfSlideIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.qf-animate {
+  animation: qfSlideIn 0.28s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 /* ── Sidebar variant ── */
@@ -4793,8 +4802,8 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   font-family: var(--ff-display);
   font-size: 14px;
   line-height: 1.65;
-  color: var(--text-soft);
-  font-weight: 400;
+  color: var(--text);
+  font-weight: 500;
   margin: 0 0 14px;
   overflow-wrap: break-word;
 }
@@ -4808,15 +4817,17 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   border: 1px solid var(--border);
   color: var(--text-mute);
   font-family: var(--ff-mono);
-  font-size: 12px;
-  padding: 6px 0;
+  font-size: 11px;
+  letter-spacing: 0.06em;
+  padding: 7px 0;
   border-radius: 8px;
   cursor: pointer;
-  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
   text-align: center;
 }
 .qf-sidebar-btn:hover {
   color: var(--text);
   border-color: var(--border-strong);
   background: var(--bg-card);
+  transform: none;
 }
