@@ -4652,70 +4652,80 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 }
 
 /* ============ QUIRKY FACT BANNER ============ */
+.qf-section {
+  max-width: 720px;
+  margin: 48px auto 0;
+  padding: 0 32px;
+}
 .quirky-fact {
-  max-width: 640px;
-  margin: 0 auto;
-  padding: 56px 32px 52px;
-  text-align: center;
-  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-left: 4px solid var(--warm);
+  border-radius: 16px;
+  padding: 28px 32px 24px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04), 0 4px 16px rgba(0,0,0,0.05);
+  transition: box-shadow 0.2s;
 }
-.quirky-fact::before {
-  content: '· · ·';
-  display: block;
+.quirky-fact:hover {
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06), 0 8px 28px rgba(0,0,0,0.08);
+}
+.quirky-fact-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+.quirky-fact-badge {
   font-family: var(--ff-mono);
-  font-size: 13px;
-  letter-spacing: 0.3em;
-  color: var(--border-strong);
-  margin-bottom: 40px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+  background: var(--warm-soft);
+  padding: 4px 10px;
+  border-radius: 100px;
+  white-space: nowrap;
 }
-.quirky-fact-eyebrow {
+.quirky-fact-counter {
   font-family: var(--ff-mono);
   font-size: 10px;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
+  letter-spacing: 0.1em;
   color: var(--text-faint);
-  margin-bottom: 12px;
+  white-space: nowrap;
 }
 .quirky-fact-label {
   font-family: var(--ff-mono);
-  font-size: 11px;
+  font-size: 10.5px;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--signal);
   font-weight: 700;
-  margin-bottom: 18px;
+  margin-bottom: 10px;
 }
 .quirky-fact-text {
   font-family: var(--ff-display);
-  font-size: 19px;
-  line-height: 1.68;
-  color: var(--text-soft);
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--text);
   font-weight: 400;
-  margin: 0 0 28px;
+  margin: 0 0 22px;
   overflow-wrap: break-word;
 }
 .quirky-fact-nav {
   display: flex;
   align-items: center;
-  justify-content: center;
-  gap: 16px;
-}
-.quirky-fact-counter {
-  font-family: var(--ff-mono);
-  font-size: 10px;
-  letter-spacing: 0.12em;
-  color: var(--text-faint);
-  min-width: 40px;
-  text-align: center;
+  gap: 10px;
 }
 .quirky-fact-btn {
   background: transparent;
   border: 1px solid var(--border-strong);
   color: var(--text-mute);
   font-family: var(--ff-mono);
-  font-size: 11px;
-  letter-spacing: 0.08em;
-  padding: 8px 18px;
+  font-size: 10.5px;
+  letter-spacing: 0.06em;
+  padding: 7px 16px;
   border-radius: 100px;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
@@ -4726,7 +4736,8 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   background: var(--bg-soft);
 }
 @media (max-width: 640px) {
-  .quirky-fact { padding: 40px 16px 36px; }
-  .quirky-fact-text { font-size: 17px; }
-  .quirky-fact-btn { padding: 8px 14px; }
+  .qf-section { padding: 0 14px; margin-top: 36px; }
+  .quirky-fact { padding: 20px 20px 18px; }
+  .quirky-fact-text { font-size: 16px; }
+  .quirky-fact-btn { padding: 7px 12px; font-size: 10px; }
 }

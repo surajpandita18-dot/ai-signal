@@ -18,26 +18,30 @@ export function QuirkyFactBanner() {
   const fact = AI_FACTS[idx]
 
   return (
-    <div className="quirky-fact reveal">
-      <div className="quirky-fact-eyebrow">Before you go</div>
-      <div className="quirky-fact-label">{fact.label}</div>
-      <p className="quirky-fact-text">{fact.text}</p>
-      <div className="quirky-fact-nav">
-        <button
-          className="quirky-fact-btn"
-          onClick={() => setOffset(o => o - 1)}
-          aria-label="Previous fact"
-        >
-          ← Prev
-        </button>
-        <span className="quirky-fact-counter">{idx + 1} / {TOTAL}</span>
-        <button
-          className="quirky-fact-btn"
-          onClick={() => setOffset(o => o + 1)}
-          aria-label="Next fact"
-        >
-          Next →
-        </button>
+    <div className="qf-section reveal">
+      <div className="quirky-fact">
+        <div className="quirky-fact-head">
+          <span className="quirky-fact-badge">Signal Static</span>
+          <span className="quirky-fact-counter">{idx + 1} / {TOTAL}</span>
+        </div>
+        <div className="quirky-fact-label">{fact.label}</div>
+        <p className="quirky-fact-text">{fact.text}</p>
+        <div className="quirky-fact-nav">
+          <button
+            className="quirky-fact-btn"
+            onClick={() => setOffset(o => o - 1)}
+            aria-label="Previous fact"
+          >
+            &larr; Prev
+          </button>
+          <button
+            className="quirky-fact-btn"
+            onClick={() => setOffset(o => o + 1)}
+            aria-label="Next fact"
+          >
+            Next &rarr;
+          </button>
+        </div>
       </div>
     </div>
   )
