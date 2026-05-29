@@ -13,6 +13,7 @@ import { ArchiveSection, type ArchiveIssue } from '@/components/ArchiveSection'
 import { SubscribeSection } from '@/components/SubscribeSection'
 import { SiteFooter } from '@/components/SiteFooter'
 import { TrackRecord } from '@/components/TrackRecord'
+import { QuirkyFactBanner } from '@/components/QuirkyFactBanner'
 
 type StoryType = Database['public']['Tables']['stories']['Row']
 
@@ -133,6 +134,7 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
 
         <ArchiveSection issues={archiveIssues} />
         <SubscribeSection />
+        <QuirkyFactBanner />
         <SiteFooter />
       </div>
 

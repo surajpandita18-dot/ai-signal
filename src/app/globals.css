@@ -4650,3 +4650,68 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   /* Standup card */
   .standup-card { transform: none; } /* kill the tilt on small phones */
 }
+
+/* ============ QUIRKY FACT BANNER ============ */
+.quirky-fact {
+  max-width: 640px;
+  margin: 0 auto;
+  padding: 56px 32px 52px;
+  text-align: center;
+  position: relative;
+}
+.quirky-fact::before {
+  content: '· · ·';
+  display: block;
+  font-family: var(--ff-mono);
+  font-size: 13px;
+  letter-spacing: 0.3em;
+  color: var(--border-strong);
+  margin-bottom: 40px;
+}
+.quirky-fact-eyebrow {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--text-faint);
+  margin-bottom: 12px;
+}
+.quirky-fact-label {
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal);
+  font-weight: 700;
+  margin-bottom: 18px;
+}
+.quirky-fact-text {
+  font-family: var(--ff-display);
+  font-size: 19px;
+  line-height: 1.68;
+  color: var(--text-soft);
+  font-weight: 400;
+  margin: 0 0 28px;
+  overflow-wrap: break-word;
+}
+.quirky-fact-btn {
+  background: transparent;
+  border: 1px solid var(--border-strong);
+  color: var(--text-mute);
+  font-family: var(--ff-mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 9px 20px;
+  border-radius: 100px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+}
+.quirky-fact-btn:hover {
+  color: var(--text);
+  border-color: var(--text-mute);
+  background: var(--bg-soft);
+}
+@media (max-width: 640px) {
+  .quirky-fact { padding: 40px 16px 36px; }
+  .quirky-fact-text { font-size: 17px; }
+}
