@@ -4652,10 +4652,17 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 }
 
 /* ============ QUIRKY FACT BANNER ============ */
+/* Standalone version — mobile only (desktop uses sidebar) */
 .qf-section {
-  max-width: 720px;
-  margin: 48px auto 0;
-  padding: 0 32px;
+  display: none;
+}
+@media (max-width: 1080px) {
+  .qf-section {
+    display: block;
+    max-width: 720px;
+    margin: 48px auto 0;
+    padding: 0 20px;
+  }
 }
 .quirky-fact {
   background: var(--bg-card);
@@ -4740,4 +4747,76 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   .quirky-fact { padding: 20px 20px 18px; }
   .quirky-fact-text { font-size: 16px; }
   .quirky-fact-btn { padding: 7px 12px; font-size: 10px; }
+}
+
+/* ── Sidebar variant ── */
+.qf-sidebar-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--warm);
+  border-radius: 16px;
+  padding: 18px 20px 16px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+  position: relative;
+  overflow: hidden;
+}
+.qf-sidebar-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.qf-sidebar-badge {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--warm);
+}
+.qf-sidebar-counter {
+  font-family: var(--ff-mono);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: var(--text-faint);
+}
+.qf-sidebar-label {
+  font-family: var(--ff-mono);
+  font-size: 9.5px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--signal);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.qf-sidebar-text {
+  font-family: var(--ff-display);
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-soft);
+  font-weight: 400;
+  margin: 0 0 14px;
+  overflow-wrap: break-word;
+}
+.qf-sidebar-nav {
+  display: flex;
+  gap: 8px;
+}
+.qf-sidebar-btn {
+  flex: 1;
+  background: var(--bg-soft);
+  border: 1px solid var(--border);
+  color: var(--text-mute);
+  font-family: var(--ff-mono);
+  font-size: 12px;
+  padding: 6px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  text-align: center;
+}
+.qf-sidebar-btn:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  background: var(--bg-card);
 }

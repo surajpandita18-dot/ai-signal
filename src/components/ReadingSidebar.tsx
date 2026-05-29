@@ -2,6 +2,7 @@
 
 import { SidebarScoreCard } from './SidebarScoreCard'
 import { SidebarProbablyCard } from './SidebarProbablyCard'
+import { QuirkyFactBanner } from './QuirkyFactBanner'
 import type { TomorrowDraft } from '@/lib/types/extended-data'
 
 interface UpcomingTeaser {
@@ -27,6 +28,7 @@ export function ReadingSidebar({ readPct, teasers, drafts }: ReadingSidebarProps
     <aside className="sidebar">
       <SidebarScoreCard readPct={readPct} />
       {hasRealContent && <SidebarProbablyCard teasers={envelopes} drafts={drafts} />}
+      <QuirkyFactBanner sidebar />
     </aside>
   )
 }
