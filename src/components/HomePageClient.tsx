@@ -132,9 +132,9 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
           <ReadingSidebar readPct={readPct} signalNumber={signalNumber} teasers={teasers} drafts={tomorrowDrafts} />
         </div>
 
+        <QuirkyFactBanner />
         <ArchiveSection issues={archiveIssues} />
         <SubscribeSection />
-        <QuirkyFactBanner />
         <SiteFooter />
       </div>
 

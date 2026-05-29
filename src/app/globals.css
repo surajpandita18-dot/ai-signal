@@ -4694,14 +4694,28 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   margin: 0 0 28px;
   overflow-wrap: break-word;
 }
+.quirky-fact-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+}
+.quirky-fact-counter {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  letter-spacing: 0.12em;
+  color: var(--text-faint);
+  min-width: 40px;
+  text-align: center;
+}
 .quirky-fact-btn {
   background: transparent;
   border: 1px solid var(--border-strong);
   color: var(--text-mute);
   font-family: var(--ff-mono);
   font-size: 11px;
-  letter-spacing: 0.1em;
-  padding: 9px 20px;
+  letter-spacing: 0.08em;
+  padding: 8px 18px;
   border-radius: 100px;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s, background 0.2s;
@@ -4714,4 +4728,5 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 @media (max-width: 640px) {
   .quirky-fact { padding: 40px 16px 36px; }
   .quirky-fact-text { font-size: 17px; }
+  .quirky-fact-btn { padding: 8px 14px; }
 }
