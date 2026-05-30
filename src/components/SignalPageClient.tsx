@@ -26,18 +26,7 @@ export function SignalPageClient({ story, issue, signalNumber }: SignalPageClien
 
   if (!story) {
     return (
-      <main
-        style={{
-          maxWidth: 720,
-          margin: '64px auto 80px',
-          padding: '0 32px',
-          fontFamily: 'var(--ff-mono)',
-          fontSize: 11,
-          color: 'var(--text-mute)',
-          textTransform: 'uppercase',
-          letterSpacing: '0.06em',
-        }}
-      >
+      <main className="page-fallback" style={{ margin: '64px auto 80px', fontFamily: 'var(--ff-mono)', fontSize: 11, color: 'var(--text-mute)', textTransform: 'uppercase', letterSpacing: '0.06em' }}>
         Signal loading…
       </main>
     )
@@ -45,24 +34,7 @@ export function SignalPageClient({ story, issue, signalNumber }: SignalPageClien
 
   return (
     <>
-      <style>{`
-        @media (max-width: 1024px) {
-          .signal-layout { grid-template-columns: 1fr !important; }
-          .signal-sidebar { display: none !important; }
-        }
-      `}</style>
-      <main
-        className="signal-layout"
-        style={{
-          maxWidth: 1280,
-          margin: '48px auto 100px',
-          padding: '0 32px',
-          display: 'grid',
-          gridTemplateColumns: '1fr 320px',
-          gap: 48,
-          alignItems: 'start',
-        }}
-      >
+      <main className="signal-layout">
         {/* Article */}
         <div>
           <StoryArticle

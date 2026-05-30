@@ -4831,3 +4831,75 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   background: var(--bg-card);
   transform: none;
 }
+
+/* ============ SIGNAL PAGE LAYOUT ============ */
+.signal-layout {
+  max-width: 1280px;
+  margin: 48px auto 100px;
+  padding: 0 32px;
+  display: grid;
+  grid-template-columns: 1fr 320px;
+  gap: 48px;
+  align-items: start;
+}
+@media (max-width: 1024px) {
+  .signal-layout { grid-template-columns: 1fr; }
+  .signal-sidebar { display: none; }
+}
+@media (max-width: 880px) {
+  .signal-layout { padding: 0 20px; gap: 32px; }
+}
+@media (max-width: 640px) {
+  .signal-layout { padding: 0 16px; margin-top: 32px; margin-bottom: 64px; }
+}
+@media (max-width: 480px) {
+  .signal-layout { padding: 0 14px; margin-top: 24px; }
+}
+
+/* ============ ARTICLE MOBILE — 480px comprehensive fixes ============ */
+@media (max-width: 480px) {
+  /* Main article body text */
+  .context-body { font-size: 16px; line-height: 1.65; }
+
+  /* PM angle callout */
+  .pm-angle { padding: 14px 14px 14px 18px; }
+
+  /* Editorial blockquote */
+  .editorial-quote { padding: 6px 0 6px 14px; }
+  .editorial-quote-text { font-size: 20px; }
+
+  /* Builder block (dark card) */
+  .builder-block { padding: 20px 18px; }
+  .builder-quote { font-size: 20px; }
+
+  /* Standup card */
+  .standup-card { padding: 16px 14px; }
+  .standup-preview { padding: 10px 12px; font-size: 12px; }
+
+  /* Action items */
+  .action-item { padding: 14px 14px; gap: 10px; }
+
+  /* Decision aid */
+  .decision-aid { padding: 20px 16px; }
+  .decision-pill { font-size: 11px; padding: 6px 12px; }
+
+  /* Stakeholder matrix */
+  .stakeholder-grid { padding: 20px 16px; }
+
+  /* Reaction cards */
+  .reaction-card { padding: 16px 16px 14px; }
+
+  /* Chai strip */
+  .chai-strip { padding: 16px 14px; }
+  .chai-strip-inner { gap: 12px; }
+
+  /* Counter block */
+  .counter-block { padding: 20px 16px; }
+
+  /* Source cards */
+  .source-card { padding: 12px 14px; gap: 10px; }
+  .source-info { min-width: 0; }
+
+  /* Share buttons */
+  .share-btn { width: 30px; height: 30px; }
+}
