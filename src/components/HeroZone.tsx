@@ -1,6 +1,5 @@
 import React from 'react'
 import { HeroBroadcast } from './HeroBroadcast'
-import { HeroTickers } from './HeroTickers'
 import { HeroPreviewStrip } from './HeroPreviewStrip'
 import type { TickerData, PreviewCard } from '@/lib/types/extended-data'
 
@@ -16,7 +15,7 @@ interface HeroZoneProps {
   previewCards?: PreviewCard[]
 }
 
-export function HeroZone({ issueDate, publishTime, readMinutes, headline, signalNumber, phrases, category, tickers, previewCards }: HeroZoneProps) {
+export function HeroZone({ issueDate, publishTime, readMinutes, headline, signalNumber, phrases, category, previewCards }: HeroZoneProps) {
   const timeParts = publishTime.split(' ')
   const timeOnly = timeParts[0] ?? publishTime
   const tzPart = timeParts.slice(1).join(' ')
@@ -87,10 +86,6 @@ export function HeroZone({ issueDate, publishTime, readMinutes, headline, signal
 
         {phrases && phrases.length > 0 && (
           <HeroBroadcast phrases={phrases} category={category ?? 'models'} />
-        )}
-
-        {tickers && tickers.length > 0 && (
-          <HeroTickers tickers={tickers} />
         )}
 
         {previewCards && previewCards.length > 0 && (
