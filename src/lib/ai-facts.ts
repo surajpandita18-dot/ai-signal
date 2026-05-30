@@ -88,8 +88,8 @@ export const AI_FACTS: { label: string; text: string }[] = [
     text: `Harold Cohen's program AARON made original paintings from the 1970s until Cohen's death in 2016 — over 40 years. When Cohen died, AARON stopped. No one decided to turn it back on.`,
   },
   {
-    label: "The released danger",
-    text: `OpenAI refused to release GPT-2 in 2019, calling it "too dangerous." Within months, everyone had built something better. OpenAI quietly released GPT-2 in November 2019 and no one noticed.`,
+    label: "The three laws problem",
+    text: `Isaac Asimov wrote the Three Laws of Robotics in 1942 to show they were inadequate — every story uses an edge case that breaks them. Researchers are now writing the same stories with real models.`,
   },
   {
     label: "The public domain flood",
@@ -140,7 +140,7 @@ export const AI_FACTS: { label: string; text: string }[] = [
     text: `GPT-3 was trained on 45 terabytes of text — roughly 4.5 million copies of War and Peace. After reading all of that, it still makes things up with total confidence.`,
   },
   {
-    label: "The 20% promise",
-    text: `In 2023, OpenAI committed 20% of its compute to AI safety research. By 2024, the entire safety team had resigned publicly. Twenty percent of a deprioritised thing is still small.`,
+    label: "The stochastic parrot",
+    text: `In 2021, Google fired two researchers who wrote a paper arguing LLMs are just autocomplete at scale — "stochastic parrots" shuffling tokens with no understanding. The models got 100x bigger. The debate never ended.`,
   },
 ]

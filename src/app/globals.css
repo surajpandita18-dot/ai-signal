@@ -2525,6 +2525,8 @@ footer .links a:hover { color: var(--text); }
 }
 .hero-ticker:nth-child(2) { border-top-color: var(--warm); }
 .hero-ticker:nth-child(3) { border-top-color: #22a85a; }
+.hero-ticker:nth-child(2) .hero-ticker-pip { background: var(--warm); animation: none; }
+.hero-ticker:nth-child(3) .hero-ticker-pip { background: #22a85a; }
 .hero-ticker:hover {
   transform: translateY(-3px);
   box-shadow: 0 8px 24px rgba(0,0,0,0.10);
@@ -2640,6 +2642,8 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 .hero-preview-card:hover .preview-arrow { opacity: 1; gap: 8px; }
 .hero-preview-card:nth-child(2) .preview-arrow { color: var(--warm); }
 .hero-preview-card:nth-child(3) .preview-arrow { color: #22a85a; }
+.hero-preview-card:nth-child(2) .preview-label { color: var(--warm); }
+.hero-preview-card:nth-child(3) .preview-label { color: #22a85a; }
 .hero-preview-header {
   display: flex;
   align-items: center;
@@ -2668,8 +2672,8 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
 }
 .preview-value {
   font-family: var(--ff-display);
-  font-size: 16px;
-  line-height: 1.38;
+  font-size: 17px;
+  line-height: 1.35;
   color: var(--text);
   font-weight: 400;
   letter-spacing: -0.015em;
