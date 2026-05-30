@@ -3564,6 +3564,26 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   .source-title { white-space: normal; }
 }
 
+/* ── Mobile hero redesign (≤640px) ── */
+@media (max-width: 640px) {
+  /* Hero is no longer a full-viewport lock — becomes content-height */
+  .hero-zone { min-height: 0; position: relative; }
+  /* Reduce massive 56px eyebrow gap */
+  .hero-eyebrow { margin: 0 auto 14px; }
+  /* Smaller headline — clamp minimum was 52px, too large at 375px */
+  .big-headline { font-size: 36px; line-height: 1.08; letter-spacing: -0.03em; }
+  .headline-stage { margin-bottom: 10px; }
+  /* Remove "why 6am" block — informative but low priority on first screen */
+  .hero-why { display: none; }
+  /* Remove preview cards from hero — they link article sections not yet visible */
+  .hero-preview-strip { display: none; }
+  /* Tighter broadcast and sub margins */
+  .hero-broadcast { margin-top: 18px; }
+  .hero-sub { margin-top: 12px; gap: 8px 10px; }
+  /* Content sheet — plain flow, no overlap lift needed without sticky hero */
+  .content-sheet { border-radius: 0; margin-top: 0; box-shadow: none; }
+}
+
 /* ============ ACTION ITEMS ============ */
 .action-list { list-style: none; display: flex; flex-direction: column; gap: 10px; }
 .action-item { display: flex; gap: 14px; padding: 16px 18px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; transition: all 0.2s ease; cursor: pointer; position: relative; align-items: flex-start; }
@@ -3730,11 +3750,11 @@ footer .links a:hover { color: var(--text); }
   /* Small-phone overrides */
   .story-wrap { padding: 24px 16px; border-radius: 14px; }
   .main-article-grid { padding: 0 12px; margin-top: 28px; }
-  .hero-banner { padding: 44px 16px 12px; }
+  .hero-banner { padding: 36px 14px 10px; }
   .hero-tickers { padding: 0 4px; }
   .hero-preview-strip { padding: 0 4px; }
-  .hero-today-headline { margin: 16px 0 0; width: 100%; }
-  .headline-stage { margin-bottom: 20px; }
+  .hero-today-headline { margin: 12px 0 0; width: 100%; }
+  .big-headline { font-size: 30px; }
   .notebook-strip { padding: 0 12px; }
 }
 
@@ -4436,6 +4456,38 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 }
 .signal-boost-copy:hover { opacity: 0.85; }
 .signal-boost-copy.copied { background: #2a9d5c; }
+
+/* ── Feedback invite strip (homepage) ── */
+.feedback-invite {
+  max-width: 1280px;
+  margin: 48px auto 0;
+  padding: 0 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.feedback-invite-text {
+  font-family: var(--ff-display);
+  font-style: italic;
+  font-size: 17px;
+  color: var(--text-mute);
+  letter-spacing: -0.005em;
+  margin: 0;
+}
+.feedback-invite-link {
+  color: var(--signal);
+  text-decoration: none;
+  font-style: normal;
+  border-bottom: 1px solid var(--signal-soft);
+  transition: border-color 0.15s;
+  font-weight: 500;
+}
+.feedback-invite-link:hover { border-bottom-color: var(--signal); }
+@media (max-width: 640px) {
+  .feedback-invite { padding: 0 16px; margin: 32px auto 0; }
+  .feedback-invite-text { font-size: 15px; }
+}
 
 /* ── Feedback page ────────────────────────────────────────────────────────── */
 .feedback-page {

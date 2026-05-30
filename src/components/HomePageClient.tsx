@@ -133,6 +133,12 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
         </div>
 
         <QuirkyFactBanner />
+        <div className="feedback-invite">
+          <p className="feedback-invite-text">
+            How was today&apos;s signal?{' '}
+            <a href="/feedback" className="feedback-invite-link">Tell Suraj →</a>
+          </p>
+        </div>
         <ArchiveSection issues={archiveIssues} />
         <SubscribeSection />
         <SiteFooter />
