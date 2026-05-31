@@ -5064,4 +5064,47 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
   }
   .quirky-fact:hover { box-shadow: none; }
   .qf-section { padding: 0 20px; }
+
+  /* Insight cells — flatten from card to inline list */
+  .insights-strip {
+    border: none;
+    border-radius: 0;
+    background: transparent;
+    margin: 20px 0;
+  }
+  .insight-cell {
+    padding: 14px 0;
+    border-right: none;
+    border-bottom: 1px solid var(--border);
+    flex-direction: row;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .insight-cell:last-child { border-bottom: none; }
+  .insight-icon { flex-shrink: 0; }
+
+  /* Counter block — remove beige card, just a content divider */
+  .counter-block {
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    padding: 20px 0;
+    margin: 20px 0 28px;
+  }
+  .counter-stamp { display: none; }
+
+  /* Reaction cards — unify to one quiet style, no competing top colors */
+  .reaction-card {
+    border-top: none;
+    border-left: 3px solid var(--border-mid);
+    border-radius: 8px;
+    box-shadow: none;
+  }
+  .reaction-card:nth-child(1),
+  .reaction-card:nth-child(2),
+  .reaction-card:nth-child(3) {
+    border-top: none;
+    border-left: 3px solid var(--border-mid);
+  }
 }
