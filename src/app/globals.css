@@ -2971,6 +2971,7 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   line-height: 1.4;
   color: var(--text);
   font-weight: 500;
+  min-height: 72px;
 }
 
 /* ── Reaction Quotes ── */
