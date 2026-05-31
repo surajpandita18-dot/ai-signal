@@ -2782,10 +2782,32 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   max-width: 680px;
   overflow-wrap: break-word;
   word-break: break-word;
+  margin-top: 24px;
 }
 .context-body p + p { margin-top: 30px; }
 .context-body p { margin-bottom: 0; }
 .context-body strong { color: var(--text); font-weight: 600; }
+
+/* ── Editorial take ── */
+.editorial-take {
+  margin-top: 32px;
+  padding-top: 28px;
+  border-top: 1px solid var(--border);
+}
+.editorial-take-eyebrow {
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-mute);
+  margin-bottom: 10px;
+}
+.editorial-take p {
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--text);
+}
+.editorial-take strong { font-weight: 600; }
 
 /* ── Key Insights Strip ── */
 .insights-strip {

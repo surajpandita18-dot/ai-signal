@@ -2,18 +2,10 @@
 
 import React, { useState, useEffect, useRef } from 'react'
 import type { Database } from '../../db/types/database'
-import { BuilderCard } from './BuilderCard'
-import { CounterView } from './CounterView'
 import { EditorialQuote } from './EditorialQuote'
-import { InsightsStrip } from './InsightsStrip'
-import { CascadeTimeline } from './CascadeTimeline'
-import { StakeholdersGrid } from './StakeholdersGrid'
 import { PrimaryChart } from './PrimaryChart'
-import { DecisionAid } from './DecisionAid'
-import { ReactionsPanel } from './ReactionsPanel'
 import { InlineChaiStrip } from './InlineChaiStrip'
-import { PMAngle } from './PMAngle'
-import type { InsightCell, CascadeData, StakeholdersData, ComparisonChart, DecisionAid as DecisionAidData, Reaction, StandupMessages, ReplacesData, ReadinessLevel, SignalBoost } from '@/lib/types/extended-data'
+import type { ComparisonChart, StandupMessages, ReplacesData, ReadinessLevel } from '@/lib/types/extended-data'
 
 // ---------- Text helpers ----------
 
@@ -385,19 +377,10 @@ export function StoryArticle({
   // Extract V11 extended_data fields with null-safety
   const rawExt = story.extended_data as Record<string, unknown> | null
   const numbersHeadline  = typeof rawExt?.numbers_headline === 'string' ? rawExt.numbers_headline : null
-  const mattersHeadline  = typeof rawExt?.matters_headline === 'string' ? rawExt.matters_headline : null
-  const insightCells     = Array.isArray(rawExt?.insights_strip) ? (rawExt!.insights_strip as InsightCell[]) : null
-  const cascadeData      = (rawExt?.cascade && typeof rawExt.cascade === 'object') ? (rawExt.cascade as CascadeData) : null
-  const stakeholdersData = (rawExt?.stakeholders && typeof rawExt.stakeholders === 'object') ? (rawExt.stakeholders as StakeholdersData) : null
   const primaryChart     = (rawExt?.primary_chart && typeof rawExt.primary_chart === 'object') ? (rawExt.primary_chart as ComparisonChart) : null
-  const decisionAidData  = (rawExt?.decision_aid && typeof rawExt.decision_aid === 'object') ? (rawExt.decision_aid as DecisionAidData) : null
-  const reactions        = Array.isArray(rawExt?.reactions) ? (rawExt!.reactions as Reaction[]) : null
   const standupMessages  = (rawExt?.standup_messages && typeof rawExt.standup_messages === 'object') ? (rawExt.standup_messages as StandupMessages) : null
-  const oneBreathText    = (rawExt?.one_breath && typeof (rawExt.one_breath as Record<string,unknown>)?.text === 'string') ? (rawExt.one_breath as { text: string }).text : null
-  const openQuestion     = typeof rawExt?.open_question === 'string' ? rawExt.open_question : null
   const replacesData     = (rawExt?.replaces && typeof rawExt.replaces === 'object') ? (rawExt.replaces as ReplacesData) : null
   const readinessLevel   = typeof rawExt?.readiness_level === 'string' ? rawExt.readiness_level as ReadinessLevel : null
-  const signalBoost      = (rawExt?.signal_boost && typeof rawExt.signal_boost === 'object') ? (rawExt.signal_boost as SignalBoost) : null
   const articleRef = useRef<HTMLElement>(null)
   // High watermark — never decreases once set, locks at 100
   const highWatermark = useRef(0)
@@ -452,20 +435,6 @@ export function StoryArticle({
       ref={articleRef}
       className="story-wrap"
     >
-      {/* ── PROTOTYPE: Relevance context — hardcoded, two visual approaches ── */}
-      {/* Approach A: pill row */}
-      <div className="relevance-pills">
-        <span className="relevance-pills-label">Read if you&apos;re</span>
-        <span className="relevance-pill">building with LLMs</span>
-        <span className="relevance-pill">API-dependent products</span>
-        <span className="relevance-pill">enterprise AI</span>
-      </div>
-      {/* Approach B: editorial sentence */}
-      <div className="relevance-sentence">
-        <span className="relevance-skip">Skip if:</span> You&apos;re not building on third-party AI APIs yet.{' '}
-        <span className="relevance-read">Read if:</span> You are — or will be in the next quarter.
-      </div>
-
       {/* ── Section 1: Story meta bar ── */}
       <div className="story-meta">
         {/* Category chip */}
@@ -486,17 +455,6 @@ export function StoryArticle({
       <p className="story-deck">
         {parseBold(story.summary)}
       </p>
-
-      {/* ── TL;DR strip — before author row so speed readers can exit early ── */}
-      {oneBreathText && (
-        <div className="tldr-strip">
-          <div className="tldr-icon">TL;DR</div>
-          <div className="tldr-content">
-            <div className="tldr-label">In one breath</div>
-            <div className="tldr-text">{parseBold(oneBreathText)}</div>
-          </div>
-        </div>
-      )}
 
       {/* ── Author row ── */}
       <div className="author-row">
@@ -573,11 +531,6 @@ export function StoryArticle({
         )
       })()}
 
-      {/* ── Insights strip — claim → pattern → proof ── */}
-      {insightCells && insightCells.length > 0 && (
-        <InsightsStrip cells={insightCells} />
-      )}
-
       {/* ── Section 5: By the Numbers ── */}
       {(() => {
         const statCards = (story.stats && story.stats.length > 0) ? story.stats : null
@@ -613,87 +566,29 @@ export function StoryArticle({
         )
       })()}
 
-      {/* ── Section 6: Block 2 — Why it matters ── */}
-      {/* para1 is shown in Signal block above; here we render para2 → pull_quote → para3 */}
+      {/* ── Why it matters — flowing prose, no section wrapper ── */}
       {(() => {
         const paras = story.why_it_matters.split(/\n\n+/).map(p => p.trim()).filter(Boolean)
         const para2 = paras[1] ?? null
         const para3 = paras[2] ?? null
-        const quote = story.pull_quote ?? story.editorial_take ?? null
+        const quote = story.pull_quote ?? null
         if (!para2 && !quote) return null
         const toHtml = (s: string) => s.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
         return (
-          <div className="block" id="sec-context">
-            <div className="block-header">
-              <div>
-                <div className="block-eyebrow">Why it matters</div>
-              </div>
-            </div>
-            {mattersHeadline && <h3 className="block-title">{mattersHeadline}</h3>}
-            <div className="context-body">
-              {para2 && (
-                <p dangerouslySetInnerHTML={{ __html: toHtml(para2) }} />
-              )}
-              {quote && (
-                <EditorialQuote quote={quote} />
-              )}
-              {para3 && (
-                <p dangerouslySetInnerHTML={{ __html: toHtml(para3) }} />
-              )}
-            </div>
+          <div className="context-body" id="sec-context">
+            {para2 && <p dangerouslySetInnerHTML={{ __html: toHtml(para2) }} />}
+            {quote && <EditorialQuote quote={quote} />}
+            {para3 && <p dangerouslySetInnerHTML={{ __html: toHtml(para3) }} />}
           </div>
         )
       })()}
 
-      {/* ── V11: Cascade timeline — after "Why it matters" ── */}
-      {cascadeData && cascadeData.steps?.length > 0 && (
-        <CascadeTimeline data={cascadeData} />
-      )}
-
-      {/* ── V11: Stakeholders grid — after cascade ── */}
-      {stakeholdersData && stakeholdersData.cells?.length > 0 && (
-        <StakeholdersGrid data={stakeholdersData} />
-      )}
-
-      {/* ── The PM read — strategic product implication, uses lens_pm ── */}
-      {story.lens_pm && <PMAngle text={story.lens_pm} />}
-
-      {/* ── Devil's Advocate — placed here so reader debates while story is fresh ── */}
-      {story.counter_view && (
-        <CounterView
-          headline={story.counter_view_headline ?? 'Another angle.'}
-          body={story.counter_view.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')}
-        />
-      )}
-
-      {/* ── Reactions — debate cluster after counter-view ── */}
-      {reactions && reactions.length > 0 && (
-        <ReactionsPanel reactions={reactions} />
-      )}
-
-      {/* ── Builder / Founder / Editorial — The Build + The Bet + The Burn ── */}
+      {/* ── Editorial take — one voice, plain paragraph ── */}
       {story.editorial_take && (
-        <BuilderCard
-          buildQuote={story.editorial_take}
-          betQuote={story.lens_builder ?? story.lens_pm ?? ''}
-          burnQuote={story.lens_founder ?? story.lens_pm ?? ''}
-        />
-      )}
-
-      {/* ── The Open Question — the one thing nobody knows yet ── */}
-      {openQuestion && (
-        <div className="open-question">
-          <div className="open-question-eyebrow">
-            <span className="open-question-pip">?</span>
-            The open question
-          </div>
-          <p className="open-question-text">{openQuestion}</p>
+        <div className="editorial-take">
+          <div className="editorial-take-eyebrow">The take</div>
+          <p dangerouslySetInnerHTML={{ __html: story.editorial_take.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>') }} />
         </div>
-      )}
-
-      {/* ── V11: Decision Aid — after builder card, before The Move ── */}
-      {decisionAidData && decisionAidData.rows?.length > 0 && (
-        <DecisionAid aid={decisionAidData} />
       )}
 
       {/* ── Section 8: The Move — action checklist ── */}
@@ -759,68 +654,7 @@ export function StoryArticle({
       {/* ── Section 13: Feedback vote ── */}
       <FeedbackVote signalNumber={signalNumber} />
 
-      {/* ── Signal Boost — bonus quick-win at the end ── */}
-      {signalBoost && <SignalBoostBlock boost={signalBoost} />}
     </article>
   )
 }
 
-// ---------- SignalBoostBlock ----------
-
-function SignalBoostBlock({ boost }: { boost: SignalBoost }) {
-  const [copied, setCopied] = useState(false)
-
-  function handleCopy() {
-    if (typeof navigator !== 'undefined') {
-      navigator.clipboard.writeText(boost.content)
-        .then(() => { setCopied(true); setTimeout(() => setCopied(false), 2000) })
-        .catch(() => {
-          const ta = document.createElement('textarea')
-          ta.value = boost.content
-          ta.style.cssText = 'position:fixed;opacity:0'
-          document.body.appendChild(ta)
-          ta.select()
-          document.execCommand('copy')
-          document.body.removeChild(ta)
-          setCopied(true)
-          setTimeout(() => setCopied(false), 2000)
-        })
-    }
-  }
-
-  const isPrompt = boost.type === 'prompt'
-  const isQuote  = boost.type === 'quote'
-
-  return (
-    <div className="signal-boost">
-      <div className="signal-boost-header">
-        <span className="signal-boost-pip">
-          {isPrompt ? '⚡' : isQuote ? '"' : '◐'}
-        </span>
-        <span className="signal-boost-eyebrow">{boost.title}</span>
-      </div>
-
-      <div className={`signal-boost-body${isPrompt ? ' prompt' : isQuote ? ' quote' : ' fact'}`}>
-        {isQuote
-          ? <p className="signal-boost-quote-text">"{boost.content}"</p>
-          : <p className="signal-boost-content">{boost.content}</p>
-        }
-        {isQuote && boost.attribution && (
-          <p className="signal-boost-attribution">— {boost.attribution}</p>
-        )}
-      </div>
-
-      {isPrompt && (
-        <button type="button" className={`signal-boost-copy${copied ? ' copied' : ''}`} onClick={handleCopy}>
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round" width="13" height="13">
-            {copied
-              ? <path d="M5 12l5 5L20 7"/>
-              : <><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></>
-            }
-          </svg>
-          {copied ? 'Copied ✓' : (boost.cta_text ?? 'Copy prompt →')}
-        </button>
-      )}
-    </div>
-  )
-}
