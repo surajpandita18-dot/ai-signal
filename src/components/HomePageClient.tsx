@@ -14,6 +14,7 @@ import { SubscribeSection } from '@/components/SubscribeSection'
 import { SiteFooter } from '@/components/SiteFooter'
 import { TrackRecord } from '@/components/TrackRecord'
 import { QuirkyFactBanner } from '@/components/QuirkyFactBanner'
+import { ReadingStreak } from '@/components/ReadingStreak'
 
 type StoryType = Database['public']['Tables']['stories']['Row']
 
@@ -117,6 +118,7 @@ export function HomePageClient({ story, publishedAt, signalNumber, broadcastPhra
         previewCards={previewCards}
       />
       <div className="content-sheet">
+        <ReadingStreak />
         <HeroBridge />
         <TrackRecord />
         <NotebookStrip facts={didYouKnowFacts} />

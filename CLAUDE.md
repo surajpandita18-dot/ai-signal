@@ -201,3 +201,42 @@ permission. Permission-seeking adds friction Suraj is paying you to remove.
 **Failure mode to avoid:** Writing code first, then realizing mid-task that a
 plan was needed. If that happens, STOP, show what you have, and restart with a
 proper plan. Do not silently continue.
+
+---
+
+## Product Decision Protocol
+
+Three advisor agents live in `.claude/skills/`. Use them before committing to any non-trivial product direction.
+
+### PM Critic — auto-invokes on complex product decisions
+
+**Auto-triggers (same logic as karpathy-discipline but for product, not code):**
+- "I'm thinking about adding X"
+- "What if we build Y"
+- "Should we do Z"
+- "Kya karte hai agar"
+- "Yeh add karein"
+- Any new feature, page, flow, onboarding step, or monetization idea
+- Any discussion about personalization, login, pricing, content structure
+
+**Manual shortcuts:** "pm", "pm check", "product check", "/pm-critic"
+
+**What it does:** Runs three voices (Ries / Lenny / Operator) that challenge the idea from different angles. Returns a verdict. Does not agree by default.
+
+### CEO Check — manual only
+
+**When to invoke:** Major strategic direction — "should I pivot", "is this the right market", "where to focus next 3 months", "is this worth continuing."
+
+**NOT for feature decisions.** Use pm-critic instead.
+
+**Shortcuts:** "ceo", "ceo check", "/ceo-check"
+
+### VC Check — manual only, structural decisions only
+
+**When to invoke:** Pricing model, fundraising readiness, major pivot, new product line. NOT for feature or UX decisions.
+
+**Shortcuts:** "vc", "vc check", "/vc-check"
+
+---
+
+**Rule:** If Suraj is discussing a product idea and pm-critic hasn't run, flag it once: "Should I run the PM panel on this before we proceed?" Do not block — just flag.

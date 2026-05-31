@@ -3575,13 +3575,18 @@ a.hero-preview-card { text-decoration: none; color: inherit; }
   .headline-stage { margin-bottom: 10px; }
   /* Remove "why 6am" block — informative but low priority on first screen */
   .hero-why { display: none; }
-  /* Remove preview cards from hero — they link article sections not yet visible */
+  /* Remove preview cards + broadcast from hero — too much competing content */
   .hero-preview-strip { display: none; }
-  /* Tighter broadcast and sub margins */
-  .hero-broadcast { margin-top: 18px; }
+  .hero-broadcast { display: none; }
   .hero-sub { margin-top: 12px; gap: 8px 10px; }
   /* Content sheet — plain flow, no overlap lift needed without sticky hero */
   .content-sheet { border-radius: 0; margin-top: 0; box-shadow: none; }
+  /* Article density — tighter sections on mobile */
+  .block { margin-bottom: 32px; }
+  .block-title { font-size: 22px; line-height: 1.2; }
+  .story-deck { font-size: 17px; line-height: 1.65; margin: 14px 0 24px; }
+  .tldr-strip { margin: 16px 0 24px; padding: 14px 16px; gap: 10px; }
+  .tldr-icon { width: 30px; height: 30px; font-size: 8px; }
 }
 
 /* ============ ACTION ITEMS ============ */
@@ -4457,6 +4462,64 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 .signal-boost-copy:hover { opacity: 0.85; }
 .signal-boost-copy.copied { background: #2a9d5c; }
 
+/* ── PROTOTYPE: Relevance context strip ── */
+/* Approach A: pill row */
+.relevance-pills {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 24px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+}
+.relevance-pills-label {
+  font-family: var(--ff-mono);
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.16em;
+  color: var(--text-mute);
+  white-space: nowrap;
+}
+.relevance-pill {
+  font-family: var(--ff-mono);
+  font-size: 10.5px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  color: var(--signal-deep);
+  background: var(--signal-soft);
+  padding: 4px 10px;
+  border-radius: 100px;
+}
+
+/* Approach B: editorial sentence */
+.relevance-sentence {
+  font-family: var(--ff-display);
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--text-soft);
+  letter-spacing: -0.005em;
+  border-left: 3px solid var(--border-mid);
+  padding: 10px 14px;
+  margin-bottom: 24px;
+  background: var(--bg-soft);
+  border-radius: 0 8px 8px 0;
+}
+.relevance-skip {
+  font-weight: 600;
+  color: var(--text-mute);
+}
+.relevance-read {
+  font-weight: 600;
+  color: var(--signal);
+}
+@media (max-width: 640px) {
+  .relevance-pills { gap: 6px; }
+  .relevance-sentence { font-size: 14px; }
+}
+/* END PROTOTYPE */
+
 /* ── Feedback invite strip (homepage) ── */
 .feedback-invite {
   max-width: 1280px;
@@ -4487,6 +4550,26 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 @media (max-width: 640px) {
   .feedback-invite { padding: 0 16px; margin: 32px auto 0; }
   .feedback-invite-text { font-size: 15px; }
+}
+
+/* ── Reading streak ───────────────────────────────────────────────────────── */
+.reading-streak {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--warm-soft);
+  border: 1px solid var(--warm);
+  border-radius: 20px;
+  padding: 5px 12px;
+  margin: 0 0 20px;
+}
+.reading-streak-fire { font-size: 14px; line-height: 1; }
+.reading-streak-label {
+  font-family: var(--ff-body);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--rocket);
+  letter-spacing: -0.01em;
 }
 
 /* ── Feedback page ────────────────────────────────────────────────────────── */
@@ -4958,4 +5041,27 @@ a.track-record-card:hover .track-record-called { color: var(--signal); }
 
   /* Share buttons */
   .share-btn { width: 30px; height: 30px; }
+}
+
+/* ── Mobile continuity — reading path cleanup ────────────────────────────── */
+@media (max-width: 640px) {
+  /* Remove widgets that break reading flow before the article */
+  .track-record { display: none; }
+  .notebook-strip { display: none; }
+
+  /* HeroBridge — tighten so article starts immediately */
+  .hero-bridge { margin: 12px auto 0; padding: 0 20px; gap: 12px; }
+  .hero-bridge-line { max-width: 100px; }
+
+  /* QuirkyFact — strip card feel, make it a quiet coda after the article */
+  .quirky-fact {
+    background: transparent;
+    border: none;
+    border-top: 1px solid var(--border);
+    border-radius: 0;
+    box-shadow: none;
+    padding: 20px 0 0;
+  }
+  .quirky-fact:hover { box-shadow: none; }
+  .qf-section { padding: 0 20px; }
 }
