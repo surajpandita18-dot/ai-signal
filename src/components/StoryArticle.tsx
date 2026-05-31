@@ -452,6 +452,20 @@ export function StoryArticle({
       ref={articleRef}
       className="story-wrap"
     >
+      {/* ── PROTOTYPE: Relevance context — hardcoded, two visual approaches ── */}
+      {/* Approach A: pill row */}
+      <div className="relevance-pills">
+        <span className="relevance-pills-label">Read if you&apos;re</span>
+        <span className="relevance-pill">building with LLMs</span>
+        <span className="relevance-pill">API-dependent products</span>
+        <span className="relevance-pill">enterprise AI</span>
+      </div>
+      {/* Approach B: editorial sentence */}
+      <div className="relevance-sentence">
+        <span className="relevance-skip">Skip if:</span> You&apos;re not building on third-party AI APIs yet.{' '}
+        <span className="relevance-read">Read if:</span> You are — or will be in the next quarter.
+      </div>
+
       {/* ── Section 1: Story meta bar ── */}
       <div className="story-meta">
         {/* Category chip */}
