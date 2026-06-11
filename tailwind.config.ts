@@ -1,41 +1,32 @@
 import type { Config } from 'tailwindcss'
 
 const config: Config = {
-  content: ['./src/**/*.{ts,tsx}'],
-  darkMode: 'class',
+  content: ['./src/**/*.{ts,tsx}', './emails/**/*.{ts,tsx}'],
   theme: {
     extend: {
       colors: {
-        signal: {
-          DEFAULT: '#2B5BFF',
-          deep: '#1F44CC',
-          soft: '#E5EBFF',
-          faint: '#F4F6FF',
-        },
-        warm: {
-          DEFAULT: '#FF6B35',
-          soft: '#FFE8DD',
-        },
-        green: {
-          DEFAULT: '#1B7A3E',
-          soft: '#E0F2E5',
-        },
-        ink: '#2B4A8F',
-        beige: {
-          DEFAULT: '#F0E9D8',
-          deep: '#E5DCC4',
-        },
+        bg: '#F4F1E8',
+        ink: '#191712',
+        accent: '#9C4A2E',
+        clay: '#B5683E',
+        sand: '#E3DBC9',
+        faint: '#ECE7DA',
+        hair: '#DCD6C8',
+        grey: '#6F6A60',
+        'dark-band': '#211E18',
       },
       fontFamily: {
-        display: ['var(--font-display)', 'Georgia', 'serif'],
-        fraunces: ['var(--font-fraunces)', 'Georgia', 'serif'],
-        sans: ['var(--font-inter)', 'system-ui', 'sans-serif'],
+        serif: ['var(--font-serif)', 'Georgia', 'serif'],
+        read: ['var(--font-read)', 'Georgia', 'serif'],
+        sans: ['var(--font-sans)', 'system-ui', 'sans-serif'],
+        narrow: ['var(--font-narrow)', 'system-ui', 'sans-serif'],
+        expanded: ['var(--font-expanded)', 'system-ui', 'sans-serif'],
         mono: ['var(--font-mono)', 'ui-monospace', 'monospace'],
-        hand: ['var(--font-hand)', 'cursive'],
       },
       maxWidth: {
-        content: '720px',
-        wire: '1280px',
+        issue: '1000px',
+        prose: '600px',
+        wide: '1160px',
       },
     },
   },

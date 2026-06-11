@@ -1,217 +1,66 @@
-import type { Metadata } from 'next'
-import { createServerSupabaseClient } from '@/lib/supabase-server'
-import { HomePageClient } from '@/components/HomePageClient'
-import { SiteNav } from '@/components/SiteNav'
-import { SiteFooter } from '@/components/SiteFooter'
-import { SubscribeInput } from '@/components/SubscribeInput'
+import SubscribeForm from './subscribe-form'
 
-export const dynamic = 'force-dynamic'
-
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
-
-export const metadata: Metadata = {
-  title: 'AI Signal — One story. Every day. Signal over noise.',
-  description: 'One story. Every day. The single most important thing in AI, curated daily for builders.',
-  openGraph: {
-    title: 'AI Signal — One story. Every day. Signal over noise.',
-    description: 'One story. Every day. The single most important thing in AI, curated daily for builders.',
-    url: SITE_URL,
-    siteName: 'AI Signal',
-    type: 'website',
-    images: [{ url: `${SITE_URL}/og/default`, width: 1200, height: 630, alt: 'AI Signal' }],
-  },
-  twitter: {
-    card: 'summary_large_image',
-    title: 'AI Signal — One story. Every day. Signal over noise.',
-    description: 'One story. Every day. Signal over noise.',
-    images: [`${SITE_URL}/og/default`],
-  },
-}
-
-export default async function HomePage() {
-  // Dev mode — no Supabase credentials
-  if (!process.env.NEXT_PUBLIC_SUPABASE_URL || !process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY) {
-    return (
-      <>
-        <SiteNav />
-        <div className="page-fallback">
-          <p style={{ fontFamily: 'var(--ff-mono)', fontSize: 11, color: 'var(--text-mute)' }}>
-            Dev mode — no Supabase credentials. Copy .env.local.example → .env.local.
-          </p>
-        </div>
-        <SiteFooter />
-      </>
-    )
-  }
-
-  const supabase = await createServerSupabaseClient()
-
-  const { data: issue } = await supabase
-    .from('issues')
-    .select('*')
-    .in('status', ['published', 'no_signal'])
-    .order('published_at', { ascending: false })
-    .limit(1)
-    .maybeSingle()
-
-  // State C — no signal published yet
-  if (!issue) {
-    return (
-      <>
-        <SiteNav />
-        <div className="page-fallback">
-          <p
-            style={{
-              fontFamily: 'var(--ff-mono)',
-              fontSize: 11,
-              fontWeight: 500,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--text-mute)',
-              marginBottom: 32,
-            }}
-          >
-            First signal coming soon.
-          </p>
-          <SubscribeInput label="Be first when we launch." />
-        </div>
-        <SiteFooter />
-      </>
-    )
-  }
-
-  // State D — no_signal day
-  if (issue.status === 'no_signal') {
-    return (
-      <>
-        <SiteNav />
-        <div className="page-fallback">
-          <p
-            style={{
-              fontFamily: 'var(--ff-mono)',
-              fontSize: 11,
-              fontWeight: 500,
-              letterSpacing: '0.08em',
-              textTransform: 'uppercase',
-              color: 'var(--text-mute)',
-              marginBottom: 16,
-            }}
-          >
-            No signal today.
-          </p>
-          {issue.editor_note && (
-            <p style={{ fontSize: 15, lineHeight: 1.6 }}>{issue.editor_note}</p>
-          )}
-        </div>
-        <SiteFooter />
-      </>
-    )
-  }
-
-  // State A — active signal
-  const { data: storiesData } = await supabase
-    .from('stories')
-    .select('*')
-    .eq('issue_id', issue.id)
-    .order('position', { ascending: true })
-    .limit(1)
-
-  const story = storiesData && storiesData.length > 0 ? storiesData[0] : null
-
-  if (!story) {
-    return (
-      <>
-        <SiteNav signalNumber={issue.issue_number} />
-        <div className="page-fallback">
-          <p
-            style={{
-              fontFamily: 'var(--ff-mono)',
-              fontSize: 11,
-              color: 'var(--text-mute)',
-              textTransform: 'uppercase',
-              letterSpacing: '0.06em',
-            }}
-          >
-            Signal loading…
-          </p>
-        </div>
-        <SiteFooter />
-      </>
-    )
-  }
-
-  const broadcastPhrases = Array.isArray(story.broadcast_phrases) && story.broadcast_phrases.length > 0
-    ? story.broadcast_phrases as string[]
-    : undefined
-
-  // Fetch upcoming teasers from draft issues
-  const { data: upcomingData } = await supabase
-    .from('issues')
-    .select('id, published_at, teaser, status')
-    .eq('status', 'draft')
-    .not('teaser', 'is', null)
-    .order('created_at', { ascending: true })
-    .limit(3)
-
-  const teasers = (upcomingData ?? []).map((iss, i) => ({
-    dayOfWeek: iss.published_at
-      ? new Date(iss.published_at).toLocaleDateString('en-US', { weekday: 'short' }).toUpperCase()
-      : (['MON', 'TUE', 'WED'][i] ?? 'TBD'),
-    date: iss.published_at
-      ? new Date(iss.published_at).toLocaleDateString('en-GB', { day: 'numeric', month: 'short' })
-      : 'Soon',
-    text: iss.teaser ?? '',
-    status: i === 0 ? 'lead' as const : 'sealed' as const,
-  }))
-
-  // Fetch past published issues for the archive section (exclude the current issue)
-  // Fetch more than needed so deduplication doesn't leave fewer than 3
-  const { data: archiveData } = await supabase
-    .from('issues')
-    .select('id, issue_number, slug, published_at, teaser, stories(headline, category)')
-    .eq('status', 'published')
-    .neq('id', issue.id)
-    .order('published_at', { ascending: false })
-    .limit(12)
-
-  const archiveRaw = (archiveData ?? []).map((iss) => {
-    const storyRow = Array.isArray(iss.stories) ? iss.stories[0] : null
-    return {
-      id: iss.id,
-      issue_number: iss.issue_number,
-      slug: iss.slug,
-      published_at: iss.published_at,
-      teaser: iss.teaser,
-      headline: (storyRow as { headline?: string } | null)?.headline ?? null,
-      category: (storyRow as { category?: string } | null)?.category ?? null,
-    }
-  })
-
-  // Deduplicate: keep highest issue_number per unique headline (first 5 words, normalised)
-  const seenHeadlines = new Set<string>()
-  const archiveIssues = archiveRaw
-    .filter((iss) => {
-      const key = (iss.headline ?? '')
-        .toLowerCase()
-        .replace(/[^a-z0-9\s]/g, '')
-        .trim()
-        .split(/\s+/)
-        .slice(0, 5)
-        .join(' ')
-      if (!key || seenHeadlines.has(key)) return false
-      seenHeadlines.add(key)
-      return true
-    })
-    .slice(0, 3)
-
+export default function LandingPage() {
   return (
-    <HomePageClient
-      story={story}
-      publishedAt={issue.published_at ?? new Date().toISOString()}
-      signalNumber={issue.issue_number}
-      broadcastPhrases={broadcastPhrases}
-      teasers={teasers}
-      archiveIssues={archiveIssues}
-    />
+    <main className="issue">
+      <div className="grid">
+        <header className="mast">
+          <div className="brand">
+            <span className="wordmark">
+              AI, Basically<span className="dot">.</span>
+            </span>
+            <span className="tagline">Explained like a normal person would.</span>
+          </div>
+          <div className="meta">
+            Weekly · Saturday 08:00 IST
+          </div>
+        </header>
+
+        <section className="hero">
+          <div className="eyebrow">A newsletter, basically</div>
+          <h1>
+            AI changed overnight.<br />
+            Here&rsquo;s <em>what to build.</em>
+          </h1>
+          <p className="sub">
+            One curated read every Saturday. The one thing in AI that actually
+            mattered this week, explained in plain language, with the
+            &ldquo;so what do I do on Monday&rdquo; spelled out. No hype, no
+            takes, no &ldquo;10 tools you must try.&rdquo;
+          </p>
+          <SubscribeForm />
+        </section>
+
+        <section className="sec">
+          <div className="label">
+            <span className="nm-lab">What you get</span>
+            <span className="hint">
+              Four small promises. Held to them every week.
+            </span>
+          </div>
+          <div>
+            <ul className="steps" style={{ listStyle: 'none', display: 'grid', gap: 14, fontFamily: "'Newsreader', serif", fontSize: 16, lineHeight: 1.65 }}>
+              <li>
+                <b style={{ fontWeight: 600 }}>One thing, not ten.</b> The single
+                shift in AI this week that&rsquo;s worth your attention.
+              </li>
+              <li>
+                <b style={{ fontWeight: 600 }}>What to actually build.</b> A
+                concrete next move, sized for a normal week.
+              </li>
+              <li>
+                <b style={{ fontWeight: 600 }}>Builder Notes you can copy.</b> A
+                paper, a code snippet, a metric &mdash; the part most readers
+                pay for, free here.
+              </li>
+              <li>
+                <b style={{ fontWeight: 600 }}>India signal.</b> What&rsquo;s
+                shipping locally that the global press isn&rsquo;t covering.
+              </li>
+            </ul>
+          </div>
+        </section>
+      </div>
+    </main>
   )
 }

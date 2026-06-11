@@ -1,213 +1,102 @@
-import type { Metadata } from 'next'
-import Link from 'next/link'
-import { SiteNav } from '@/components/SiteNav'
-import { SiteFooter } from '@/components/SiteFooter'
-
-export const metadata: Metadata = {
-  title: 'About',
-  description: 'One story. Every day. The single most important thing in AI, curated daily for builders.',
-  openGraph: {
-    title: 'About AI Signal',
-    description: 'One story. Every day. Signal over noise.',
-    url: 'https://aisignal.so/about',
-    siteName: 'AI Signal',
-    type: 'website',
-  },
-  twitter: {
-    card: 'summary',
-    title: 'About AI Signal',
-    description: 'One story. Every day. Signal over noise.',
-  },
+export const metadata = {
+  title: 'About — AI, Basically.',
+  description:
+    'Who writes this, why it exists, and how the curation works.',
 }
 
 export default function AboutPage() {
   return (
-    <>
-      <SiteNav />
+    <main className="issue">
+      <div className="grid">
+        <header className="mast">
+          <div className="brand">
+            <a
+              href="/"
+              style={{ textDecoration: 'none' }}
+              className="wordmark"
+            >
+              AI, Basically<span className="dot">.</span>
+            </a>
+            <span className="tagline">About</span>
+          </div>
+          <div className="meta">Weekly · Saturday 08:00 IST</div>
+        </header>
 
-      <main className="about-page">
-
-        <Link href="/" className="about-back">
-          ← Today&apos;s signal
-        </Link>
-
-        {/* Hero */}
-        <div className="about-hero">
-          <p className="about-kicker">What this is</p>
-          <h1 className="about-headline">
-            One story.<br />
-            <em>Every day.</em><br />
-            Signal over noise.
+        <section className="hero">
+          <div className="eyebrow">About</div>
+          <h1>
+            One newsletter,<br />
+            written like a <em>normal person.</em>
           </h1>
-          <p className="about-deck">
-            AI Signal is not a roundup. Not a feed. Not a digest. It is one editorial pick — the single most
-            important development in AI — curated daily and filed at 06:14 IST. For builders, engineers,
-            and founders making real product decisions.
+          <p className="sub">
+            Most AI writing is for the people who already know. This one is
+            for the rest of us &mdash; builders, PMs, switchers, anyone who
+            wants to know what changed this week without reading twenty
+            threads to figure it out.
           </p>
-        </div>
+        </section>
 
-        {/* Section 1 — The constraint */}
-        <section className="about-section">
-          <div className="about-section-label">01 — The constraint</div>
-          <h2 className="about-section-title">One story. That&apos;s the discipline.</h2>
-          <div className="about-body">
+        <section className="sec">
+          <div className="label">
+            <span className="nm-lab">Why this exists</span>
+          </div>
+          <div className="lede">
             <p>
-              Most newsletters give you everything. AI Signal gives you one thing. That constraint is
-              intentional.
-            </p>
-            <p>
-              A single pick forces a question every morning: what is the one development that, if you
-              ignored it today, could cost you a decision this week? Everything that doesn&apos;t clear
-              that bar gets cut.
-            </p>
-            <p>
-              If nothing clears the bar, there is no signal that day. A missed day beats a weak pick.
-              That choice — to publish nothing rather than publish noise — is the commitment.
+              Every week, AI moves fast enough that a few of the moves
+              actually matter and most of them don&rsquo;t. I write down the
+              one that did, what it means in plain language, and what to
+              actually do about it on Monday morning.
             </p>
           </div>
         </section>
 
-        {/* Pull quote */}
-        <blockquote className="about-quote">
-          <p>
-            "One good signal, read before your standup, is worth more than twelve newsletters
-            skimmed over the weekend."
-          </p>
-          <cite>— The editorial principle behind every pick</cite>
-        </blockquote>
-
-        {/* Section 2 — The process */}
-        <section className="about-section">
-          <div className="about-section-label">02 — The process</div>
-          <h2 className="about-section-title">Where the signal comes from.</h2>
-          <div className="about-body">
-            <p>
-              Every morning, the scan starts before 05:30 IST. Sources include TLDR AI, The Rundown,
-              Ben&apos;s Bites, The Neuron, Stratechery, Latent Space, The Pragmatic Engineer, Hacker News,
-              and primary company announcements. The filter is brutal — most days, a hundred things happen
-              and none of them qualify.
-            </p>
-            <p>
-              A story qualifies only if it meets all three criteria: it affects how builders and product
-              teams make decisions today, it is verifiable from at least one primary source, and it is
-              not already priced into the conversation. Timing matters — a story that everyone has
-              already processed is not a signal, it is a recap.
-            </p>
+        <section className="sec">
+          <div className="label">
+            <span className="nm-lab">Who&rsquo;s behind it</span>
           </div>
-
-          {/* Process steps */}
-          <div className="about-steps">
-            <div className="about-step">
-              <span className="about-step-num">1</span>
-              <div>
-                <strong>Scan</strong>
-                <p>168+ articles, newsletters, and announcements reviewed each morning.</p>
-              </div>
-            </div>
-            <div className="about-step">
-              <span className="about-step-num">2</span>
-              <div>
-                <strong>Filter</strong>
-                <p>One question: does this change a decision a builder is making today?</p>
-              </div>
-            </div>
-            <div className="about-step">
-              <span className="about-step-num">3</span>
-              <div>
-                <strong>Write</strong>
-                <p>Signal, data, context, lenses, action. No filler. Sources always credited.</p>
-              </div>
-            </div>
-            <div className="about-step">
-              <span className="about-step-num">4</span>
-              <div>
-                <strong>File at 06:14 IST</strong>
-                <p>When the first commit of the day lands in Bengaluru. Before your standup.</p>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* Section 3 — Who it's for */}
-        <section className="about-section">
-          <div className="about-section-label">03 — The reader</div>
-          <h2 className="about-section-title">Built for people who ship.</h2>
-          <div className="about-body">
+          <div className="lede">
             <p>
-              AI Signal is written for senior engineers, product managers, and early-stage founders
-              in the Indian tech ecosystem — people who are making real decisions about AI in their
-              products, teams, and roadmaps. Not spectators.
-            </p>
-            <p>
-              The format reflects that. Every signal comes with a lens for builders, a lens for
-              founders, a data section, a counter-view, and three specific actions to take in the
-              next 48 hours. It is not a briefing for executives who want to sound informed.
-              It is a working document for people who will act on it.
+              Suraj Pandita. PM background, now building solo. I&rsquo;m not
+              a researcher and I don&rsquo;t pretend to be. I read a lot,
+              talk to people who ship, and try to write the version I
+              wish someone had sent me when I was getting started.
             </p>
           </div>
         </section>
 
-        {/* Section 4 — The person */}
-        <section className="about-section">
-          <div className="about-section-label">04 — The editor</div>
-          <h2 className="about-section-title">Suraj Pandita, Bengaluru.</h2>
-          <div className="about-body">
-            <p>
-              I built AI Signal because I was tired of reading ten newsletters to find one insight
-              worth sharing in standup. Every existing option was either too long, too surface-level,
-              too American, or too excited about everything equally. So I started picking one thing
-              a day and writing it up the way I would explain it to a colleague.
-            </p>
-            <p>
-              I am not a journalist. I am a builder who thinks clearly about what AI actually means
-              for products and teams — not in theory, but in the kind of decisions that get made in
-              sprint planning and pricing meetings and board decks.
-            </p>
-            <p>
-              Reach out if you have a story tip, a sponsorship conversation, or just want to argue
-              about the pick.
-            </p>
+        <section className="sec">
+          <div className="label">
+            <span className="nm-lab">How the curation works</span>
           </div>
-
-          <div className="about-contact">
-            <a
-              href="https://linkedin.com/in/surajpandita"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="about-contact-link"
-            >
-              LinkedIn ↗
-            </a>
-            <a
-              href="mailto:suraj@aisignal.so"
-              className="about-contact-link"
-            >
-              suraj@aisignal.so ↗
-            </a>
-            <a
-              href="https://twitter.com/suraj132pandita"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="about-contact-link"
-            >
-              @suraj132pandita ↗
-            </a>
+          <div className="lede">
+            <p>
+              I read about thirty newsletters, twenty papers, and an
+              embarrassing amount of X every week. Then I pick the one thing
+              that actually shifted &mdash; not the loudest, the most
+              consequential. If a week doesn&rsquo;t have one, I&rsquo;ll
+              tell you that too, instead of inventing one.
+            </p>
           </div>
         </section>
 
-        {/* CTA */}
-        <div className="about-cta">
-          <p className="about-cta-text">
-            Tomorrow&apos;s signal drops at 06:14 IST.
-          </p>
-          <Link href="/#subscribe" className="about-cta-btn">
-            Get the signal →
-          </Link>
-        </div>
-
-      </main>
-
-      <SiteFooter />
-    </>
+        <section className="sec">
+          <div className="label">
+            <span className="nm-lab">How to reach me</span>
+          </div>
+          <div className="lede">
+            <p>
+              Reply to any issue and it lands in my inbox. Or email{' '}
+              <a
+                href="mailto:hello@aibasically.co"
+                style={{ color: 'var(--accent)' }}
+              >
+                hello@aibasically.co
+              </a>
+              . I read everything, and I reply to most of it.
+            </p>
+          </div>
+        </section>
+      </div>
+    </main>
   )
 }

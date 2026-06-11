@@ -1,70 +1,85 @@
-import { NextRequest, NextResponse } from 'next/server'
-import { Resend } from 'resend'
+import { NextResponse } from 'next/server'
 import { createAdminSupabaseClient } from '@/lib/supabase-admin'
-import { welcomeEmail } from '@/lib/email-templates'
-import type { SubscriberRole } from '../../../../db/types/database'
+import type { Lens } from '@/lib/content-model'
 
-const VALID_ROLES: SubscriberRole[] = ['pm', 'founder', 'builder', 'curious']
-const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
-const EMAIL_FROM = process.env.EMAIL_FROM ?? 'AI Signal <onboarding@resend.dev>'
+export const runtime = 'nodejs'
+export const dynamic = 'force-dynamic'
 
-export async function POST(req: NextRequest) {
-  let email: string
-  let roleRaw: string | undefined
+const VALID_ROLES: ReadonlyArray<Lens> = [
+  'builder',
+  'product_biz',
+  'secure_pro',
+  'switcher',
+]
+
+// RFC-loose email regex — local-part @ domain.tld
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+
+type Body = {
+  email?: unknown
+  role?: unknown
+  source?: unknown
+  ref?: unknown
+}
+
+export async function POST(req: Request) {
+  let body: Body
   try {
-    const body = await req.json()
-    email = body.email
-    roleRaw = body.role
+    body = (await req.json()) as Body
   } catch {
-    return NextResponse.json({ error: 'Invalid request body' }, { status: 400 })
+    return NextResponse.json({ error: 'invalid_json' }, { status: 400 })
   }
 
-  const role: SubscriberRole = VALID_ROLES.includes(roleRaw as SubscriberRole)
-    ? (roleRaw as SubscriberRole)
-    : 'curious'
-
-  if (
-    !email ||
-    typeof email !== 'string' ||
-    email.length < 3 ||
-    email.length > 254 ||
-    !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)
-  ) {
-    return NextResponse.json({ error: 'Invalid email' }, { status: 400 })
+  const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
+  if (!EMAIL_RE.test(email)) {
+    return NextResponse.json({ error: 'invalid_email' }, { status: 400 })
   }
 
-  const unsubscribeToken = crypto.randomUUID()
+  const role =
+    typeof body.role === 'string' && VALID_ROLES.includes(body.role as Lens)
+      ? (body.role as Lens)
+      : null
+
+  const source = typeof body.source === 'string' && body.source.length > 0 ? body.source : null
+  const ref = typeof body.ref === 'string' && body.ref.length > 0 ? body.ref : null
+
   const supabase = createAdminSupabaseClient()
-  const { error } = await supabase.from('subscribers').insert({
-    email: email.toLowerCase().trim(),
-    role,
-    status: 'active',
-    unsubscribe_token: unsubscribeToken,
-  })
+
+  const { data: inserted, error } = await supabase
+    .from('subscribers')
+    .insert({ email, role, source })
+    .select('id, referral_code')
+    .single()
 
   if (error) {
-    if (error.code === '23505') {
-      // Already subscribed — treat as success, skip welcome email
-      return NextResponse.json({ ok: true })
+    // 23505 = unique_violation (Postgres). Treat as success-ish so the form
+    // is idempotent.
+    if ((error as { code?: string }).code === '23505') {
+      return NextResponse.json({ status: 'already_subscribed' }, { status: 200 })
     }
-    return NextResponse.json({ error: 'Failed to subscribe' }, { status: 500 })
+    return NextResponse.json({ error: 'insert_failed', detail: error.message }, { status: 500 })
   }
 
-  // Send welcome email — never blocks subscription on failure
-  try {
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const unsubscribeUrl = `${SITE_URL}/unsubscribe?token=${unsubscribeToken}`
-    const { subject, html, text } = welcomeEmail(unsubscribeUrl, SITE_URL)
-    await resend.emails.send({
-      from: EMAIL_FROM,
-      to: email.toLowerCase().trim(),
-      subject,
-      html,
-      text,
-    })
-  } catch (emailError) {
-    console.error('[subscribe] welcome email failed:', emailError)
+  // Attribution: if the caller passed a referral code AND that code maps to
+  // a real subscriber, record the referral edge. Best-effort — failure here
+  // should not break the subscribe flow.
+  if (ref && inserted) {
+    const { data: referrer } = await supabase
+      .from('subscribers')
+      .select('id')
+      .eq('referral_code', ref)
+      .maybeSingle()
+
+    if (referrer && referrer.id !== inserted.id) {
+      await supabase.from('referrals').insert({
+        referrer_id: referrer.id,
+        referred_id: inserted.id,
+      })
+    }
   }
 
-  return NextResponse.json({ ok: true })
+  return NextResponse.json({
+    status: 'subscribed',
+    referral_code: inserted?.referral_code ?? null,
+  })
 }

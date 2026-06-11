@@ -1,3 +1,34 @@
+/**
+ * AI, Basically. — Supabase Database typings.
+ *
+ * Hand-written to match supabase/migrations/20260612000000_initial_aibasically.sql.
+ * JSONB columns import their shapes from the shared content model so the web
+ * page, the email twin, and the pipeline all speak the same language.
+ *
+ * Path note: this file lives at /db/types/, OUTSIDE /src, so it cannot use
+ * the "@/*" tsconfig alias — use the relative import below.
+ */
+
+import type {
+  IssueContent,
+  TldrRow,
+  OneThing,
+  SoWhat,
+  BuildNotes,
+  JobSignal,
+  UnderTheHood,
+  TheRep,
+  Toolbox,
+  RealityCheck,
+  IndiaSignal,
+  Sponsor,
+  Closer,
+  Poll,
+  Foot,
+  IssueStatus,
+  Lens,
+} from '../../src/lib/content-model'
+
 export type Json =
   | string
   | number
@@ -6,215 +37,232 @@ export type Json =
   | { [key: string]: Json | undefined }
   | Json[]
 
+// ── issues ────────────────────────────────────────────────────────────────
+type IssueRow = {
+  id: string
+  issue_number: number
+  slug: string
+  published_at: string | null
+  status: IssueStatus
+  hero_eyebrow: string
+  hero_headline_html: string
+  hero_sub_html: string
+  date_display: string
+  read_time_min: number
+  streak_caption: string
+  tldr: TldrRow[]
+  one_thing: OneThing
+  so_what: SoWhat
+  build_notes: BuildNotes
+  job_signal: JobSignal
+  under_the_hood: UnderTheHood
+  the_rep: TheRep
+  toolbox: Toolbox
+  reality_check: RealityCheck
+  india_signal: IndiaSignal
+  sponsor: Sponsor
+  closer: Closer
+  poll: Poll
+  foot: Foot
+  created_at: string
+  updated_at: string
+}
+
+type IssueInsert = {
+  id?: string
+  issue_number: number
+  slug: string
+  published_at?: string | null
+  status?: IssueStatus
+  hero_eyebrow: string
+  hero_headline_html: string
+  hero_sub_html: string
+  date_display: string
+  read_time_min: number
+  streak_caption: string
+  tldr?: TldrRow[]
+  one_thing: OneThing
+  so_what: SoWhat
+  build_notes: BuildNotes
+  job_signal: JobSignal
+  under_the_hood: UnderTheHood
+  the_rep: TheRep
+  toolbox?: Toolbox
+  reality_check: RealityCheck
+  india_signal: IndiaSignal
+  sponsor?: Sponsor
+  closer: Closer
+  poll: Poll
+  foot: Foot
+  created_at?: string
+  updated_at?: string
+}
+
+type IssueUpdate = Partial<IssueInsert>
+
+// ── subscribers ───────────────────────────────────────────────────────────
+export type SubscriberStatus = 'active' | 'unsubscribed' | 'bounced'
+
+type SubscriberRow = {
+  id: string
+  email: string
+  role: Lens | null
+  status: SubscriberStatus
+  referral_code: string
+  unsubscribe_token: string
+  source: string | null
+  subscribed_at: string
+}
+
+type SubscriberInsert = {
+  id?: string
+  email: string
+  role?: Lens | null
+  status?: SubscriberStatus
+  referral_code?: string
+  unsubscribe_token?: string
+  source?: string | null
+  subscribed_at?: string
+}
+
+type SubscriberUpdate = Partial<SubscriberInsert>
+
+// ── referrals ─────────────────────────────────────────────────────────────
+type ReferralRow = {
+  id: string
+  referrer_id: string
+  referred_id: string
+  created_at: string
+}
+
+type ReferralInsert = {
+  id?: string
+  referrer_id: string
+  referred_id: string
+  created_at?: string
+}
+
+type ReferralUpdate = Partial<ReferralInsert>
+
+// ── lens_prefs ────────────────────────────────────────────────────────────
+type LensPrefRow = {
+  subscriber_id: string
+  primary_track: Lens
+  updated_at: string
+}
+
+type LensPrefInsert = {
+  subscriber_id: string
+  primary_track: Lens
+  updated_at?: string
+}
+
+type LensPrefUpdate = Partial<LensPrefInsert>
+
+// ── poll_responses ────────────────────────────────────────────────────────
+type PollResponseRow = {
+  id: string
+  issue_id: string
+  subscriber_id: string | null
+  choice: string
+  ip_hash: string | null
+  created_at: string
+}
+
+type PollResponseInsert = {
+  id?: string
+  issue_id: string
+  subscriber_id?: string | null
+  choice: string
+  ip_hash?: string | null
+  created_at?: string
+}
+
+type PollResponseUpdate = Partial<PollResponseInsert>
+
+// ── Database ──────────────────────────────────────────────────────────────
+// Note: supabase-js v2 expects each table to carry a `Relationships` array
+// even if empty, and the top-level Schema to expose Tables / Views /
+// Functions. We have no foreign-key-driven joins in the API surface yet, so
+// every Relationships array is empty for now.
 export interface Database {
   public: {
     Tables: {
       issues: {
+        Row: IssueRow
+        Insert: IssueInsert
+        Update: IssueUpdate
         Relationships: []
-        Row: {
-          id: string
-          issue_number: number
-          slug: string
-          published_at: string | null
-          editor_note: string | null
-          long_read: LongRead | null
-          status: 'draft' | 'published' | 'no_signal' | 'pending' | 'failed'
-          created_at: string
-          pick_reason: string | null
-          rejected_alternatives: Array<{ title: string; reason: string }> | null
-          teaser: string | null
-        }
-        Insert: {
-          id?: string
-          issue_number: number
-          slug: string
-          published_at?: string | null
-          editor_note?: string | null
-          long_read?: LongRead | null
-          status?: 'draft' | 'published' | 'no_signal' | 'pending' | 'failed'
-          created_at?: string
-          pick_reason?: string | null
-          rejected_alternatives?: Array<{ title: string; reason: string }> | null
-          teaser?: string | null
-        }
-        Update: {
-          id?: string
-          issue_number?: number
-          slug?: string
-          published_at?: string | null
-          editor_note?: string | null
-          long_read?: LongRead | null
-          status?: 'draft' | 'published' | 'no_signal' | 'pending' | 'failed'
-          created_at?: string
-          pick_reason?: string | null
-          rejected_alternatives?: Array<{ title: string; reason: string }> | null
-          teaser?: string | null
-        }
       }
-      stories: {
+      subscribers: {
+        Row: SubscriberRow
+        Insert: SubscriberInsert
+        Update: SubscriberUpdate
+        Relationships: []
+      }
+      referrals: {
+        Row: ReferralRow
+        Insert: ReferralInsert
+        Update: ReferralUpdate
         Relationships: [
           {
-            foreignKeyName: 'stories_issue_id_fkey'
+            foreignKeyName: 'referrals_referrer_id_fkey'
+            columns: ['referrer_id']
+            isOneToOne: false
+            referencedRelation: 'subscribers'
+            referencedColumns: ['id']
+          },
+          {
+            foreignKeyName: 'referrals_referred_id_fkey'
+            columns: ['referred_id']
+            isOneToOne: false
+            referencedRelation: 'subscribers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      lens_prefs: {
+        Row: LensPrefRow
+        Insert: LensPrefInsert
+        Update: LensPrefUpdate
+        Relationships: [
+          {
+            foreignKeyName: 'lens_prefs_subscriber_id_fkey'
+            columns: ['subscriber_id']
+            isOneToOne: true
+            referencedRelation: 'subscribers'
+            referencedColumns: ['id']
+          },
+        ]
+      }
+      poll_responses: {
+        Row: PollResponseRow
+        Insert: PollResponseInsert
+        Update: PollResponseUpdate
+        Relationships: [
+          {
+            foreignKeyName: 'poll_responses_issue_id_fkey'
             columns: ['issue_id']
             isOneToOne: false
             referencedRelation: 'issues'
             referencedColumns: ['id']
-          }
+          },
+          {
+            foreignKeyName: 'poll_responses_subscriber_id_fkey'
+            columns: ['subscriber_id']
+            isOneToOne: false
+            referencedRelation: 'subscribers'
+            referencedColumns: ['id']
+          },
         ]
-        Row: {
-          id: string
-          issue_id: string
-          position: number
-          category: StoryCategory
-          headline: string
-          summary: string
-          why_it_matters: string
-          deeper_read: string | null
-          pull_quote: string | null
-          editorial_take: string | null
-          lens_pm: string | null
-          lens_founder: string | null
-          lens_builder: string | null
-          sources: StorySource[]
-          read_minutes: number
-          stats: StoryStats[] | null
-          action_items: string[] | null
-          counter_view: string | null
-          counter_view_headline: string | null
-          broadcast_phrases: string[] | null
-          extended_data: Json | null
-        }
-        Insert: {
-          id?: string
-          issue_id: string
-          position: number
-          category: StoryCategory
-          headline: string
-          summary: string
-          why_it_matters: string
-          deeper_read?: string | null
-          pull_quote?: string | null
-          editorial_take?: string | null
-          lens_pm?: string | null
-          lens_founder?: string | null
-          lens_builder?: string | null
-          sources?: StorySource[]
-          read_minutes?: number
-          stats?: StoryStats[] | null
-          action_items?: string[] | null
-          counter_view?: string | null
-          counter_view_headline?: string | null
-          broadcast_phrases?: string[] | null
-          extended_data?: Json | null
-        }
-        Update: {
-          id?: string
-          issue_id?: string
-          position?: number
-          category?: StoryCategory
-          headline?: string
-          summary?: string
-          why_it_matters?: string
-          deeper_read?: string | null
-          pull_quote?: string | null
-          editorial_take?: string | null
-          lens_pm?: string | null
-          lens_founder?: string | null
-          lens_builder?: string | null
-          sources?: StorySource[]
-          read_minutes?: number
-          stats?: StoryStats[] | null
-          action_items?: string[] | null
-          counter_view?: string | null
-          counter_view_headline?: string | null
-          broadcast_phrases?: string[] | null
-          extended_data?: Json | null
-        }
-      }
-      subscribers: {
-        Relationships: []
-        Row: {
-          id: string
-          email: string
-          role: SubscriberRole
-          status: SubscriberStatus
-          subscribed_at: string
-          unsubscribe_token: string
-        }
-        Insert: {
-          id?: string
-          email: string
-          role?: SubscriberRole
-          status?: SubscriberStatus
-          subscribed_at?: string
-          unsubscribe_token?: string
-        }
-        Update: {
-          id?: string
-          email?: string
-          role?: SubscriberRole
-          status?: SubscriberStatus
-          subscribed_at?: string
-          unsubscribe_token?: string
-        }
       }
     }
-    Views: {
-      [_ in never]: never
-    }
-    Functions: {
-      [_ in never]: never
-    }
-    Enums: {
-      [_ in never]: never
-    }
-    CompositeTypes: {
-      [_ in never]: never
-    }
+    Views: Record<string, never>
+    Functions: Record<string, never>
+    Enums: Record<string, never>
+    CompositeTypes: Record<string, never>
   }
 }
 
-// Domain types
-
-export type StoryCategory = 'models' | 'tools' | 'business' | 'policy' | 'research'
-export type SubscriberRole = 'pm' | 'founder' | 'builder' | 'curious'
-export type SubscriberStatus = 'active' | 'unsubscribed'
-
-export interface LongRead {
-  title: string
-  url: string
-  source: string
-  why_pick: string
-}
-
-export interface StorySource {
-  label: string
-  url: string
-}
-
-export interface StoryStats {
-  label: string
-  value: string
-  delta: string | null  // e.g. "↓ 10×" or "+12%"
-  detail: string
-}
-
-// Convenience row types
-
-export type Issue = Database['public']['Tables']['issues']['Row']
-export type IssueInsert = Database['public']['Tables']['issues']['Insert']
-export type IssueUpdate = Database['public']['Tables']['issues']['Update']
-
-export type Story = Database['public']['Tables']['stories']['Row']
-export type StoryInsert = Database['public']['Tables']['stories']['Insert']
-export type StoryUpdate = Database['public']['Tables']['stories']['Update']
-
-export type Subscriber = Database['public']['Tables']['subscribers']['Row']
-export type SubscriberInsert = Database['public']['Tables']['subscribers']['Insert']
-export type SubscriberUpdate = Database['public']['Tables']['subscribers']['Update']
-
-// Composed types used by the frontend
-
-export type IssueWithStories = Issue & {
-  stories: Story[]
-}
+// Re-export for convenience (so callers can do `import type { IssueContent } from '@/types'`).
+export type { IssueContent }

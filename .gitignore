@@ -55,3 +55,13 @@ qa/reviews/
 # Local backup files from manual merge workflows
 CLAUDE.md.backup-*
 .env*.local
+
+# Sibling project — separate repo, untouchable
+/ai-signal-v2/
+
+# Old project intelligence (screenshots, audits) — preserve on disk, not in git
+/.claude/intelligence/
+/docs/
+
+# QA artefacts
+/scripts/
