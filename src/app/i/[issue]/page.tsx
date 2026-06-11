@@ -1,3 +1,5 @@
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import type { IssueContent } from '@/lib/content-model'
@@ -24,22 +26,40 @@ import Poll from '@/components/sections/Poll'
 
 export default async function Page({
   params,
+  searchParams,
 }: {
   params: Promise<{ issue: string }>
+  searchParams: Promise<{ preview?: string }>
 }) {
   const { issue } = await params
-  const supabase = await createServerSupabaseClient()
-  const { data, error } = await supabase
-    .from('issues')
-    .select('*')
-    .eq('slug', issue)
-    .eq('status', 'published')
-    .single()
+  const { preview } = await searchParams
 
-  if (error || !data) notFound()
+  let content: (IssueContent & { id?: string }) | null = null
 
-  // db/types/database.ts isn't ready yet — assert at the fetch boundary.
-  const content = data as unknown as IssueContent
+  if (preview === '1' || process.env.AIB_PREVIEW_FROM_JSON === '1') {
+    // QA path: read the seed JSON directly. Used before the Supabase
+    // migration is applied. Once published_at + status='published' rows
+    // exist, drop the ?preview=1 query param to go through Supabase.
+    try {
+      const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)
+      const raw = await readFile(file, 'utf8')
+      content = JSON.parse(raw) as IssueContent
+    } catch {
+      notFound()
+    }
+  } else {
+    const supabase = await createServerSupabaseClient()
+    const { data, error } = await supabase
+      .from('issues')
+      .select('*')
+      .eq('slug', issue)
+      .eq('status', 'published')
+      .single()
+    if (error || !data) notFound()
+    content = data as unknown as IssueContent & { id: string }
+  }
+
+  if (!content) notFound()
 
   return (
     <main className="issue">
