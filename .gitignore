@@ -62,3 +62,6 @@ CLAUDE.md.backup-*
 # Old project intelligence (screenshots, audits) — preserve on disk, not in git
 /.claude/intelligence/
 /docs/
+
+# QA artefacts
+/scripts/
