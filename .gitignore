@@ -55,3 +55,6 @@ qa/reviews/
 # Local backup files from manual merge workflows
 CLAUDE.md.backup-*
 .env*.local
+
+# Sibling project — separate repo, untouchable
+/ai-signal-v2/
