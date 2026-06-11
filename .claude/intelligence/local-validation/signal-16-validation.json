@@ -1,0 +1,307 @@
+{
+  "signal_id": "57b080a3-ef06-491d-817e-8332893e435c",
+  "issue_id": "d53b7770-3003-4ca7-bfad-23a47cd25b30",
+  "category": "models",
+  "headline": "OpenAI ships GPT-5.5 Instant: smarter, faster, more personalized",
+  "tested_at": "2026-05-06T20:32:02.032Z",
+  "validation": {
+    "pass": false,
+    "hard_count": 13,
+    "soft_count": 22,
+    "hard_violations": [
+      {
+        "field": "ticker_detail[0]",
+        "words": 9,
+        "soft": 5,
+        "hard": 7,
+        "severity": "HARD",
+        "excerpt": "OpenAI's newest production-ready instant model in the GPT-5 "
+      },
+      {
+        "field": "ticker_detail[1]",
+        "words": 11,
+        "soft": 5,
+        "hard": 7,
+        "severity": "HARD",
+        "excerpt": "Safety documentation released at launch — rare signal of pro"
+      },
+      {
+        "field": "ticker_detail[2]",
+        "words": 10,
+        "soft": 5,
+        "hard": 7,
+        "severity": "HARD",
+        "excerpt": "Fresh enough for teams to act before competitors run evals"
+      },
+      {
+        "field": "insight_text[0]",
+        "words": 20,
+        "soft": 12,
+        "hard": 17,
+        "severity": "HARD",
+        "excerpt": "OpenAI shipped GPT-5.5 Instant — a speed-optimised, personal"
+      },
+      {
+        "field": "insight_text[1]",
+        "words": 21,
+        "soft": 12,
+        "hard": 17,
+        "severity": "HARD",
+        "excerpt": "Any team running GPT-4o as their default model for latency-s"
+      },
+      {
+        "field": "reaction_quote[1]",
+        "words": 23,
+        "soft": 17,
+        "hard": 22,
+        "severity": "HARD",
+        "excerpt": "**The system card on day zero** is the part that matters for"
+      },
+      {
+        "field": "reaction_attribution[2]",
+        "words": 13,
+        "soft": 9,
+        "hard": 12,
+        "severity": "HARD",
+        "excerpt": "Principal Engineer · Skeptic, ex-FAANG, currently at a Tier-"
+      },
+      {
+        "field": "did_you_know_fact[0]",
+        "words": 34,
+        "soft": 17,
+        "hard": 28,
+        "severity": "HARD",
+        "excerpt": "OpenAI has shipped more than 6 distinct production model var"
+      },
+      {
+        "field": "did_you_know_fact[2]",
+        "words": 31,
+        "soft": 17,
+        "hard": 28,
+        "severity": "HARD",
+        "excerpt": "System cards published at launch — rather than weeks later —"
+      },
+      {
+        "field": "did_you_know_fact[5]",
+        "words": 30,
+        "soft": 17,
+        "hard": 28,
+        "severity": "HARD",
+        "excerpt": "'Personalized' is the third capability claim in OpenAI's hea"
+      },
+      {
+        "field": "did_you_know_fact[7]",
+        "words": 32,
+        "soft": 17,
+        "hard": 28,
+        "severity": "HARD",
+        "excerpt": "OpenAI's API pricing has dropped more than 10× across equiva"
+      },
+      {
+        "field": "did_you_know_fact[8]",
+        "words": 32,
+        "soft": 17,
+        "hard": 28,
+        "severity": "HARD",
+        "excerpt": "For Bengaluru and Gurugram-based engineering teams, the 48-h"
+      },
+      {
+        "field": "did_you_know_fact[9]",
+        "words": 34,
+        "soft": 17,
+        "hard": 28,
+        "severity": "HARD",
+        "excerpt": "Publishing a system card alongside a launch has become a de "
+      }
+    ],
+    "soft_violations": [
+      {
+        "field": "summary",
+        "words": 33,
+        "soft": 25,
+        "hard": 38,
+        "severity": "SOFT",
+        "excerpt": "**GPT-5.5 Instant** is OpenAI's newest production model — po"
+      },
+      {
+        "field": "broadcast_phrase[0]",
+        "words": 12,
+        "soft": 10,
+        "hard": 16,
+        "severity": "SOFT",
+        "excerpt": "Today's signal: OpenAI ships GPT-5.5 Instant — smarter and f"
+      },
+      {
+        "field": "broadcast_phrase[1]",
+        "words": 11,
+        "soft": 10,
+        "hard": 16,
+        "severity": "SOFT",
+        "excerpt": "GPT-5 family now has a speed-optimized production tier with "
+      },
+      {
+        "field": "broadcast_phrase[2]",
+        "words": 12,
+        "soft": 10,
+        "hard": 16,
+        "severity": "SOFT",
+        "excerpt": "Teams on GPT-4o now have a decision to make, not a default"
+      },
+      {
+        "field": "numbers_headline",
+        "words": 8,
+        "soft": 5,
+        "hard": 8,
+        "severity": "SOFT",
+        "excerpt": "GPT-5.5 Instant makes your current model selection wrong."
+      },
+      {
+        "field": "matters_headline",
+        "words": 7,
+        "soft": 6,
+        "hard": 8,
+        "severity": "SOFT",
+        "excerpt": "Every latency-gated roadmap item needs re-evaluation now."
+      },
+      {
+        "field": "insight_text[2]",
+        "words": 17,
+        "soft": 12,
+        "hard": 17,
+        "severity": "SOFT",
+        "excerpt": "Run a 2-hour eval this week before your next sprint planning"
+      },
+      {
+        "field": "stakeholder_subtitle",
+        "words": 13,
+        "soft": 10,
+        "hard": 14,
+        "severity": "SOFT",
+        "excerpt": "Teams with fast eval pipelines vs teams locked into quarterl"
+      },
+      {
+        "field": "stakeholder_who[0]",
+        "words": 7,
+        "soft": 4,
+        "hard": 8,
+        "severity": "SOFT",
+        "excerpt": "Indian SaaS teams with live eval pipelines"
+      },
+      {
+        "field": "stakeholder_who[2]",
+        "words": 7,
+        "soft": 4,
+        "hard": 8,
+        "severity": "SOFT",
+        "excerpt": "Teams on slow quarterly model review cycles"
+      },
+      {
+        "field": "stakeholder_why[2]",
+        "words": 15,
+        "soft": 14,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "Competitors will have shipped and iterated on GPT-5.5 Instan"
+      },
+      {
+        "field": "stakeholder_who[3]",
+        "words": 6,
+        "soft": 4,
+        "hard": 8,
+        "severity": "SOFT",
+        "excerpt": "Anthropic Haiku and Google Flash positioning"
+      },
+      {
+        "field": "decision_question[1]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Do you rely on complex multi-step reasoning chains in produc"
+      },
+      {
+        "field": "decision_question[2]",
+        "words": 11,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Are you mid-sprint with no model swap capacity until next cy"
+      },
+      {
+        "field": "decision_verdict_text[2]",
+        "words": 4,
+        "soft": 3,
+        "hard": 5,
+        "severity": "SOFT",
+        "excerpt": "Flag for next sprint"
+      },
+      {
+        "field": "reaction_attribution[0]",
+        "words": 10,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Senior ML Engineer · Series B conversational AI startup, Ben"
+      },
+      {
+        "field": "reaction_attribution[1]",
+        "words": 11,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Head of Product · Indian enterprise SaaS, selling to BFSI se"
+      },
+      {
+        "field": "reaction_quote[2]",
+        "words": 22,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**I've seen 'smarter and faster'** in every OpenAI launch po"
+      },
+      {
+        "field": "did_you_know_fact[1]",
+        "words": 25,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "When OpenAI released GPT-4o Mini in mid-2024, teams that swi"
+      },
+      {
+        "field": "did_you_know_fact[3]",
+        "words": 25,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Indian SaaS startups typically re-evaluate their default AI "
+      },
+      {
+        "field": "did_you_know_fact[4]",
+        "words": 27,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Latency-sensitive AI applications — voice assistants, coding"
+      },
+      {
+        "field": "did_you_know_fact[6]",
+        "words": 28,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "The GPT-5 family naming cadence mirrors what OpenAI did with"
+      }
+    ]
+  },
+  "field_counts": {
+    "headline": 8,
+    "summary": 33,
+    "pull_quote": 20,
+    "counter_view": 36,
+    "signal_block_body": 32,
+    "block_2_prose": 20,
+    "stats_count": 0,
+    "has_extended_data": true,
+    "broadcast_phrase_count": 3
+  }
+}

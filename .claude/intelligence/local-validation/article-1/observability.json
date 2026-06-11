@@ -1,0 +1,38 @@
+{
+  "run_date": "2026-05-07",
+  "issue_id": "0a23038b-0c7b-4800-ae60-18e1c005259c",
+  "issue_number": 21,
+  "story_id": "3b5a8392-af3f-4f79-bcf7-6054ed7eb1bc",
+  "event_id": "01KR05TV9020CRQ0VCYJJ9VXJK",
+  "outcome": "published",
+  "category": "business",
+  "headline": "Anthropic rents xAI GPUs, lifts Claude usage limits for all users",
+  "wall_clock_seconds": "approx 137 (08:26:23 event → 08:28:40 published)",
+  "pipeline_steps_completed": ["scout", "write", "cascade", "enforce", "publish"],
+  "layer_a_fired": false,
+  "layer_b_fired": false,
+  "layer_a_b_note": "0 HARD word-count violations — enforceWordCounts returned early without any Sonnet regen call. No bold regression risk, no Layer B trigger needed.",
+  "bold_counts": {
+    "why_it_matters_total": 4,
+    "why_it_matters_para0": 3,
+    "why_it_matters_para1": 1,
+    "summary": 2,
+    "counter_view": 1,
+    "min_required_why_it_matters": 3,
+    "bold_check": "PASS"
+  },
+  "word_count_validation": {
+    "pass": true,
+    "hard_count": 0,
+    "soft_count": 25
+  },
+  "extended_data_sections": [
+    "cascade", "tickers", "reactions", "decision_aid", "stakeholders",
+    "preview_cards", "primary_chart", "insights_strip", "tomorrow_drafts",
+    "matters_headline", "numbers_headline", "standup_messages", "did_you_know_facts"
+  ],
+  "stats_count": 0,
+  "stats_note": "category=business, article_type treated as non-mandatory for stats. primary_chart present in extended_data instead.",
+  "tokens_used": "not captured (background dev server process)",
+  "cost_usd_estimate": "~$0.07-0.10 (generateSignal Sonnet ~$0.04-0.06 + cascade Haiku ~$0.001 + cascade Sonnet if needed ~$0.03)"
+}

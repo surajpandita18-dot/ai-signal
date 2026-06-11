@@ -1,0 +1,226 @@
+{
+  "signal_id": "3b5a8392-af3f-4f79-bcf7-6054ed7eb1bc",
+  "issue_number": 21,
+  "category": "business",
+  "headline": "Anthropic rents xAI GPUs, lifts Claude usage limits for all users",
+  "tested_at": "2026-05-07T03:12:00.366Z",
+  "validation": {
+    "pass": true,
+    "hard_count": 0,
+    "soft_count": 25,
+    "hard_violations": [],
+    "soft_violations": [
+      {
+        "field": "summary",
+        "words": 33,
+        "soft": 25,
+        "hard": 38,
+        "severity": "SOFT",
+        "excerpt": "**Anthropic is buying compute from SpaceX's xAI** to relieve"
+      },
+      {
+        "field": "signal_block_body",
+        "words": 41,
+        "soft": 36,
+        "hard": 48,
+        "severity": "SOFT",
+        "excerpt": "Anthropic just paid a **direct competitor's infrastructure a"
+      },
+      {
+        "field": "counter_view",
+        "words": 62,
+        "soft": 53,
+        "hard": 62,
+        "severity": "SOFT",
+        "excerpt": "Higher usage limits mean nothing if the underlying model cap"
+      },
+      {
+        "field": "broadcast_phrase[1]",
+        "words": 11,
+        "soft": 10,
+        "hard": 16,
+        "severity": "SOFT",
+        "excerpt": "Anthropic just rented GPUs from Elon's company — that's the "
+      },
+      {
+        "field": "broadcast_phrase[2]",
+        "words": 14,
+        "soft": 10,
+        "hard": 16,
+        "severity": "SOFT",
+        "excerpt": "If rate limits drove your fallback-model architecture, that "
+      },
+      {
+        "field": "numbers_headline",
+        "words": 6,
+        "soft": 5,
+        "hard": 8,
+        "severity": "SOFT",
+        "excerpt": "Anthropic's GPU supply just changed hands."
+      },
+      {
+        "field": "matters_headline",
+        "words": 7,
+        "soft": 6,
+        "hard": 8,
+        "severity": "SOFT",
+        "excerpt": "Your Claude rate-limit assumptions are now outdated."
+      },
+      {
+        "field": "cascade_subtitle",
+        "words": 12,
+        "soft": 10,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Compute scarcity just got a patch. Watch where the pressure "
+      },
+      {
+        "field": "stakeholder_subtitle",
+        "words": 14,
+        "soft": 10,
+        "hard": 14,
+        "severity": "SOFT",
+        "excerpt": "The teams that built around Claude's limits, and the ones th"
+      },
+      {
+        "field": "stakeholder_why[0]",
+        "words": 15,
+        "soft": 14,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "Higher limits mean fewer interruptions and simpler architect"
+      },
+      {
+        "field": "stakeholder_why[1]",
+        "words": 19,
+        "soft": 14,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "Monetises idle GPU capacity and gains a blue-chip AI lab as "
+      },
+      {
+        "field": "stakeholder_why[3]",
+        "words": 17,
+        "soft": 14,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "Dependency on a competitor's compute is a vendor-risk disclo"
+      },
+      {
+        "field": "decision_question[0]",
+        "words": 11,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Did you add the fallback solely because of 429 rate errors?"
+      },
+      {
+        "field": "decision_question[1]",
+        "words": 11,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Does your fallback also cover quality gaps on specific task "
+      },
+      {
+        "field": "decision_question[2]",
+        "words": 12,
+        "soft": 9,
+        "hard": 12,
+        "severity": "SOFT",
+        "excerpt": "Is your system on a free or legacy plan with unchanged limit"
+      },
+      {
+        "field": "decision_verdict_text[2]",
+        "words": 4,
+        "soft": 3,
+        "hard": 5,
+        "severity": "SOFT",
+        "excerpt": "Hold — verify first"
+      },
+      {
+        "field": "reaction_quote[0]",
+        "words": 21,
+        "soft": 17,
+        "hard": 22,
+        "severity": "SOFT",
+        "excerpt": "**This quietly changes my architecture.** I added GPT-4o as "
+      },
+      {
+        "field": "did_you_know_fact[0]",
+        "words": 23,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Anthropic's last disclosed training run required tens of tho"
+      },
+      {
+        "field": "did_you_know_fact[1]",
+        "words": 20,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Rate-limit 429 errors from Claude were the most-cited reason"
+      },
+      {
+        "field": "did_you_know_fact[2]",
+        "words": 24,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "xAI's Colossus cluster in Memphis is reported to be one of t"
+      },
+      {
+        "field": "did_you_know_fact[3]",
+        "words": 25,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Perplexity's $400M Snap deal ending means roughly $400M in c"
+      },
+      {
+        "field": "did_you_know_fact[5]",
+        "words": 28,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "This is not the first time competing AI labs have shared inf"
+      },
+      {
+        "field": "did_you_know_fact[6]",
+        "words": 20,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Indian developers represent one of the fastest-growing segme"
+      },
+      {
+        "field": "did_you_know_fact[8]",
+        "words": 25,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "SpaceX's compute arm (xAI) and Anthropic are both backed by "
+      },
+      {
+        "field": "did_you_know_fact[9]",
+        "words": 23,
+        "soft": 17,
+        "hard": 28,
+        "severity": "SOFT",
+        "excerpt": "Higher usage limits without a price increase effectively red"
+      }
+    ]
+  },
+  "field_counts": {
+    "headline": 11,
+    "summary": 33,
+    "pull_quote": 17,
+    "counter_view": 62,
+    "signal_block_body": 41,
+    "block_2_prose": 25,
+    "stats_count": 0,
+    "has_extended_data": true,
+    "broadcast_phrase_count": 3
+  }
+}
