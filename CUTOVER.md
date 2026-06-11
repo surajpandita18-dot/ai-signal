@@ -13,21 +13,29 @@ Run these in order. Each step is a single command (or a single click). Rollback 
 
 ## What's left (your hands — destructive on prod)
 
-### 1. Paste the 5 missing secrets into `.env.local`
+### 1. Env vars — *already done for prod, optional for preview & local*
 
-Open `/Users/surajpandita/ai_signal/.env.local` and replace the empty quoted values for these keys with the real values from your Vercel dashboard → Project Settings → Environment Variables (Production):
+Verified via `vercel env ls`: all 8 needed env vars are in the Vercel `ai-signal` project (encrypted; visible only at build/runtime, not via `vercel env pull`). **The prod deploy will pick them up automatically when you merge.** No paste needed for prod.
+
+**Optional fix — Preview deploys** (the `/archive` 500 on https://ai-signal-jjcbe62vv-...):
+
+Two vars are scoped only to Production in Vercel and need to also be scoped to Preview so preview deployments stop 500-ing on `/archive`:
+- `NEXT_PUBLIC_SUPABASE_URL`
+- `NEXT_PUBLIC_SUPABASE_ANON_KEY`
+
+Fix (30 seconds): Vercel dashboard → ai-signal → Settings → Environment Variables → for each of the two vars, edit → check the "Preview" environment box → save. Then redeploy: `vercel --force` or push an empty commit. (Three other vars — ANTHROPIC_API_KEY, EMAIL_FROM, NEXT_PUBLIC_SITE_URL — are also Production-only; only matters if you need them on preview.)
+
+**Optional — local dev with real Supabase**: paste these into `/Users/surajpandita/ai_signal/.env.local` (currently empty-quoted because CLI never decrypts):
 
 ```
-SUPABASE_SERVICE_ROLE_KEY="<paste here>"
-ANTHROPIC_API_KEY="<paste here>"
-RESEND_API_KEY="<paste here>"
-EMAIL_FROM="hello@aibasically.co"     # or whatever sender you want; new audience expected
-CRON_SECRET="<any random string — used for manual cron testing>"
+SUPABASE_SERVICE_ROLE_KEY="<from dashboard>"
+ANTHROPIC_API_KEY="<from dashboard>"
+RESEND_API_KEY="<from dashboard>"
+EMAIL_FROM="<from dashboard>"
+CRON_SECRET="<from dashboard>"
 ```
 
-> Vercel's `env pull` returns `""` for these because they're marked Secret. You have to copy them from the dashboard once.
-
-If the 5th line `CRON_SECRET` is new, also add it in Vercel: dashboard → Environment Variables → add `CRON_SECRET` → Production + Preview.
+Skip this entirely if you only want to QA on the deployed preview URL.
 
 ---
 
