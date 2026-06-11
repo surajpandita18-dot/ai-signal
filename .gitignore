@@ -58,3 +58,7 @@ CLAUDE.md.backup-*
 
 # Sibling project — separate repo, untouchable
 /ai-signal-v2/
+
+# Old project intelligence (screenshots, audits) — preserve on disk, not in git
+/.claude/intelligence/
+/docs/
