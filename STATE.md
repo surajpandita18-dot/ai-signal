@@ -1,14 +1,15 @@
 # AI, Basically. — System State
 
 ```
-current_phase:        Phase 4 — Cleanup + first issue + Vercel cutover
-status:               READY
-active_agents:        none — Phases 1+2+3 complete
-last_completed_task:  Phase 3 — interactions + pipeline + cron
-next_task:            Apply migration to Supabase + seed Issue 001 + visual QA via next dev + project rename
-blockers:             —
-task_counter:         4
+current_phase:        Phase 4 — awaiting Suraj's destructive steps
+status:               PREVIEW_LIVE
+active_agents:        none
+last_completed_task:  Pixel QA on Vercel preview deploy — desktop + mobile parity confirmed
+next_task:            Suraj runs CUTOVER.md steps 1-3 (secrets paste · migration apply · merge to main)
+blockers:             5 secrets in .env.local empty (SUPABASE_SERVICE_ROLE_KEY + 4 others) — only Suraj has them
+task_counter:         6
 last_updated:         2026-06-12
+preview_url:          https://ai-signal-jjcbe62vv-surajpandita18-dots-projects.vercel.app
 ```
 
 ## Task log
@@ -20,6 +21,8 @@ last_updated:         2026-06-12
 | 2 | Phase 3 — D (interactions) + F (pipeline + cron) parallel | D/F | DONE | 2026-06-12 |
 | 3 | next.config layout font fix (axes vs explicit weight) | ARIA | DONE | 2026-06-12 |
 | 4 | Production build verified — 10 routes, 102KB First Load JS | ARIA | DONE | 2026-06-12 |
+| 5 | Pixel QA via Playwright — desktop + mobile parity vs HTML source | ARIA | DONE | 2026-06-12 |
+| 6 | aibasically branch pushed to origin, Vercel preview live | ARIA | DONE | 2026-06-12 |
 
 ## Follow-up migration (Phase 4)
 
