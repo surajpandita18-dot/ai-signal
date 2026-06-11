@@ -29,7 +29,6 @@ const fraunces = Fraunces({
   subsets: ['latin'],
   weight: ['400', '500', '600'],
   style: ['normal', 'italic'],
-  axes: ['opsz'],
   variable: '--font-serif',
   display: 'swap',
 })
@@ -38,7 +37,6 @@ const newsreader = Newsreader({
   subsets: ['latin'],
   weight: ['400', '500'],
   style: ['normal', 'italic'],
-  axes: ['opsz'],
   variable: '--font-read',
   display: 'swap',
 })

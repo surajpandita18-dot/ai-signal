@@ -1,3 +1,5 @@
+import InviteCopyButton from '@/components/interactive/InviteCopyButton'
+
 type ReferralProps = {
   count?: number
 }
@@ -34,7 +36,7 @@ export default function Referral({ count }: ReferralProps = {}) {
           </div>
         </div>
         <div className="ref-actions">
-          <button className="ref-copy">⧉ Copy your invite link</button>
+          <InviteCopyButton />
           <span className="ref-count">
             You&apos;ve referred <b>{count ?? 0}</b> so far
           </span>

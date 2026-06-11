@@ -1,13 +1,13 @@
 # AI, Basically. — System State
 
 ```
-current_phase:        Phase 1 — Foundation (Design System + Data & Backend in parallel)
-status:               IN_PROGRESS
-active_agents:        A (Design System), B (Data & Backend), C (Sections), E (Email Twin)
-last_completed_task:  Phase 0 — plan + audit + branch + demolition
-next_task:            Phase 2 review + integration
+current_phase:        Phase 4 — Cleanup + first issue + Vercel cutover
+status:               READY
+active_agents:        none — Phases 1+2+3 complete
+last_completed_task:  Phase 3 — interactions + pipeline + cron
+next_task:            Apply migration to Supabase + seed Issue 001 + visual QA via next dev + project rename
 blockers:             —
-task_counter:         1
+task_counter:         4
 last_updated:         2026-06-12
 ```
 
@@ -16,7 +16,16 @@ last_updated:         2026-06-12
 | # | Task | Agent | Result | Date |
 |---|---|---|---|---|
 | 0 | Phase 0 — audit, plan, decisions, safety tag, branch, demolition | ARIA | DONE | 2026-06-12 |
-| 1 | Phase 1 + early Phase 2 — A+B+C+E parallel spawn | A/B/C/E | IN_PROGRESS | 2026-06-12 |
+| 1 | Phase 1+2 — A (design) + B (data) + C (sections) + E (email twin) parallel | A/B/C/E | DONE | 2026-06-12 |
+| 2 | Phase 3 — D (interactions) + F (pipeline + cron) parallel | D/F | DONE | 2026-06-12 |
+| 3 | next.config layout font fix (axes vs explicit weight) | ARIA | DONE | 2026-06-12 |
+| 4 | Production build verified — 10 routes, 102KB First Load JS | ARIA | DONE | 2026-06-12 |
+
+## Follow-up migration (Phase 4)
+
+Per Agent F integration notes, add to a follow-up migration:
+- `issues.sent_at TIMESTAMPTZ NULL` — cron stamps after a successful send; next run filters on `sent_at IS NULL` (replaces the fragile published_at < 7d proxy).
+- `issues._rubric JSONB NULL` — pipeline persists rubric verdict + blockers so the editor sees them inline.
 
 ## Open decisions (resolved 2026-06-12)
 

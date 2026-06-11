@@ -1,16 +1,8 @@
 import type { Poll as PollType } from '@/lib/content-model'
+import PollClient from '@/components/interactive/PollClient'
 
-export default function Poll({ question, options }: PollType) {
-  return (
-    <div className="poll">
-      <div className="q">{question}</div>
-      <div className="opts">
-        {options.map((o, i) => (
-          <span key={i} className="opt">
-            {o}
-          </span>
-        ))}
-      </div>
-    </div>
-  )
+type Props = PollType & { issueId: string }
+
+export default function Poll({ issueId, question, options }: Props) {
+  return <PollClient issueId={issueId} question={question} options={options} />
 }

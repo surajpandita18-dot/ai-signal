@@ -1,4 +1,6 @@
 import type { BuildNotes as BuildNotesType } from '@/lib/content-model'
+import Fold from '@/components/interactive/Fold'
+import CodeCopy from '@/components/interactive/CodeCopy'
 
 export default function BuildNotes({
   title,
@@ -27,10 +29,12 @@ export default function BuildNotes({
           </a>
         </div>
         <p className="bn-skim" dangerouslySetInnerHTML={{ __html: skim_html }} />
-        <button className="bn-foldbtn" aria-expanded="false">
-          ▸ Open the full breakdown + diagram
-        </button>
-        <div className="bn-fold">
+        <Fold
+          buttonClass="bn-foldbtn"
+          closedLabel="▸ Open the full breakdown + diagram"
+          openLabel="▾ Collapse breakdown"
+          foldClassName="bn-fold"
+        >
           <div className="bn-grid">
             <div className="bn-box">
               <div className="h">The struggle you know</div>
@@ -50,9 +54,7 @@ export default function BuildNotes({
             <b>Ship this week · copy-paste this</b>
             <span dangerouslySetInnerHTML={{ __html: ship_this_week_html }} />
             <div className="codeblock">
-              <button className="codecopy" aria-label="Copy">
-                ⧉ copy
-              </button>
+              <CodeCopy code={code.body} />
               <pre>{code.body}</pre>
             </div>
           </div>
@@ -60,7 +62,7 @@ export default function BuildNotes({
             ▸ <a href={paper_link}>read the paper</a> &nbsp;·&nbsp; ▸{' '}
             <a href={eval_link}>full eval harness</a>
           </div>
-        </div>
+        </Fold>
       </div>
     </div>
   )

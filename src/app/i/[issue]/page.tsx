@@ -125,7 +125,7 @@ export default async function Page({
 
       <Closer {...content.closer} />
       <Referral />
-      <Poll {...content.poll} />
+      <Poll issueId={(content as unknown as { id: string }).id} {...content.poll} />
       <Foot
         replyPrompt={content.foot.reply_prompt}
         nextIssue={content.foot.next_issue}

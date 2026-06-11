@@ -1,6 +1,34 @@
 import type { JobSignal as JobSignalType } from '@/lib/content-model'
+import CopyOnClick from '@/components/interactive/CopyOnClick'
+
+// Strip HTML tags and decode the small handful of entities that show up
+// in our content_html strings. Good enough for "innerText"-style copy.
+function stripHtml(html: string): string {
+  return html
+    .replace(/<br\s*\/?>/gi, '\n')
+    .replace(/<\/(p|div|li)>/gi, '\n')
+    .replace(/<[^>]+>/g, '')
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/ /g, ' ')
+    .replace(/[ \t]+/g, ' ')
+    .replace(/\n[ \t]+/g, '\n')
+    .replace(/[ \t]+\n/g, '\n')
+    .trim()
+}
 
 export default function JobSignal({ rows, spotlight, upskill, interview }: JobSignalType) {
+  const interviewPlainText = [
+    ...interview.steps.map((s) => `${s.n}. ${stripHtml(s.body_html)}`),
+    stripHtml(interview.tip_html),
+  ]
+    .filter(Boolean)
+    .join('\n')
+
   return (
     <div className="jobs">
       {rows.map((row, i) => (
@@ -43,15 +71,17 @@ export default function JobSignal({ rows, spotlight, upskill, interview }: JobSi
           <div className="lab">{interview.q_label}</div>
           <div className="q">{interview.q}</div>
         </div>
-        <div className="iv-a">
-          {interview.steps.map((step) => (
-            <div key={step.n} className="step">
-              <b>{step.n}.</b>
-              <span dangerouslySetInnerHTML={{ __html: step.body_html }} />
-            </div>
-          ))}
-          <div className="tip" dangerouslySetInnerHTML={{ __html: interview.tip_html }} />
-        </div>
+        <CopyOnClick textToCopy={interviewPlainText}>
+          <div className="iv-a">
+            {interview.steps.map((step) => (
+              <div key={step.n} className="step">
+                <b>{step.n}.</b>
+                <span dangerouslySetInnerHTML={{ __html: step.body_html }} />
+              </div>
+            ))}
+            <div className="tip" dangerouslySetInnerHTML={{ __html: interview.tip_html }} />
+          </div>
+        </CopyOnClick>
       </div>
     </div>
   )

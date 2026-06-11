@@ -1,4 +1,5 @@
 import type { UnderTheHood as UnderTheHoodType } from '@/lib/content-model'
+import Fold from '@/components/interactive/Fold'
 
 export default function UnderTheHood({
   question_html,
@@ -10,10 +11,12 @@ export default function UnderTheHood({
     <div className="hood">
       <p className="q" dangerouslySetInnerHTML={{ __html: question_html }} />
       <div dangerouslySetInnerHTML={{ __html: diagram_svg }} />
-      <button className="foldbtn" aria-expanded="false">
-        ▸ Read deeper — the 3 steps (adds ~2 min)
-      </button>
-      <div className="deepfold">
+      <Fold
+        buttonClass="foldbtn"
+        closedLabel="▸ Read deeper — the 3 steps (adds ~2 min)"
+        openLabel="▾ Hide the deep dive"
+        foldClassName="deepfold"
+      >
         <div className="hood-steps">
           {steps.map((s) => (
             <div key={s.n} className="hstep">
@@ -25,7 +28,7 @@ export default function UnderTheHood({
             </div>
           ))}
         </div>
-      </div>
+      </Fold>
       <p className="souse">
         {source.text} · <a href={source.link}>read the paper →</a>
       </p>
