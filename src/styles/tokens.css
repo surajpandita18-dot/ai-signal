@@ -1,0 +1,28 @@
+/* ----------------------------------------------------------------------------
+   Design tokens — AI, Basically.
+   Source of truth: ~/Downloads/ai-basically-FINAL.html (:root block)
+   Canonical names per /CONTRACT.md.
+   --------------------------------------------------------------------------
+   Renames vs. HTML source:
+     --kesari  ->  --accent
+     --tech    ->  --dark-band
+   (kept as-is from source: --bg --ink --grey --hair --faint --clay --sand)
+
+   Note: the HTML uses #E9E9E7 as the design-board chrome around the viewport.
+   Production has no chrome, so we do NOT apply it to <body>.
+   We record it here for reference only.
+   --chrome: #E9E9E7;
+---------------------------------------------------------------------------- */
+
+:root {
+  /* palette */
+  --bg:         #F4F1E8;
+  --ink:        #191712;
+  --accent:     #9C4A2E;
+  --clay:       #B5683E;
+  --sand:       #E3DBC9;
+  --faint:      #ECE7DA;
+  --hair:       #DCD6C8;
+  --grey:       #6F6A60;
+  --dark-band:  #211E18;
+}
