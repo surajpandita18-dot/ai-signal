@@ -58,18 +58,31 @@ export default function AboutPage() {
           </div>
           <div className="lede">
             <p>
-              Suraj Pandita. PM background, now building solo. I&rsquo;m not
-              a researcher and I don&rsquo;t pretend to be. I read a lot,
-              talk to people who ship, and write the version I wish someone
-              had sent me when I was getting started.{' '}
+              <b>Suraj Pandita.</b> Product manager by day, this newsletter
+              by Saturday morning. PM background, building <em>AI, Basically.</em>{' '}
+              solo. I&rsquo;m not a researcher and I don&rsquo;t pretend to be.
+              I read a lot, talk to people who actually ship AI to production,
+              and write the version of this brief I wish someone had sent me
+              when I was figuring it out myself.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              I&rsquo;m based in India and write India-leaning on purpose.
+              The global AI press writes for Bay Area readers; the India tech
+              press doesn&rsquo;t always go deep on AI. There&rsquo;s a gap
+              there. This is my attempt at filling part of it &mdash; one
+              calm, honest issue every Saturday.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              The fastest way to find me:{' '}
               <a
                 href="https://www.linkedin.com/in/surajpandita/"
                 target="_blank"
                 rel="noopener noreferrer"
-                style={{ color: 'var(--accent)' }}
+                style={{ color: 'var(--accent)', fontWeight: 600 }}
               >
-                More about me &rarr;
+                linkedin.com/in/surajpandita
               </a>
+              . Or reply to any issue &mdash; same inbox, same person.
             </p>
           </div>
         </section>
