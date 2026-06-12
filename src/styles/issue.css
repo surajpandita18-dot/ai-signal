@@ -365,3 +365,81 @@
 .issue .bn-box .h,
 .issue .bn-takeaway b,
 .issue .closer-band .cc-tag{color:#C8794B}
+
+/* ============================================================================
+   OVERFLOW CONTAINMENT — mobile (<=640px)
+   Root cause: inside .buildnotes .bn-fold and similar folds, the codeblock <pre>
+   (white-space: pre) and embedded <svg viewBox="0 0 600 …"> can be wider than
+   the viewport. CSS Grid items default to min-width: auto, so the inner grid
+   tracks expand to fit their widest descendant — which pushes the entire
+   buildnotes inner grid (and every sibling: bn-top, h2, paper, bn-skim, etc.)
+   off the right edge of the viewport.
+
+   Fix: cap every fold/container at the viewport, force grid/flex children to
+   shrink, and let only the codeblock scroll horizontally. SVGs render at
+   max-width: 100%. All rules are additive — they only tighten the existing
+   layout, they do not change the design at >=641px.
+============================================================================ */
+@media(max-width:640px){
+  /* The dark band itself is full-bleed; its .grid is the actual content track. */
+  .issue .buildnotes{overflow-x:hidden}
+  .issue .buildnotes .grid{max-width:100%;min-width:0;overflow-x:hidden}
+
+  /* Folds must stay inside the grid track. */
+  .issue .bn-fold,
+  .issue .deepfold{max-width:100%;min-width:0;overflow-x:hidden}
+
+  /* Two-col bn-grid is already 1fr on mobile; ensure the column doesn't expand
+     to fit min-content (the canonical grid-shrink hack). */
+  .issue .bn-grid{min-width:0}
+  .issue .bn-grid>*{min-width:0;max-width:100%}
+  .issue .bn-box{min-width:0;max-width:100%}
+  .issue .bn-box p{min-width:0;overflow-wrap:anywhere;word-break:break-word}
+
+  /* Codeblock: keep horizontal scroll INSIDE the block, never spill outward. */
+  .issue .codeblock{max-width:100%;min-width:0;overflow-x:auto}
+
+  /* SVG diagrams injected via dangerouslySetInnerHTML — the wrapping <div>
+     is plain, so target svg directly within these scopes. */
+  .issue .buildnotes svg,
+  .issue .hood svg,
+  .issue .bn-fold svg,
+  .issue .deepfold svg{max-width:100%;height:auto;display:block}
+
+  /* Takeaway/skim/paper/link rows can contain long unbreakable runs
+     (URLs, identifiers, accent fragments) — let them wrap. */
+  .issue .bn-takeaway,
+  .issue .bn-takeaway span,
+  .issue .bn-link,
+  .issue .bn-skim,
+  .issue .paper{min-width:0;overflow-wrap:anywhere;word-break:break-word}
+
+  /* Under the hood: same containment for its steps + injected svg wrapper. */
+  .issue .hood{max-width:100%;min-width:0}
+  .issue .hood-steps{min-width:0}
+  .issue .hstep{min-width:0}
+  .issue .hstep>div{min-width:0;overflow-wrap:anywhere}
+
+  /* Long interview question text + India Signal headlines should wrap, not
+     push the card sideways. */
+  .issue .interview .iv-q .q,
+  .issue .sig h4,
+  .issue .sig h4 a,
+  .issue .sig p{overflow-wrap:anywhere;word-break:break-word;min-width:0}
+
+  /* Lens row: 130px label + flex content; force flex/grid children to shrink. */
+  .issue .lens,
+  .issue .lens p{min-width:0;overflow-wrap:anywhere}
+
+  /* TLDR body column. */
+  .issue .tldr li{min-width:0}
+  .issue .tldr li span,
+  .issue .tldr li{overflow-wrap:anywhere}
+
+  /* Spotlight stat can be a huge number — clamp at viewport. */
+  .issue .spotlight .stat{max-width:100%;overflow-wrap:anywhere}
+
+  /* Referral block: respect viewport. */
+  .issue .referral{overflow-x:hidden}
+  .issue .referral .grid{max-width:100%;min-width:0}
+}
