@@ -59,15 +59,17 @@ export default function AboutPage() {
           <div className="lede">
             <p>
               <b>Suraj Pandita.</b> Product manager by day, this newsletter
-              by Saturday morning. PM background, building <em>AI, Basically.</em>{' '}
-              solo. I&rsquo;m not a researcher and I don&rsquo;t pretend to be.
-              I read a lot, talk to people who actually ship AI to production,
-              and write the version of this brief I wish someone had sent me
-              when I was figuring it out myself.
+              by Saturday morning. Eight years building products &mdash;{' '}
+              <b>ex-Zomato, ex-BluSmart, ex-Gnani.ai</b> &mdash; now building{' '}
+              <em>AI, Basically.</em> solo. I&rsquo;m not a researcher and I
+              don&rsquo;t pretend to be. I read a lot, talk to people who
+              actually ship AI to production, and write the version of this
+              brief I wish someone had sent me when I was figuring it out
+              myself.
             </p>
             <p style={{ marginTop: 14 }}>
-              I&rsquo;m based in India and write India-leaning on purpose.
-              The global AI press writes for Bay Area readers; the India tech
+              Based in Bengaluru, writing India-leaning on purpose. The
+              global AI press writes for Bay Area readers; the India tech
               press doesn&rsquo;t always go deep on AI. There&rsquo;s a gap
               there. This is my attempt at filling part of it &mdash; one
               calm, honest issue every Saturday.
