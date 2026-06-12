@@ -1,5 +1,15 @@
 import type { IndiaSignal as IndiaSignalType } from '@/lib/content-model'
 
+// Defensive strip: older content (and the seeded DB rows) wrote "Why you care"
+// inside the value, so the template's prefix produced a duplicate
+// (`↳ Why you care: ↳ Why you care: …`). Strip any leading variant here so the
+// JSX template is the single source of the prefix.
+function stripWhyCare(s: string): string {
+  return s
+    .replace(/^\s*[↳⤷→]?\s*Why you care\s*[:\-—]\s*/i, '')
+    .trim()
+}
+
 export default function IndiaSignal({
   cards,
   foot,
@@ -17,7 +27,7 @@ export default function IndiaSignal({
             </div>
             <h4>{c.source_url ? <a href={c.source_url} target="_blank" rel="noopener noreferrer">{c.h4}</a> : c.h4}</h4>
             <p>{c.body}</p>
-            <div className="sig-you">↳ Why you care: {c.why_you}</div>
+            <div className="sig-you">↳ Why you care: {stripWhyCare(c.why_you)}</div>
           </div>
         ))}
       </div>

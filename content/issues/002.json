@@ -213,7 +213,7 @@
         "status_hot": true,
         "h4": "Apollo's AI radiology second-read is now standard across 71 hospitals",
         "body": "Trained on Indian chest X-rays specifically — TB, pneumonia patterns Western models miss. Quietly rolled out hospital by hospital. No press release. Catching findings the first read missed in roughly 1 in 14 scans.",
-        "why_you": "↳ Why you care: this is Indian-data-first AI in actual clinical use. Not a pilot, not a demo. The closest thing India has to a working answer for sovereign healthcare AI.",
+        "why_you": "this is Indian-data-first AI in actual clinical use. Not a pilot, not a demo. The closest thing India has to a working answer for sovereign healthcare AI.",
         "source_url": "https://www.apollohospitals.com/"
       },
       {
@@ -222,7 +222,7 @@
         "status_hot": false,
         "h4": "PAU + Cropin release the first open Indian crop-disease dataset",
         "body": "Punjab Agricultural University and Cropin put 1.2 million labelled crop-disease images — wheat, paddy, cotton — into the open. Captured across actual Punjab and Haryana farms, not lab conditions. Western agritech datasets have almost none of this.",
-        "why_you": "↳ Why you care: builders, this is a free, high-quality, India-native vision dataset for a problem that matters to 600 million people. Your weekend project just got real.",
+        "why_you": "builders, this is a free, high-quality, India-native vision dataset for a problem that matters to 600 million people. Your weekend project just got real.",
         "source_url": "https://www.pau.edu/"
       },
       {
@@ -231,7 +231,7 @@
         "status_hot": false,
         "h4": "MeitY's draft \"AI compute attribution\" rule asks who actually owns the chips",
         "body": "A quiet but pointed draft from MeitY this week: any AI service serving Indian users above a threshold must publicly disclose what compute (and whose) it runs on. Vendor lock-in, made visible. Reads directly on the NVIDIA story above.",
-        "why_you": "↳ Why you care: if it lands as proposed, every Indian AI startup deck gets a new slide within two quarters. Worth reading the 6-page draft yourself before the takes start.",
+        "why_you": "if it lands as proposed, every Indian AI startup deck gets a new slide within two quarters. Worth reading the 6-page draft yourself before the takes start.",
         "source_url": "https://www.meity.gov.in/"
       }
     ],

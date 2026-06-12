@@ -213,7 +213,7 @@
         "status_hot": false,
         "h4": "Namma Metro now resolves 40% of commuter complaints via AI",
         "body": "Quietly live for months — no launch event, no press release. One of India's largest public-sector AI deployments and almost nobody's covering it.",
-        "why_you": "↳ Why you care: this is what real Indian-scale AI deployment looks like — boring, unglamorous, and actually shipped.",
+        "why_you": "this is what real Indian-scale AI deployment looks like — boring, unglamorous, and actually shipped.",
         "source_url": "https://english.bmrc.co.in/"
       },
       {
@@ -222,7 +222,7 @@
         "status_hot": true,
         "h4": "NPCI open-sources its UPI fraud-detection model",
         "body": "The fraud model behind billions of UPI transactions is now public. Trained on Indian transaction patterns Western datasets never capture.",
-        "why_you": "↳ Why you care: a free, production-grade, India-native dataset to learn from. Builders, this is your weekend.",
+        "why_you": "a free, production-grade, India-native dataset to learn from. Builders, this is your weekend.",
         "source_url": "https://www.npci.org.in/"
       },
       {
@@ -231,7 +231,7 @@
         "status_hot": false,
         "h4": "Zoho releases Tamil LLM training data",
         "body": "While everyone debates English benchmarks, the hard work of Indian-language AI is happening in Chennai — and they just gave it away.",
-        "why_you": "↳ Why you care: the next big Indian AI moat is language, not models. This is where it's being built.",
+        "why_you": "the next big Indian AI moat is language, not models. This is where it's being built.",
         "source_url": "https://www.zoho.com/"
       }
     ],

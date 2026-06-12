@@ -202,6 +202,14 @@ function stripTags(html: string): string {
   return decodeEntities(html.replace(/<[^>]+>/g, ''))
 }
 
+// Older content (and the seeded DB rows) wrote "Why you care" into the value
+// itself, so the template's prefix duplicated it. Strip any leading variant.
+function stripWhyCare(s: string): string {
+  return s
+    .replace(/^\s*[↳⤷→]?\s*Why you care\s*[:\-—]\s*/i, '')
+    .trim()
+}
+
 // ----------------------------------------------------------------------------
 // Component
 // ----------------------------------------------------------------------------
@@ -1046,7 +1054,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                       ...SAFE_WRAP,
                     }}
                   >
-                    &#x21B3; Why you care: {card.why_you}
+                    &#x21B3; Why you care: {stripWhyCare(card.why_you)}
                   </Text>
                 ) : null}
               </Section>

@@ -213,7 +213,7 @@
         "status_hot": false,
         "h4": "BYJU'S successor Eruditus quietly running AI tutors in 700 Maharashtra schools",
         "body": "No flashy launch. A regional pilot with the state board — AI tutors that switch between English and Marathi mid-explanation, based on the student's last reply. One of the largest Marathi-language AI deployments anywhere.",
-        "why_you": "↳ Why you care: this is what \"AI for the next billion\" actually looks like — pedagogy plus code-switching, in classrooms, not on Twitter.",
+        "why_you": "this is what \"AI for the next billion\" actually looks like — pedagogy plus code-switching, in classrooms, not on Twitter.",
         "source_url": "https://www.eruditus.com/"
       },
       {
@@ -222,7 +222,7 @@
         "status_hot": true,
         "h4": "TNEB's solar-grid forecasting AI is now load-balancing 12 GW in real time",
         "body": "The Tamil Nadu electricity board has put a homegrown forecasting model into production across its solar belt. Built with IIT-Madras, it's cutting curtailment by an estimated 9% — translating to roughly ₹400 crore a year in avoided losses, and one of the largest energy-AI deployments in Asia.",
-        "why_you": "↳ Why you care: India's energy transition is going to be won or lost on forecasting, not panels. This is the boring infrastructure layer where the real work is.",
+        "why_you": "India's energy transition is going to be won or lost on forecasting, not panels. This is the boring infrastructure layer where the real work is.",
         "source_url": "https://www.tneb.tnebnet.org/"
       },
       {
@@ -231,7 +231,7 @@
         "status_hot": false,
         "h4": "Hyderabad-based Sagar Defence Engineering raises ₹220 cr for autonomous maritime AI",
         "body": "Quiet Series B. The company is building autonomous surface and underwater vessels with on-board vision models tuned for Indian Ocean conditions — including the cluttered, low-visibility coastal waters where Western models trained on clean-sea datasets fail.",
-        "why_you": "↳ Why you care: India's defence-AI sector just crossed from policy decks to deployed capability. The hiring will follow within 12 months.",
+        "why_you": "India's defence-AI sector just crossed from policy decks to deployed capability. The hiring will follow within 12 months.",
         "source_url": "https://www.sagardefence.com/"
       }
     ],
