@@ -21,7 +21,7 @@ function stripHtml(html: string): string {
 export default function Closer({ format_label, body_html }: CloserType) {
   const plainText = stripHtml(body_html)
   return (
-    <div className="closer-band">
+    <div className="closer-band" id="closer">
       <div className="grid">
         <div className="lab">
           One Last Thing{' '}

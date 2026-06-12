@@ -357,7 +357,21 @@
   .issue .sig,
   .issue .lens,
   .issue .poll .opt{transition:none}
+  html{scroll-behavior:auto!important}
 }
+
+/* Smooth anchor scroll for in-page jumps; leaves a small gap so the section
+   doesn't land flush with the viewport top. */
+html{scroll-behavior:smooth}
+.issue .sec,
+.issue .buildnotes,
+.issue .closer-band{scroll-margin-top:24px}
+
+/* TLDR rows hover/focus — calm accent underline + cursor signal */
+.issue .tldr li a{transition:background .15s ease}
+.issue .tldr li:has(a):hover{background:var(--faint);cursor:pointer}
+.issue .tldr li a:focus-visible{outline:2px solid var(--accent);outline-offset:-2px}
+.issue .tldr li:has(a):hover span{color:var(--ink)}
 
 /* ===== Decoder — unnumbered jargon explainer, closed-fold on web ===== */
 .issue .decoder-list{max-width:600px}

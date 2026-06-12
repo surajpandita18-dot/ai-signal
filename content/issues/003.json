@@ -12,19 +12,23 @@
   "tldr": [
     {
       "label": "Big one",
-      "body": "Claude Opus 4.8 quietly clears a reasoning benchmark by 60% — and finally handles Hinglish without dropping context."
+      "body": "Claude Opus 4.8 quietly clears a reasoning benchmark by 60% — and finally handles Hinglish without dropping context.",
+      "target": "01"
     },
     {
       "label": "Build Notes",
-      "body": "Why your fine-tuned model gets worse after every retraining — and the cheaper fix nobody runs."
+      "body": "Why your fine-tuned model gets worse after every retraining — and the cheaper fix nobody runs.",
+      "target": "bn"
     },
     {
       "label": "Jobs",
-      "body": "A real number on AI-eval roles in India, plus the senior-IC question doing the rounds this month."
+      "body": "A real number on AI-eval roles in India, plus the senior-IC question doing the rounds this month.",
+      "target": "03"
     },
     {
       "label": "Reality",
-      "body": "What an English-trained frontier model still drops the moment you write the way India actually talks."
+      "body": "What an English-trained frontier model still drops the moment you write the way India actually talks.",
+      "target": "07"
     }
   ],
   "one_thing": {

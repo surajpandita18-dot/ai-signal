@@ -9,6 +9,7 @@ import Hero from '@/components/issue/Hero'
 import Section from '@/components/issue/Section'
 import Foot from '@/components/issue/Foot'
 import ReadingProgress from '@/components/issue/ReadingProgress'
+import SectionPilot from '@/components/interactive/SectionPilot'
 
 import OneThing from '@/components/sections/OneThing'
 import SoWhat from '@/components/sections/SoWhat'
@@ -167,6 +168,7 @@ export default async function Page({
         nextIssue={content.foot.next_issue}
       />
       <ReadingProgress />
+      <SectionPilot />
     </main>
   )
 }

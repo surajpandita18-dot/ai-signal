@@ -5,12 +5,14 @@ type SectionProps = {
   label: string
   hint: string
   deep?: boolean
+  id?: string                  // override anchor id; default = sec-{n}
   children: ReactNode
 }
 
-export default function Section({ n, label, hint, deep, children }: SectionProps) {
+export default function Section({ n, label, hint, deep, id, children }: SectionProps) {
+  const anchorId = id ?? `sec-${n}`
   return (
-    <div className={`sec${deep ? ' deep' : ''}`}>
+    <div className={`sec${deep ? ' deep' : ''}`} id={anchorId}>
       <div className="label">
         <span className="n">{n}</span>
         <span className="nm-lab">{label}</span>

@@ -16,7 +16,14 @@ export type Lens = 'builder' | 'product_biz' | 'secure_pro' | 'switcher'
 
 export type IssueStatus = 'draft' | 'review' | 'published'
 
-export type TldrRow = { label: string; body: string }
+export type TldrRow = {
+  label: string
+  body: string
+  // Anchor target to jump to when the TLDR row is clicked. "01"-"08" for
+  // numbered sections, "bn" for Build Notes, "decoder", "closer". When
+  // omitted, the row renders as plain text (no jump).
+  target?: string
+}
 
 export type LensTake = {
   role: Lens

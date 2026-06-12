@@ -16,7 +16,7 @@ export default function BuildNotes({
   diagram_svg,
 }: BuildNotesType) {
   return (
-    <div className="buildnotes">
+    <div className="buildnotes" id="bn">
       <div className="grid">
         <div className="bn-top">
           Build Notes <span className="tag">Nerd Lane · non-tech? skip to §4, no guilt</span>

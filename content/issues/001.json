@@ -12,19 +12,23 @@
   "tldr": [
     {
       "label": "Big one",
-      "body": "The RBI AI-lending circular nobody read — bigger than the GPT-6 noise."
+      "body": "The RBI AI-lending circular nobody read — bigger than the GPT-6 noise.",
+      "target": "01"
     },
     {
       "label": "Build Notes",
-      "body": "Why your RAG hallucinates in prod but not in testing — and the retrieval fix."
+      "body": "Why your RAG hallucinates in prod but not in testing — and the retrieval fix.",
+      "target": "bn"
     },
     {
       "label": "Jobs",
-      "body": "A real hiring number, plus the surprise interview question doing the rounds."
+      "body": "A real hiring number, plus the surprise interview question doing the rounds.",
+      "target": "03"
     },
     {
       "label": "Reality",
-      "body": "The honest water-and-power cost of your AI habit. No doom, just the bill."
+      "body": "The honest water-and-power cost of your AI habit. No doom, just the bill.",
+      "target": "07"
     }
   ],
   "one_thing": {

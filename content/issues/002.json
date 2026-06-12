@@ -12,19 +12,23 @@
   "tldr": [
     {
       "label": "Big one",
-      "body": "NVIDIA's Bengaluru R&D centre is real — and the clause underneath it changes who owns India's AI stack."
+      "body": "NVIDIA's Bengaluru R&D centre is real — and the clause underneath it changes who owns India's AI stack.",
+      "target": "01"
     },
     {
       "label": "Build Notes",
-      "body": "Quantization in plain English: thoda chini kam, swaad nahi badla — with the one knob that breaks it."
+      "body": "Quantization in plain English: thoda chini kam, swaad nahi badla — with the one knob that breaks it.",
+      "target": "bn"
     },
     {
       "label": "Jobs",
-      "body": "A real Indian hiring number for inference engineers — plus the interview question that's separating the field."
+      "body": "A real Indian hiring number for inference engineers — plus the interview question that's separating the field.",
+      "target": "03"
     },
     {
       "label": "Reality",
-      "body": "The honest labor question: which Indian dev jobs are quietly being re-priced, and which are not."
+      "body": "The honest labor question: which Indian dev jobs are quietly being re-priced, and which are not.",
+      "target": "07"
     }
   ],
   "one_thing": {

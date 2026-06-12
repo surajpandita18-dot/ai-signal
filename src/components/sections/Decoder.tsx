@@ -13,7 +13,7 @@ export default function Decoder({ data }: DecoderProps) {
   const count = data.terms.length
 
   return (
-    <div className="sec">
+    <div className="sec" id="decoder">
       <div className="label">
         <span className="nm-lab">Decoder</span>
         <span className="hint">
