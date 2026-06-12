@@ -41,13 +41,16 @@ export default function PollClient({ issueId, question, options }: Props) {
       <div className="q">{question}</div>
       <div className="opts">
         {options.map((o, i) => (
-          <span
+          <button
             key={i}
+            type="button"
             className={`opt${picked === o ? ' picked' : ''}`}
             onClick={() => vote(o)}
+            disabled={picked !== null}
+            style={{ font: 'inherit' }}
           >
             {o}
-          </span>
+          </button>
         ))}
       </div>
       <div className={`poll-thanks${thanksShown ? ' show' : ''}`}>

@@ -42,16 +42,16 @@
         "role": "product_biz",
         "label": "Product / Biz",
         "caption": "You decide the roadmap",
-        "body_html": "Add an \"AI decision log\" section to the PRD now. Audit-ready by design is cheap; retrofitting it later is expensive.",
-        "action": "→ Do: add one line to your live PRD today.",
+        "body_html": "Audit-ready PRDs are about to be table-stakes in regulated stacks. The one-line addition that costs you nothing today and saves a retrofit later: a <b>\"Decision Log\"</b> field on every AI feature, capturing <i>inputs in, model + version, retrieval source, why this answer, who can override</i>. Five fields. One line in the PRD. One column in your eval sheet.",
+        "action": "→ Paste this into your live PRD today: <code>Decision Log: {input, model+version, retrieval_source, rationale, override_path}</code>. That's the artifact. Ship it before the regulator asks.",
         "is_primary": false
       },
       {
         "role": "secure_pro",
         "label": "Secure Pro",
         "caption": "Job's safe, day's changing",
-        "body_html": "Good news first: this makes your judgement <em>more</em> valuable, not less. The one habit worth starting — a quick \"why\" note on big calls — turns you into the person who can explain the AI, which is exactly who teams keep around.",
-        "action": "→ Do: write the \"why\" on your next big decision.",
+        "body_html": "Good news first: this makes your judgement <em>more</em> valuable, not less. If you're mid-career, the one habit worth starting is a <b>\"why\" note on big calls</b> — you become the person who can explain the AI, which is who teams keep around. If you're already senior, the harder move is the <b>\"not yet\" list</b>: the AI capabilities your team should explicitly <em>not</em> adopt this quarter, and the one sentence you'd defend that decision with in a CTO review.",
+        "action": "→ Mid-career: write the \"why\" on your next big decision. Senior: write your team's 3-item \"not yet\" list before Monday.",
         "is_primary": false
       },
       {
@@ -197,7 +197,8 @@
         "status_hot": false,
         "h4": "Namma Metro now resolves 40% of commuter complaints via AI",
         "body": "Quietly live for months — no launch event, no press release. One of India's largest public-sector AI deployments and almost nobody's covering it.",
-        "why_you": "↳ Why you care: this is what real Indian-scale AI deployment looks like — boring, unglamorous, and actually shipped."
+        "why_you": "↳ Why you care: this is what real Indian-scale AI deployment looks like — boring, unglamorous, and actually shipped.",
+        "source_url": "https://english.bmrc.co.in/"
       },
       {
         "cat": "Fintech · NPCI",
@@ -205,7 +206,8 @@
         "status_hot": true,
         "h4": "NPCI open-sources its UPI fraud-detection model",
         "body": "The fraud model behind billions of UPI transactions is now public. Trained on Indian transaction patterns Western datasets never capture.",
-        "why_you": "↳ Why you care: a free, production-grade, India-native dataset to learn from. Builders, this is your weekend."
+        "why_you": "↳ Why you care: a free, production-grade, India-native dataset to learn from. Builders, this is your weekend.",
+        "source_url": "https://www.npci.org.in/"
       },
       {
         "cat": "Indic AI · Chennai",
@@ -213,7 +215,8 @@
         "status_hot": false,
         "h4": "Zoho releases Tamil LLM training data",
         "body": "While everyone debates English benchmarks, the hard work of Indian-language AI is happening in Chennai — and they just gave it away.",
-        "why_you": "↳ Why you care: the next big Indian AI moat is language, not models. This is where it's being built."
+        "why_you": "↳ Why you care: the next big Indian AI moat is language, not models. This is where it's being built.",
+        "source_url": "https://www.zoho.com/"
       }
     ],
     "foot": "Spotted something India-only worth a Signal?",
@@ -228,7 +231,7 @@
   },
   "poll": {
     "question": "Before you go — one tap:",
-    "options": ["This week I'm: building", "…just surviving", "…planning a switch"]
+    "options": ["This week I'm: building", "…steering / deciding", "…holding steady & learning", "…planning a switch"]
   },
   "foot": {
     "reply_prompt": "Reply & tell me — did you do the Rep?",

@@ -82,6 +82,28 @@
   .issue .ref-rung{gap:12px}
   .issue .codeblock pre{font-size:11.5px}
   .issue .sponsor-box{padding:18px}
+  .issue .track-bar.sticky-mobile{position:sticky;top:0;background:var(--bg);z-index:10;padding:8px 0;margin-bottom:12px}
+}
+
+/* ===== Agent D — mobile tap targets, layout fixes, contrast ===== */
+@media(max-width:640px){
+  /* Tap targets — lift small chips/buttons to 44px iOS HIG minimum */
+  .issue .track-chip{padding:12px 16px;min-height:44px}
+  .issue .bn-foldbtn,.issue .foldbtn{padding:12px 16px;min-height:44px}
+  .issue .codecopy{padding:10px 14px;min-height:36px}
+
+  /* Poll opts stack 1-col on mobile (was 2+1 wrap) */
+  .issue .poll .opts{flex-direction:column;gap:8px}
+
+  /* Referral copy button full-width; actions stack */
+  .issue .ref-actions{flex-direction:column;gap:12px}
+  .issue .ref-copy{width:100%}
+
+  /* Code block — smaller font + safe horizontal scroll */
+  .issue .codeblock pre{font-size:11px;overflow-x:auto}
+
+  /* Lens picker sticky on mobile — base rule provided by Agent C above; add bottom hairline */
+  .issue .track-bar.sticky-mobile{border-bottom:1px solid var(--hair)}
 }
 
 .issue .sec .label{font-family:'Archivo Narrow';font-weight:600;font-size:13px;letter-spacing:.18em;text-transform:uppercase}
@@ -299,6 +321,15 @@
 .issue .foot{max-width:600px;margin:0 auto;display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px;padding:24px 30px 0;font-family:'Archivo Narrow';font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--grey)}
 
 /* ---- interactive nuance (web only; email twin stays static) ---- */
+/* keyboard focus ring for any interactive element inside .issue */
+.issue button:focus-visible,
+.issue a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+/* reset default browser button chrome on .opt/.track-chip/.copyable buttons
+   so the existing class-targeted CSS continues to control their look. */
+.issue button.opt,
+.issue button.track-chip,
+.issue button.copyable{font:inherit;color:inherit;text-align:inherit}
+.issue button.copyable{background:transparent;border:0;padding:0;margin:0;width:100%;display:block}
 .issue .lens{transition:opacity .25s ease, transform .2s ease}
 .issue .lens.dim{opacity:.34}
 .issue .track-bar{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px;max-width:600px;align-items:flex-start}
@@ -327,3 +358,10 @@
   .issue .lens,
   .issue .poll .opt{transition:none}
 }
+
+/* ===== Agent D — contrast: accent (#9C4A2E) text on dark bands fails 4.5:1.
+   Swap to clay-lighter (#C8794B) for the small-text cases on dark backgrounds. */
+.issue .bn-top::before,
+.issue .bn-box .h,
+.issue .bn-takeaway b,
+.issue .closer-band .cc-tag{color:#C8794B}

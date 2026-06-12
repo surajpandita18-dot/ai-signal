@@ -123,6 +123,7 @@ export type IndiaSignalCard = {
   h4: string
   body: string
   why_you: string
+  source_url?: string     // optional — when present, h4 renders as a link
 }
 
 export type IndiaSignal = {

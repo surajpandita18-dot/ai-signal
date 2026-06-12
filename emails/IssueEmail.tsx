@@ -47,8 +47,12 @@ type Token =
 
 function tokenize(html: string): Token[] {
   const tokens: Token[] = []
+  // Accept any attributes (style="…", class="…", etc.) on the whitelisted
+  // inline tags. Previously only matched a bare `class="…"`, which meant a
+  // tag like `<b style="color:#fff">` leaked through as literal text. We
+  // still only render class — other attrs are ignored, not echoed.
   const re =
-    /<(\/?)(em|strong|b|code|br|span)(?:\s+class="([^"]*)")?\s*\/?>/gi
+    /<(\/?)(em|strong|b|i|code|br|span)(\s[^>]*)?\s*\/?>/gi
   let last = 0
   let m: RegExpExecArray | null
   while ((m = re.exec(html)) !== null) {
@@ -62,7 +66,13 @@ function tokenize(html: string): Token[] {
     } else if (closing) {
       tokens.push({ kind: 'close', tag })
     } else {
-      tokens.push({ kind: 'open', tag, cls: m[3] })
+      const attrs = m[3] || ''
+      const classMatch = /class="([^"]*)"/i.exec(attrs)
+      tokens.push({
+        kind: 'open',
+        tag,
+        cls: classMatch ? classMatch[1] : undefined,
+      })
     }
     last = re.lastIndex
   }
@@ -134,6 +144,12 @@ function wrap(
     case 'em':
       return (
         <span key={k} style={{ fontStyle: 'italic', color: '#9C4A2E' }}>
+          {children}
+        </span>
+      )
+    case 'i':
+      return (
+        <span key={k} style={{ fontStyle: 'italic' }}>
           {children}
         </span>
       )
@@ -273,7 +289,13 @@ export default function IssueEmail({ content, siteUrl }: Props) {
   const SITE =
     siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
 
-  const previewText = stripTags(content.hero_sub_html).slice(0, 120)
+  // Preview text — the first TLDR is hand-tightened by the editor and is the
+  // strongest single sentence in the email. Fall back to the hero sub if the
+  // TLDR is short / missing.
+  const firstTldrBody = content.tldr?.[0]?.body?.trim() ?? ''
+  const previewText = (
+    firstTldrBody.length >= 20 ? firstTldrBody : stripTags(content.hero_sub_html)
+  ).slice(0, 120)
 
   const primaryLens = content.so_what.lenses.find((l) => l.is_primary)
   const otherLenses = content.so_what.lenses.filter((l) => !l.is_primary)
@@ -325,15 +347,15 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                     letterSpacing: '.12em',
                     textTransform: 'uppercase',
                     color: GREY,
-                    whiteSpace: 'nowrap',
                   }}
                 >
-                  {`#${content.slug} · ${content.date_display} · `}
+                  {`#${content.slug} · ${content.date_display}`}
+                  <br />
                   <Link
                     href={`${SITE}/i/${content.slug}`}
                     style={{ color: GREY, textDecoration: 'underline' }}
                   >
-                    Browser
+                    Open in browser
                   </Link>
                 </span>
               </Column>
@@ -492,7 +514,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 </span>
               </Text>
             ) : null}
-            {otherLenses.map((lens, i) => (
+            {otherLenses.map((lens) => (
               <Text
                 key={lens.role}
                 style={{
@@ -507,6 +529,19 @@ export default function IssueEmail({ content, siteUrl }: Props) {
               >
                 <b style={{ color: GREY }}>{lens.label.toUpperCase()} &rarr;</b>{' '}
                 {renderInlineHtml(lens.body_html)}
+                {lens.action ? (
+                  <span
+                    style={{
+                      display: 'block',
+                      fontWeight: 'bold',
+                      fontSize: 12.5,
+                      marginTop: 3,
+                      color: INK,
+                    }}
+                  >
+                    {lens.action}
+                  </span>
+                ) : null}
               </Text>
             ))}
           </Section>
@@ -586,6 +621,20 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 <b style={{ color: ACCENT }}>Ship this week: </b>
                 {renderInlineHtml(bn.ship_this_week_html)}
               </Text>
+              {bn.metric_html ? (
+                <Text
+                  style={{
+                    fontSize: 13,
+                    color: '#A2C2AC',
+                    margin: '8px 0 0',
+                    fontFamily: SERIF,
+                    fontStyle: 'italic',
+                    lineHeight: 1.55,
+                  }}
+                >
+                  {renderInlineHtml(bn.metric_html)}
+                </Text>
+              ) : null}
             </Section>
             {/* SVG diagram intentionally skipped in email — short alt note: */}
             <Text
@@ -806,6 +855,33 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             >
               {renderInlineHtml(rep.lite_html)}
             </Text>
+            {rep.full_html ? (
+              <Text
+                style={{
+                  fontFamily: SERIF,
+                  fontSize: 14,
+                  lineHeight: 1.6,
+                  margin: '10px 0 0',
+                  color: INK,
+                }}
+              >
+                {renderInlineHtml(rep.full_html)}
+              </Text>
+            ) : null}
+            {rep.done ? (
+              <Text
+                style={{
+                  fontFamily: SERIF,
+                  fontSize: 13.5,
+                  lineHeight: 1.55,
+                  margin: '8px 0 0',
+                  color: INK,
+                  fontWeight: 'bold',
+                }}
+              >
+                {rep.done}
+              </Text>
+            ) : null}
             <Text
               style={{
                 fontFamily: SERIF,
@@ -846,12 +922,27 @@ export default function IssueEmail({ content, siteUrl }: Props) {
               name="Reality Check"
               hint="— the honest bit"
             />
+            {rc.h3 ? (
+              <Heading
+                as="h3"
+                style={{
+                  fontFamily: SERIF,
+                  fontSize: 18,
+                  fontWeight: 'bold',
+                  margin: '10px 0 6px',
+                  lineHeight: 1.25,
+                  color: INK,
+                }}
+              >
+                {rc.h3}
+              </Heading>
+            ) : null}
             <Text
               style={{
                 fontFamily: SERIF,
                 fontSize: 15,
                 lineHeight: 1.6,
-                margin: '10px 0 0',
+                margin: '6px 0 0',
                 color: INK,
               }}
             >
@@ -936,6 +1027,20 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 >
                   {card.body}
                 </Text>
+                {card.why_you ? (
+                  <Text
+                    style={{
+                      fontFamily: SERIF,
+                      margin: '4px 0 0',
+                      fontSize: 12.5,
+                      color: GREY,
+                      lineHeight: 1.5,
+                      fontStyle: 'italic',
+                    }}
+                  >
+                    &#x21B3; Why you care: {card.why_you}
+                  </Text>
+                ) : null}
               </Section>
             ))}
           </Section>
@@ -1006,6 +1111,21 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             >
               One Last Thing
             </Text>
+            {closer.format_label ? (
+              <Text
+                style={{
+                  fontSize: 10,
+                  letterSpacing: '.1em',
+                  textTransform: 'uppercase',
+                  color: '#C8794B',
+                  fontWeight: 'normal',
+                  fontFamily: SANS,
+                  margin: '0 0 6px',
+                }}
+              >
+                {closer.format_label}
+              </Text>
+            ) : null}
             <Text
               style={{
                 margin: 0,

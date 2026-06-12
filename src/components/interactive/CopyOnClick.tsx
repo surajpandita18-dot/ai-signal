@@ -40,8 +40,21 @@ export default function CopyOnClick({ textToCopy, children, doneLabel }: Props) 
   }
 
   return (
-    <div className={`copyable${copied ? ' copied' : ''}`} onClick={handleClick}>
+    <button
+      type="button"
+      className={`copyable${copied ? ' copied' : ''}`}
+      onClick={handleClick}
+      aria-label="Copy to clipboard"
+      aria-pressed={copied}
+      style={{
+        font: 'inherit',
+        color: 'inherit',
+        textAlign: 'inherit',
+        display: 'block',
+        width: '100%',
+      }}
+    >
       {children}
-    </div>
+    </button>
   )
 }

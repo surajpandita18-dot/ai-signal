@@ -165,12 +165,20 @@ export async function GET(req: Request) {
           const client = resend()
           const from = process.env.EMAIL_FROM
           if (!from) throw new Error('EMAIL_FROM env var is not set')
+          // Gmail's 2024+ bulk-sender rules: List-Unsubscribe + One-Click.
+          // Reduces Promotions-tab incidence and is effectively required at
+          // scale. The URL is the per-recipient unsubscribe token endpoint.
+          const unsubUrl = `${siteUrl}/u/${sub.unsubscribe_token}`
           return client.emails.send({
             from,
             to: [sub.email],
             subject,
             html,
             replyTo,
+            headers: {
+              'List-Unsubscribe': `<${unsubUrl}>`,
+              'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+            },
           })
         }),
       )

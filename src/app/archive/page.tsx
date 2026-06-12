@@ -29,10 +29,28 @@ export default async function ArchivePage() {
           <div className="eyebrow">Archive</div>
           <h1>Every past issue.</h1>
           {!unlocked && (
-            <p className="sub">
-              The archive is open to subscribers who&apos;ve referred at least one friend.
-              Refer one — unlock everything. <Link href="/">Back to home →</Link>
-            </p>
+            <>
+              <p className="sub">
+                The archive is for readers who tell a friend about it. Share once,
+                and every past issue opens up.
+              </p>
+              <p
+                style={{
+                  marginTop: 14,
+                  fontFamily: "'Archivo Narrow', sans-serif",
+                  fontSize: 13,
+                  letterSpacing: '.04em',
+                  color: 'var(--accent)',
+                }}
+              >
+                <Link
+                  href="/i/001?preview=1"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  Read this Saturday&rsquo;s issue &rarr;
+                </Link>
+              </p>
+            </>
           )}
           {unlocked && (
             <p className="sub">

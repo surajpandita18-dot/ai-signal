@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 type MastheadProps = {
   issueNumber: number
   dateDisplay: string
@@ -15,9 +17,13 @@ export default function Masthead({
   return (
     <div className="mast">
       <div className="brand">
-        <span className="wordmark">
+        <Link
+          href="/"
+          className="wordmark"
+          style={{ textDecoration: 'none', color: 'inherit' }}
+        >
           AI, Basically<span className="dot">.</span>
-        </span>
+        </Link>
         <span className="tagline">Explained like a normal person would.</span>
       </div>
       <div className="meta">

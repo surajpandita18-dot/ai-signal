@@ -15,7 +15,7 @@ export default function IndiaSignal({
               <span className="sig-cat">{c.cat}</span>
               <span className={`sig-tag${c.status_hot ? ' hot' : ''}`}>{c.status}</span>
             </div>
-            <h4>{c.h4}</h4>
+            <h4>{c.source_url ? <a href={c.source_url} target="_blank" rel="noopener noreferrer">{c.h4}</a> : c.h4}</h4>
             <p>{c.body}</p>
             <div className="sig-you">↳ Why you care: {c.why_you}</div>
           </div>

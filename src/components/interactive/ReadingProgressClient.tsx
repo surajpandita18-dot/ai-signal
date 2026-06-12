@@ -22,15 +22,29 @@ export default function ReadingProgressClient() {
 
     function update() {
       if (!el) return
-      const h = document.documentElement.scrollHeight - window.innerHeight
-      const pct = h > 0 ? (window.scrollY / h) * 100 : 0
+      // Take the larger of documentElement / body — some layouts scroll the
+      // body, some the html. Subtract the viewport to get the scrollable range.
+      const scrollHeight = Math.max(
+        document.documentElement.scrollHeight,
+        document.body.scrollHeight,
+      )
+      const scrollTop =
+        window.scrollY ||
+        document.documentElement.scrollTop ||
+        document.body.scrollTop ||
+        0
+      const h = scrollHeight - window.innerHeight
+      const pct = h > 0 ? Math.min(100, Math.max(0, (scrollTop / h) * 100)) : 0
       el.style.width = `${pct}%`
     }
 
-    update()
+    // Defer the first read until after layout has settled — components below
+    // mount asynchronously, so scrollHeight at useEffect time can be stale.
+    const raf = requestAnimationFrame(update)
     window.addEventListener('scroll', update, { passive: true })
     window.addEventListener('resize', update)
     return () => {
+      cancelAnimationFrame(raf)
       window.removeEventListener('scroll', update)
       window.removeEventListener('resize', update)
     }

@@ -1,3 +1,5 @@
+import Link from 'next/link'
+
 export const metadata = {
   title: 'About — AI, Basically.',
   description:
@@ -10,13 +12,13 @@ export default function AboutPage() {
       <div className="grid">
         <header className="mast">
           <div className="brand">
-            <a
+            <Link
               href="/"
               style={{ textDecoration: 'none' }}
               className="wordmark"
             >
               AI, Basically<span className="dot">.</span>
-            </a>
+            </Link>
             <span className="tagline">About</span>
           </div>
           <div className="meta">Weekly · Saturday 08:00 IST</div>
@@ -58,8 +60,15 @@ export default function AboutPage() {
             <p>
               Suraj Pandita. PM background, now building solo. I&rsquo;m not
               a researcher and I don&rsquo;t pretend to be. I read a lot,
-              talk to people who ship, and try to write the version I
-              wish someone had sent me when I was getting started.
+              talk to people who ship, and write the version I wish someone
+              had sent me when I was getting started.{' '}
+              {/* TODO: add LinkedIn URL */}
+              <a
+                href="#linkedin-todo"
+                style={{ color: 'var(--accent)' }}
+              >
+                More about me &rarr;
+              </a>
             </p>
           </div>
         </section>
@@ -93,6 +102,35 @@ export default function AboutPage() {
                 hello@aibasically.co
               </a>
               . I read everything, and I reply to most of it.
+            </p>
+          </div>
+        </section>
+
+        <section className="sec">
+          <div className="label">
+            <span className="nm-lab">Read one first</span>
+          </div>
+          <div className="lede">
+            <p>Want to see how it reads?</p>
+            <p style={{ marginTop: 14 }}>
+              <Link
+                href="/i/001?preview=1"
+                style={{
+                  display: 'inline-block',
+                  padding: '11px 18px',
+                  background: 'var(--ink)',
+                  color: '#fff',
+                  border: '1px solid var(--ink)',
+                  fontFamily: "'Archivo Narrow', sans-serif",
+                  fontWeight: 600,
+                  fontSize: 12.5,
+                  letterSpacing: '.06em',
+                  textTransform: 'uppercase',
+                  textDecoration: 'none',
+                }}
+              >
+                Read last Saturday&rsquo;s issue &rarr;
+              </Link>
             </p>
           </div>
         </section>

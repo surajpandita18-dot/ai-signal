@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import SubscribeForm from './subscribe-form'
 
 export default function LandingPage() {
@@ -6,9 +7,13 @@ export default function LandingPage() {
       <div className="grid">
         <header className="mast">
           <div className="brand">
-            <span className="wordmark">
+            <Link
+              href="/"
+              style={{ textDecoration: 'none' }}
+              className="wordmark"
+            >
               AI, Basically<span className="dot">.</span>
-            </span>
+            </Link>
             <span className="tagline">Explained like a normal person would.</span>
           </div>
           <div className="meta">
@@ -17,25 +22,42 @@ export default function LandingPage() {
         </header>
 
         <section className="hero">
-          <div className="eyebrow">A newsletter, basically</div>
+          <div className="eyebrow">Weekly · No hype</div>
           <h1>
             AI changed overnight.<br />
-            Here&rsquo;s <em>what to build.</em>
+            Here&rsquo;s <em>what it means for your week.</em>
           </h1>
           <p className="sub">
-            One curated read every Saturday. The one thing in AI that actually
-            mattered this week, explained in plain language, with the
-            &ldquo;so what do I do on Monday&rdquo; spelled out. No hype, no
-            takes, no &ldquo;10 tools you must try.&rdquo;
+            One curated read every Saturday. The one shift in AI that actually
+            mattered this week, in plain language, with the &ldquo;so what do I
+            do on Monday&rdquo; spelled out. No hype, no takes, no &ldquo;10
+            tools you must try.&rdquo;
           </p>
           <SubscribeForm />
+          <p
+            style={{
+              marginTop: 14,
+              fontFamily: "'Archivo Narrow', sans-serif",
+              fontSize: 13,
+              letterSpacing: '.04em',
+              color: 'var(--accent)',
+            }}
+          >
+            Or{' '}
+            <Link
+              href="/i/001?preview=1"
+              style={{ color: 'var(--accent)' }}
+            >
+              read last Saturday&rsquo;s issue first &rarr;
+            </Link>
+          </p>
         </section>
 
         <section className="sec">
           <div className="label">
             <span className="nm-lab">What you get</span>
             <span className="hint">
-              Four small promises. Held to them every week.
+              Four small promises. Kept every week.
             </span>
           </div>
           <div>
@@ -45,11 +67,11 @@ export default function LandingPage() {
                 shift in AI this week that&rsquo;s worth your attention.
               </li>
               <li>
-                <b style={{ fontWeight: 600 }}>What to actually build.</b> A
+                <b style={{ fontWeight: 600 }}>What to actually do.</b> A
                 concrete next move, sized for a normal week.
               </li>
               <li>
-                <b style={{ fontWeight: 600 }}>Builder Notes you can copy.</b> A
+                <b style={{ fontWeight: 600 }}>Notes from inside production.</b> A
                 paper, a code snippet, a metric &mdash; the part most readers
                 pay for, free here.
               </li>

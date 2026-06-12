@@ -41,21 +41,27 @@ export default function LensTrackPicker({ primaryLabel, labels, children }: Prop
 
   return (
     <div ref={containerRef}>
-      <div className="track-bar">
-        <span
+      <div className="track-bar sticky-mobile">
+        <button
+          type="button"
           className={`track-chip${selected === null ? ' on kesari' : ''}`}
           onClick={() => setSelected(null)}
+          aria-pressed={selected === null}
+          style={{ font: 'inherit' }}
         >
           Show all
-        </span>
+        </button>
         {labels.map((name, i) => (
-          <span
+          <button
             key={i}
+            type="button"
             className={`track-chip${selected === i ? ' on' : ''}`}
             onClick={() => setSelected(i)}
+            aria-pressed={selected === i}
+            style={{ font: 'inherit' }}
           >
             {name}
-          </span>
+          </button>
         ))}
       </div>
       {children}

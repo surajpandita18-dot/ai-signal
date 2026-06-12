@@ -20,8 +20,9 @@ import '../styles/issue.css'
      Archivo                400/500/600/700
      Archivo Narrow         500/600
      Spline Sans Mono       400/500/600
-     Archivo Expanded       600/700/800   <- NOT exposed by next/font/google.
-                                            We fall back to a stylesheet <link>.
+     Archivo Expanded       600/700/800   <- NOT a real Google Fonts family
+                                            (CSS endpoint returns 400). We alias
+                                            it to Archivo + font-stretch:125%.
    Every family gets a CSS variable consumed by issue.css.
 ---------------------------------------------------------------------------- */
 
@@ -83,20 +84,20 @@ export default function RootLayout({
   return (
     <html lang="en" className={fontClasses}>
       <head>
-        {/* Archivo Expanded is not exposed by next/font/google, so we load
-            it via the Google Fonts CSS endpoint. The family name 'Archivo
-            Expanded' inside issue.css resolves to this stylesheet. */}
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
-        <link
-          rel="preconnect"
-          href="https://fonts.gstatic.com"
-          crossOrigin="anonymous"
-        />
-        <link
-          href="https://fonts.googleapis.com/css2?family=Archivo+Expanded:wght@600;700;800&display=swap"
-          rel="stylesheet"
-        />
-        <style>{`:root{--font-expanded:'Archivo Expanded',system-ui,sans-serif}`}</style>
+        {/* 'Archivo Expanded' is not a real Google Fonts family — the CSS
+            endpoint returns 400. We alias the literal family name used in
+            issue.css to the already-loaded Archivo variable, and apply
+            font-stretch:125% on every selector that asked for the expanded
+            cut, so the visual "display weight" effect survives without an
+            extra font load. */}
+        <style>{`:root{--font-expanded:var(--font-sans)}
+.issue .spotlight .stat,
+.issue .interview .iv-q .q,
+.issue .hstep .hn,
+.issue .reality h3,
+.issue .signal li i,
+.issue .sig h4,
+.issue .poll .q{font-family:var(--font-sans);font-stretch:125%}`}</style>
       </head>
       <body>{children}</body>
     </html>
