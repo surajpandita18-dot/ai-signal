@@ -2,6 +2,23 @@ import type { BuildNotes as BuildNotesType } from '@/lib/content-model'
 import Fold from '@/components/interactive/Fold'
 import CodeCopy from '@/components/interactive/CodeCopy'
 
+// If the link is missing / '#' / empty, render label as plain text instead of
+// pretending it links somewhere. Voice rule: no placeholder hrefs in prod.
+function maybeLink(
+  href: string | undefined,
+  text: string,
+  style: React.CSSProperties = {},
+) {
+  if (!href || href === '#' || href.trim() === '') {
+    return <span style={style}>{text}</span>
+  }
+  return (
+    <a href={href} target="_blank" rel="noopener noreferrer" style={style}>
+      {text}
+    </a>
+  )
+}
+
 export default function BuildNotes({
   title,
   paper_ref,
@@ -15,6 +32,9 @@ export default function BuildNotes({
   code,
   diagram_svg,
 }: BuildNotesType) {
+  const hasPaper = paper_link && paper_link !== '#'
+  const hasEval = eval_link && eval_link !== '#'
+
   return (
     <div className="buildnotes" id="bn">
       <div className="grid">
@@ -23,10 +43,13 @@ export default function BuildNotes({
         </div>
         <h2>{title}</h2>
         <div className="paper">
-          ▸ unpacked from: {paper_ref} ·{' '}
-          <a href={paper_link} style={{ color: '#C6DCC9' }}>
-            paper + 12-line eval script ↓
-          </a>
+          ▸ unpacked from: {paper_ref}
+          {hasPaper ? (
+            <>
+              {' '}·{' '}
+              {maybeLink(paper_link, 'paper + eval ↓', { color: '#C6DCC9' })}
+            </>
+          ) : null}
         </div>
         <p className="bn-skim" dangerouslySetInnerHTML={{ __html: skim_html }} />
         <Fold
@@ -58,10 +81,13 @@ export default function BuildNotes({
               <pre>{code.body}</pre>
             </div>
           </div>
-          <div className="bn-link">
-            ▸ <a href={paper_link}>read the paper</a> &nbsp;·&nbsp; ▸{' '}
-            <a href={eval_link}>full eval harness</a>
-          </div>
+          {(hasPaper || hasEval) && (
+            <div className="bn-link">
+              {hasPaper ? <>▸ {maybeLink(paper_link, 'read the paper')}</> : null}
+              {hasPaper && hasEval ? '  ·  ' : null}
+              {hasEval ? <>▸ {maybeLink(eval_link, 'full eval harness')}</> : null}
+            </div>
+          )}
         </Fold>
       </div>
     </div>

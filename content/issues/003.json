@@ -83,8 +83,8 @@
   "build_notes": {
     "title": "Your fine-tuned model gets worse after every retraining. Here's why — and the cheaper fix.",
     "paper_ref": "▸ unpacked from: Kotha et al., \"Understanding Catastrophic Forgetting in Sequential Fine-Tuning\" (NeurIPS 2025) + the LoRA-merging follow-ups",
-    "paper_link": "#",
-    "eval_link": "#",
+    "paper_link": "",
+    "eval_link": "",
     "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> every time you fine-tune on this month's data, the model quietly forgets last month's. It's called <em>catastrophic forgetting</em> — and full fine-tuning makes it worse than LoRA-style adapters. Fix: stop full-retraining monthly. Run a small LoRA per data slice and <code>merge</code> at inference. <b style=\"color:#C8794B\">Ship metric:</b> evaluate every new fine-tune on the <em>oldest</em> eval set you have, not just the freshest.",
     "struggle_html": "You ship a fine-tune. It nails this month's queries. Next quarter you fine-tune again on new data — the new stuff works, but a chunk of last quarter's wins quietly stop working. Users notice. You don't, until they complain.",
     "finding_html": "Full fine-tuning rewrites the same weights every cycle, so each pass <em>overwrites</em> the previous one. Bigger learning rates make it sharper. LoRA-style adapters bolt small new weights onto a frozen base — the base never gets corrupted, so old behaviour is preserved <em>by construction</em>.",

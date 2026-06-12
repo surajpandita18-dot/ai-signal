@@ -32,7 +32,16 @@ export default function IndiaSignal({
         ))}
       </div>
       <div className="signal-foot">
-        {foot} <a href={foot_cta_url}>{foot_cta} →</a>
+        {foot}{' '}
+        {foot_cta_url && foot_cta_url !== '#' ? (
+          <a href={foot_cta_url}>{foot_cta} →</a>
+        ) : (
+          // The "Reply and send it" CTA is a mailto in spirit — when no URL is
+          // wired, point to the editor inbox so the prompt has a real exit.
+          <a href="mailto:hello@aibasically.co?subject=India%20Signal%20tip">
+            {foot_cta} →
+          </a>
+        )}
       </div>
     </>
   )

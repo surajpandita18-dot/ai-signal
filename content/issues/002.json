@@ -83,8 +83,8 @@
   "build_notes": {
     "title": "Quantization in plain English — and the one knob that quietly breaks your model.",
     "paper_ref": "▸ unpacked from: Dettmers et al., \"LLM.int8() and 4-bit Inference Revisited\" (2024) + Saxena (IISc) survey on India-deployed quantized models",
-    "paper_link": "#",
-    "eval_link": "#",
+    "paper_link": "",
+    "eval_link": "",
     "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> quantization is <em>thoda chini kam, swaad nahi badla</em> — you store the model's weights in fewer bits (less sugar) and most outputs taste the same. But on a small slice of inputs — usually long, structured, or numerical ones — the flavour collapses. <b style=\"color:#C8794B\">Ship metric:</b> compare full-precision vs quantized answers on your top 200 real queries, not a benchmark. Watch the long-tail.",
     "struggle_html": "You quantize a 7B model to 4-bit. Benchmarks barely move. You ship. A week later, support pings you: the model is silently wrong on long financial PDFs and any prompt with tables. Smaller queries are fine. You can't reproduce it on the eval set.",
     "finding_html": "Quantization compresses weights uniformly, but errors don't distribute uniformly. They concentrate in <em>outlier activations</em> — the few neurons that fire hard on rare but structured inputs (numbers, long contexts, code). On a 4-bit quantized 7B model, Saxena (2024) measured a <b>0.7% drop in average accuracy</b> but a <b>14.3% drop on numerical-reasoning prompts</b>. Average tells you nothing about who breaks.",
