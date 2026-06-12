@@ -62,6 +62,20 @@ export default async function Page({
 
   if (!content) notFound()
 
+  // Decoder JSON fallback: until the issues table gets a `decoder jsonb` column
+  // (single ALTER TABLE; see supabase/migrations/20260612000001_add_decoder.sql),
+  // the DB row won't carry decoder content. Read it from the bundled JSON seed
+  // instead. Once the column is added + populated, the DB row's value wins.
+  if (!content.decoder) {
+    try {
+      const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)
+      const seed = JSON.parse(await readFile(file, 'utf8')) as IssueContent
+      if (seed.decoder) content = { ...content, decoder: seed.decoder }
+    } catch {
+      /* no seed = no decoder; component handles null */
+    }
+  }
+
   return (
     <main className="issue">
       <div className="grid">
