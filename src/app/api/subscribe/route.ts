@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server'
 import { createAdminSupabaseClient } from '@/lib/supabase-admin'
 import type { Lens } from '@/lib/content-model'
+import { sendIssueEmail } from '@/lib/resend'
+import WelcomeEmail from '../../../../emails/WelcomeEmail'
 
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
@@ -48,7 +50,7 @@ export async function POST(req: Request) {
   const { data: inserted, error } = await supabase
     .from('subscribers')
     .insert({ email, role, source })
-    .select('id, referral_code')
+    .select('id, referral_code, unsubscribe_token')
     .single()
 
   if (error) {
@@ -76,6 +78,22 @@ export async function POST(req: Request) {
         referred_id: inserted.id,
       })
     }
+  }
+
+  // Welcome email — best-effort, errors are logged but don't fail subscribe.
+  try {
+    const siteUrl =
+      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
+    await sendIssueEmail({
+      to: [email],
+      subject: 'You’re in. First issue Saturday 08:00 IST.',
+      react: WelcomeEmail({
+        siteUrl,
+        unsubscribeToken: inserted?.unsubscribe_token ?? undefined,
+      }),
+    })
+  } catch (e) {
+    console.error('welcome_email_failed', e)
   }
 
   return NextResponse.json({

@@ -1,0 +1,240 @@
+{
+  "issue_number": 3,
+  "slug": "003",
+  "status": "draft",
+  "published_at": null,
+  "date_display": "27.06.2026",
+  "read_time_min": 7,
+  "streak_caption": "Your Saturday ritual",
+  "hero_eyebrow": "AI, explained like a normal person would",
+  "hero_headline_html": "Claude 4.8 just<br>understood <em>Hinglish<br>without breaking.</em>",
+  "hero_sub_html": "No fanfare. No India launch event. Just the first frontier model that doesn't lose the plot when you switch languages mid-sentence. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
+  "tldr": [
+    { "label": "Big one", "body": "Claude Opus 4.8 quietly clears a reasoning benchmark by 60% — and finally handles Hinglish without dropping context." },
+    { "label": "Build Notes", "body": "Why your fine-tuned model gets worse after every retraining — and the cheaper fix nobody runs." },
+    { "label": "Jobs", "body": "A real number on AI-eval roles in India, plus the senior-IC question doing the rounds this month." },
+    { "label": "Reality", "body": "What an English-trained frontier model still drops the moment you write the way India actually talks." }
+  ],
+  "one_thing": {
+    "head": "Claude 4.8 is the first frontier model that doesn't break on Hinglish",
+    "lede_html": "Everyone clipped the headline number: Claude Opus 4.8 jumped <strong>60% on a new reasoning benchmark</strong>. Big, real, worth a tweet. The quieter result showed up by Wednesday — Indian devs running it on the same Hinglish prompts that broke GPT-4o and Gemini Pro found that <em>4.8 held the thread</em>. Code-switching mid-sentence, English noun + Hindi verb, mixed Devanagari and roman script — the kinds of prompts your engineers actually write to it. It's not Indic-specialised; it just stopped failing in the way every other frontier model fails. Quiet, huge, and almost nobody covered it.",
+    "skip_list": {
+      "title": "Skip List",
+      "body": "Skip this week: hot takes calling 4.8 \"a new era\". Why: it's a real upgrade, not a phase shift — treat it like a tool, not a moment."
+    }
+  },
+  "so_what": {
+    "rotation_note": {
+      "primary": "Secure Pro",
+      "next": "Switcher",
+      "aside": "Everyone gets a turn — no lens is filler."
+    },
+    "lenses": [
+      {
+        "role": "builder",
+        "label": "Builder",
+        "caption": "You ship the thing",
+        "body_html": "If your product takes Indian-user input, run your top 20 production prompts through 4.8 this weekend. The wins will be where you've been hacking — translation pre-passes, language detection, transliteration. Most of that scaffolding is now <em>net cost</em>, not net help.",
+        "action": "→ Do: A/B 4.8 vs your current model on 50 real Hinglish queries. Cut the pre-translation step where 4.8 wins on its own.",
+        "is_primary": false
+      },
+      {
+        "role": "product_biz",
+        "label": "Product / Biz",
+        "caption": "You decide the roadmap",
+        "body_html": "The Indic-language gap was a strategic lever for some Indian products — \"we work for the next-billion users, they don't\". 4.8 narrows that gap, doesn't close it. Update your competitive frame: <b>Indic-fluency is now a tier, not a moat</b>. The defensible play moves one layer up — proprietary Indian data, distribution, trust.",
+        "action": "→ This quarter: rewrite your one-pager. Replace \"Indic-language advantage\" with the specific data, partner, or workflow you own that 4.8 can't touch.",
+        "is_primary": false
+      },
+      {
+        "role": "secure_pro",
+        "label": "Secure Pro",
+        "caption": "Job's safe, day's changing",
+        "body_html": "You're senior. Your team will read the 4.8 numbers and want to rip up the roadmap. Don't. The right move this week is a tight <b>\"not this quarter\" list</b> — the three things 4.8 makes <em>tempting</em> but not yet wise. Mine for your team: <i>(1) Ripping out the translation/transliteration layer — keep it for one more quarter; 4.8 still degrades on long mixed-script prompts. (2) Re-running the Indic-language eval suite from scratch — your existing one is fine, add 4.8 as a column. (3) Switching default model for production traffic — pilot on internal tools first, watch latency and cost per call before you flip customers.</i> That one-pager is your contribution this week. It's worth more than any prototype.",
+        "action": "→ Senior: write the 3-item \"not this quarter\" list, with one sentence each on what you'd say in the CTO review. Send it by Monday.",
+        "is_primary": true
+      },
+      {
+        "role": "switcher",
+        "label": "Switcher",
+        "caption": "Want into AI, minus the fear",
+        "body_html": "If you speak any Indian language, you have a real, undervalued skill right now: spotting where frontier models still break for Indian users. You don't need to code to do this — you need to test.",
+        "action": "→ First rung: run 10 Hinglish prompts (the way you'd actually type to a friend) through Claude 4.8 and one other model. Note where each breaks. That's a portfolio artifact — \"India-eval auditor\" — built in 45 min.",
+        "is_primary": false
+      }
+    ]
+  },
+  "build_notes": {
+    "title": "Your fine-tuned model gets worse after every retraining. Here's why — and the cheaper fix.",
+    "paper_ref": "▸ unpacked from: Kotha et al., \"Understanding Catastrophic Forgetting in Sequential Fine-Tuning\" (NeurIPS 2025) + the LoRA-merging follow-ups",
+    "paper_link": "#",
+    "eval_link": "#",
+    "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> every time you fine-tune on this month's data, the model quietly forgets last month's. It's called <em>catastrophic forgetting</em> — and full fine-tuning makes it worse than LoRA-style adapters. Fix: stop full-retraining monthly. Run a small LoRA per data slice and <code>merge</code> at inference. <b style=\"color:#C8794B\">Ship metric:</b> evaluate every new fine-tune on the <em>oldest</em> eval set you have, not just the freshest.",
+    "struggle_html": "You ship a fine-tune. It nails this month's queries. Next quarter you fine-tune again on new data — the new stuff works, but a chunk of last quarter's wins quietly stop working. Users notice. You don't, until they complain.",
+    "finding_html": "Full fine-tuning rewrites the same weights every cycle, so each pass <em>overwrites</em> the previous one. Bigger learning rates make it sharper. LoRA-style adapters bolt small new weights onto a frozen base — the base never gets corrupted, so old behaviour is preserved <em>by construction</em>.",
+    "fix_html": "Two moves: (1) replace full fine-tuning with <code>LoRA adapters per data slice</code> — one for support tickets, one for sales, one for compliance; (2) <em>merge adapters at inference</em>, not at training, so any single slice can be swapped or rolled back without retraining the others.",
+    "metric_html": "Kotha et al. measured it: on a 4-slice sequential fine-tune, accuracy on the <b>first slice dropped from 84% → 51%</b> with full FT, but held at <b>82%</b> with merged LoRAs. Same compute budget.",
+    "ship_this_week_html": "Pick your <em>oldest</em> eval set — the one from your first fine-tune. Run every new model on it before you ship. If the number drops more than 3 points, you're forgetting, not improving. That's your retention metric.",
+    "code": {
+      "lang": "python",
+      "body": "from peft import PeftModel\n\n# one adapter per data slice, all merged at inference\nbase = load_base(\"claude-opus-4-8\")\nm = PeftModel.from_pretrained(base, \"adapters/support\")\nm.load_adapter(\"adapters/sales\",      adapter_name=\"sales\")\nm.load_adapter(\"adapters/compliance\", adapter_name=\"compliance\")\n\nm.add_weighted_adapter(\n    adapters=[\"support\", \"sales\", \"compliance\"],\n    weights=[0.4, 0.4, 0.2],   # tune per route\n    adapter_name=\"merged\",\n    combination_type=\"linear\",\n)\nm.set_adapter(\"merged\")        # base weights untouched → old slices preserved"
+    },
+    "diagram_svg": "<svg class=\"bn-svg\" viewBox=\"0 0 600 150\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Diagram: full fine-tuning overwrites old weights and forgets slice 1; LoRA adapters stack on a frozen base and remember every slice.\"><defs><style>.bl{font-family:'Spline Sans Mono',monospace;font-size:11px;fill:#DCE7DD}.bo{font-family:'Spline Sans Mono',monospace;font-size:10px;fill:#A9C9B5;letter-spacing:.06em}</style><marker id=\"bah3\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#9C4A2E\"/></marker><marker id=\"bahg3\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#5f7d68\"/></marker></defs><text x=\"80\" y=\"22\" text-anchor=\"middle\" class=\"bo\">FULL FINE-TUNE</text><rect x=\"20\" y=\"34\" width=\"40\" height=\"30\" fill=\"none\" stroke=\"#9C4A2E\" stroke-width=\"1.5\"/><text x=\"40\" y=\"53\" text-anchor=\"middle\" class=\"bl\">S1</text><rect x=\"70\" y=\"34\" width=\"40\" height=\"30\" fill=\"none\" stroke=\"#9C4A2E\" stroke-width=\"1.5\" stroke-dasharray=\"3 2\" opacity=\".5\"/><text x=\"90\" y=\"53\" text-anchor=\"middle\" class=\"bl\" opacity=\".5\">S1?</text><rect x=\"120\" y=\"34\" width=\"40\" height=\"30\" fill=\"#9C4A2E\"/><text x=\"140\" y=\"53\" text-anchor=\"middle\" class=\"bl\" fill=\"#fff\">S2</text><path d=\"M60 49 L68 49\" stroke=\"#9C4A2E\" stroke-width=\"2\" marker-end=\"url(#bah3)\"/><path d=\"M110 49 L118 49\" stroke=\"#9C4A2E\" stroke-width=\"2\" marker-end=\"url(#bah3)\"/><text x=\"90\" y=\"82\" text-anchor=\"middle\" class=\"bl\" fill=\"#C8794B\">S1 accuracy: 84% → 51%</text><line x1=\"220\" y1=\"20\" x2=\"220\" y2=\"130\" stroke=\"#DCD6C8\" stroke-width=\"1\" stroke-dasharray=\"2 3\"/><text x=\"420\" y=\"22\" text-anchor=\"middle\" class=\"bo\">LoRA + MERGE</text><rect x=\"300\" y=\"86\" width=\"240\" height=\"24\" fill=\"none\" stroke=\"#5f7d68\" stroke-width=\"1.5\"/><text x=\"420\" y=\"102\" text-anchor=\"middle\" class=\"bl\">FROZEN BASE</text><rect x=\"300\" y=\"42\" width=\"70\" height=\"30\" fill=\"#5f7d68\" opacity=\".85\"/><text x=\"335\" y=\"61\" text-anchor=\"middle\" class=\"bl\" fill=\"#fff\">S1</text><rect x=\"385\" y=\"42\" width=\"70\" height=\"30\" fill=\"#5f7d68\" opacity=\".85\"/><text x=\"420\" y=\"61\" text-anchor=\"middle\" class=\"bl\" fill=\"#fff\">S2</text><rect x=\"470\" y=\"42\" width=\"70\" height=\"30\" fill=\"#5f7d68\" opacity=\".85\"/><text x=\"505\" y=\"61\" text-anchor=\"middle\" class=\"bl\" fill=\"#fff\">S3</text><path d=\"M335 74 L335 84\" stroke=\"#5f7d68\" stroke-width=\"2\" marker-end=\"url(#bahg3)\"/><path d=\"M420 74 L420 84\" stroke=\"#5f7d68\" stroke-width=\"2\" marker-end=\"url(#bahg3)\"/><path d=\"M505 74 L505 84\" stroke=\"#5f7d68\" stroke-width=\"2\" marker-end=\"url(#bahg3)\"/><text x=\"420\" y=\"130\" text-anchor=\"middle\" class=\"bl\" fill=\"#A9C9B5\">S1 accuracy held: 82%</text></svg>"
+  },
+  "job_signal": {
+    "rows": [
+      {
+        "what_html": "<b>Senior IC roles (Staff / Principal AI) are pulling away from manager tracks</b> in Indian comp bands — the curve has steepened sharply this quarter. The market is paying for depth, not headcount.",
+        "trend": "up"
+      },
+      {
+        "what_html": "<b>\"Indic-language evals\" is the new line item in JDs</b> — <i>basically, you build test sets that prove a model works for Hindi/Tamil/Hinglish users, not just English. </i> Almost nobody has done this in production. If you have, name it.",
+        "trend": "hot"
+      }
+    ],
+    "spotlight": {
+      "header": "This week's hard number",
+      "stat": "2,400+",
+      "stat_sub": "open AI-evaluation roles across Indian product companies and GCCs this quarter — up ~3× from Q1",
+      "source": "Source: NASSCOM AI Talent Tracker, June 2026",
+      "sodo_html": "↳ So do this: search LinkedIn for <code>\"AI evaluation\" OR \"model evaluation\" OR \"LLM evals\" + (Bengaluru OR Hyderabad OR Pune)</code> and read 5 JDs end-to-end. Start with the careers pages of <b>Razorpay, Sarvam AI, and Flipkart</b> — all three are hiring evaluation engineers right now, and the JDs read like a syllabus."
+    },
+    "upskill": {
+      "title": "If you're unemployed or scared right now — start here (a real rung, not a slogan)",
+      "intro_html": "You don't need a ₹50k course. Here's <b>this week's single rung</b> — one concrete project, free, demo-able in an interview:",
+      "rungs": [
+        {
+          "label": "The project",
+          "body_html": "Pick one AI assistant you already use. Write <b>15 prompts in pure Hinglish</b> — the way you actually text a friend. Mix Devanagari and roman script. Include 5 prompts that need code-switching mid-sentence. Run them through Claude 4.8 and one other model. Note every place each one breaks."
+        },
+        {
+          "label": "Free resource",
+          "body_html": "Read <b>AI4Bharat's IndicBench</b> overview (free, on their site) + Anthropic's <b>\"evaluating model outputs\" cookbook</b>. 75 minutes, total. You'll know more about Indic-language evaluation than 95% of resumes claiming \"AI experience\"."
+        },
+        {
+          "label": "Done looks like",
+          "body_html": "A one-page doc: 15 prompts, side-by-side outputs, and one line per failure on <i>what category of error</i> it is (translation, transliteration, context loss, code-switch). That doc <b>is</b> your portfolio. When they ask \"have you worked on Indic AI?\" — you open it."
+        }
+      ],
+      "note_html": "Next week's rung builds on this one. We climb together, one issue at a time. <b>Proof beats certificates.</b>"
+    },
+    "interview": {
+      "q_label": "Question of the week · reusable framework, not a one-off",
+      "q": "\"A new model is 60% better on a benchmark. Do you switch?\"",
+      "steps": [
+        {
+          "n": 1,
+          "body_html": "Start with <b>which benchmark, and does it match your users</b>. A reasoning benchmark says little about your retrieval-heavy support bot. Match the metric to the job."
+        },
+        {
+          "n": 2,
+          "body_html": "Run it on <b>your own eval set</b>, including your <em>oldest</em> failure cases. New model, old test. Don't trust the headline number."
+        },
+        {
+          "n": 3,
+          "body_html": "Check <b>cost, latency, and rate limits</b> at your real traffic. The model that wins your eval can still lose at 2 a.m. with a queue."
+        },
+        {
+          "n": 4,
+          "body_html": "Pilot on <b>internal tools first</b>, then a low-stakes user segment, then default. Never flip all production traffic in one step."
+        }
+      ],
+      "tip_html": "<b>The framework (works for any \"should we adopt the new X\" question):</b> Right metric for your job → your own eval set, including old failures → cost/latency at real traffic → staged rollout. The trap: candidates lead with the benchmark. Winners lead with <em>their</em> users. <em>Save this — it answers a whole category of platform-decision questions.</em>"
+    }
+  },
+  "under_the_hood": {
+    "question_html": "Everyone keeps saying models have a <strong>\"context window.\"</strong> It sounds like a memory size — but a model with a huge window can still miss the thing you wrote three lines ago. So what is a context window <em>actually</em>?",
+    "diagram_svg": "<svg class=\"hood-svg\" viewBox=\"0 0 600 230\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Diagram: a context window is like one whiteboard the model can see all at once. It can read every word, but only weighs a few of them strongly — and once erased between sessions, it remembers nothing.\"><defs><style>.lbl{font-family:'Archivo Narrow',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;fill:#191712}.sub{font-family:'Archivo',sans-serif;font-size:11px;fill:#5f5c53}.ar{stroke:#9C4A2E;stroke-width:2;fill:none;marker-end:url(#ah3)}</style><marker id=\"ah3\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#9C4A2E\"/></marker></defs><rect x=\"20\" y=\"30\" width=\"340\" height=\"140\" fill=\"#ECE7DA\" stroke=\"#191712\" stroke-width=\"1.5\"/><text x=\"190\" y=\"52\" text-anchor=\"middle\" class=\"lbl\">The whiteboard</text><text x=\"190\" y=\"68\" text-anchor=\"middle\" class=\"sub\">everything the model can see right now</text><rect x=\"36\" y=\"82\" width=\"58\" height=\"18\" fill=\"#9C4A2E\" opacity=\".25\"/><rect x=\"98\" y=\"82\" width=\"86\" height=\"18\" fill=\"#9C4A2E\" opacity=\".25\"/><rect x=\"188\" y=\"82\" width=\"54\" height=\"18\" fill=\"#9C4A2E\" opacity=\"1\"/><rect x=\"246\" y=\"82\" width=\"74\" height=\"18\" fill=\"#9C4A2E\" opacity=\".25\"/><rect x=\"36\" y=\"108\" width=\"100\" height=\"18\" fill=\"#9C4A2E\" opacity=\".4\"/><rect x=\"140\" y=\"108\" width=\"48\" height=\"18\" fill=\"#9C4A2E\" opacity=\"1\"/><rect x=\"192\" y=\"108\" width=\"108\" height=\"18\" fill=\"#9C4A2E\" opacity=\".25\"/><rect x=\"36\" y=\"134\" width=\"80\" height=\"18\" fill=\"#9C4A2E\" opacity=\".25\"/><rect x=\"120\" y=\"134\" width=\"68\" height=\"18\" fill=\"#9C4A2E\" opacity=\".25\"/><rect x=\"192\" y=\"134\" width=\"96\" height=\"18\" fill=\"#9C4A2E\" opacity=\"1\"/><text x=\"190\" y=\"164\" text-anchor=\"middle\" class=\"sub\">all visible · few highlighted · the rest fades</text><rect x=\"400\" y=\"56\" width=\"180\" height=\"118\" fill=\"#191712\"/><text x=\"490\" y=\"86\" text-anchor=\"middle\" class=\"lbl\" fill=\"#fff\">Attention</text><text x=\"490\" y=\"106\" text-anchor=\"middle\" class=\"sub\" fill=\"#A9A9A9\">picks which words</text><text x=\"490\" y=\"122\" text-anchor=\"middle\" class=\"sub\" fill=\"#A9A9A9\">to weigh most</text><text x=\"490\" y=\"148\" text-anchor=\"middle\" class=\"sub\" fill=\"#9C4A2E\">size ≠ focus</text><path class=\"ar\" d=\"M360 100 L396 100\"/><text x=\"300\" y=\"206\" text-anchor=\"middle\" class=\"sub\">Bigger whiteboard = more it can <tspan font-style=\"italic\">see</tspan>. It still chooses what to <tspan font-style=\"italic\">notice</tspan>. Wipe the board between chats — gone.</text></svg>",
+    "steps": [
+      {
+        "n": "01",
+        "title": "So what's actually happening?",
+        "body_html": "The context window is the <strong>whiteboard the model can see at any one moment</strong>. Your prompt, the chat history, the documents you pasted — all sit on it. When people say \"200k context\", they mean a bigger whiteboard, not better eyes. <b>Attention</b> — the mechanism inside the model — then decides which words on that whiteboard to weigh strongly. Size buys room. Attention does the work."
+      },
+      {
+        "n": "02",
+        "title": "Why bigger isn't always better",
+        "body_html": "A huge context window with lazy attention still misses the line you care about. This is the famous <em>\"lost in the middle\"</em> problem: stuff at the start and end of a long prompt gets noticed; stuff in the middle quietly doesn't. Stuffing more into the window can <strong>dilute</strong> the signal, not amplify it."
+      },
+      {
+        "n": "03",
+        "title": "What this means for you",
+        "body_html": "When the AI misses something obvious from your long prompt, the answer is rarely \"give it more.\" Put the thing that matters at the <em>top or bottom</em>, restate it once, and cut the noise in the middle. <strong>Position is a feature you control. Window size isn't.</strong>"
+      }
+    ],
+    "source": {
+      "text": "Decoded from: Liu et al., \"Lost in the Middle: How Language Models Use Long Contexts\" (TACL 2024)",
+      "link": "#"
+    }
+  },
+  "the_rep": {
+    "type": "build",
+    "lite_html": "Build the smallest useful thing this weekend: paste your last 5 customer-support emails into Claude 4.8 and ask it to <b>draft a one-line reply for each, in the same tone as your previous replies</b>. Read the drafts. Keep the two that need almost no editing.",
+    "full_html": "Take it one step further: write a 12-line script (or use Claude's project feature) that does this on a schedule — every morning, it reads yesterday's incoming emails and drafts replies into a doc you skim with coffee. <b>You're not building a product. You're building one personal workflow that saves you 30 minutes a day.</b> That's the whole Rep.",
+    "done": "Done looks like: a working draft pipeline you used for one full day, and an honest count of how many drafts were good enough to send with one edit. Reply with the count — featured results are shared with permission.",
+    "reader_win": {
+      "quote": "Built the draft pipeline on Saturday. Monday I went through 27 emails in 18 minutes. 14 drafts I sent with one edit. Felt like cheating, in a good way.",
+      "by": "Karthik — Bengaluru · last week's Rep",
+      "link": "#"
+    }
+  },
+  "toolbox": {
+    "tool_html": "<b>The \"two-language gut-check\" trick.</b> When you write something important in English — a proposal, a customer message, a policy line — paste it into your AI and ask: <em>\"Translate this into simple Hindi the way someone would actually speak it, then translate that Hindi back into English.\"</em> The round-trip strips out jargon you didn't notice. The version that survives is the version your reader actually understands.",
+    "try_html": "Try it on the next important message you send →"
+  },
+  "reality_check": {
+    "harm_tag": "bias",
+    "h3": "The benchmark says \"60% better\". For Indian-language users, the picture is messier.",
+    "body_html": "Frontier models keep posting big gains on reasoning benchmarks — and those benchmarks are still <em>overwhelmingly English-language, Western-context</em>. The 2025 IndicBench-2 evaluation across 11 Indian languages found that even top-tier models lost <b>22–38% of their English accuracy</b> on the same reasoning task translated into Hindi, Tamil, or Bengali. The drop was sharpest for low-resource languages — and worst for code-switched (Hinglish-style) input, the way most Indian users actually type. \"State-of-the-art\" usually means state-of-the-art for English speakers writing English prompts.",
+    "honest_html": "<b>The honest framing:</b> Claude 4.8's Hinglish improvement is real — and still partial. It's not a reason to distrust the model; it's a reason to <em>evaluate it for your users</em>, not someone else's benchmark. The fix isn't doom, it's discipline: build a 100-prompt eval in the languages your users actually speak, and re-run it every time a model upgrades. The bias doesn't go away. It just gets harder to see.",
+    "source": "Source: AI4Bharat & IIIT-Hyderabad, \"IndicBench-2: Cross-Lingual Reasoning Evaluation\" (2025); language-coverage figures cross-checked against Anthropic's June 2026 model card."
+  },
+  "india_signal": {
+    "cards": [
+      {
+        "cat": "Edtech · Pune",
+        "status": "shipped",
+        "status_hot": false,
+        "h4": "BYJU'S successor Eruditus quietly running AI tutors in 700 Maharashtra schools",
+        "body": "No flashy launch. A regional pilot with the state board — AI tutors that switch between English and Marathi mid-explanation, based on the student's last reply. One of the largest Marathi-language AI deployments anywhere.",
+        "why_you": "↳ Why you care: this is what \"AI for the next billion\" actually looks like — pedagogy plus code-switching, in classrooms, not on Twitter.",
+        "source_url": "https://www.eruditus.com/"
+      },
+      {
+        "cat": "Energy · Tamil Nadu",
+        "status": "live",
+        "status_hot": true,
+        "h4": "TNEB's solar-grid forecasting AI is now load-balancing 12 GW in real time",
+        "body": "The Tamil Nadu electricity board has put a homegrown forecasting model into production across its solar belt. Built with IIT-Madras, it's cutting curtailment by an estimated 9% — translating to roughly ₹400 crore a year in avoided losses, and one of the largest energy-AI deployments in Asia.",
+        "why_you": "↳ Why you care: India's energy transition is going to be won or lost on forecasting, not panels. This is the boring infrastructure layer where the real work is.",
+        "source_url": "https://www.tneb.tnebnet.org/"
+      },
+      {
+        "cat": "Defence-tech · Hyderabad",
+        "status": "funded",
+        "status_hot": false,
+        "h4": "Hyderabad-based Sagar Defence Engineering raises ₹220 cr for autonomous maritime AI",
+        "body": "Quiet Series B. The company is building autonomous surface and underwater vessels with on-board vision models tuned for Indian Ocean conditions — including the cluttered, low-visibility coastal waters where Western models trained on clean-sea datasets fail.",
+        "why_you": "↳ Why you care: India's defence-AI sector just crossed from policy decks to deployed capability. The hiring will follow within 12 months.",
+        "source_url": "https://www.sagardefence.com/"
+      }
+    ],
+    "foot": "Spotted something India-only worth a Signal?",
+    "foot_cta": "Reply and send it →",
+    "foot_cta_url": "#"
+  },
+  "sponsor": null,
+  "closer": {
+    "format": "provocation",
+    "format_label": "This week: the provocation",
+    "body_html": "We keep calling these models \"frontier\" when they cross a benchmark written in someone else's language. <span class=\"punch\">A model isn't frontier for India until an autorickshaw driver in Indore can argue with it in his own Hindi — and feel understood. Until then, what we're measuring is how well American AI passes American exams.</span>"
+  },
+  "poll": {
+    "question": "Before you go — one tap:",
+    "options": ["This week I'm: building", "…steering / deciding", "…holding steady & learning", "…planning a switch"]
+  },
+  "foot": {
+    "reply_prompt": "Reply & tell me — did you do the Rep?",
+    "next_issue": "Next issue: Saturday, 8:00"
+  }
+}

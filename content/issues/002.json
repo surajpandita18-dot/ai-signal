@@ -1,0 +1,240 @@
+{
+  "issue_number": 2,
+  "slug": "002",
+  "status": "draft",
+  "published_at": null,
+  "date_display": "20.06.2026",
+  "read_time_min": 7,
+  "streak_caption": "Your Saturday ritual",
+  "hero_eyebrow": "AI, explained like a normal person would",
+  "hero_headline_html": "NVIDIA's ₹2000cr<br>Bengaluru bet has a<br><em>buried clause.</em>",
+  "hero_sub_html": "Sovereignty headline, vendor-lock-in subtext. Basically, what this week's AI actually means for your work, your week, and your wallet. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
+  "tldr": [
+    { "label": "Big one", "body": "NVIDIA's Bengaluru R&D centre is real — and the clause underneath it changes who owns India's AI stack." },
+    { "label": "Build Notes", "body": "Quantization in plain English: thoda chini kam, swaad nahi badla — with the one knob that breaks it." },
+    { "label": "Jobs", "body": "A real Indian hiring number for inference engineers — plus the interview question that's separating the field." },
+    { "label": "Reality", "body": "The honest labor question: which Indian dev jobs are quietly being re-priced, and which are not." }
+  ],
+  "one_thing": {
+    "head": "NVIDIA's Bengaluru bet — and the clause nobody's reading",
+    "lede_html": "Every front page led with <strong>\"NVIDIA confirms ₹2000-crore Bengaluru R&D centre\"</strong> this week. Read like sovereignty. Felt like a win. But four paragraphs into the MoU summary is the actual story: India-built foundation models that want preferred access to the new compute will, <em>by default</em>, target NVIDIA's CUDA stack and reference designs. It's not a ban on alternatives. It's softer — and stickier. The headline says <strong>\"India's AI capacity\"</strong>; the fine print says <strong>\"on NVIDIA's rails.\"</strong> If you're building, this shapes your next chip decision. If you're not, remember the pattern: the lock-in is never in the press release.",
+    "skip_list": {
+      "title": "Skip List",
+      "body": "Skip this week: \"India's NVIDIA moment\" hot-takes. Why: most haven't read past paragraph two of the MoU."
+    }
+  },
+  "so_what": {
+    "rotation_note": {
+      "primary": "Product / Biz",
+      "next": "Builder",
+      "aside": "Everyone gets a turn — no lens is filler."
+    },
+    "lenses": [
+      {
+        "role": "builder",
+        "label": "Builder",
+        "caption": "You ship the thing",
+        "body_html": "CUDA is the path of least resistance again. That's fine — but the cost of a future port doubles every quarter you ignore it. Spend two hours this weekend writing your inference layer behind a <code>backend</code> interface, even if only the CUDA implementation is wired up. You're not switching today; you're keeping the door unlocked.",
+        "action": "→ Do: refactor inference calls behind one interface this sprint. One file, one import. Future-you will thank you.",
+        "is_primary": false
+      },
+      {
+        "role": "product_biz",
+        "label": "Product / Biz",
+        "caption": "You decide the roadmap",
+        "body_html": "Your compute bill just became a strategic line, not an ops one. The Bengaluru announcement makes NVIDIA pricing the default assumption in every board deck for the next 18 months — which means the moment to negotiate, or to genuinely cost out an AMD/Indian-silicon backup path, is <em>now</em>, before the lock-in is structural. The one-line addition to your annual plan: a <b>\"compute concentration\" line item</b> — what % of inference cost sits on a single vendor, and what the switching cost looks like at 30/60/90 days. Five numbers. One slide. The board will ask within two quarters; you want to answer first.",
+        "action": "→ Paste this into your Q3 plan: <code>Compute Concentration: {vendor_share, switching_cost_30d, switching_cost_90d, alt_qualified, contract_renewal}</code>. That's the artifact. Build it before procurement asks.",
+        "is_primary": true
+      },
+      {
+        "role": "secure_pro",
+        "label": "Secure Pro",
+        "caption": "Job's safe, day's changing",
+        "body_html": "The interesting move here isn't technical — it's procurement. If you're mid-career on the infra or ML side, the habit worth starting is a <b>\"vendor risk one-pager\" per major dependency</b>: who owns it, what the exit path looks like, what the realistic timeline is. If you're senior, the harder question is the <b>\"single-vendor tolerance\" line</b> your org will defend in a regulator or audit conversation — and whether the answer is the same for inference as it is for training. Most orgs haven't separated those two yet.",
+        "action": "→ Mid-career: write one vendor-risk one-pager this week. Senior: define your team's single-vendor tolerance for inference vs training before Monday.",
+        "is_primary": false
+      },
+      {
+        "role": "switcher",
+        "label": "Switcher",
+        "caption": "Want into AI, minus the fear",
+        "body_html": "You don't need to learn CUDA. You need to understand <b>what the vendor lock-in actually means in plain English</b> — and almost nobody in product meetings can explain it cleanly. That's a real opening, no code required.",
+        "action": "→ First rung: read one MoU summary + write 3 bullets on \"what's the actual lock-in here\". 20 minutes. That's a portfolio artifact.",
+        "is_primary": false
+      }
+    ]
+  },
+  "build_notes": {
+    "title": "Quantization in plain English — and the one knob that quietly breaks your model.",
+    "paper_ref": "▸ unpacked from: Dettmers et al., \"LLM.int8() and 4-bit Inference Revisited\" (2024) + Saxena (IISc) survey on India-deployed quantized models",
+    "paper_link": "#",
+    "eval_link": "#",
+    "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> quantization is <em>thoda chini kam, swaad nahi badla</em> — you store the model's weights in fewer bits (less sugar) and most outputs taste the same. But on a small slice of inputs — usually long, structured, or numerical ones — the flavour collapses. <b style=\"color:#C8794B\">Ship metric:</b> compare full-precision vs quantized answers on your top 200 real queries, not a benchmark. Watch the long-tail.",
+    "struggle_html": "You quantize a 7B model to 4-bit. Benchmarks barely move. You ship. A week later, support pings you: the model is silently wrong on long financial PDFs and any prompt with tables. Smaller queries are fine. You can't reproduce it on the eval set.",
+    "finding_html": "Quantization compresses weights uniformly, but errors don't distribute uniformly. They concentrate in <em>outlier activations</em> — the few neurons that fire hard on rare but structured inputs (numbers, long contexts, code). On a 4-bit quantized 7B model, Saxena (2024) measured a <b>0.7% drop in average accuracy</b> but a <b>14.3% drop on numerical-reasoning prompts</b>. Average tells you nothing about who breaks.",
+    "fix_html": "Two moves: (1) use <code>mixed-precision quantization</code> — keep the outlier-prone layers in 8-bit and quantize the rest to 4-bit; the memory saving barely changes; (2) build a tiny <b>\"outlier eval set\"</b> of 50 real production prompts that look numerical, tabular, or long-context. Run it on every quantization config before ship. The benchmark won't catch this. Your 50 prompts will.",
+    "metric_html": "On the same Saxena (2024) setup: switching from uniform 4-bit to mixed 4/8-bit recovered <b>11.8 of the 14.3 percentage points</b> lost on numerical reasoning. Memory cost went up 6%. Net win.",
+    "ship_this_week_html": "Pick your 50 ugliest real prompts — the ones with tables, numbers, long context. Run them against full-precision and quantized. Log the disagreement rate. <em>That</em> is whether your quantization is safe to ship — not the leaderboard score.",
+    "code": {
+      "lang": "python",
+      "body": "# 50 real prompts > one benchmark. Always.\ndef quantization_safe(model_fp, model_q, prompts):\n    # prompts: list[str] of 50 real production queries\n    disagreements = 0\n    for p in prompts:\n        a_fp = model_fp.generate(p)\n        a_q  = model_q.generate(p)\n        if not semantically_equal(a_fp, a_q):\n            disagreements += 1\n    rate = disagreements / len(prompts)\n    # ship-gate: anything over 8% on YOUR prompts is a no\n    return rate, rate < 0.08"
+    },
+    "diagram_svg": "<svg class=\"bn-svg\" viewBox=\"0 0 600 150\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Diagram: full-precision weights become low-bit weights; uniform quantization breaks on outlier activations, mixed precision saves them.\"><defs><style>.bl{font-family:'Spline Sans Mono',monospace;font-size:11px;fill:#DCE7DD}.bo{font-family:'Spline Sans Mono',monospace;font-size:10px;fill:#A9C9B5;letter-spacing:.06em}</style><marker id=\"qah\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#9C4A2E\"/></marker><marker id=\"qahg\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#5f7d68\"/></marker></defs><rect x=\"10\" y=\"22\" width=\"140\" height=\"40\" fill=\"none\" stroke=\"#5f7d68\" stroke-width=\"1.5\"/><text x=\"80\" y=\"40\" text-anchor=\"middle\" class=\"bo\">FP16 WEIGHTS</text><text x=\"80\" y=\"55\" text-anchor=\"middle\" class=\"bl\">full sugar</text><rect x=\"10\" y=\"92\" width=\"140\" height=\"40\" fill=\"none\" stroke=\"#5f7d68\" stroke-width=\"1.5\" stroke-dasharray=\"4 3\"/><text x=\"80\" y=\"110\" text-anchor=\"middle\" class=\"bo\">4-BIT WEIGHTS</text><text x=\"80\" y=\"125\" text-anchor=\"middle\" class=\"bl\">thoda chini kam</text><text x=\"300\" y=\"42\" text-anchor=\"middle\" font-family=\"'Archivo Expanded'\" font-weight=\"700\" font-size=\"14\" fill=\"#9C4A2E\">AVG: SAFE</text><text x=\"300\" y=\"60\" text-anchor=\"middle\" class=\"bl\">−0.7% accuracy</text><text x=\"300\" y=\"96\" text-anchor=\"middle\" font-family=\"'Archivo Expanded'\" font-weight=\"700\" font-size=\"14\" fill=\"#9C4A2E\">TAIL: BROKEN</text><text x=\"300\" y=\"114\" text-anchor=\"middle\" class=\"bl\">−14.3% on numbers</text><text x=\"300\" y=\"128\" text-anchor=\"middle\" class=\"bl\">+ tables, long ctx</text><rect x=\"440\" y=\"56\" width=\"150\" height=\"42\" fill=\"#9C4A2E\"/><text x=\"515\" y=\"74\" text-anchor=\"middle\" font-family=\"'Spline Sans Mono'\" font-size=\"10\" letter-spacing=\".06em\" fill=\"#fff\">MIXED 4/8-BIT</text><text x=\"515\" y=\"90\" text-anchor=\"middle\" class=\"bl\" fill=\"#fff\">recovers 11.8 pts</text><path d=\"M150 42 L240 50\" stroke=\"#5f7d68\" stroke-width=\"2\" fill=\"none\" marker-end=\"url(#qahg)\"/><path d=\"M150 112 L240 108\" stroke=\"#5f7d68\" stroke-width=\"2\" fill=\"none\" marker-end=\"url(#qahg)\"/><path d=\"M360 77 L436 77\" stroke=\"#9C4A2E\" stroke-width=\"2.5\" fill=\"none\" marker-end=\"url(#qah)\"/></svg>"
+  },
+  "job_signal": {
+    "rows": [
+      {
+        "what_html": "<b>Inference engineers are the new ML engineers</b> — and pay 22% more than generic ML roles in Indian metros right now. The skill is squeezing models onto cheaper hardware, not training new ones.",
+        "trend": "up"
+      },
+      {
+        "what_html": "<b>\"Model evaluation under constraints\" is the JD phrase to watch</b> — <i>this just means proving the model still works after you make it smaller, cheaper, or faster.</i> Tied directly to the quantization story above.",
+        "trend": "hot"
+      }
+    ],
+    "spotlight": {
+      "header": "This week's hard number",
+      "stat": "44,000+",
+      "stat_sub": "open AI-adjacent roles across Indian GCCs this quarter — with inference/optimization roles up 31% QoQ",
+      "source": "Source: NASSCOM GCC hiring tracker, Q2 2026 report",
+      "sodo_html": "↳ So do this: search LinkedIn for <code>\"inference\" OR \"quantization\" + \"engineer\" + India</code> and read 5 JDs. Start with the careers pages of <b>NVIDIA Bengaluru, Qualcomm India, and Fractal Analytics</b> — all hiring inference-side AI engineers right now."
+    },
+    "upskill": {
+      "title": "If you're unemployed or scared right now — start here (a real rung, not a slogan)",
+      "intro_html": "You don't need a ₹50k course. Here's <b>this week's single rung</b> — one concrete project, free, demo-able in an interview:",
+      "rungs": [
+        {
+          "label": "The project",
+          "body_html": "Pick any open-source 7B model on Hugging Face. Run it at full precision, then at 4-bit quantization (the <code>bitsandbytes</code> library does it in 3 lines). Write <b>20 test prompts</b> — 10 simple, 10 with tables/numbers/long context. Run both versions. Note exactly where the small one breaks."
+        },
+        {
+          "label": "Free resource",
+          "body_html": "Follow <b>Hugging Face's free \"Quantization\" guide</b> + the <b>bitsandbytes README</b> (both Google-able, zero cost, runs on free Colab). 2 hours, total. No GPU bill."
+        },
+        {
+          "label": "Done looks like",
+          "body_html": "A one-page doc: 20 prompts, side-by-side outputs, and one line on <i>which type of prompt</i> broke. That doc <b>is</b> your interview portfolio for any inference role. When they ask \"have you shipped quantized models?\" — you open it."
+        }
+      ],
+      "note_html": "Last week's rung was evals. This week is quantization. Both stack into the same portfolio. <b>Proof beats certificates.</b>"
+    },
+    "interview": {
+      "q_label": "Question of the week · reusable framework, not a one-off",
+      "q": "\"How would you decide if a smaller, cheaper model is good enough to ship?\"",
+      "steps": [
+        {
+          "n": 1,
+          "body_html": "Start with the <b>user outcome you'd protect</b>, not model size. \"Good enough\" is defined by what users will actually hit, not average benchmarks."
+        },
+        {
+          "n": 2,
+          "body_html": "Build a <b>real-traffic eval set</b> — 100-200 actual production prompts, weighted by frequency and by stakes (a wrong number costs more than a wrong word)."
+        },
+        {
+          "n": 3,
+          "body_html": "Define the <b>disagreement budget</b> — e.g. \"the smaller model can disagree with the larger one on ≤ 5% of low-stakes prompts and 0% of high-stakes ones.\" Numbers, not vibes."
+        },
+        {
+          "n": 4,
+          "body_html": "Plan the <b>rollback</b> before ship: \"if disagreement rate on the live shadow exceeds X for 24h, auto-fall-back to the bigger model.\" Logged, alerted, automatic."
+        }
+      ],
+      "tip_html": "<b>The framework (works for any \"is X good enough\" question):</b> User outcome → real-traffic eval → disagreement budget by stakes → rollback plan. The trap: candidates lead with \"benchmark scores are similar\". Winners lead with \"depends what breaks for the user, and how we'd know.\" Structure &gt; benchmarks. <em>Save this — it answers a whole category of cost-vs-quality questions.</em>"
+    }
+  },
+  "under_the_hood": {
+    "question_html": "Everyone says modern AI is trained with <strong>\"RLHF\"</strong>. It sounds like a secret recipe. But once you see what's actually happening, it's the most familiar thing in the world.",
+    "diagram_svg": "<svg class=\"hood-svg\" viewBox=\"0 0 600 230\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Diagram: model writes two answers, human picks better, reward model learns the parent's taste, model tries again.\"><defs><style>.lbl{font-family:'Archivo Narrow',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;fill:#191712}.sub{font-family:'Archivo',sans-serif;font-size:11px;fill:#5f5c53}.ar{stroke:#9C4A2E;stroke-width:2;fill:none;marker-end:url(#rh)}</style><marker id=\"rh\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#9C4A2E\"/></marker></defs><rect x=\"14\" y=\"78\" width=\"120\" height=\"74\" fill=\"#ECE7DA\" stroke=\"#191712\" stroke-width=\"1.5\"/><text x=\"74\" y=\"104\" text-anchor=\"middle\" class=\"lbl\">The Model</text><text x=\"74\" y=\"122\" text-anchor=\"middle\" class=\"sub\">writes 2 drafts</text><text x=\"74\" y=\"138\" text-anchor=\"middle\" class=\"sub\">of the same answer</text><g transform=\"translate(176,72)\"><rect x=\"0\" y=\"6\" width=\"68\" height=\"30\" rx=\"3\" fill=\"#fff\" stroke=\"#191712\"/><text x=\"34\" y=\"25\" text-anchor=\"middle\" class=\"sub\">draft A</text><rect x=\"0\" y=\"44\" width=\"68\" height=\"30\" rx=\"3\" fill=\"#fff\" stroke=\"#191712\"/><text x=\"34\" y=\"63\" text-anchor=\"middle\" class=\"sub\">draft B</text></g><rect x=\"280\" y=\"60\" width=\"140\" height=\"110\" fill=\"#191712\"/><text x=\"350\" y=\"90\" text-anchor=\"middle\" class=\"lbl\" fill=\"#fff\">The Parent</text><text x=\"350\" y=\"110\" text-anchor=\"middle\" class=\"sub\" fill=\"#A9A9A9\">(human + reward model)</text><text x=\"350\" y=\"130\" text-anchor=\"middle\" class=\"sub\" fill=\"#A9A9A9\">grades the report card</text><text x=\"350\" y=\"152\" text-anchor=\"middle\" class=\"sub\" fill=\"#9C4A2E\">\"B was better\"</text><rect x=\"460\" y=\"86\" width=\"126\" height=\"58\" fill=\"none\" stroke=\"#9C4A2E\" stroke-width=\"1.5\"/><text x=\"523\" y=\"108\" text-anchor=\"middle\" class=\"lbl\">Updated Model</text><text x=\"523\" y=\"128\" text-anchor=\"middle\" class=\"sub\">writes more like B</text><path class=\"ar\" d=\"M134 115 L172 100\"/><path class=\"ar\" d=\"M134 120 L172 120\"/><path class=\"ar\" d=\"M246 96 L278 100\"/><path class=\"ar\" d=\"M246 124 L278 130\"/><path class=\"ar\" d=\"M422 115 L458 115\"/><path class=\"ar\" d=\"M523 144 C523 196, 74 196, 74 156\" stroke-dasharray=\"4 4\"/><text x=\"300\" y=\"214\" text-anchor=\"middle\" class=\"sub\">Repeat thousands of times. The model learns the grader's taste — for better, and sometimes for worse.</text></svg>",
+    "steps": [
+      {
+        "n": "01",
+        "title": "So what's actually happening?",
+        "body_html": "<b>RLHF</b> = <em>Reinforcement Learning from Human Feedback</em>, which is a heavy name for a simple thing: <strong>a parent reviewing report cards.</strong> The model writes two versions of an answer. A human picks the one they like better. Do that thousands of times, and the model learns to write more answers like the ones that get picked. That's the whole trick."
+      },
+      {
+        "n": "02",
+        "title": "Why it's not making the model smarter",
+        "body_html": "RLHF doesn't add knowledge. It re-shapes <strong>taste</strong>. The model already knew how to write both answers — what changes is which answer it leans towards. So the obvious risk: if your graders have a narrow taste, the model inherits a narrow taste. <em>The report card reflects the parent, not just the student.</em>"
+      },
+      {
+        "n": "03",
+        "title": "What this means for you",
+        "body_html": "When an AI feels weirdly polite, weirdly cautious, or weirdly aligned to a specific cultural register — that's not the base model. That's the grading. If you're building on top, your fine-tuning is just <em>your</em> report-card pass. <strong>You decide what \"better\" means in your domain.</strong> Don't outsource that to a generic graders' panel."
+      }
+    ],
+    "source": {
+      "text": "Decoded from: Christiano et al., \"Deep RL from Human Preferences\" (NeurIPS) + the 2024 RLHF survey on reward-hacking modes",
+      "link": "#"
+    }
+  },
+  "the_rep": {
+    "type": "compare",
+    "lite_html": "Take one prompt you use every week. Send it to <b>two different AI models</b> (any two — ChatGPT and Claude, or Gemini and Claude, your choice). Compare the answers side by side. Note which one you'd actually use.",
+    "full_html": "Pick a real work prompt — a summary, a draft email, a policy explanation. Run it through <b>three models</b> at the same time. Score each on: (1) factual accuracy, (2) tone match for your audience, (3) length-to-value ratio. Keep the scorecard. Run the same comparison next month.",
+    "done": "Done looks like: you can name the one model that's actually best for <em>your</em> kind of work, with a one-line reason. Reply with your scorecard — featured comparisons get shared (with permission).",
+    "reader_win": {
+      "quote": "Ran the audit Rep last week on our HR FAQ. Claude flagged three buried clauses, ChatGPT missed two. We're now using both — one for finding, one for summarising. Real workflow change.",
+      "by": "Priya — Pune · last week's Rep",
+      "link": "#"
+    }
+  },
+  "toolbox": {
+    "tool_html": "<b>The \"two-model second opinion\" trick.</b> Before you act on any AI-generated number, claim, or recommendation that matters, paste the same prompt into a <em>different</em> AI and compare. Where they agree, you can trust. Where they disagree, you investigate. You don't need to know which is right — the disagreement is the signal.",
+    "try_html": "Try it on the next AI answer you were about to forward →"
+  },
+  "reality_check": {
+    "harm_tag": "labor",
+    "h3": "Which Indian dev jobs are being quietly re-priced — and which aren't",
+    "body_html": "The honest picture, from the latest NASSCOM-BCG joint workforce study (May 2026): in Indian IT services, entry-level coding roles for routine maintenance work saw <b>average compensation drop 8.4%</b> year-on-year, while time-to-fill for those same roles got <b>2.1x faster</b> — both signs the market has decided AI now does enough of the job. At the same time, mid-senior roles that combine code with <em>judgement</em> (system design, code review, debugging unfamiliar systems) saw compensation rise 11%. The work didn't vanish. The price of the bottom rung of it did.",
+    "honest_html": "<b>The honest framing:</b> this isn't \"AI is taking all the jobs\" and it isn't \"nothing has changed.\" It's a slow, uneven re-pricing — and the people getting hit hardest are the freshers who were promised that any coding job is a stable rung. The fair response isn't doom; it's to tell juniors clearly: <em>the rung you were promised has moved</em>, and the new first rung is closer to \"review, judge, and fix what AI produced\" than \"write CRUD by hand.\" Pretending otherwise is the unkind option.",
+    "source": "Source: NASSCOM-BCG, \"India Tech Workforce 2026\" (May 2026); cross-checked against Naukri JobSpeak Q1-Q2 2026 wage data. Figures are India-only and exclude GCC inference/optimization roles, which are moving the other direction."
+  },
+  "india_signal": {
+    "cards": [
+      {
+        "cat": "Healthcare · Hyderabad",
+        "status": "shipped",
+        "status_hot": true,
+        "h4": "Apollo's AI radiology second-read is now standard across 71 hospitals",
+        "body": "Trained on Indian chest X-rays specifically — TB, pneumonia patterns Western models miss. Quietly rolled out hospital by hospital. No press release. Catching findings the first read missed in roughly 1 in 14 scans.",
+        "why_you": "↳ Why you care: this is Indian-data-first AI in actual clinical use. Not a pilot, not a demo. The closest thing India has to a working answer for sovereign healthcare AI.",
+        "source_url": "https://www.apollohospitals.com/"
+      },
+      {
+        "cat": "Agritech · Punjab",
+        "status": "open-source",
+        "status_hot": false,
+        "h4": "PAU + Cropin release the first open Indian crop-disease dataset",
+        "body": "Punjab Agricultural University and Cropin put 1.2 million labelled crop-disease images — wheat, paddy, cotton — into the open. Captured across actual Punjab and Haryana farms, not lab conditions. Western agritech datasets have almost none of this.",
+        "why_you": "↳ Why you care: builders, this is a free, high-quality, India-native vision dataset for a problem that matters to 600 million people. Your weekend project just got real.",
+        "source_url": "https://www.pau.edu/"
+      },
+      {
+        "cat": "Public Policy · Delhi",
+        "status": "draft tabled",
+        "status_hot": false,
+        "h4": "MeitY's draft \"AI compute attribution\" rule asks who actually owns the chips",
+        "body": "A quiet but pointed draft from MeitY this week: any AI service serving Indian users above a threshold must publicly disclose what compute (and whose) it runs on. Vendor lock-in, made visible. Reads directly on the NVIDIA story above.",
+        "why_you": "↳ Why you care: if it lands as proposed, every Indian AI startup deck gets a new slide within two quarters. Worth reading the 6-page draft yourself before the takes start.",
+        "source_url": "https://www.meity.gov.in/"
+      }
+    ],
+    "foot": "Spotted something India-only worth a Signal?",
+    "foot_cta": "Reply and send it →",
+    "foot_cta_url": "#"
+  },
+  "sponsor": null,
+  "closer": {
+    "format": "absurd-true",
+    "format_label": "This week: the absurd-but-true one",
+    "body_html": "The single largest line item in the new Bengaluru R&D centre's first-year budget — bigger than salaries, bigger than chips — is reportedly <em>air conditioning</em>. <span class=\"punch\">India is about to build some of the world's most sovereign AI on a foundation of pure refrigerated air, billed to a grid that's still 71% coal. The future is here. It's also 18 degrees Celsius and humming.</span>"
+  },
+  "poll": {
+    "question": "Before you go — one tap:",
+    "options": ["This week I'm: building", "…steering / deciding", "…holding steady & learning", "…planning a switch"]
+  },
+  "foot": {
+    "reply_prompt": "Reply & tell me — did you do the Rep?",
+    "next_issue": "Next issue: Saturday, 8:00"
+  }
+}
