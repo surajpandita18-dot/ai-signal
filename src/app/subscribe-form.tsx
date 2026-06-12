@@ -1,12 +1,26 @@
 'use client'
 
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
-type State = 'idle' | 'submitting' | 'done' | 'error'
+type State = 'idle' | 'submitting' | 'done' | 'error' | 'already'
+
+const STORAGE_KEY = 'aib_subscribed'
 
 export default function SubscribeForm() {
   const [email, setEmail] = useState('')
   const [state, setState] = useState<State>('idle')
+
+  // Restore state across navigations: if the user already subscribed in this
+  // browser, skip the form and show the calm confirmation instead.
+  useEffect(() => {
+    try {
+      if (typeof window !== 'undefined' && localStorage.getItem(STORAGE_KEY)) {
+        setState('already')
+      }
+    } catch {
+      /* localStorage blocked — fall through to form */
+    }
+  }, [])
 
   async function onSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -19,13 +33,18 @@ export default function SubscribeForm() {
         body: JSON.stringify({ email, source: 'landing' }),
       })
       if (!res.ok) throw new Error('subscribe failed')
+      try {
+        localStorage.setItem(STORAGE_KEY, email.trim().toLowerCase())
+      } catch {
+        /* localStorage blocked — non-fatal */
+      }
       setState('done')
     } catch {
       setState('error')
     }
   }
 
-  if (state === 'done') {
+  if (state === 'done' || state === 'already') {
     return (
       <p
         style={{
@@ -34,9 +53,12 @@ export default function SubscribeForm() {
           fontStyle: 'italic',
           fontSize: 17,
           color: 'var(--accent)',
+          maxWidth: 480,
         }}
       >
-        You&rsquo;re in. First Saturday: see you then.
+        {state === 'already'
+          ? 'You’re in. Saturday at 8 AM IST.'
+          : 'You’re in. First Saturday: see you then.'}
       </p>
     )
   }

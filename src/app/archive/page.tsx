@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import { cookies } from 'next/headers'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 
 type ArchiveRow = {
@@ -10,9 +9,6 @@ type ArchiveRow = {
 }
 
 export default async function ArchivePage() {
-  const cookieStore = await cookies()
-  const unlocked = cookieStore.get('aib_ref') !== undefined
-
   const supabase = await createServerSupabaseClient()
   const { data } = await supabase
     .from('issues')
@@ -25,45 +21,34 @@ export default async function ArchivePage() {
   return (
     <main className="issue">
       <div className="grid">
-        <div className="hero">
+        <header className="mast">
+          <div className="brand">
+            <Link
+              href="/"
+              style={{ textDecoration: 'none' }}
+              className="wordmark"
+            >
+              AI, Basically<span className="dot">.</span>
+            </Link>
+            <span className="tagline">Archive</span>
+          </div>
+          <div className="meta">Weekly · Saturday 08:00 IST</div>
+        </header>
+
+        <section className="hero">
           <div className="eyebrow">Archive</div>
           <h1>Every past issue.</h1>
-          {!unlocked && (
-            <>
-              <p className="sub">
-                The archive is for readers who tell a friend about it. Share once,
-                and every past issue opens up.
-              </p>
-              <p
-                style={{
-                  marginTop: 14,
-                  fontFamily: "'Archivo Narrow', sans-serif",
-                  fontSize: 13,
-                  letterSpacing: '.04em',
-                  color: 'var(--accent)',
-                }}
-              >
-                <Link
-                  href="/i/001?preview=1"
-                  style={{ color: 'var(--accent)' }}
-                >
-                  Read this Saturday&rsquo;s issue &rarr;
-                </Link>
-              </p>
-            </>
-          )}
-          {unlocked && (
-            <p className="sub">
-              <strong>Unlocked.</strong> Every past issue, searchable.
-            </p>
-          )}
-        </div>
+          <p className="sub">
+            Newest first. Click any issue to read the whole thing — Decoder,
+            Build Notes and all. {issues.length > 0 ? `${issues.length} so far.` : ''}
+          </p>
+        </section>
 
-        <div className="sec">
+        <section className="sec">
           <div className="label">
             <span className="n">№</span>
             <span className="nm-lab">All issues</span>
-            <span className="hint">Newest first.</span>
+            <span className="hint">Open. No gate.</span>
           </div>
           <div>
             {issues.length === 0 && <p className="lede">No issues yet.</p>}
@@ -77,17 +62,13 @@ export default async function ArchivePage() {
                   <div className="what">
                     <b>№ {padded}</b> · {it.date_display}
                     <br />
-                    {unlocked ? (
-                      <Link href={`/i/${it.slug}`}>{headlineText}</Link>
-                    ) : (
-                      <span>{headlineText}</span>
-                    )}
+                    <Link href={`/i/${it.slug}`}>{headlineText}</Link>
                   </div>
                 </div>
               )
             })}
           </div>
-        </div>
+        </section>
       </div>
     </main>
   )

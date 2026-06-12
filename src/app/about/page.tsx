@@ -91,6 +91,41 @@ export default function AboutPage() {
 
         <section className="sec">
           <div className="label">
+            <span className="nm-lab">Philosophy</span>
+          </div>
+          <div className="lede">
+            <p>
+              The bar is taste, not coverage. Most AI newsletters chase
+              volume &mdash; fifteen tools, ten papers, twenty links a week.
+              This one chases the single thing that mattered, and explains
+              it the way your friend would over chai.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              Three things this is <em>not</em>:
+            </p>
+            <p style={{ marginTop: 10 }}>
+              <b>Not a briefing service.</b> Briefings make you informed.
+              This makes you decide.
+            </p>
+            <p style={{ marginTop: 8 }}>
+              <b>Not a trend piece.</b> Trends are explanations after the
+              fact. This is a heads-up before.
+            </p>
+            <p style={{ marginTop: 8 }}>
+              <b>Not a FOMO machine.</b> FOMO is a tax on your attention.
+              This pays it back.
+            </p>
+            <p style={{ marginTop: 14 }}>
+              If a week&rsquo;s news doesn&rsquo;t clear the bar, the issue
+              stays short. Some weeks the only honest answer is
+              &ldquo;wait, that&rsquo;s it.&rdquo; Saying that is part of
+              the job.
+            </p>
+          </div>
+        </section>
+
+        <section className="sec">
+          <div className="label">
             <span className="nm-lab">How to reach me</span>
           </div>
           <div className="lede">

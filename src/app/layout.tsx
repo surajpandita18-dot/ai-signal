@@ -11,6 +11,8 @@ import './globals.css'
 import '../styles/tokens.css'
 import '../styles/issue.css'
 
+import SiteFooter from '@/components/SiteFooter'
+
 /* ----------------------------------------------------------------------------
    Fonts
    --------------------------------------------------------------------------
@@ -99,7 +101,10 @@ export default function RootLayout({
 .issue .sig h4,
 .issue .poll .q{font-family:var(--font-sans);font-stretch:125%}`}</style>
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <SiteFooter />
+      </body>
     </html>
   )
 }
