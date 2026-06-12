@@ -26,6 +26,18 @@ const ACCENT = '#9C4A2E'
 const GREY = '#7d776c'
 const HAIR = '#DCD6C8'
 
+// Same body-text + container constants as IssueEmail so the welcome and
+// issue emails share rhythm. Inline only — no shared module import to keep
+// the email twins independently reasonable.
+const SERIF = "Georgia, 'Times New Roman', serif"
+const SANS = 'Helvetica, Arial, sans-serif'
+const BODY_FONT_SIZE = 15
+const BODY_LINE_HEIGHT = 1.68
+const SAFE_WRAP = {
+  wordBreak: 'break-word' as const,
+  overflowWrap: 'anywhere' as const,
+}
+
 export default function WelcomeEmail({
   siteUrl,
   unsubscribeToken,
@@ -43,16 +55,17 @@ export default function WelcomeEmail({
         style={{
           backgroundColor: '#fff',
           color: INK,
-          fontFamily: "Georgia, 'Times New Roman', serif",
+          fontFamily: SERIF,
           margin: 0,
           padding: 0,
         }}
       >
         <Container
           style={{
+            width: '100%',
             maxWidth: 600,
             margin: '0 auto',
-            padding: '0 26px 26px',
+            padding: '0 18px 26px',
           }}
         >
           {/* Masthead */}
@@ -65,11 +78,12 @@ export default function WelcomeEmail({
             <Text
               style={{
                 margin: 0,
-                fontFamily: "Georgia, 'Times New Roman', serif",
+                fontFamily: SERIF,
                 fontWeight: 'bold',
                 fontSize: 18,
                 color: INK,
                 letterSpacing: '-.3px',
+                ...SAFE_WRAP,
               }}
             >
               AI, Basically
@@ -81,27 +95,29 @@ export default function WelcomeEmail({
           <Heading
             as="h1"
             style={{
-              fontFamily: "Georgia, 'Times New Roman', serif",
-              fontSize: 30,
+              fontFamily: SERIF,
+              fontSize: 28,
               fontWeight: 'bold',
-              letterSpacing: '-.01em',
-              lineHeight: 1.1,
+              letterSpacing: '-.005em',
+              lineHeight: 1.12,
               padding: '22px 0 8px',
               margin: 0,
               color: INK,
+              ...SAFE_WRAP,
             }}
           >
             You&rsquo;re in.
           </Heading>
           <Text
             style={{
-              fontFamily: "Georgia, 'Times New Roman', serif",
+              fontFamily: SERIF,
               fontStyle: 'italic',
               color: '#5a574e',
               fontSize: 14.5,
               lineHeight: 1.55,
               paddingBottom: 16,
               margin: 0,
+              ...SAFE_WRAP,
             }}
           >
             One newsletter, every Saturday at 8 AM IST. No hype, no FOMO, no
@@ -117,10 +133,11 @@ export default function WelcomeEmail({
           >
             <Text
               style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 15,
-                lineHeight: 1.68,
+                fontFamily: SERIF,
+                fontSize: BODY_FONT_SIZE,
+                lineHeight: BODY_LINE_HEIGHT,
                 margin: '0 0 12px',
+                ...SAFE_WRAP,
               }}
             >
               Every Saturday morning you&rsquo;ll get the single shift in AI
@@ -129,10 +146,11 @@ export default function WelcomeEmail({
             </Text>
             <Text
               style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 15,
-                lineHeight: 1.68,
+                fontFamily: SERIF,
+                fontSize: BODY_FONT_SIZE,
+                lineHeight: BODY_LINE_HEIGHT,
                 margin: '0 0 12px',
+                ...SAFE_WRAP,
               }}
             >
               Skim it in five minutes, or go deep in twelve. Your call. There
@@ -141,10 +159,11 @@ export default function WelcomeEmail({
             </Text>
             <Text
               style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 15,
-                lineHeight: 1.68,
+                fontFamily: SERIF,
+                fontSize: BODY_FONT_SIZE,
+                lineHeight: BODY_LINE_HEIGHT,
                 margin: '0 0 12px',
+                ...SAFE_WRAP,
               }}
             >
               The first issue you&rsquo;ll see is the one shipping this
@@ -166,10 +185,11 @@ export default function WelcomeEmail({
             </Text>
             <Text
               style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
-                fontSize: 15,
-                lineHeight: 1.68,
+                fontFamily: SERIF,
+                fontSize: BODY_FONT_SIZE,
+                lineHeight: BODY_LINE_HEIGHT,
                 margin: '0',
+                ...SAFE_WRAP,
               }}
             >
               Reply to any issue. I read them all.
@@ -180,11 +200,12 @@ export default function WelcomeEmail({
           <Section style={{ padding: '20px 0' }}>
             <Text
               style={{
-                fontFamily: "Georgia, 'Times New Roman', serif",
+                fontFamily: SERIF,
                 fontStyle: 'italic',
                 fontSize: 14.5,
                 color: '#5a574e',
                 margin: 0,
+                ...SAFE_WRAP,
               }}
             >
               — Suraj
@@ -196,14 +217,14 @@ export default function WelcomeEmail({
             style={{
               borderTop: `1px solid ${HAIR}`,
               paddingTop: 16,
-              fontFamily: "Helvetica, Arial, sans-serif",
-              fontSize: 10.5,
-              letterSpacing: '.12em',
+              fontFamily: SANS,
+              fontSize: 10,
+              letterSpacing: '.08em',
               textTransform: 'uppercase',
               color: GREY,
             }}
           >
-            <Text style={{ margin: 0, color: GREY, fontSize: 10.5 }}>
+            <Text style={{ margin: 0, color: GREY, fontSize: 10, ...SAFE_WRAP }}>
               Saturday · 8:00 IST ·{' '}
               <Link href={unsubLink} style={{ color: ACCENT }}>
                 Unsubscribe

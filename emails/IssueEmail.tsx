@@ -217,11 +217,25 @@ const HAIR = '#DCD6C8'
 const GREY = '#7d776c'
 const DARK_BAND = '#14241C'
 
+// Shared body-text + section rhythm. Every <Text> that carries normal
+// running copy should use BODY_TEXT so the rhythm stays uniform. Every
+// numbered section uses SECTION_STYLE. Banded/boxed sections use
+// INNER_PADDING. The container's own horizontal padding (18px) is the
+// only outer gutter; banded sections add their own to inset content.
+const BODY_FONT_SIZE = 15
+const BODY_LINE_HEIGHT = 1.68
+const SECTION_PADDING = '20px 0'
+const INNER_PADDING = '14px 18px'
+const SAFE_WRAP: React.CSSProperties = {
+  wordBreak: 'break-word',
+  overflowWrap: 'anywhere',
+}
+
 const containerStyle: React.CSSProperties = {
   width: '100%',
   maxWidth: 600,
   margin: '0 auto',
-  padding: '0 20px',
+  padding: '0 18px',
   background: '#F4F1E8',
   color: INK,
   fontFamily: SERIF,
@@ -242,11 +256,21 @@ const sectionLabelStyle: React.CSSProperties = {
   letterSpacing: '.18em',
   textTransform: 'uppercase',
   color: INK,
+  ...SAFE_WRAP,
 }
 
 const sectionStyle: React.CSSProperties = {
-  padding: '20px 0',
+  padding: SECTION_PADDING,
   borderBottom: `1px solid ${HAIR}`,
+}
+
+const bodyTextStyle: React.CSSProperties = {
+  fontFamily: SERIF,
+  fontSize: BODY_FONT_SIZE,
+  lineHeight: BODY_LINE_HEIGHT,
+  color: INK,
+  margin: '10px 0 0',
+  ...SAFE_WRAP,
 }
 
 const hintStyle: React.CSSProperties = {
@@ -326,7 +350,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             }}
           >
             <Row>
-              <Column align="left">
+              <Column align="left" style={{ verticalAlign: 'middle' }}>
                 <span
                   style={{
                     fontFamily: SERIF,
@@ -334,19 +358,21 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                     fontSize: 18,
                     color: INK,
                     letterSpacing: '-0.3px',
+                    ...SAFE_WRAP,
                   }}
                 >
                   AI, Basically<span style={{ color: ACCENT }}>.</span>
                 </span>
               </Column>
-              <Column align="right">
+              <Column align="right" style={{ verticalAlign: 'middle' }}>
                 <span
                   style={{
                     fontFamily: SANS,
-                    fontSize: 10.5,
-                    letterSpacing: '.12em',
+                    fontSize: 10,
+                    letterSpacing: '.08em',
                     textTransform: 'uppercase',
                     color: GREY,
+                    ...SAFE_WRAP,
                   }}
                 >
                   {`#${content.slug} · ${content.date_display}`}
@@ -367,13 +393,14 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             as="h1"
             style={{
               fontFamily: SERIF,
-              fontSize: 30,
+              fontSize: 28,
               fontWeight: 'bold',
-              letterSpacing: '-0.01em',
-              lineHeight: 1.1,
+              letterSpacing: '-0.005em',
+              lineHeight: 1.12,
               padding: '22px 0 8px',
               margin: 0,
               color: INK,
+              ...SAFE_WRAP,
             }}
           >
             {renderInlineHtml(content.hero_headline_html)}
@@ -389,6 +416,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
               lineHeight: 1.55,
               padding: 0,
               margin: '0 0 16px',
+              ...SAFE_WRAP,
             }}
           >
             {renderInlineHtml(content.hero_sub_html)}
@@ -398,7 +426,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
           <Section
             style={{
               border: `1px solid ${INK}`,
-              padding: '12px 14px',
+              padding: INNER_PADDING,
               marginBottom: 6,
             }}
           >
@@ -424,6 +452,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   lineHeight: 1.55,
                   margin: '6px 0',
                   color: INK,
+                  ...SAFE_WRAP,
                 }}
               >
                 <b style={{ color: ACCENT }}>{row.label} &rarr;</b> {row.body}
@@ -434,22 +463,14 @@ export default function IssueEmail({ content, siteUrl }: Props) {
           {/* ---------- 01 The One Thing ---------- */}
           <Section style={sectionStyle}>
             <SectionLabel n="01" name="The One Thing" hint="— the one that matters" />
-            <Text
-              style={{
-                fontFamily: SERIF,
-                fontSize: 15,
-                lineHeight: 1.6,
-                margin: '10px 0 0',
-                color: INK,
-              }}
-            >
+            <Text style={bodyTextStyle}>
               {renderInlineHtml(content.one_thing.lede_html)}
             </Text>
             <Section
               style={{
                 borderLeft: `5px solid ${CLAY}`,
                 background: FAINT,
-                padding: '10px 12px',
+                padding: '12px 14px',
                 marginTop: 12,
                 fontSize: 13,
               }}
@@ -461,6 +482,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   fontSize: 13,
                   lineHeight: 1.55,
                   color: INK,
+                  ...SAFE_WRAP,
                 }}
               >
                 <b
@@ -492,10 +514,11 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 style={{
                   fontFamily: SERIF,
                   fontSize: 14.5,
-                  padding: '8px 0',
+                  padding: '10px 0',
                   lineHeight: 1.6,
                   margin: 0,
                   color: INK,
+                  ...SAFE_WRAP,
                 }}
               >
                 <b style={{ color: ACCENT }}>
@@ -520,11 +543,12 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 style={{
                   fontFamily: SERIF,
                   fontSize: 14.5,
-                  padding: '8px 0',
+                  padding: '10px 0',
                   lineHeight: 1.6,
                   borderTop: `1px solid #E4DFD2`,
                   margin: 0,
                   color: INK,
+                  ...SAFE_WRAP,
                 }}
               >
                 <b style={{ color: GREY }}>{lens.label.toUpperCase()} &rarr;</b>{' '}
@@ -551,7 +575,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             style={{
               background: DARK_BAND,
               color: '#E6EEE7',
-              padding: 16,
+              padding: INNER_PADDING,
               margin: '4px 0',
             }}
           >
@@ -563,6 +587,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 letterSpacing: '.1em',
                 textTransform: 'uppercase',
                 margin: '0 0 6px',
+                ...SAFE_WRAP,
               }}
             >
               <b style={{ color: ACCENT }}>&lt;/&gt; BUILD NOTES</b> &middot; for
@@ -576,6 +601,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 margin: '0 0 8px',
                 fontFamily: SERIF,
                 fontWeight: 'bold',
+                ...SAFE_WRAP,
               }}
             >
               {bn.title}
@@ -587,6 +613,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 lineHeight: 1.65,
                 color: '#DCE7DD',
                 margin: 0,
+                ...SAFE_WRAP,
               }}
             >
               {renderInlineHtml(bn.skim_html)}
@@ -598,6 +625,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 lineHeight: 1.65,
                 color: '#DCE7DD',
                 margin: '8px 0 0',
+                ...SAFE_WRAP,
               }}
             >
               {renderInlineHtml(bn.fix_html)}
@@ -616,6 +644,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   margin: 0,
                   fontFamily: SERIF,
                   lineHeight: 1.55,
+                  ...SAFE_WRAP,
                 }}
               >
                 <b style={{ color: ACCENT }}>Ship this week: </b>
@@ -630,6 +659,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                     fontFamily: SERIF,
                     fontStyle: 'italic',
                     lineHeight: 1.55,
+                    ...SAFE_WRAP,
                   }}
                 >
                   {renderInlineHtml(bn.metric_html)}
@@ -645,6 +675,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 fontFamily: "'Courier New', monospace",
                 letterSpacing: '.06em',
                 textTransform: 'uppercase',
+                ...SAFE_WRAP,
               }}
             >
               Diagram in the browser version &rarr;{' '}
@@ -668,18 +699,19 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             <Section
               style={{
                 border: `1px solid ${INK}`,
-                padding: 12,
+                padding: INNER_PADDING,
                 marginTop: 10,
               }}
             >
               <Text
                 style={{
                   fontFamily: SERIF,
-                  fontSize: 26,
+                  fontSize: 24,
                   fontWeight: 'bold',
                   color: ACCENT,
                   margin: 0,
                   lineHeight: 1.1,
+                  ...SAFE_WRAP,
                 }}
               >
                 {job.spotlight.stat}
@@ -691,6 +723,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   fontWeight: 'bold',
                   margin: '4px 0 0',
                   color: INK,
+                  ...SAFE_WRAP,
                 }}
               >
                 {job.spotlight.stat_sub}
@@ -703,6 +736,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   textTransform: 'uppercase',
                   letterSpacing: '.06em',
                   margin: '6px 0 0',
+                  ...SAFE_WRAP,
                 }}
               >
                 Source: {job.spotlight.source}
@@ -719,12 +753,13 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 style={{
                   background: ACCENT,
                   color: '#fff',
-                  padding: '10px 12px',
+                  padding: '10px 10px',
                   fontWeight: 'bold',
                   fontSize: 14,
                   margin: 0,
                   fontFamily: SERIF,
                   lineHeight: 1.4,
+                  ...SAFE_WRAP,
                 }}
               >
                 <small
@@ -745,12 +780,13 @@ export default function IssueEmail({ content, siteUrl }: Props) {
               </Text>
               <Text
                 style={{
-                  padding: '10px 12px',
+                  padding: '10px 10px',
                   fontSize: 12.5,
                   lineHeight: 1.55,
                   margin: 0,
                   fontFamily: SERIF,
                   color: INK,
+                  ...SAFE_WRAP,
                 }}
               >
                 {job.interview.steps.map((s, i) => (
@@ -788,6 +824,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 fontWeight: 'bold',
                 margin: '10px 0 9px',
                 color: INK,
+                ...SAFE_WRAP,
               }}
             >
               {stripTags(hood.question_html)}
@@ -796,7 +833,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
               style={{
                 background: INK,
                 color: '#fff',
-                padding: '12px 14px',
+                padding: INNER_PADDING,
                 margin: '10px 0',
               }}
             >
@@ -807,6 +844,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   lineHeight: 1.6,
                   margin: 0,
                   color: '#fff',
+                  ...SAFE_WRAP,
                 }}
               >
                 <b
@@ -827,15 +865,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
               </Text>
             </Section>
             {hood.steps[1] ? (
-              <Text
-                style={{
-                  fontFamily: SERIF,
-                  fontSize: 15,
-                  lineHeight: 1.6,
-                  margin: '8px 0 0',
-                  color: INK,
-                }}
-              >
+              <Text style={bodyTextStyle}>
                 {renderInlineHtml(hood.steps[1].body_html)}
               </Text>
             ) : null}
@@ -844,27 +874,11 @@ export default function IssueEmail({ content, siteUrl }: Props) {
           {/* ---------- 05 The Rep ---------- */}
           <Section style={sectionStyle}>
             <SectionLabel n="05" name="The 15-Min Rep" />
-            <Text
-              style={{
-                fontFamily: SERIF,
-                fontSize: 15,
-                lineHeight: 1.6,
-                margin: '10px 0 0',
-                color: INK,
-              }}
-            >
+            <Text style={bodyTextStyle}>
               {renderInlineHtml(rep.lite_html)}
             </Text>
             {rep.full_html ? (
-              <Text
-                style={{
-                  fontFamily: SERIF,
-                  fontSize: 14,
-                  lineHeight: 1.6,
-                  margin: '10px 0 0',
-                  color: INK,
-                }}
-              >
+              <Text style={bodyTextStyle}>
                 {renderInlineHtml(rep.full_html)}
               </Text>
             ) : null}
@@ -877,6 +891,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   margin: '8px 0 0',
                   color: INK,
                   fontWeight: 'bold',
+                  ...SAFE_WRAP,
                 }}
               >
                 {rep.done}
@@ -890,6 +905,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 margin: '6px 0 0',
                 fontSize: 13,
                 lineHeight: 1.55,
+                ...SAFE_WRAP,
               }}
             >
               Last week: &ldquo;{rep.reader_win.quote}&rdquo; &mdash;{' '}
@@ -901,15 +917,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
           {tb ? (
             <Section style={sectionStyle}>
               <SectionLabel n="06" name="Toolbox" hint="— any job" />
-              <Text
-                style={{
-                  fontFamily: SERIF,
-                  fontSize: 15,
-                  lineHeight: 1.6,
-                  margin: '10px 0 0',
-                  color: INK,
-                }}
-              >
+              <Text style={bodyTextStyle}>
                 {renderInlineHtml(tb.tool_html)}
               </Text>
             </Section>
@@ -932,20 +940,13 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   margin: '10px 0 6px',
                   lineHeight: 1.25,
                   color: INK,
+                  ...SAFE_WRAP,
                 }}
               >
                 {rc.h3}
               </Heading>
             ) : null}
-            <Text
-              style={{
-                fontFamily: SERIF,
-                fontSize: 15,
-                lineHeight: 1.6,
-                margin: '6px 0 0',
-                color: INK,
-              }}
-            >
+            <Text style={{ ...bodyTextStyle, margin: '6px 0 0' }}>
               {renderInlineHtml(rc.body_html)}
             </Text>
             <Text
@@ -955,6 +956,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 lineHeight: 1.6,
                 margin: '8px 0 0',
                 color: INK,
+                ...SAFE_WRAP,
               }}
             >
               {renderInlineHtml(rc.honest_html)}
@@ -967,6 +969,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 textTransform: 'uppercase',
                 letterSpacing: '.06em',
                 margin: '6px 0 0',
+                ...SAFE_WRAP,
               }}
             >
               Source: {rc.source}
@@ -1000,6 +1003,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                     borderLeft: `3px solid ${ACCENT}`,
                     paddingLeft: 7,
                     margin: 0,
+                    ...SAFE_WRAP,
                   }}
                 >
                   {card.cat}
@@ -1012,6 +1016,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                     fontSize: 14.5,
                     color: INK,
                     lineHeight: 1.4,
+                    ...SAFE_WRAP,
                   }}
                 >
                   {card.h4}
@@ -1023,6 +1028,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                     fontSize: 13,
                     color: '#555',
                     lineHeight: 1.55,
+                    ...SAFE_WRAP,
                   }}
                 >
                   {card.body}
@@ -1036,6 +1042,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                       color: GREY,
                       lineHeight: 1.5,
                       fontStyle: 'italic',
+                      ...SAFE_WRAP,
                     }}
                   >
                     &#x21B3; Why you care: {card.why_you}
@@ -1051,7 +1058,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
               style={{
                 border: `1px solid ${HAIR}`,
                 background: FAINT,
-                padding: '14px 16px',
+                padding: INNER_PADDING,
                 marginTop: 8,
               }}
             >
@@ -1063,6 +1070,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   textTransform: 'uppercase',
                   color: '#6f6a60',
                   margin: 0,
+                  ...SAFE_WRAP,
                 }}
               >
                 {sponsor.brand_tag}
@@ -1074,6 +1082,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   lineHeight: 1.6,
                   color: '#2a2720',
                   margin: '8px 0 0',
+                  ...SAFE_WRAP,
                 }}
               >
                 {renderInlineHtml(sponsor.copy_html)}{' '}
@@ -1089,7 +1098,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             style={{
               background: INK,
               color: '#fff',
-              padding: '18px 16px',
+              padding: INNER_PADDING,
               fontSize: 15,
               lineHeight: 1.45,
               fontWeight: 'bold',
@@ -1107,6 +1116,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 fontWeight: 'normal',
                 fontFamily: SANS,
                 margin: '0 0 8px',
+                ...SAFE_WRAP,
               }}
             >
               One Last Thing
@@ -1121,6 +1131,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   fontWeight: 'normal',
                   fontFamily: SANS,
                   margin: '0 0 6px',
+                  ...SAFE_WRAP,
                 }}
               >
                 {closer.format_label}
@@ -1134,6 +1145,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 lineHeight: 1.45,
                 fontWeight: 'bold',
                 color: '#fff',
+                ...SAFE_WRAP,
               }}
             >
               {renderInlineHtml(closer.body_html)}
@@ -1145,7 +1157,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             style={{
               background: INK,
               color: '#F4F1E8',
-              padding: '20px 16px',
+              padding: INNER_PADDING,
               marginTop: 14,
             }}
           >
@@ -1156,6 +1168,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 fontWeight: 'bold',
                 margin: '0 0 4px',
                 color: '#F4F1E8',
+                ...SAFE_WRAP,
               }}
             >
               Like this? Pass it on.
@@ -1166,7 +1179,8 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 fontSize: 13.5,
                 lineHeight: 1.55,
                 color: '#cfc7b8',
-                margin: '0 0 10px',
+                margin: '0 0 12px',
+                ...SAFE_WRAP,
               }}
             >
               Grows by word of mouth, not ads. Refer 1 &rarr; unlock the archive
@@ -1185,7 +1199,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 fontSize: 12,
                 letterSpacing: '.06em',
                 textTransform: 'uppercase',
-                padding: '9px 16px',
+                padding: '10px 16px',
                 textDecoration: 'none',
               }}
             >
@@ -1193,23 +1207,31 @@ export default function IssueEmail({ content, siteUrl }: Props) {
             </Link>
           </Section>
 
-          {/* ---------- Footer ---------- */}
+          {/* ---------- Footer ----------
+             Explicit border widths on every side. Without these, the
+             @react-email/components <Hr> applies a 1px borderTop default,
+             but our overriding `borderStyle: 'solid'` would re-enable the
+             unset side borders at browser-default medium (~3px) width, which
+             overflows the 600 container by ~6px. */}
           <Hr
             style={{
-              borderColor: HAIR,
-              borderStyle: 'solid',
+              width: '100%',
+              border: 'none',
+              borderTop: `1px solid ${HAIR}`,
+              borderBottom: 'none',
               margin: '14px 0 0',
             }}
           />
           <Text
             style={{
               fontFamily: SANS,
-              fontSize: 10.5,
-              letterSpacing: '.12em',
+              fontSize: 10,
+              letterSpacing: '.08em',
               textTransform: 'uppercase',
               color: GREY,
               padding: '16px 0',
               margin: 0,
+              ...SAFE_WRAP,
             }}
           >
             Reply &amp; tell me &mdash; did you do the Rep? &middot; Next: Sat
