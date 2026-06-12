@@ -10,10 +10,22 @@
   "hero_headline_html": "This week, RBI<br>quietly <em>changed<br>the rules.</em>",
   "hero_sub_html": "No panic. No hype. Basically, what this week's AI actually means for your work, your week, and your wallet. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
   "tldr": [
-    { "label": "Big one", "body": "The RBI AI-lending circular nobody read — bigger than the GPT-6 noise." },
-    { "label": "Build Notes", "body": "Why your RAG hallucinates in prod but not in testing — and the retrieval fix." },
-    { "label": "Jobs", "body": "A real hiring number, plus the surprise interview question doing the rounds." },
-    { "label": "Reality", "body": "The honest water-and-power cost of your AI habit. No doom, just the bill." }
+    {
+      "label": "Big one",
+      "body": "The RBI AI-lending circular nobody read — bigger than the GPT-6 noise."
+    },
+    {
+      "label": "Build Notes",
+      "body": "Why your RAG hallucinates in prod but not in testing — and the retrieval fix."
+    },
+    {
+      "label": "Jobs",
+      "body": "A real hiring number, plus the surprise interview question doing the rounds."
+    },
+    {
+      "label": "Reality",
+      "body": "The honest water-and-power cost of your AI habit. No doom, just the bill."
+    }
   ],
   "one_thing": {
     "head": "The RBI AI circular nobody read",
@@ -231,10 +243,44 @@
   },
   "poll": {
     "question": "Before you go — one tap:",
-    "options": ["This week I'm: building", "…steering / deciding", "…holding steady & learning", "…planning a switch"]
+    "options": [
+      "This week I'm: building",
+      "…steering / deciding",
+      "…holding steady & learning",
+      "…planning a switch"
+    ]
   },
   "foot": {
     "reply_prompt": "Reply & tell me — did you do the Rep?",
     "next_issue": "Next issue: Saturday, 8:00"
+  },
+  "decoder": {
+    "intro": "Section 03 leans into jargon (RAG, evals, citation layer). Here's each in one line — same standard the issue holds itself to.",
+    "terms": [
+      {
+        "term": "RAG",
+        "plain": "Look-it-up-before-you-answer. The AI checks a notes file before responding, so its reply cites something instead of guessing from memory."
+      },
+      {
+        "term": "Evals",
+        "plain": "Test cases for AI. You write down what 'right answer' looks like, then run the AI against your list and count passes."
+      },
+      {
+        "term": "Citation layer",
+        "plain": "A small add-on that shows which note the AI used. When a reader asks 'where did this come from?', the system answers honestly."
+      },
+      {
+        "term": "Retrieved chunk",
+        "plain": "A specific paragraph the AI pulled from the notes file before answering. The unit of evidence."
+      },
+      {
+        "term": "BFSI",
+        "plain": "Banking, Financial Services, Insurance — short-hand for India's regulated finance industry."
+      },
+      {
+        "term": "Compliance",
+        "plain": "Following the rules a regulator wrote down. Different from doing the right thing in spirit; this is the paperwork version."
+      }
+    ]
   }
 }

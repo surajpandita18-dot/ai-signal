@@ -10,10 +10,22 @@
   "hero_headline_html": "Claude 4.8 just<br>understood <em>Hinglish<br>without breaking.</em>",
   "hero_sub_html": "No fanfare. No India launch event. Just the first frontier model that doesn't lose the plot when you switch languages mid-sentence. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
   "tldr": [
-    { "label": "Big one", "body": "Claude Opus 4.8 quietly clears a reasoning benchmark by 60% — and finally handles Hinglish without dropping context." },
-    { "label": "Build Notes", "body": "Why your fine-tuned model gets worse after every retraining — and the cheaper fix nobody runs." },
-    { "label": "Jobs", "body": "A real number on AI-eval roles in India, plus the senior-IC question doing the rounds this month." },
-    { "label": "Reality", "body": "What an English-trained frontier model still drops the moment you write the way India actually talks." }
+    {
+      "label": "Big one",
+      "body": "Claude Opus 4.8 quietly clears a reasoning benchmark by 60% — and finally handles Hinglish without dropping context."
+    },
+    {
+      "label": "Build Notes",
+      "body": "Why your fine-tuned model gets worse after every retraining — and the cheaper fix nobody runs."
+    },
+    {
+      "label": "Jobs",
+      "body": "A real number on AI-eval roles in India, plus the senior-IC question doing the rounds this month."
+    },
+    {
+      "label": "Reality",
+      "body": "What an English-trained frontier model still drops the moment you write the way India actually talks."
+    }
   ],
   "one_thing": {
     "head": "Claude 4.8 is the first frontier model that doesn't break on Hinglish",
@@ -231,10 +243,48 @@
   },
   "poll": {
     "question": "Before you go — one tap:",
-    "options": ["This week I'm: building", "…steering / deciding", "…holding steady & learning", "…planning a switch"]
+    "options": [
+      "This week I'm: building",
+      "…steering / deciding",
+      "…holding steady & learning",
+      "…planning a switch"
+    ]
   },
   "foot": {
     "reply_prompt": "Reply & tell me — did you do the Rep?",
     "next_issue": "Next issue: Saturday, 8:00"
+  },
+  "decoder": {
+    "intro": "Claude 4.8's announcement is full of context-window vocabulary. Here it is, decoded.",
+    "terms": [
+      {
+        "term": "Context window",
+        "plain": "How much the AI can hold in its head at once for a single conversation. Bigger window = more notes it can read before answering. Claude 4.8's is large enough for a small book."
+      },
+      {
+        "term": "Attention",
+        "plain": "How the AI decides which words in your message matter most. Like which sentence in a long email actually carries the request."
+      },
+      {
+        "term": "LoRA",
+        "plain": "Low-Rank Adaptation. Cheap way to fine-tune a big model — you only update a small slice, so it costs a fraction of full retraining and ships in hours, not weeks."
+      },
+      {
+        "term": "PEFT",
+        "plain": "Parameter-Efficient Fine-Tuning. The family of techniques (LoRA is one) for adapting a big model without burning the GPU farm."
+      },
+      {
+        "term": "Catastrophic forgetting",
+        "plain": "When teaching an AI a new skill makes it lose an old one. Like editing one chapter of a textbook and accidentally rewriting the previous ones."
+      },
+      {
+        "term": "Hinglish",
+        "plain": "Mix of Hindi + English in one sentence. Most Indian internet users write this way; most frontier models still split or break on it."
+      },
+      {
+        "term": "IndicBench",
+        "plain": "A standardized test set for Indian-language AI. The benchmark community's way of asking whether a model actually works in Hindi, Tamil, Bengali, and friends."
+      }
+    ]
   }
 }

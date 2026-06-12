@@ -10,10 +10,22 @@
   "hero_headline_html": "NVIDIA's ₹2000cr<br>Bengaluru bet has a<br><em>buried clause.</em>",
   "hero_sub_html": "Sovereignty headline, vendor-lock-in subtext. Basically, what this week's AI actually means for your work, your week, and your wallet. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
   "tldr": [
-    { "label": "Big one", "body": "NVIDIA's Bengaluru R&D centre is real — and the clause underneath it changes who owns India's AI stack." },
-    { "label": "Build Notes", "body": "Quantization in plain English: thoda chini kam, swaad nahi badla — with the one knob that breaks it." },
-    { "label": "Jobs", "body": "A real Indian hiring number for inference engineers — plus the interview question that's separating the field." },
-    { "label": "Reality", "body": "The honest labor question: which Indian dev jobs are quietly being re-priced, and which are not." }
+    {
+      "label": "Big one",
+      "body": "NVIDIA's Bengaluru R&D centre is real — and the clause underneath it changes who owns India's AI stack."
+    },
+    {
+      "label": "Build Notes",
+      "body": "Quantization in plain English: thoda chini kam, swaad nahi badla — with the one knob that breaks it."
+    },
+    {
+      "label": "Jobs",
+      "body": "A real Indian hiring number for inference engineers — plus the interview question that's separating the field."
+    },
+    {
+      "label": "Reality",
+      "body": "The honest labor question: which Indian dev jobs are quietly being re-priced, and which are not."
+    }
   ],
   "one_thing": {
     "head": "NVIDIA's Bengaluru bet — and the clause nobody's reading",
@@ -231,10 +243,44 @@
   },
   "poll": {
     "question": "Before you go — one tap:",
-    "options": ["This week I'm: building", "…steering / deciding", "…holding steady & learning", "…planning a switch"]
+    "options": [
+      "This week I'm: building",
+      "…steering / deciding",
+      "…holding steady & learning",
+      "…planning a switch"
+    ]
   },
   "foot": {
     "reply_prompt": "Reply & tell me — did you do the Rep?",
     "next_issue": "Next issue: Saturday, 8:00"
+  },
+  "decoder": {
+    "intro": "Section 02 + the Build Notes use a lot of hardware vocabulary. Here are the loaded ones, in plain English.",
+    "terms": [
+      {
+        "term": "Quantization",
+        "plain": "Squishing a big model into fewer bits per number so it runs on cheaper hardware. Small accuracy cost, big size + speed win."
+      },
+      {
+        "term": "Mixed-precision",
+        "plain": "Run the careful parts of the model at high precision and the rough parts at low. The compromise that usually beats both extremes."
+      },
+      {
+        "term": "RLHF",
+        "plain": "Reinforcement Learning from Human Feedback. The AI learns 'don't say this, do say that' from people grading its answers — like a parent reviewing report cards."
+      },
+      {
+        "term": "Vendor lock-in",
+        "plain": "When switching providers costs more than staying. NVIDIA's bet is that Indian AI work needs NVIDIA's chips by default for the next decade."
+      },
+      {
+        "term": "GCC",
+        "plain": "Global Capability Centre. A foreign company's India office — usually staffed by Indian engineers, working on the company's main products, not just back-office support."
+      },
+      {
+        "term": "Sovereignty stack",
+        "plain": "Building the parts that decide things on your own soil. Means India makes the models, owns the training data, and controls the off-switch."
+      }
+    ]
   }
 }

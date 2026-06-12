@@ -22,6 +22,7 @@ import type {
   RealityCheck,
   IndiaSignal,
   Sponsor,
+  Decoder,
   Closer,
   Poll,
   Foot,
@@ -61,6 +62,7 @@ type IssueRow = {
   reality_check: RealityCheck
   india_signal: IndiaSignal
   sponsor: Sponsor
+  decoder: Decoder
   closer: Closer
   poll: Poll
   foot: Foot
@@ -91,6 +93,7 @@ type IssueInsert = {
   reality_check: RealityCheck
   india_signal: IndiaSignal
   sponsor?: Sponsor
+  decoder?: Decoder
   closer: Closer
   poll: Poll
   foot: Foot

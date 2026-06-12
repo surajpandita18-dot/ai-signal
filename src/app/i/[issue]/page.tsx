@@ -20,6 +20,7 @@ import Toolbox from '@/components/sections/Toolbox'
 import RealityCheck from '@/components/sections/RealityCheck'
 import IndiaSignal from '@/components/sections/IndiaSignal'
 import Sponsor from '@/components/sections/Sponsor'
+import Decoder from '@/components/sections/Decoder'
 import Closer from '@/components/sections/Closer'
 import Referral from '@/components/sections/Referral'
 import Poll from '@/components/sections/Poll'
@@ -141,6 +142,7 @@ export default async function Page({
           <IndiaSignal {...content.india_signal} />
         </Section>
         <Sponsor data={content.sponsor} />
+        <Decoder data={content.decoder ?? null} />
       </div>
 
       <Closer {...content.closer} />

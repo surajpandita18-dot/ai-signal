@@ -23,7 +23,7 @@ type WelcomeEmailProps = {
 
 const INK = '#191712'
 const ACCENT = '#9C4A2E'
-const GREY = '#7d776c'
+const GREY = '#5a574e' /* WCAG 4.5:1 body contrast on cream */
 const HAIR = '#DCD6C8'
 
 // Same body-text + container constants as IssueEmail so the welcome and

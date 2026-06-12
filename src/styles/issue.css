@@ -359,6 +359,14 @@
   .issue .poll .opt{transition:none}
 }
 
+/* ===== Decoder — unnumbered jargon explainer, closed-fold on web ===== */
+.issue .decoder-list{max-width:600px}
+@media(max-width:640px){
+  .issue .decoder-list{grid-template-columns:1fr!important}
+  .issue .decoder-list dt{border-top:1px solid var(--hair);padding:10px 0 2px!important}
+  .issue .decoder-list dd{border-top:none!important;padding:0 0 10px!important}
+}
+
 /* ===== Agent D — contrast: accent (#9C4A2E) text on dark bands fails 4.5:1.
    Swap to clay-lighter (#C8794B) for the small-text cases on dark backgrounds. */
 .issue .bn-top::before,

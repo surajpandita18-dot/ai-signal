@@ -156,6 +156,20 @@ export type Foot = {
   next_issue: string
 }
 
+export type DecoderTerm = {
+  term: string             // "RAG"
+  plain: string            // "Look-it-up-before-you-answer. The AI checks a notes file before answering."
+}
+
+// Optional jargon explainer at the bottom of each issue. Closed-fold on web;
+// rendered open in email. Lives outside the numbered editorial spine so it
+// doesn't bloat the scroll rhythm — it's an opt-in safety net for readers
+// who hit a term they don't know.
+export type Decoder = {
+  intro: string            // "The jargon that showed up this week, in one line each."
+  terms: DecoderTerm[]     // 4-8 terms ideal
+} | null
+
 export type IssueContent = {
   // identity
   issue_number: number
@@ -185,6 +199,7 @@ export type IssueContent = {
 
   // closing units
   sponsor: Sponsor
+  decoder?: Decoder         // optional jargon explainer; closed-fold on web, open in email
   closer: Closer
   poll: Poll
   foot: Foot

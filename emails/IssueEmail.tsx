@@ -214,7 +214,7 @@ const ACCENT = '#9C4A2E'
 const CLAY = '#B5683E'
 const FAINT = '#ECE7DA'
 const HAIR = '#DCD6C8'
-const GREY = '#7d776c'
+const GREY = '#5a574e' /* was #7d776c — bumped for WCAG 4.5:1 body contrast on cream */
 const DARK_BAND = '#14241C'
 
 // Shared body-text + section rhythm. Every <Text> that carries normal
@@ -332,6 +332,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
   const rc = content.reality_check
   const india = content.india_signal
   const sponsor = content.sponsor
+  const decoder = content.decoder ?? null
   const closer = content.closer
 
   return (
@@ -1090,6 +1091,71 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                   {sponsor.cta} &rarr;
                 </Link>
               </Text>
+            </Section>
+          ) : null}
+
+          {/* ---------- Decoder (jargon explainer) — always-open in email ---------- */}
+          {decoder && decoder.terms.length > 0 ? (
+            <Section
+              style={{
+                padding: SECTION_PADDING,
+                borderBottom: `1px solid ${HAIR}`,
+              }}
+            >
+              <Text
+                style={{
+                  fontFamily: SANS,
+                  fontSize: 10.5,
+                  fontWeight: 'bold',
+                  letterSpacing: '.18em',
+                  textTransform: 'uppercase',
+                  color: INK,
+                  margin: '0 0 6px',
+                  ...SAFE_WRAP,
+                }}
+              >
+                Decoder <span style={{ color: GREY, fontWeight: 'normal' }}>— the jargon, in one line each</span>
+              </Text>
+              <Text
+                style={{
+                  fontFamily: SERIF,
+                  fontSize: 14.5,
+                  lineHeight: 1.6,
+                  color: '#5a574e',
+                  margin: '0 0 10px',
+                  ...SAFE_WRAP,
+                }}
+              >
+                {decoder.intro}
+              </Text>
+              {decoder.terms.map((t, i) => (
+                <Text
+                  key={t.term}
+                  style={{
+                    fontFamily: SERIF,
+                    fontSize: 14,
+                    lineHeight: 1.6,
+                    margin: i === 0 ? '0 0 6px' : '6px 0',
+                    paddingTop: i === 0 ? 6 : 0,
+                    ...SAFE_WRAP,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontFamily: SANS,
+                      fontSize: 11,
+                      fontWeight: 'bold',
+                      letterSpacing: '.04em',
+                      textTransform: 'uppercase',
+                      color: ACCENT,
+                      marginRight: 8,
+                    }}
+                  >
+                    {t.term} &rarr;
+                  </span>
+                  {t.plain}
+                </Text>
+              ))}
             </Section>
           ) : null}
 
