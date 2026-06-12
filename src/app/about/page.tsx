@@ -62,9 +62,10 @@ export default function AboutPage() {
               a researcher and I don&rsquo;t pretend to be. I read a lot,
               talk to people who ship, and write the version I wish someone
               had sent me when I was getting started.{' '}
-              {/* TODO: add LinkedIn URL */}
               <a
-                href="#linkedin-todo"
+                href="https://www.linkedin.com/in/surajpandita/"
+                target="_blank"
+                rel="noopener noreferrer"
                 style={{ color: 'var(--accent)' }}
               >
                 More about me &rarr;
