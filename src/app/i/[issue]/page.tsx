@@ -63,17 +63,31 @@ export default async function Page({
 
   if (!content) notFound()
 
-  // Decoder JSON fallback: until the issues table gets a `decoder jsonb` column
-  // (single ALTER TABLE; see supabase/migrations/20260612000001_add_decoder.sql),
-  // the DB row won't carry decoder content. Read it from the bundled JSON seed
-  // instead. Once the column is added + populated, the DB row's value wins.
-  if (!content.decoder) {
+  // JSON fallback for fields that may not yet exist on the DB row.
+  // - decoder: column doesn't exist on the live table yet (single ALTER TABLE
+  //   pending; see supabase/migrations/20260612000001_add_decoder.sql)
+  // - tldr.target: rows seeded before the navigator shipped don't carry per-
+  //   row anchor targets; the JSON has them now.
+  // Once the DB carries both, this block becomes a no-op.
+  const decoderMissing = !content.decoder
+  const tldrTargetsMissing =
+    Array.isArray(content.tldr) &&
+    content.tldr.length > 0 &&
+    !content.tldr.some((r) => r.target)
+  if (decoderMissing || tldrTargetsMissing) {
     try {
       const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)
       const seed = JSON.parse(await readFile(file, 'utf8')) as IssueContent
-      if (seed.decoder) content = { ...content, decoder: seed.decoder }
+      const patch: Partial<IssueContent> = {}
+      if (decoderMissing && seed.decoder) patch.decoder = seed.decoder
+      if (tldrTargetsMissing && seed.tldr?.some((r) => r.target)) {
+        patch.tldr = seed.tldr
+      }
+      if (Object.keys(patch).length > 0) {
+        content = { ...content, ...patch }
+      }
     } catch {
-      /* no seed = no decoder; component handles null */
+      /* no seed = no patch; components handle missing fields gracefully */
     }
   }
 
