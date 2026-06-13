@@ -106,6 +106,12 @@ export async function GET(req: Request) {
       reality_check: issue.reality_check,
       india_signal: issue.india_signal,
       sponsor: issue.sponsor,
+      // Pass decoder through when the row carries it. Until the
+      // 20260612000001_add_decoder migration is applied to the live DB,
+      // issue.decoder is undefined at runtime; coerce to null so the email
+      // component renders the (empty) branch cleanly. Once the column lands
+      // and an issue populates it, the email picks it up automatically.
+      decoder: issue.decoder ?? null,
       closer: issue.closer,
       poll: issue.poll,
       foot: issue.foot,
