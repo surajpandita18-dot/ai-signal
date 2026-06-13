@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, type ReactNode } from 'react'
+import { useEffect, useRef, useState, type KeyboardEvent, type ReactNode } from 'react'
 
 type Props = {
   primaryLabel: string
@@ -19,6 +19,33 @@ export default function LensTrackPicker({ primaryLabel, labels, children }: Prop
   // selected = null means "Show all".
   const [selected, setSelected] = useState<number | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
+  const barRef = useRef<HTMLDivElement>(null)
+
+  // Roving-tabindex arrow-key navigation between chips.
+  // Index 0 = "Show all"; indices 1..labels.length map to labels[i-1].
+  const totalChips = labels.length + 1
+  const focusedIndex = selected === null ? 0 : selected + 1
+
+  function focusChip(i: number) {
+    const bar = barRef.current
+    if (!bar) return
+    const chips = bar.querySelectorAll<HTMLButtonElement>('button.track-chip')
+    const next = chips[i]
+    if (next) next.focus()
+  }
+
+  function onKeyDown(e: KeyboardEvent<HTMLDivElement>) {
+    const key = e.key
+    if (key !== 'ArrowRight' && key !== 'ArrowLeft' && key !== 'Home' && key !== 'End') return
+    e.preventDefault()
+    let next = focusedIndex
+    if (key === 'ArrowRight') next = (focusedIndex + 1) % totalChips
+    else if (key === 'ArrowLeft') next = (focusedIndex - 1 + totalChips) % totalChips
+    else if (key === 'Home') next = 0
+    else if (key === 'End') next = totalChips - 1
+    setSelected(next === 0 ? null : next - 1)
+    focusChip(next)
+  }
 
   // primaryLabel is part of the contract (so the parent can declare which
   // lens is "this week's deep one"), but the chip rendering uses `labels`
@@ -41,12 +68,19 @@ export default function LensTrackPicker({ primaryLabel, labels, children }: Prop
 
   return (
     <div ref={containerRef}>
-      <div className="track-bar sticky-mobile">
+      <div
+        ref={barRef}
+        className="track-bar sticky-mobile"
+        role="toolbar"
+        aria-label="Filter lenses"
+        onKeyDown={onKeyDown}
+      >
         <button
           type="button"
           className={`track-chip${selected === null ? ' on kesari' : ''}`}
           onClick={() => setSelected(null)}
           aria-pressed={selected === null}
+          tabIndex={focusedIndex === 0 ? 0 : -1}
           style={{ font: 'inherit' }}
         >
           Show all
@@ -58,6 +92,7 @@ export default function LensTrackPicker({ primaryLabel, labels, children }: Prop
             className={`track-chip${selected === i ? ' on' : ''}`}
             onClick={() => setSelected(i)}
             aria-pressed={selected === i}
+            tabIndex={focusedIndex === i + 1 ? 0 : -1}
             style={{ font: 'inherit' }}
           >
             {name}
