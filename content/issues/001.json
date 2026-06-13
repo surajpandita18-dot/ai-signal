@@ -135,7 +135,7 @@
       "note_html": "Next week's rung builds on this one. We climb together, one issue at a time. <b>Proof beats certificates.</b>"
     },
     "interview": {
-      "q_label": "Question of the week · reusable framework, not a one-off",
+      "q_label": "Question of the week · regulated-AI ops framework",
       "q": "\"Your team shipped an AI lending feature six months ago. The regulator just asked: How do you know it isn't making worse decisions than humans? What's your answer — without saying accuracy?\"",
       "steps": [
         {

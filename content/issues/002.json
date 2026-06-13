@@ -135,7 +135,7 @@
       "note_html": "Last week's rung was evals. This week is quantization. Both stack into the same portfolio. <b>Proof beats certificates.</b>"
     },
     "interview": {
-      "q_label": "Question of the week · reusable framework, not a one-off",
+      "q_label": "Question of the week · three-option infra framework",
       "q": "\"Your inference bill is up 40% in six months. You can quantize on the same NVIDIA stack, migrate to a 30% cheaper non-NVIDIA SKU, or wait six months for next-gen NVIDIA. Which do you do — and what is the single number you would measure to know you chose right?\"",
       "steps": [
         {

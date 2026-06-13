@@ -135,7 +135,7 @@
       "note_html": "Next week's rung builds on this one. We climb together, one issue at a time. <b>Proof beats certificates.</b>"
     },
     "interview": {
-      "q_label": "Question of the week · reusable framework, not a one-off",
+      "q_label": "Question of the week · capability migration framework",
       "q": "\"Your India-facing support agent handles ~3M tickets a month, 80% in English, 20% in Hinglish that the current model mangles. A new frontier model claims it handles Hinglish without context loss. Do you migrate the 20% — or the whole 100% — and what is the decision based on?\"",
       "steps": [
         {
