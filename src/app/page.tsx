@@ -72,8 +72,8 @@ export default function LandingPage() {
               </li>
               <li>
                 <b style={{ fontWeight: 600 }}>Notes from inside production.</b> A
-                paper, a code snippet, a metric &mdash; the part most readers
-                pay for, free here.
+                paper, a code snippet, a metric &mdash; the kind of thing
+                engineers usually only share over coffee.
               </li>
               <li>
                 <b style={{ fontWeight: 600 }}>India signal.</b> What&rsquo;s
