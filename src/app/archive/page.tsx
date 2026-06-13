@@ -4,14 +4,14 @@ import type { Database } from '../../../db/types/database'
 
 type ArchiveRow = Pick<
   Database['public']['Tables']['issues']['Row'],
-  'slug' | 'issue_number' | 'date_display' | 'hero_headline_html'
+  'slug' | 'issue_number' | 'date_display' | 'hero_headline_html' | 'tldr'
 >
 
 export default async function ArchivePage() {
   const supabase = await createServerSupabaseClient()
   const { data } = await supabase
     .from('issues')
-    .select('slug, issue_number, date_display, hero_headline_html')
+    .select('slug, issue_number, date_display, hero_headline_html, tldr')
     .eq('status', 'published')
     .order('issue_number', { ascending: false })
 
@@ -103,12 +103,34 @@ export default async function ArchivePage() {
                         const headlineText = it.hero_headline_html
                           .replace(/<br\s*\/?>/gi, ' ')
                           .replace(/<[^>]+>/g, '')
+                        // Linear-changelog pattern: one-line preview before
+                        // the click. Pull the first TLDR body — the editor
+                        // already hand-tightens it to a scannable summary.
+                        const previewRaw = Array.isArray(it.tldr) && it.tldr[0]?.body
+                          ? it.tldr[0].body
+                          : ''
+                        const preview = previewRaw.length > 140
+                          ? previewRaw.slice(0, 137).trimEnd() + '…'
+                          : previewRaw
                         return (
                           <li key={it.slug} className="jobrow">
                             <div className="what">
                               <b>№&nbsp;{padded}</b> · {it.date_display}
                               <br />
                               <Link href={`/i/${it.slug}`}>{headlineText}</Link>
+                              {preview && (
+                                <div
+                                  style={{
+                                    marginTop: 4,
+                                    fontFamily: "'Newsreader', serif",
+                                    fontSize: 14,
+                                    lineHeight: 1.5,
+                                    color: 'var(--grey)',
+                                  }}
+                                >
+                                  {preview}
+                                </div>
+                              )}
                             </div>
                           </li>
                         )
