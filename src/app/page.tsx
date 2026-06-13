@@ -42,10 +42,9 @@ export default function LandingPage() {
             Here&rsquo;s <em>what to do about it.</em>
           </h1>
           <p className="sub">
-            One curated read every Saturday. The one shift in AI that actually
-            mattered this week, in plain language, with the &ldquo;so what do I
-            do on Monday&rdquo; spelled out. No hype, no takes, no &ldquo;10
-            tools you must try.&rdquo;
+            One curated read every Saturday &mdash; in plain language, with the
+            &ldquo;so what do I do on Monday&rdquo; spelled out. No hype, no
+            takes, no &ldquo;10 tools you must try.&rdquo;
           </p>
           <SubscribeForm />
           <p
