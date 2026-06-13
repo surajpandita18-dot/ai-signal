@@ -43,7 +43,7 @@ export default function BuildNotes({
         </div>
         <h2>{title}</h2>
         <div className="paper">
-          ▸ unpacked from: {paper_ref}
+          Unpacked from: {paper_ref}
           {hasPaper ? (
             <>
               {' '}·{' '}
