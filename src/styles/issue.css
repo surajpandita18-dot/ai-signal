@@ -461,6 +461,13 @@ html{scroll-behavior:smooth}
   outline-offset: 4px;
 }
 
+/* Landing byline link — picks up a subtle underline on hover so it reads as a link */
+.issue .tagline-byline:hover,
+.issue .tagline-byline:focus-visible {
+  border-bottom-color: var(--accent) !important;
+  outline: none;
+}
+
 /* ===== Decoder — unnumbered jargon explainer, closed-fold on web ===== */
 .issue .decoder-list{max-width:600px}
 @media(max-width:640px){
