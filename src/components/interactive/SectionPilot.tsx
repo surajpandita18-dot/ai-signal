@@ -88,7 +88,9 @@ export default function SectionPilot() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // Close on outside click / Escape.
+  // Close on outside click / Escape; on Escape, restore focus to the trigger
+  // so the keyboard user is not stranded mid-page after dismissing the menu.
+  const triggerRef = useRef<HTMLButtonElement | null>(null)
   useEffect(() => {
     if (!open) return
     function onDoc(ev: MouseEvent) {
@@ -97,7 +99,10 @@ export default function SectionPilot() {
       }
     }
     function onKey(ev: KeyboardEvent) {
-      if (ev.key === 'Escape') setOpen(false)
+      if (ev.key === 'Escape') {
+        setOpen(false)
+        triggerRef.current?.focus()
+      }
     }
     document.addEventListener('mousedown', onDoc)
     document.addEventListener('keydown', onKey)
@@ -105,6 +110,20 @@ export default function SectionPilot() {
       document.removeEventListener('mousedown', onDoc)
       document.removeEventListener('keydown', onKey)
     }
+  }, [open])
+
+  // When the menu opens (any input modality), move focus to the currently-
+  // active menu item so keyboard users can immediately ArrowUp/Down. This is
+  // the WAI-ARIA menu pattern; without it the user has to Tab into the menu
+  // first, which is a small but real jank.
+  useEffect(() => {
+    if (!open || !wrapRef.current) return
+    const items = wrapRef.current.querySelectorAll<HTMLAnchorElement>(
+      'a[role="menuitem"]',
+    )
+    const target =
+      Array.from(items).find((el) => el.dataset.active === 'true') ?? items[0]
+    target?.focus()
   }, [open])
 
   // Arrow-key navigation inside the open menu.
@@ -201,6 +220,7 @@ export default function SectionPilot() {
         </div>
       )}
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-expanded={open}
