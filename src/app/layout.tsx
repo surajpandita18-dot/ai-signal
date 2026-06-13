@@ -104,7 +104,13 @@ export default function RootLayout({
 .issue .reality h3,
 .issue .signal li i,
 .issue .sig h4,
-.issue .poll .q{font-family:var(--font-sans);font-stretch:125%}`}</style>
+.issue .poll .q{font-family:var(--font-sans);font-stretch:125%}
+/* Inline SVG text declares font-family="'Archivo Expanded'" and 'Spline Sans Mono' as
+   raw attributes. Those literal names aren't loaded — next/font assigns hashed family
+   names, and 'Archivo Expanded' is an alias. Without these overrides, diagram labels in
+   Build Notes and Under the Hood render in the browser default sans/mono. */
+.issue svg [font-family*="Archivo Expanded"]{font-family:var(--font-sans);font-stretch:125%}
+.issue svg [font-family*="Spline Sans Mono"]{font-family:var(--font-mono)}`}</style>
       </head>
       <body>
         {children}
