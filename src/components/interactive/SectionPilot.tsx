@@ -35,14 +35,20 @@ export default function SectionPilot() {
   const [visible, setVisible] = useState(false)
   const [open, setOpen] = useState(false)
   const [activeId, setActiveId] = useState<string>('sec-01')
+  // Items whose anchor actually exists in the DOM at mount. Future issues
+  // that lack an optional section (e.g. no Decoder data) shouldn't show a
+  // dead menu entry — taps would scroll nowhere.
+  const [presentItems, setPresentItems] = useState<NavItem[]>(ITEMS)
   const wrapRef = useRef<HTMLDivElement | null>(null)
 
   // Show after hero; pick the section with the most viewport coverage.
   useEffect(() => {
     const heroEl = document.querySelector('.hero')
-    const sectionEls = ITEMS.map((it) =>
-      document.getElementById(it.id),
-    ).filter((el): el is HTMLElement => el !== null)
+    const present = ITEMS.filter((it) => document.getElementById(it.id))
+    setPresentItems(present)
+    const sectionEls = present
+      .map((it) => document.getElementById(it.id))
+      .filter((el): el is HTMLElement => el !== null)
 
     if (!heroEl) {
       setVisible(true)
@@ -153,7 +159,8 @@ export default function SectionPilot() {
 
   if (!visible) return null
 
-  const active = ITEMS.find((it) => it.id === activeId) ?? ITEMS[0]
+  const active =
+    presentItems.find((it) => it.id === activeId) ?? presentItems[0] ?? ITEMS[0]
 
   return (
     <div
@@ -187,7 +194,7 @@ export default function SectionPilot() {
             padding: '6px 0',
           }}
         >
-          {ITEMS.map((it) => {
+          {presentItems.map((it) => {
             const isActive = it.id === activeId
             return (
               <a
