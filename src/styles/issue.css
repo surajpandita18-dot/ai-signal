@@ -72,6 +72,10 @@
   .issue .mast{grid-template-columns:1fr !important;gap:6px}
   .issue .mast .meta{text-align:left}
   .issue .sec .label .n{font-size:34px;margin-bottom:6px}
+  /* Hint copy in section sidebar was capped at 180px for the desktop two-col
+     layout. On mobile the sidebar collapses to a single full-width column, so
+     the cap creates an artificial narrow ribbon. Let it breathe. */
+  .issue .sec .label .hint{max-width:none}
   .issue .sec{padding:34px 0}
   .issue .grid{padding:0 22px}
   .issue .hero{padding:40px 0 32px}
