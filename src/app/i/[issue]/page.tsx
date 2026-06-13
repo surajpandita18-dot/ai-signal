@@ -3,6 +3,9 @@ import path from 'node:path'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import type { IssueContent } from '@/lib/content-model'
+import type { Database } from '../../../../db/types/database'
+
+type IssueRow = Database['public']['Tables']['issues']['Row']
 
 import Masthead from '@/components/issue/Masthead'
 import Hero from '@/components/issue/Hero'
@@ -36,16 +39,26 @@ export default async function Page({
   const { issue } = await params
   const { preview } = await searchParams
 
-  let content: (IssueContent & { id?: string }) | null = null
+  let content: IssueRow | null = null
 
   if (preview === '1' || process.env.AIB_PREVIEW_FROM_JSON === '1') {
     // QA path: read the seed JSON directly. Used before the Supabase
     // migration is applied. Once published_at + status='published' rows
     // exist, drop the ?preview=1 query param to go through Supabase.
+    // The DB-only fields are synthesized as empty strings; the poll API
+    // rejects empty issue_id with 400 (PollClient swallows the error), so
+    // preview-mode poll clicks are a correct no-op pre-publish.
     try {
       const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)
       const raw = await readFile(file, 'utf8')
-      content = JSON.parse(raw) as IssueContent
+      const parsed = JSON.parse(raw) as IssueContent
+      content = {
+        ...parsed,
+        id: '',
+        created_at: '',
+        updated_at: '',
+        decoder: parsed.decoder ?? null,
+      }
     } catch {
       notFound()
     }
@@ -58,7 +71,7 @@ export default async function Page({
       .eq('status', 'published')
       .single()
     if (error || !data) notFound()
-    content = data as unknown as IssueContent & { id: string }
+    content = data
   }
 
   if (!content) notFound()
@@ -78,7 +91,7 @@ export default async function Page({
     try {
       const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)
       const seed = JSON.parse(await readFile(file, 'utf8')) as IssueContent
-      const patch: Partial<IssueContent> = {}
+      const patch: Partial<IssueRow> = {}
       if (decoderMissing && seed.decoder) patch.decoder = seed.decoder
       if (tldrTargetsMissing && seed.tldr?.some((r) => r.target)) {
         patch.tldr = seed.tldr
@@ -176,7 +189,7 @@ export default async function Page({
 
       <Closer {...content.closer} />
       <Referral />
-      <Poll issueId={(content as unknown as { id: string }).id} {...content.poll} />
+      <Poll issueId={content.id} {...content.poll} />
       <Foot
         replyPrompt={content.foot.reply_prompt}
         nextIssue={content.foot.next_issue}
