@@ -136,7 +136,7 @@
     },
     "interview": {
       "q_label": "Question of the week · regulated-AI ops framework",
-      "q": "\"Your team shipped an AI lending feature six months ago. The regulator just asked: How do you know it isn't making worse decisions than humans? What's your answer — without saying accuracy?\"",
+      "q": "\"Six months into your AI lending feature, the regulator asks: how do you know it isn't worse than humans? Answer — and don't say accuracy.\"",
       "steps": [
         {
           "n": 1,
