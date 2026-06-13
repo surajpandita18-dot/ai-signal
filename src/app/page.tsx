@@ -36,7 +36,7 @@ export default function LandingPage() {
         </header>
 
         <section className="hero">
-          <div className="eyebrow">Weekly&nbsp;· No&nbsp;hype</div>
+          <div className="eyebrow">AI&nbsp;· made&nbsp;plain</div>
           <h1>
             AI changed overnight.<br />
             Here&rsquo;s <em>what it means for your week.</em>
