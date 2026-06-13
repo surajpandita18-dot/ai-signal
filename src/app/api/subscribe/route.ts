@@ -16,6 +16,11 @@ const VALID_ROLES: ReadonlyArray<Lens> = [
 
 // RFC-loose email regex — local-part @ domain.tld
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+// RFC 5321 caps the full email at 254 chars. Keep source/ref tight too —
+// they're internal attribution tags, not free-form fields.
+const EMAIL_MAX = 254
+const SOURCE_MAX = 64
+const REF_MAX = 32
 
 type Body = {
   email?: unknown
@@ -33,7 +38,7 @@ export async function POST(req: Request) {
   }
 
   const email = typeof body.email === 'string' ? body.email.trim().toLowerCase() : ''
-  if (!EMAIL_RE.test(email)) {
+  if (!EMAIL_RE.test(email) || email.length > EMAIL_MAX) {
     return NextResponse.json({ error: 'invalid_email' }, { status: 400 })
   }
 
@@ -42,8 +47,14 @@ export async function POST(req: Request) {
       ? (body.role as Lens)
       : null
 
-  const source = typeof body.source === 'string' && body.source.length > 0 ? body.source : null
-  const ref = typeof body.ref === 'string' && body.ref.length > 0 ? body.ref : null
+  const source =
+    typeof body.source === 'string' && body.source.length > 0 && body.source.length <= SOURCE_MAX
+      ? body.source
+      : null
+  const ref =
+    typeof body.ref === 'string' && body.ref.length > 0 && body.ref.length <= REF_MAX
+      ? body.ref
+      : null
 
   const supabase = createAdminSupabaseClient()
 
@@ -59,7 +70,8 @@ export async function POST(req: Request) {
     if ((error as { code?: string }).code === '23505') {
       return NextResponse.json({ status: 'already_subscribed' }, { status: 200 })
     }
-    return NextResponse.json({ error: 'insert_failed', detail: error.message }, { status: 500 })
+    console.error('subscribe_insert_failed', error)
+    return NextResponse.json({ error: 'insert_failed' }, { status: 500 })
   }
 
   // Attribution: if the caller passed a referral code AND that code maps to
