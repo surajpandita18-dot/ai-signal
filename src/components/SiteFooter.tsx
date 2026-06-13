@@ -84,6 +84,7 @@ export default function SiteFooter() {
           href="https://www.linkedin.com/in/surajpandita/"
           target="_blank"
           rel="noopener noreferrer"
+          aria-label="Suraj Pandita on LinkedIn (opens in new tab)"
           className="site-footer__link"
           style={{ color: 'var(--grey)' }}
         >
