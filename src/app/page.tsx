@@ -14,7 +14,7 @@ export default function LandingPage() {
             >
               AI, Basically<span className="dot">.</span>
             </Link>
-            <span className="tagline">Explained like a normal person would.</span>
+            <span className="tagline">Explained like a normal person would. · by Suraj Pandita</span>
           </div>
           <div className="meta">
             Weekly · Saturday 08:00 IST
