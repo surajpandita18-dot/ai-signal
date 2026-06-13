@@ -38,8 +38,8 @@ export default function LandingPage() {
         <section className="hero">
           <div className="eyebrow">AI&nbsp;· made&nbsp;plain</div>
           <h1>
-            AI changed overnight.<br />
-            Here&rsquo;s <em>what it means for your week.</em>
+            One AI shift matters this week.<br />
+            Here&rsquo;s <em>what to do about it.</em>
           </h1>
           <p className="sub">
             One curated read every Saturday. The one shift in AI that actually
