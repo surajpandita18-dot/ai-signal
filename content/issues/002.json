@@ -196,7 +196,7 @@
   },
   "toolbox": {
     "tool_html": "<b>The \"two-model second opinion\" trick.</b> Before you act on any AI-generated number, claim, or recommendation that matters, paste the same prompt into a <em>different</em> AI and compare. Where they agree, you can trust. Where they disagree, you investigate. You don't need to know which is right — the disagreement is the signal.",
-    "try_html": "Try it on the next AI answer you were about to forward →"
+    "try_html": "Where two models agree, you have a fact. Where they disagree, you have a question. Both useful."
   },
   "reality_check": {
     "harm_tag": "labor",

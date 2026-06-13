@@ -196,7 +196,7 @@
   },
   "toolbox": {
     "tool_html": "<b>The \"two-language gut-check\" trick.</b> When you write something important in English — a proposal, a customer message, a policy line — paste it into your AI and ask: <em>\"Translate this into simple Hindi the way someone would actually speak it, then translate that Hindi back into English.\"</em> The round-trip strips out jargon you didn't notice. The version that survives is the version your reader actually understands.",
-    "try_html": "Try it on the next important message you send →"
+    "try_html": "If the Hindi version sounds awkward, your English original is too clever. Plain-language audit, free."
   },
   "reality_check": {
     "harm_tag": "bias",
