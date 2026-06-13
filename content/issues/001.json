@@ -136,7 +136,7 @@
     },
     "interview": {
       "q_label": "Question of the week · reusable framework, not a one-off",
-      "q": "\"How would you know if your AI feature is actually working?\"",
+      "q": "\"Your team shipped an AI lending feature six months ago. The regulator just asked: How do you know it isn't making worse decisions than humans? What's your answer — without saying accuracy?\"",
       "steps": [
         {
           "n": 1,
