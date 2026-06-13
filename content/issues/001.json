@@ -140,19 +140,19 @@
       "steps": [
         {
           "n": 1,
-          "body_html": "Start with the <b>user outcome</b>, never model accuracy. \"Working\" = the user got what they came for."
+          "body_html": "Counterfactual, not benchmark. <b>Pull last 6 months of decisions, have humans re-score a stratified sample blind to model output.</b> Compare disagreement rate weighted by approval-stakes — denials cost more than approvals."
         },
         {
           "n": 2,
-          "body_html": "Name <b>one online metric</b> (live: thumbs-up rate, task completion) and <b>one offline metric</b> (pre-ship: eval set score)."
+          "body_html": "Audit by protected attribute. <b>Slice override rate, approval rate, and disagreement rate across age, gender, and locality.</b> A 60-bps gap on one slice is the answer the regulator actually wants."
         },
         {
           "n": 3,
-          "body_html": "Name the <b>specific failure</b> you'd catch — e.g. \"confidently wrong answers\", and how you'd detect it."
+          "body_html": "Observability over scores. <b>Surface override rate, reason-code distribution, and time-to-override per loan officer</b> — these tell you whether the model is leading or being overruled. The decision log the RBI circular asks for is built from these."
         },
         {
           "n": 4,
-          "body_html": "End with <b>logging</b>: \"I'd log every disagreement between expected and actual, and review weekly.\""
+          "body_html": "Pre-committed kill criteria. <b>Set the threshold before the regulator does:</b> if any slice's disagreement-rate or override-rate breaches X for two weeks, the feature pauses for re-training. Logged, alerted, board-visible."
         }
       ],
       "tip_html": "<b>The framework (works for any \"how would you measure X\" question):</b> Outcome → one online + one offline metric → the specific failure you'd catch → how you'd log it. The trap: candidates say \"accuracy\". Winners say \"depends what breaks for the user,\" then get specific. Structure &gt; jargon. <em>Save this — it answers a whole category of questions.</em>"
