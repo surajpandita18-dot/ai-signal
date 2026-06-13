@@ -82,7 +82,7 @@
   },
   "build_notes": {
     "title": "Quantization in plain English — and the one knob that quietly breaks your model.",
-    "paper_ref": "▸ unpacked from: Dettmers et al., \"LLM.int8() and 4-bit Inference Revisited\" (2024) + Saxena (IISc) survey on India-deployed quantized models",
+    "paper_ref": "Dettmers et al., \"LLM.int8() and 4-bit Inference Revisited\" (2024) + Saxena (IISc) survey on India-deployed quantized models",
     "paper_link": "",
     "eval_link": "",
     "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> quantization is <em>thoda chini kam, swaad nahi badla</em> — you store the model's weights in fewer bits (less sugar) and most outputs taste the same. But on a small slice of inputs — usually long, structured, or numerical ones — the flavour collapses. <b style=\"color:#C8794B\">Ship metric:</b> compare full-precision vs quantized answers on your top 200 real queries, not a benchmark. Watch the long-tail.",

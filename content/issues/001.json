@@ -82,7 +82,7 @@
   },
   "build_notes": {
     "title": "Your RAG hallucinates in prod — but never in testing. Here's the actual reason.",
-    "paper_ref": "▸ unpacked from: Longpre et al., \"Entity-Based Knowledge Conflicts in QA\" (EMNLP) + the 2024 RAG-survey follow-ups",
+    "paper_ref": "Longpre et al., \"Entity-Based Knowledge Conflicts in QA\" (EMNLP) + the 2024 RAG-survey follow-ups",
     "paper_link": "https://arxiv.org/abs/2109.05052",
     "eval_link": "",
     "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> your model retrieves the right chunk, then ignores it in favour of what it learned in training — and bigger models do this <em>more</em>. Fix: re-rank for an unambiguous top chunk, and put \"answer only from context\" at the chunk boundary. <b style=\"color:#C8794B\">Ship metric:</b> log how often retrieved-chunk and final-answer disagree.",

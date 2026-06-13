@@ -2,6 +2,15 @@ import type { BuildNotes as BuildNotesType } from '@/lib/content-model'
 import Fold from '@/components/interactive/Fold'
 import CodeCopy from '@/components/interactive/CodeCopy'
 
+// Defensive: earlier content embedded "▸ unpacked from:" in the paper_ref
+// value itself. The component now renders the prefix on its own, so a stale
+// value would duplicate ("Unpacked from: ▸ unpacked from: ..."). Strip any
+// leading variant — mirrors stripWhyCare() in IndiaSignal for the same
+// authoring-drift class of bug.
+function stripUnpackedPrefix(s: string): string {
+  return s.replace(/^\s*[▸▶▾]?\s*unpacked\s+from\s*:\s*/i, '')
+}
+
 // If the link is missing / '#' / empty, render label as plain text instead of
 // pretending it links somewhere. Voice rule: no placeholder hrefs in prod.
 function maybeLink(
@@ -43,7 +52,7 @@ export default function BuildNotes({
         </div>
         <h2>{title}</h2>
         <div className="paper">
-          Unpacked from: {paper_ref}
+          Unpacked from: {stripUnpackedPrefix(paper_ref)}
           {hasPaper ? (
             <>
               {' '}·{' '}
