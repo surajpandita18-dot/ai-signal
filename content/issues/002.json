@@ -136,7 +136,7 @@
     },
     "interview": {
       "q_label": "Question of the week · reusable framework, not a one-off",
-      "q": "\"How would you decide if a smaller, cheaper model is good enough to ship?\"",
+      "q": "\"Your inference bill is up 40% in six months. You can quantize on the same NVIDIA stack, migrate to a 30% cheaper non-NVIDIA SKU, or wait six months for next-gen NVIDIA. Which do you do — and what is the single number you would measure to know you chose right?\"",
       "steps": [
         {
           "n": 1,
