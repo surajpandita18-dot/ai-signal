@@ -140,22 +140,22 @@
       "steps": [
         {
           "n": 1,
-          "body_html": "Start with <b>which benchmark, and does it match your users</b>. A reasoning benchmark says little about your retrieval-heavy support bot. Match the metric to the job."
+          "body_html": "Quantify before you decide. <b>Sample 2,000 production tickets and score for code-switching rate, not just language label.</b> Pure Hinglish, pure English, and mid-conversation code-switched are three different cohorts — the eval has to too."
         },
         {
           "n": 2,
-          "body_html": "Run it on <b>your own eval set</b>, including your <em>oldest</em> failure cases. New model, old test. Don't trust the headline number."
+          "body_html": "Stratified eval, not benchmarks. <b>Build a holdout from your own tickets, balanced across the three cohorts, scored on resolution-quality not BLEU.</b> The new model has to win on each cohort independently, not on average."
         },
         {
           "n": 3,
-          "body_html": "Check <b>cost, latency, and rate limits</b> at your real traffic. The model that wins your eval can still lose at 2 a.m. with a queue."
+          "body_html": "Shadow the segment first. <b>Route the 20% Hinglish stream through the new model in shadow for two weeks.</b> Watch CSAT, escalation rate, resolution time per cohort. Pre-commit the threshold that flips production."
         },
         {
           "n": 4,
-          "body_html": "Pilot on <b>internal tools first</b>, then a low-stakes user segment, then default. Never flip all production traffic in one step."
+          "body_html": "Ramp by segment, not by percentage. <b>Migrate the Hinglish-cohort to 100% before touching English.</b> English migration is a separate decision with its own eval — combining them hides which model broke which cohort."
         }
       ],
-      "tip_html": "<b>The framework (works for any \"should we adopt the new X\" question):</b> Right metric for your job → your own eval set, including old failures → cost/latency at real traffic → staged rollout. The trap: candidates lead with the benchmark. Winners lead with <em>their</em> users. <em>Save this — it answers a whole category of platform-decision questions.</em>"
+      "tip_html": "<b>The framework (works for any \"new capability claim, heterogeneous user base\" decision — new model, new language, new modality, new feature):</b> Segment by user behaviour → build stratified eval per segment → shadow the most affected segment first → ramp by segment, not by percentage. <b>The trap:</b> candidates compare the new model on average benchmarks and roll it out company-wide. <b>Winners</b> name the cohorts, score them independently, shadow the affected one, and refuse to touch the unaffected majority until the affected segment has been validated. <em>Save this — it answers any \"should we adopt this for our diverse user base?\" question.</em>"
     }
   },
   "under_the_hood": {
