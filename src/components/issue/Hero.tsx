@@ -20,7 +20,10 @@ export default function Hero({ eyebrow, headlineHtml, subHtml, tldr }: HeroProps
   return (
     <div className="hero">
       <div className="eyebrow">{eyebrow}</div>
-      <h1 dangerouslySetInnerHTML={{ __html: headlineHtml }} />
+      <h1
+        style={{ overflowWrap: 'break-word' }}
+        dangerouslySetInnerHTML={{ __html: headlineHtml }}
+      />
       <p className="sub" dangerouslySetInnerHTML={{ __html: subHtml }} />
       <div className="tldr">
         <div className="t-lab">In This Issue</div>
