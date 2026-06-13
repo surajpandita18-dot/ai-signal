@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, type ReactNode } from 'react'
+import { useId, useState, type ReactNode } from 'react'
 
 type Props = {
   buttonClass: string
@@ -23,17 +23,23 @@ export default function Fold({
   children,
 }: Props) {
   const [open, setOpen] = useState(false)
+  // Stable id for the disclosure so the button can name aria-controls.
+  const id = useId()
 
   return (
     <>
       <button
+        type="button"
         className={`${buttonClass}${open ? ' open' : ''}`}
         aria-expanded={open}
+        aria-controls={id}
         onClick={() => setOpen((v) => !v)}
       >
         {open ? openLabel : closedLabel}
       </button>
-      <div className={`${foldClassName}${open ? ' show' : ''}`}>{children}</div>
+      <div id={id} className={`${foldClassName}${open ? ' show' : ''}`}>
+        {children}
+      </div>
     </>
   )
 }

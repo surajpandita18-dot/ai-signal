@@ -107,6 +107,31 @@ export default function SectionPilot() {
     }
   }, [open])
 
+  // Arrow-key navigation inside the open menu.
+  function onMenuKey(ev: React.KeyboardEvent<HTMLDivElement>) {
+    if (!open) return
+    const menu = ev.currentTarget
+    const items = Array.from(
+      menu.querySelectorAll<HTMLAnchorElement>('a[role="menuitem"]'),
+    )
+    const idx = items.indexOf(document.activeElement as HTMLAnchorElement)
+    if (ev.key === 'ArrowDown') {
+      ev.preventDefault()
+      const next = items[(idx + 1 + items.length) % items.length]
+      next?.focus()
+    } else if (ev.key === 'ArrowUp') {
+      ev.preventDefault()
+      const prev = items[(idx - 1 + items.length) % items.length]
+      prev?.focus()
+    } else if (ev.key === 'Home') {
+      ev.preventDefault()
+      items[0]?.focus()
+    } else if (ev.key === 'End') {
+      ev.preventDefault()
+      items[items.length - 1]?.focus()
+    }
+  }
+
   if (!visible) return null
 
   const active = ITEMS.find((it) => it.id === activeId) ?? ITEMS[0]
@@ -117,8 +142,9 @@ export default function SectionPilot() {
       className="section-pilot"
       style={{
         position: 'fixed',
-        right: 18,
-        bottom: 18,
+        // Respect iPhone home-indicator + notch safe areas.
+        right: 'calc(18px + env(safe-area-inset-right, 0px))',
+        bottom: 'calc(18px + env(safe-area-inset-bottom, 0px))',
         zIndex: 50,
         fontFamily: "'Archivo Narrow', sans-serif",
       }}
@@ -127,6 +153,7 @@ export default function SectionPilot() {
         <div
           role="menu"
           aria-label="Issue sections"
+          onKeyDown={onMenuKey}
           style={{
             position: 'absolute',
             bottom: 'calc(100% + 8px)',
@@ -134,6 +161,7 @@ export default function SectionPilot() {
             minWidth: 220,
             maxHeight: 'min(60vh, 480px)',
             overflowY: 'auto',
+            overscrollBehavior: 'contain',
             background: 'var(--bg)',
             border: '1px solid var(--ink)',
             boxShadow: '0 8px 24px rgba(0,0,0,.12)',
@@ -148,6 +176,8 @@ export default function SectionPilot() {
                 href={`#${it.id}`}
                 role="menuitem"
                 onClick={() => setOpen(false)}
+                className="section-pilot__item"
+                data-active={isActive ? 'true' : undefined}
                 style={{
                   display: 'block',
                   padding: '8px 14px',
@@ -161,6 +191,7 @@ export default function SectionPilot() {
                   borderLeft: isActive
                     ? '3px solid var(--accent)'
                     : '3px solid transparent',
+                  touchAction: 'manipulation',
                 }}
               >
                 {it.label}
@@ -175,6 +206,7 @@ export default function SectionPilot() {
         aria-expanded={open}
         aria-haspopup="menu"
         aria-label={`Currently reading: ${active.label}. Open section menu.`}
+        className="section-pilot__btn"
         style={{
           display: 'inline-flex',
           alignItems: 'center',
@@ -191,9 +223,10 @@ export default function SectionPilot() {
           textTransform: 'uppercase',
           cursor: 'pointer',
           boxShadow: '0 4px 14px rgba(0,0,0,.18)',
+          touchAction: 'manipulation',
         }}
       >
-        <span style={{ color: 'var(--accent)' }}>§</span>
+        <span style={{ color: 'var(--accent)' }} aria-hidden="true">§</span>
         <span>{active.label}</span>
         <span aria-hidden="true">{open ? '▾' : '▴'}</span>
       </button>

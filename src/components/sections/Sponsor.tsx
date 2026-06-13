@@ -16,7 +16,12 @@ export default function Sponsor({ data }: { data: SponsorType }) {
         <div className="sponsor-box">
           <div className="sp-tag">{data.brand_tag}</div>
           <p className="sp-copy" dangerouslySetInnerHTML={{ __html: data.copy_html }} />
-          <a href={data.cta_url} className="sp-cta">
+          <a
+            href={data.cta_url}
+            target="_blank"
+            rel="noopener noreferrer sponsored"
+            className="sp-cta"
+          >
             {data.cta} →
           </a>
         </div>

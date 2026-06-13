@@ -38,9 +38,9 @@ export default function AboutPage() {
           </p>
         </section>
 
-        <section className="sec">
+        <section className="sec" aria-labelledby="about-why">
           <div className="label">
-            <span className="nm-lab">Why this exists</span>
+            <h2 id="about-why" className="nm-lab">Why this exists</h2>
           </div>
           <div className="lede">
             <p>
@@ -52,9 +52,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="sec">
+        <section className="sec" aria-labelledby="about-who">
           <div className="label">
-            <span className="nm-lab">Who&rsquo;s behind it</span>
+            <h2 id="about-who" className="nm-lab">Who&rsquo;s behind it</h2>
           </div>
           <div className="lede">
             <p>
@@ -89,9 +89,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="sec">
+        <section className="sec" aria-labelledby="about-curation">
           <div className="label">
-            <span className="nm-lab">How the curation works</span>
+            <h2 id="about-curation" className="nm-lab">How the curation works</h2>
           </div>
           <div className="lede">
             <p>
@@ -104,9 +104,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="sec">
+        <section className="sec" aria-labelledby="about-philosophy">
           <div className="label">
-            <span className="nm-lab">Philosophy</span>
+            <h2 id="about-philosophy" className="nm-lab">Philosophy</h2>
           </div>
           <div className="lede">
             <p>
@@ -139,9 +139,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="sec">
+        <section className="sec" aria-labelledby="about-reach">
           <div className="label">
-            <span className="nm-lab">How to reach me</span>
+            <h2 id="about-reach" className="nm-lab">How to reach me</h2>
           </div>
           <div className="lede">
             <p>
@@ -157,9 +157,9 @@ export default function AboutPage() {
           </div>
         </section>
 
-        <section className="sec">
+        <section className="sec" aria-labelledby="about-read-one">
           <div className="label">
-            <span className="nm-lab">Read one first</span>
+            <h2 id="about-read-one" className="nm-lab">Read one first</h2>
           </div>
           <div className="lede">
             <p>Want to see how it reads?</p>

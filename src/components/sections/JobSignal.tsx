@@ -35,7 +35,10 @@ export default function JobSignal({ rows, spotlight, upskill, interview }: JobSi
         <div key={i} className="jobrow">
           <div className="what" dangerouslySetInnerHTML={{ __html: row.what_html }} />
           <div className={`trend ${row.trend}`}>
-            {row.trend === 'up' ? '↑ Hiring' : '🔥 Skill'}
+            <span aria-hidden="true">
+              {row.trend === 'up' ? '↑ ' : '+ '}
+            </span>
+            {row.trend === 'up' ? 'Hiring' : 'Hot skill'}
           </div>
         </div>
       ))}

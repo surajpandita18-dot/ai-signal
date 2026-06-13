@@ -78,7 +78,12 @@ export default function BuildNotes({
             <span dangerouslySetInnerHTML={{ __html: ship_this_week_html }} />
             <div className="codeblock">
               <CodeCopy code={code.body} />
-              <pre>{code.body}</pre>
+              <pre
+                tabIndex={0}
+                aria-label={`${code.lang ?? 'code'} snippet`}
+              >
+                {code.body}
+              </pre>
             </div>
           </div>
           {(hasPaper || hasEval) && (

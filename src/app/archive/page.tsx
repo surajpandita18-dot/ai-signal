@@ -52,21 +52,25 @@ export default async function ArchivePage() {
           </div>
           <div>
             {issues.length === 0 && <p className="lede">No issues yet.</p>}
-            {issues.map((it) => {
-              const padded = String(it.issue_number).padStart(3, '0')
-              const headlineText = it.hero_headline_html
-                .replace(/<br\s*\/?>/gi, ' ')
-                .replace(/<[^>]+>/g, '')
-              return (
-                <div key={it.slug} className="jobrow">
-                  <div className="what">
-                    <b>№ {padded}</b> · {it.date_display}
-                    <br />
-                    <Link href={`/i/${it.slug}`}>{headlineText}</Link>
-                  </div>
-                </div>
-              )
-            })}
+            {issues.length > 0 && (
+              <ul role="list" style={{ listStyle: 'none', padding: 0, margin: 0 }}>
+                {issues.map((it) => {
+                  const padded = String(it.issue_number).padStart(3, '0')
+                  const headlineText = it.hero_headline_html
+                    .replace(/<br\s*\/?>/gi, ' ')
+                    .replace(/<[^>]+>/g, '')
+                  return (
+                    <li key={it.slug} className="jobrow">
+                      <div className="what">
+                        <b>№&nbsp;{padded}</b> · {it.date_display}
+                        <br />
+                        <Link href={`/i/${it.slug}`}>{headlineText}</Link>
+                      </div>
+                    </li>
+                  )
+                })}
+              </ul>
+            )}
           </div>
         </section>
       </div>

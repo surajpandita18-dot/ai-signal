@@ -31,11 +31,13 @@ export default function CodeCopy({ code }: Props) {
 
   return (
     <button
+      type="button"
       className={`codecopy${copied ? ' copied' : ''}`}
-      aria-label="Copy"
+      aria-label={copied ? 'Code copied' : 'Copy code to clipboard'}
+      aria-live="polite"
       onClick={handleClick}
     >
-      {copied ? '✓ copied' : '⧉ copy'}
+      <span aria-hidden="true">{copied ? '✓ copied' : '⧉ copy'}</span>
     </button>
   )
 }

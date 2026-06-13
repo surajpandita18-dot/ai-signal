@@ -29,6 +29,7 @@ export default function SiteFooter() {
       <div>
         <Link
           href="/"
+          className="site-footer__brand"
           style={{
             fontFamily: "'Fraunces', serif",
             fontSize: 16,
@@ -51,10 +52,12 @@ export default function SiteFooter() {
             color: 'var(--grey)',
           }}
         >
-          Weekly · Saturday 08:00 IST
+          {/* nbsp glue prevents awkward line break inside the cadence label */}
+          Weekly · Saturday 08:00&nbsp;IST
         </div>
       </div>
-      <div
+      <nav
+        aria-label="Footer"
         style={{
           display: 'flex',
           gap: 22,
@@ -63,16 +66,17 @@ export default function SiteFooter() {
           textTransform: 'uppercase',
         }}
       >
-        <Link href="/about" style={{ color: 'var(--grey)' }}>
+        <Link href="/about" className="site-footer__link" style={{ color: 'var(--grey)' }}>
           About
         </Link>
-        <Link href="/archive" style={{ color: 'var(--grey)' }}>
+        <Link href="/archive" className="site-footer__link" style={{ color: 'var(--grey)' }}>
           Archive
         </Link>
         <a
           href="mailto:hello@aibasically.co"
+          aria-label="Email feedback to hello@aibasically.co"
+          className="site-footer__link"
           style={{ color: 'var(--accent)' }}
-          title="Send feedback or say hi"
         >
           Feedback
         </a>
@@ -80,11 +84,12 @@ export default function SiteFooter() {
           href="https://www.linkedin.com/in/surajpandita/"
           target="_blank"
           rel="noopener noreferrer"
+          className="site-footer__link"
           style={{ color: 'var(--grey)' }}
         >
           LinkedIn
         </a>
-      </div>
+      </nav>
     </footer>
   )
 }

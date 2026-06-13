@@ -53,8 +53,12 @@ export default function PollClient({ issueId, question, options }: Props) {
           </button>
         ))}
       </div>
-      <div className={`poll-thanks${thanksShown ? ' show' : ''}`}>
-        Noted — see you Saturday.
+      <div
+        className={`poll-thanks${thanksShown ? ' show' : ''}`}
+        role="status"
+        aria-live="polite"
+      >
+        {thanksShown ? 'Noted — see you Saturday.' : ''}
       </div>
     </div>
   )

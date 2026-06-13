@@ -32,10 +32,15 @@ export default function ShareCardButton({ text }: Props) {
 
   return (
     <button
+      type="button"
       className={`share-card${copied ? ' copied' : ''}`}
+      aria-label={copied ? 'Share card copied' : 'Copy as share card'}
+      aria-live="polite"
       onClick={handleClick}
     >
-      {copied ? '✓ Copied — go forward it' : '⧉ Copy as share card'}
+      <span aria-hidden="true">
+        {copied ? '✓ Copied — go forward it' : '⧉ Copy as share card'}
+      </span>
     </button>
   )
 }

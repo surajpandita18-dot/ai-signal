@@ -70,6 +70,11 @@ export const metadata: Metadata = {
   description: 'Explained like a normal person would. Every Saturday.',
 }
 
+export const viewport = {
+  themeColor: '#F4F1E8',
+  colorScheme: 'light',
+}
+
 export default function RootLayout({
   children,
 }: {
@@ -84,7 +89,7 @@ export default function RootLayout({
   ].join(' ')
 
   return (
-    <html lang="en" className={fontClasses}>
+    <html lang="en" className={fontClasses} style={{ colorScheme: 'light' }}>
       <head>
         {/* 'Archivo Expanded' is not a real Google Fonts family — the CSS
             endpoint returns 400. We alias the literal family name used in

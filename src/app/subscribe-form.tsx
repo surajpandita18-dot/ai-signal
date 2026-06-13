@@ -47,6 +47,8 @@ export default function SubscribeForm() {
   if (state === 'done' || state === 'already') {
     return (
       <p
+        role="status"
+        aria-live="polite"
         style={{
           marginTop: 24,
           fontFamily: "'Newsreader', serif",
@@ -57,7 +59,7 @@ export default function SubscribeForm() {
         }}
       >
         {state === 'already'
-          ? 'You’re in. Saturday at 8 AM IST.'
+          ? 'You’re in. Saturday at 8 AM IST.'
           : 'You’re in. First Saturday: see you then.'}
       </p>
     )
@@ -76,6 +78,11 @@ export default function SubscribeForm() {
     >
       <input
         type="email"
+        name="email"
+        autoComplete="email"
+        inputMode="email"
+        spellCheck={false}
+        autoCapitalize="off"
         required
         value={email}
         onChange={(e) => setEmail(e.target.value)}
@@ -110,19 +117,20 @@ export default function SubscribeForm() {
       >
         {state === 'submitting' ? 'Sending…' : 'Subscribe'}
       </button>
-      {state === 'error' ? (
-        <p
-          style={{
-            width: '100%',
-            marginTop: 4,
-            fontSize: 13,
-            color: 'var(--accent)',
-            fontFamily: "'Archivo Narrow', sans-serif",
-          }}
-        >
-          Something broke. Try again in a minute.
-        </p>
-      ) : null}
+      <p
+        role="alert"
+        aria-live="polite"
+        style={{
+          width: '100%',
+          marginTop: 4,
+          fontSize: 13,
+          color: 'var(--accent)',
+          fontFamily: "'Archivo Narrow', sans-serif",
+          minHeight: state === 'error' ? undefined : 0,
+        }}
+      >
+        {state === 'error' ? 'Something broke. Try again in a minute.' : ''}
+      </p>
     </form>
   )
 }
