@@ -1,12 +1,11 @@
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
+import type { Database } from '../../../db/types/database'
 
-type ArchiveRow = {
-  slug: string
-  issue_number: number
-  date_display: string
-  hero_headline_html: string
-}
+type ArchiveRow = Pick<
+  Database['public']['Tables']['issues']['Row'],
+  'slug' | 'issue_number' | 'date_display' | 'hero_headline_html'
+>
 
 export default async function ArchivePage() {
   const supabase = await createServerSupabaseClient()
@@ -16,7 +15,7 @@ export default async function ArchivePage() {
     .eq('status', 'published')
     .order('issue_number', { ascending: false })
 
-  const issues = (data ?? []) as unknown as ArchiveRow[]
+  const issues: ArchiveRow[] = data ?? []
 
   // Group adjacent issues by their publication month. The archive grows by one
   // issue a week; once it spans 2+ months, month headers ("June 2026") give
