@@ -140,22 +140,22 @@
       "steps": [
         {
           "n": 1,
-          "body_html": "Start with the <b>user outcome you'd protect</b>, not model size. \"Good enough\" is defined by what users will actually hit, not average benchmarks."
+          "body_html": "Diagnose before deciding. <b>What drove the 40%?</b> Traffic growth, model upgrade, hot prompts, or unbounded retries. The answer determines which of the three options is even viable."
         },
         {
           "n": 2,
-          "body_html": "Build a <b>real-traffic eval set</b> — 100-200 actual production prompts, weighted by frequency and by stakes (a wrong number costs more than a wrong word)."
+          "body_html": "Score Option A (quantize). <b>Run the int4/int8 candidate on real production traffic in shadow.</b> Measure outcome regressions per stake-tier, not perplexity. Decide threshold before you start, not after."
         },
         {
           "n": 3,
-          "body_html": "Define the <b>disagreement budget</b> — e.g. \"the smaller model can disagree with the larger one on ≤ 5% of low-stakes prompts and 0% of high-stakes ones.\" Numbers, not vibes."
+          "body_html": "Score Option B (migrate). <b>Get the true cost: SKU price + porting time + ops retraining + vendor SLO risk + ecosystem dependencies you would lose.</b> If your 30% saving is on raw compute and 40% of your spend is elsewhere, it is a 12% real saving."
         },
         {
           "n": 4,
-          "body_html": "Plan the <b>rollback</b> before ship: \"if disagreement rate on the live shadow exceeds X for 24h, auto-fall-back to the bigger model.\" Logged, alerted, automatic."
+          "body_html": "Score Option C (wait). <b>Estimate next-gen NVIDIA's price/perf gain and slip-probability, then size the cost of six months at today's burn.</b> Waiting is a real option only if you can survive the bill while doing nothing."
         }
       ],
-      "tip_html": "<b>The framework (works for any \"is X good enough\" question):</b> User outcome → real-traffic eval → disagreement budget by stakes → rollback plan. The trap: candidates lead with \"benchmark scores are similar\". Winners lead with \"depends what breaks for the user, and how we'd know.\" Structure &gt; benchmarks. <em>Save this — it answers a whole category of cost-vs-quality questions.</em>"
+      "tip_html": "<b>The framework (works for any \"three-option infrastructure decision\" — model, compute, hosting, database, observability stack):</b> Diagnose the actual cost driver → score each option on full lifecycle cost (not sticker) → pre-commit thresholds before you start measuring → choose by single outcome metric (cost-per-successful-task, not cost-per-token). <b>The trap:</b> candidates compare sticker prices and pick the lowest. <b>Winners</b> name the cost driver first, then run a shadow eval, then quote one number: <em>cost-per-successful-task</em>. <em>Save this — it answers any \"three-option infra\" interview question.</em>"
     }
   },
   "under_the_hood": {
