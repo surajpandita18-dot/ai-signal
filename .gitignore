@@ -65,3 +65,6 @@ CLAUDE.md.backup-*
 
 # QA artefacts
 /scripts/
+
+# claude code worktrees + local memory
+.claude/
