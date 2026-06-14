@@ -200,8 +200,8 @@
           "signal_lost_html": "Post-hoc thresholds are how teams ship quantizations that quietly break. It signals you treat measurement as theater for the decision you already wanted to make, which is exactly the failure mode safety-conscious labs are screening for."
         },
         {
-          "move": "Skip the diagnosis step and pick a solution in the first sentence.",
-          "signal_lost_html": "Answering before diagnosing is the move that separates engineers from senior PMs. If the 40% is a retry-loop bug, all three options waste a quarter of the org's attention — and your interviewer will say so in their notes."
+          "move": "Open with \"I'd quantize first since it's the lowest-risk reversible move\" before asking what drove the 40%.",
+          "signal_lost_html": "Naming a solution before naming the cost driver signals you optimise for sounding decisive over being correct — the exact failure mode hire-bar labs screen for on infra calls. If the 40% turns out to be a retry-loop bug, you've just committed a quarter of engineering capacity to solving a symptom; the interviewer logs \"jumps to action without diagnosis\" and you are out of the strong-hire bucket regardless of what you say next."
         }
       ],
       "good_vs_great_html": "Hire candidates name <em>cost-per-successful-task</em>. Strong-hire candidates name it <b>and then define what \"successful\" means per product surface</b> — a resolved ticket for support, an accepted suggestion for code, an unflagged answer for billing. The move is naming the operational definition, not just the metric. It tells the interviewer you have shipped this exact instrumentation before, because anyone who has knows that \"success\" is the contested word, not \"cost\" or \"task\". A reader who currently says only \"cost-per-successful-task\" is at hire. A reader who adds the per-surface definition in the same breath is at strong-hire.",
