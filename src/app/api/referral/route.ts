@@ -5,12 +5,19 @@ import { unlockTier } from '@/lib/referral'
 export const runtime = 'nodejs'
 export const dynamic = 'force-dynamic'
 
+// Mirror the format contract enforced by /r/[code]/route.ts so callers can't
+// shovel arbitrary strings (or oversized payloads) at Supabase via this API.
+const REF_CODE_RE = /^[A-Za-z0-9_-]{4,32}$/
+
 // GET /api/referral?code=XXXX → { count, tier }
 export async function GET(req: Request) {
   const { searchParams } = new URL(req.url)
   const code = searchParams.get('code')?.trim()
   if (!code) {
     return NextResponse.json({ error: 'missing_code' }, { status: 400 })
+  }
+  if (!REF_CODE_RE.test(code)) {
+    return NextResponse.json({ error: 'invalid_code' }, { status: 400 })
   }
 
   const supabase = createAdminSupabaseClient()
