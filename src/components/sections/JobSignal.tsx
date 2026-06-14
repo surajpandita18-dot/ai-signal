@@ -1,5 +1,5 @@
+import Link from 'next/link'
 import type { JobSignal as JobSignalType } from '@/lib/content-model'
-import CopyOnClick from '@/components/interactive/CopyOnClick'
 
 // Strip HTML tags and decode the small handful of entities that show up
 // in our content_html strings. Good enough for "innerText"-style copy.
@@ -21,13 +21,33 @@ function stripHtml(html: string): string {
     .trim()
 }
 
-export default function JobSignal({ rows, spotlight, upskill, interview }: JobSignalType) {
-  const interviewPlainText = [
-    ...interview.steps.map((s) => `${s.n}. ${stripHtml(s.body_html)}`),
-    stripHtml(interview.tip_html),
-  ]
-    .filter(Boolean)
-    .join('\n')
+// Reduce a step's body to its first clause for the teaser card.
+// Splits on ":" (most steps lead with a label) or the first comma; caps at 50.
+function firstClause(html: string): string {
+  const text = stripHtml(html)
+  const colon = text.indexOf(':')
+  const comma = text.indexOf(',')
+  let cut = -1
+  if (colon !== -1) cut = colon
+  else if (comma !== -1) cut = comma
+  const clause = cut === -1 ? text : text.slice(0, cut)
+  const trimmed = clause.trim()
+  return trimmed.length > 50 ? trimmed.slice(0, 47).trimEnd() + '…' : trimmed
+}
+
+type JobSignalProps = JobSignalType & { issueSlug: string }
+
+export default function JobSignal({
+  rows,
+  spotlight,
+  upskill,
+  interview,
+  issueSlug,
+}: JobSignalProps) {
+  // `framework_name` is an optional field on the in-flight extended Interview
+  // type (rolling out alongside /interviews/[slug]). Read defensively so this
+  // component compiles against both the current base type and the extended one.
+  const frameworkName = (interview as { framework_name?: string }).framework_name
 
   return (
     <div className="jobs">
@@ -71,20 +91,72 @@ export default function JobSignal({ rows, spotlight, upskill, interview }: JobSi
 
       <div className="interview">
         <div className="iv-q">
-          <div className="lab">{interview.q_label}</div>
+          <div className="lab">Interview Q · {interview.q_label}</div>
           <div className="q">{interview.q}</div>
         </div>
-        <CopyOnClick textToCopy={interviewPlainText}>
-          <div className="iv-a">
-            {interview.steps.map((step) => (
-              <div key={step.n} className="step">
-                <b>{step.n}.</b>
-                <span dangerouslySetInnerHTML={{ __html: step.body_html }} />
-              </div>
-            ))}
-            <div className="tip" dangerouslySetInnerHTML={{ __html: interview.tip_html }} />
+        <div className="iv-a">
+          {frameworkName ? (
+            <div
+              style={{
+                fontFamily: "'Archivo Narrow', sans-serif",
+                fontWeight: 600,
+                fontSize: 11,
+                letterSpacing: '.12em',
+                textTransform: 'uppercase',
+                color: 'var(--accent)',
+                marginBottom: 8,
+              }}
+            >
+              Framework · {frameworkName}
+            </div>
+          ) : null}
+          <div
+            style={{
+              fontFamily: "'Archivo Narrow', sans-serif",
+              fontWeight: 600,
+              fontSize: 12,
+              letterSpacing: '.06em',
+              textTransform: 'uppercase',
+              color: 'var(--grey)',
+              marginBottom: 4,
+            }}
+          >
+            The framework in 4 steps
           </div>
-        </CopyOnClick>
+          {interview.steps.map((step) => (
+            <div key={step.n} className="step">
+              <b>{step.n}.</b>
+              <span>{firstClause(step.body_html)}</span>
+            </div>
+          ))}
+          <Link
+            href={`/interviews/${issueSlug}`}
+            style={{
+              display: 'block',
+              marginTop: 14,
+              padding: '10px 12px',
+              borderTop: '1px solid var(--hair)',
+              fontFamily: "'Spline Sans Mono', monospace",
+              fontSize: 12,
+              color: 'var(--accent)',
+              textDecoration: 'none',
+              lineHeight: 1.5,
+            }}
+          >
+            <span style={{ fontWeight: 600 }}>→ Read the full prep brief</span>
+            <span
+              style={{
+                display: 'block',
+                marginTop: 2,
+                color: 'var(--grey)',
+                fontSize: 11,
+                letterSpacing: '.02em',
+              }}
+            >
+              Model answer · counter-questions · traps
+            </span>
+          </Link>
+        </div>
       </div>
     </div>
   )

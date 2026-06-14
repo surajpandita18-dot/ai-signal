@@ -176,7 +176,7 @@ export default async function Page({
           label="Job Signal"
           hint="Where the jobs are, the money's going, and what they'll ask you."
         >
-          <JobSignal {...content.job_signal} />
+          <JobSignal {...content.job_signal} issueSlug={issue} />
         </Section>
         <Section
           n="04"
