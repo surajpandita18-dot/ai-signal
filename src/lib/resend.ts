@@ -4,14 +4,18 @@ import type { ReactElement } from 'react'
 /**
  * Configured Resend client.
  * Reads RESEND_API_KEY from env; throws if missing so callers don't silently
- * no-op.
+ * no-op. Memoised so the weekly blast doesn't instantiate one SDK client per
+ * recipient inside Promise.allSettled.
  */
+let cached: Resend | null = null
 export function resend(): Resend {
+  if (cached) return cached
   const apiKey = process.env.RESEND_API_KEY
   if (!apiKey) {
     throw new Error('RESEND_API_KEY env var is not set')
   }
-  return new Resend(apiKey)
+  cached = new Resend(apiKey)
+  return cached
 }
 
 type SendIssueEmailArgs = {
