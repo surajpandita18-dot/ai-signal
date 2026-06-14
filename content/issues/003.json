@@ -231,7 +231,7 @@
         "status_hot": false,
         "h4": "Hyderabad-based Sagar Defence Engineering raises ₹220 cr for autonomous maritime AI",
         "body": "Quiet Series B. The company is building autonomous surface and underwater vessels with on-board vision models tuned for Indian Ocean conditions — including the cluttered, low-visibility coastal waters where Western models trained on clean-sea datasets fail.",
-        "why_you": "India's defence-AI sector just crossed from policy decks to deployed capability. The hiring will follow within 12 months.",
+        "why_you": "the moat here isn't the vessel — it's the Indian Ocean dataset. Western vision models trained on clean-sea footage are useless in monsoon silt; locally-collected training data is the unfair advantage, and the people who can label and curate it are about to get hired hard.",
         "source_url": "https://www.sagardefence.com/"
       }
     ],
