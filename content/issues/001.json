@@ -200,8 +200,8 @@
           "signal_lost_html": "Aggregate fairness is the textbook way to hide real harm — the whole reason the regulator asked the question is that group-level disparities don't show up in totals. Skipping slices reads as either inexperience or unwillingness to find bad news."
         },
         {
-          "move": "Treating the decision log as a compliance checkbox",
-          "signal_lost_html": "Framing the audit trail as paperwork-for-the-regulator (rather than as your own feedback signal) signals you'd outsource the safety case to legal. Senior PMs read their own logs; that's what makes them senior."
+          "move": "Saying the decision log will be \"reviewed quarterly\" or \"handed to compliance\"",
+          "signal_lost_html": "Quarterly-review cadence on a live AI system is the tell — it means you've built the log for the auditor, not for yourself. Senior PMs say they read the override-rate and reason-code dashboards weekly and name which anomaly they'd page on; anything slower than that signals you'd find out about the slice breach from the regulator before you found it yourself."
         }
       ],
       "good_vs_great_html": "Hire candidates name the comparator (human underwriters) and the slices. <b>Strong-hire candidates pre-commit, on the call, to the exact memo they would write to the board the day a slice breaches the kill threshold</b> — including who gets notified, what the automated fallback path is, and the wording of the customer communication. Naming the comparator is competence. Naming what you'd do the day you have to pull your own feature is the move that gets \"STRONG HIRE — owns the consequence\" in the interviewer's notes. It is the difference between someone who designs the measurement programme and someone the company trusts to run it.",
