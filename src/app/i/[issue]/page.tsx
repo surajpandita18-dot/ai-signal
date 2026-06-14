@@ -1,11 +1,43 @@
 import { readFile } from 'node:fs/promises'
 import path from 'node:path'
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
 import type { IssueContent } from '@/lib/content-model'
 import type { Database } from '../../../../db/types/database'
 
 type IssueRow = Database['public']['Tables']['issues']['Row']
+
+const SITE_URL =
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ issue: string }>
+}): Promise<Metadata> {
+  const { issue } = await params
+  const ogUrl = `${SITE_URL}/og/${issue}`
+  const url = `${SITE_URL}/i/${issue}`
+  return {
+    title: `AI, Basically. — Issue ${issue}`,
+    openGraph: {
+      title: `AI, Basically. — Issue ${issue}`,
+      description: 'Explained like a normal person would.',
+      url,
+      siteName: 'AI, Basically.',
+      images: [{ url: ogUrl, width: 1200, height: 630 }],
+      locale: 'en_IN',
+      type: 'article',
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: `AI, Basically. — Issue ${issue}`,
+      description: 'Explained like a normal person would.',
+      images: [ogUrl],
+    },
+  }
+}
 
 import Masthead from '@/components/issue/Masthead'
 import Hero from '@/components/issue/Hero'
