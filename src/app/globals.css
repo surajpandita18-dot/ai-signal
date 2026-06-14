@@ -6,3 +6,25 @@ body {
   background: var(--bg);
   color: var(--ink);
 }
+
+/* Site-wide keyboard focus fallback. Tailwind preflight strips browser
+   default outlines, and per-section focus styles only cover .issue and a
+   handful of component classes — landing, subscribe form, archive, about,
+   and footer links live outside that scope. */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Reduced-motion safety net beyond .issue (subscribe form, future
+   interactive bits on landing/about/archive). Mirrors the in-issue rule. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
