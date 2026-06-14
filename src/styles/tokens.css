@@ -25,4 +25,8 @@
   --hair:       #DCD6C8;
   --grey:       #6F6A60;
   --dark-band:  #211E18;
+  /* accent variant used on dark surfaces (--ink, --dark-band) where
+     --accent #9C4A2E fails 4.5:1 contrast. Currently appears as a literal
+     in issue.css (bn-metric, codecopy, closer punch, cc-tag) and emails. */
+  --accent-on-dark: #C8794B;
 }
