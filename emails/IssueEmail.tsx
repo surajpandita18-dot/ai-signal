@@ -111,12 +111,15 @@ function renderInlineHtml(html: string): React.ReactNode {
       stack.push({ tag: t.tag, cls: t.cls, children: [] })
     } else if (t.kind === 'close') {
       // Pop matching tag if found; otherwise ignore (drop stray).
-      const frame = stack.pop()
-      if (!frame || frame.tag === 'root') {
-        // stray close — drop
-        if (frame && frame.tag === 'root') stack.push(frame)
+      // Validate the close tag matches the top open frame — otherwise
+      // mis-nested input like `<strong><em>x</strong></em>` would silently
+      // render the wrong wrapper. On mismatch, drop the stray close.
+      const topFrame = top()
+      if (topFrame.tag === 'root' || topFrame.tag !== t.tag) {
+        // stray / mismatched close — drop, leave stack intact
         continue
       }
+      const frame = stack.pop()!
       const node = wrap(frame.tag, frame.cls, frame.children, key++)
       top().children.push(node)
     }
