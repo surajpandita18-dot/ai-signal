@@ -20,7 +20,11 @@ export default function ReadingProgressClient() {
       el.style.transition = 'none'
     }
 
-    function update() {
+    let rafId = 0
+    let pending = false
+
+    function read() {
+      pending = false
       if (!el) return
       // Take the larger of documentElement / body — some layouts scroll the
       // body, some the html. Subtract the viewport to get the scrollable range.
@@ -38,15 +42,23 @@ export default function ReadingProgressClient() {
       el.style.width = `${pct}%`
     }
 
+    // Coalesce scroll/resize bursts to one read per animation frame to avoid
+    // layout thrash on long pages.
+    function schedule() {
+      if (pending) return
+      pending = true
+      rafId = requestAnimationFrame(read)
+    }
+
     // Defer the first read until after layout has settled — components below
     // mount asynchronously, so scrollHeight at useEffect time can be stale.
-    const raf = requestAnimationFrame(update)
-    window.addEventListener('scroll', update, { passive: true })
-    window.addEventListener('resize', update)
+    rafId = requestAnimationFrame(read)
+    window.addEventListener('scroll', schedule, { passive: true })
+    window.addEventListener('resize', schedule)
     return () => {
-      cancelAnimationFrame(raf)
-      window.removeEventListener('scroll', update)
-      window.removeEventListener('resize', update)
+      cancelAnimationFrame(rafId)
+      window.removeEventListener('scroll', schedule)
+      window.removeEventListener('resize', schedule)
     }
   }, [])
 
