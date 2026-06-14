@@ -72,6 +72,9 @@ export default function SiteFooter() {
         <Link href="/archive" className="site-footer__link" style={{ color: 'var(--grey)' }}>
           Archive
         </Link>
+        <Link href="/interviews" className="site-footer__link" style={{ color: 'var(--grey)' }}>
+          Interviews
+        </Link>
         <a
           href="mailto:hello@aibasically.co"
           aria-label="Email feedback to hello@aibasically.co"

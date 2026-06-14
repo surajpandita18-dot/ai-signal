@@ -213,6 +213,21 @@ function stripWhyCare(s: string): string {
     .trim()
 }
 
+// Mirror of src/components/sections/JobSignal.tsx#firstClause — collapses an
+// interview step's body to its leading clause so the email teaser matches the
+// web teaser's visual rhythm. The full step body lives on /interviews/[slug].
+function firstClause(html: string): string {
+  const text = stripTags(html).replace(/\s+/g, ' ').trim()
+  const colon = text.indexOf(':')
+  const comma = text.indexOf(',')
+  let cut = -1
+  if (colon !== -1) cut = colon
+  else if (comma !== -1) cut = comma
+  const clause = cut === -1 ? text : text.slice(0, cut)
+  const trimmed = clause.trim()
+  return trimmed.length > 50 ? trimmed.slice(0, 47).trimEnd() + '…' : trimmed
+}
+
 // ----------------------------------------------------------------------------
 // Component
 // ----------------------------------------------------------------------------
@@ -754,7 +769,10 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 Source: {job.spotlight.source}
               </Text>
             </Section>
-            {/* Interview */}
+            {/* Interview teaser — email is always-open (no folds), so we
+                show only the question + framework skeleton and send readers
+                to /interviews/[slug] for the model answer, traps, and
+                counter-questions. Mirrors the web JobSignal teaser. */}
             <Section
               style={{
                 border: `1px dashed ${ACCENT}`,
@@ -786,38 +804,105 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                     fontFamily: SANS,
                   }}
                 >
-                  {job.interview.q_label}
+                  Interview Q · {job.interview.q_label}
                 </small>
                 {job.interview.q}
               </Text>
-              <Text
-                style={{
-                  padding: '10px 10px',
-                  fontSize: 12.5,
-                  lineHeight: 1.55,
-                  margin: 0,
-                  fontFamily: SERIF,
-                  color: INK,
-                  ...SAFE_WRAP,
-                }}
-              >
-                {job.interview.steps.map((s, i) => (
-                  <React.Fragment key={s.n}>
+              <Section style={{ padding: '12px 10px' }}>
+                {(() => {
+                  // `framework_name` is an optional field on the in-flight
+                  // extended Interview type (rolling out alongside
+                  // /interviews/[slug]). Read defensively so this template
+                  // compiles against both the current base type and the
+                  // extended one.
+                  const frameworkName = (
+                    job.interview as { framework_name?: string }
+                  ).framework_name
+                  return frameworkName ? (
+                    <Text
+                      style={{
+                        fontFamily: SANS,
+                        fontSize: 10,
+                        fontWeight: 'bold',
+                        letterSpacing: '.12em',
+                        textTransform: 'uppercase',
+                        color: ACCENT,
+                        margin: '0 0 8px',
+                        ...SAFE_WRAP,
+                      }}
+                    >
+                      Framework · {frameworkName}
+                    </Text>
+                  ) : null
+                })()}
+                <Text
+                  style={{
+                    fontFamily: SANS,
+                    fontSize: 10,
+                    fontWeight: 'bold',
+                    letterSpacing: '.08em',
+                    textTransform: 'uppercase',
+                    color: GREY,
+                    margin: '0 0 6px',
+                    ...SAFE_WRAP,
+                  }}
+                >
+                  The framework in 4 steps
+                </Text>
+                {job.interview.steps.map((s) => (
+                  <Text
+                    key={s.n}
+                    style={{
+                      fontFamily: SERIF,
+                      fontSize: 13,
+                      lineHeight: 1.5,
+                      color: INK,
+                      margin: '3px 0',
+                      ...SAFE_WRAP,
+                    }}
+                  >
                     <b
                       style={{
                         color: ACCENT,
                         fontFamily: "'Courier New', monospace",
+                        marginRight: 6,
                       }}
                     >
                       {s.n}.
-                    </b>{' '}
-                    {renderInlineHtml(s.body_html)}
-                    {i < job.interview.steps.length - 1 ? '  ' : ''}
-                  </React.Fragment>
+                    </b>
+                    {firstClause(s.body_html)}
+                  </Text>
                 ))}
-                <br />
-                <i>{renderInlineHtml(job.interview.tip_html)}</i>
-              </Text>
+                <Link
+                  href={`${SITE}/interviews/${content.slug}`}
+                  style={{
+                    display: 'block',
+                    marginTop: 12,
+                    paddingTop: 10,
+                    borderTop: `1px solid ${HAIR}`,
+                    fontFamily: "'Courier New', monospace",
+                    fontSize: 12,
+                    color: ACCENT,
+                    textDecoration: 'none',
+                    lineHeight: 1.5,
+                    fontWeight: 'bold',
+                  }}
+                >
+                  Read the full prep brief &rarr;
+                  <span
+                    style={{
+                      display: 'block',
+                      marginTop: 2,
+                      color: GREY,
+                      fontWeight: 'normal',
+                      fontSize: 11,
+                      letterSpacing: '.02em',
+                    }}
+                  >
+                    Model answer · counter-questions · traps
+                  </span>
+                </Link>
+              </Section>
             </Section>
           </Section>
 
