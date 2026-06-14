@@ -79,11 +79,50 @@ export type Upskill = {
   note_html: string
 }
 
+/**
+ * Interview prep brief.
+ *
+ * Dual surface:
+ *   - In the Saturday issue's Job Signal section, this renders as a TIGHT
+ *     teaser card (q_label + q + framework_name + 4 first-clause steps + CTA
+ *     to the full brief on /interviews/<slug>).
+ *   - On /interviews/<slug>, it renders as the FULL 8-section prep brief —
+ *     see system/INTERVIEW-RUBRIC.md for the quality bar (Anthropic / OpenAI
+ *     hire-level depth, 1250-2050 words).
+ *
+ * The deep fields below are optional so legacy issues (pre-brief-rewrite)
+ * still type-check; when absent, /interviews/<slug> shows a graceful
+ * "full prep brief coming soon" fallback using the q + steps + tip_html.
+ */
+export type InterviewCounter = {
+  q: string                       // the follow-up question the interviewer asks
+  strong_html: string             // the strong answer (1-3 sentences)
+  weak_html: string               // the common weak answer
+  why_weak_loses_html: string     // why the weak answer loses signal
+}
+
+export type InterviewTrap = {
+  move: string                    // the specific wrong move (verbatim, scannable)
+  signal_lost_html: string        // what seniority signal this move loses
+}
+
 export type Interview = {
-  q_label: string
-  q: string
-  steps: { n: number; body_html: string }[]   // length 4
-  tip_html: string
+  // teaser surface (always required)
+  q_label: string                  // "AI PM · regulated stack"
+  q: string                        // the question, verbatim
+  steps: { n: number; body_html: string }[]   // length 4 — the framework steps
+  tip_html: string                 // legacy meta-skill closer; superseded by meta_skill_html when present
+
+  // full-brief fields (optional — present once the issue's brief is rewritten to rubric)
+  framework_name?: string                // "Counterfactual → slice → observability → kill criteria"
+  why_they_ask_html?: string             // section 2 — what they're really testing
+  sample_answer_html?: string            // section 4 — first-person spoken, with inline [why this works] callouts
+  depth_guide_html?: string              // section 5 — what to lead with vs hold for probe
+  counters?: InterviewCounter[]          // section 6 — 3-5 follow-ups
+  traps?: InterviewTrap[]                // section 7 — 3-5 wrong moves
+  good_vs_great_html?: string            // section 8 — strong-hire distinguisher
+  meta_skill_html?: string               // the durable transferable skill
+  read_time_min?: number                 // for /interviews/<slug> page header
 }
 
 export type JobSignal = {
