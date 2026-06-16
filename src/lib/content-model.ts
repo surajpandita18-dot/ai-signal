@@ -117,6 +117,13 @@ export type Interview = {
   framework_name?: string                // "Counterfactual → slice → observability → kill criteria"
   why_they_ask_html?: string             // section 2 — what they're really testing
   sample_answer_html?: string            // section 4 — first-person spoken, with inline [why this works] callouts
+  // Optional eval deep-dive — teaches HOW to design / construct / validate / read
+  // the eval the framework calls for. Most candidates know to log but not to
+  // evaluate; this section closes that gap with the specific eval shape this
+  // question's framework needs (sample size, scorer choice, ship-gate threshold).
+  // Renders as its own section between Sample Answer and Depth Guide on
+  // /interviews/<slug>; absent ⇒ section is skipped.
+  eval_deep_dive_html?: string
   depth_guide_html?: string              // section 5 — what to lead with vs hold for probe
   counters?: InterviewCounter[]          // section 6 — 3-5 follow-ups
   traps?: InterviewTrap[]                // section 7 — 3-5 wrong moves

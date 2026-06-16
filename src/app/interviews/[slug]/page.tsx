@@ -20,6 +20,7 @@ type Interview = BaseInterview & {
   framework_name?: string
   why_they_ask_html?: string
   sample_answer_html?: string
+  eval_deep_dive_html?: string
   depth_guide_html?: string
   counters?: {
     q: string
@@ -275,6 +276,23 @@ export default async function Page({
             <div
               className="lede"
               dangerouslySetInnerHTML={{ __html: interview.sample_answer_html }}
+            />
+          </section>
+        ) : null}
+
+        {hasDeep && interview.eval_deep_dive_html ? (
+          <section className="sec" aria-labelledby="prep-eval">
+            <div className="label">
+              <h2 id="prep-eval" className="nm-lab">
+                The eval, in detail
+              </h2>
+              <span className="hint">
+                What to put in the eval set, how to score, how to read the output.
+              </span>
+            </div>
+            <div
+              className="lede"
+              dangerouslySetInnerHTML={{ __html: interview.eval_deep_dive_html }}
             />
           </section>
         ) : null}
