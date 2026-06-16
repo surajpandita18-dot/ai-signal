@@ -173,9 +173,27 @@ export default async function Page({
           <div className="eyebrow">
             {interview.q_label} · From {issueLabel}
           </div>
-          <h1>{interview.q}</h1>
+          {/* Override the .issue .hero h1 clamp(38px,6vw,70px) display size:
+              questions here are 30-80 word scenarios, not short headlines, so
+              display-weight typography pushes them to 8+ wrapped lines on
+              mobile. Keep the semantic h1 for SEO/a11y but scale it to
+              long-form-friendly. */}
+          <h1
+            style={{
+              fontSize: 'clamp(22px, 3.4vw, 32px)',
+              lineHeight: 1.3,
+              letterSpacing: '-0.015em',
+              marginTop: 14,
+              fontWeight: 500,
+            }}
+          >
+            {interview.q}
+          </h1>
           {interview.framework_name ? (
-            <p className="sub">
+            <p
+              className="sub"
+              style={{ fontSize: 15, lineHeight: 1.5, marginTop: 12 }}
+            >
               <strong>Framework:</strong> <em>{interview.framework_name}</em>
             </p>
           ) : null}
