@@ -213,19 +213,23 @@ function stripWhyCare(s: string): string {
     .trim()
 }
 
-// Mirror of src/components/sections/JobSignal.tsx#firstClause — collapses an
-// interview step's body to its leading clause so the email teaser matches the
-// web teaser's visual rhythm. The full step body lives on /interviews/[slug].
+// Mirror of src/components/sections/JobSignal.tsx#firstClause — extracts the
+// load-bearing <b> clause from a step body. The label sentence above the bold
+// just echoes the framework name (which the teaser already shows above the
+// numbered steps); without this extraction, all 5 steps render identical to
+// the framework name. Cap at 90 chars with word-boundary truncation.
 function firstClause(html: string): string {
-  const text = stripTags(html).replace(/\s+/g, ' ').trim()
-  const colon = text.indexOf(':')
-  const comma = text.indexOf(',')
-  let cut = -1
-  if (colon !== -1) cut = colon
-  else if (comma !== -1) cut = comma
-  const clause = cut === -1 ? text : text.slice(0, cut)
-  const trimmed = clause.trim()
-  return trimmed.length > 50 ? trimmed.slice(0, 47).trimEnd() + '…' : trimmed
+  const boldMatch = /<b\b[^>]*>([\s\S]*?)<\/b>/i.exec(html)
+  const source = boldMatch ? boldMatch[1] : html
+  const text = stripTags(source).replace(/\s+/g, ' ').trim()
+  let working = text
+  if (!boldMatch) {
+    const labelEnd = text.indexOf('. ')
+    if (labelEnd !== -1 && labelEnd < 40) working = text.slice(labelEnd + 2)
+  }
+  if (working.length <= 90) return working
+  const wb = working.lastIndexOf(' ', 87)
+  return (wb === -1 ? working.slice(0, 87) : working.slice(0, wb)).trimEnd() + '…'
 }
 
 // Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — keeps the

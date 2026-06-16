@@ -21,24 +21,31 @@ function stripHtml(html: string): string {
     .trim()
 }
 
-// Reduce a step's body to its first clause for the teaser card. Splits on
-// the first ":" (most steps lead with a label like "Bound the loop. Cap…").
-// Falls back to first sentence (.) — never cuts at a comma any more because
-// step bodies often have natural commas mid-clause that mangle the meaning
-// ("split tools into reversible,..." reads worse than the full first sentence).
-// Cap at 80 chars with word-boundary truncation.
+// Reduce a step's body to its load-bearing clause for the teaser card.
+//
+// Step body convention (verified across issues 001-004): each step opens
+// with the framework verb-phrase as a label sentence ("Bound the loop."),
+// followed by a <b>...</b> clause carrying the actual detail, then optional
+// commentary. The teaser already shows the framework name above; we need
+// the BOLD clause, not the label-sentence echo. Without this, the 5 numbered
+// steps end up identical to the framework name above them — zero new info.
+//
+// Strategy: extract the first <b>...</b> content. Fall back to first
+// sentence if no bold tag. Cap at 90 chars with word-boundary truncation.
 function firstClause(html: string): string {
-  const text = stripHtml(html)
-  const colon = text.indexOf(':')
-  const period = text.indexOf('. ')
-  let cut = -1
-  if (colon !== -1 && (period === -1 || colon < period)) cut = colon
-  else if (period !== -1) cut = period
-  const clause = cut === -1 ? text : text.slice(0, cut)
-  const trimmed = clause.trim()
-  if (trimmed.length <= 80) return trimmed
-  const wb = trimmed.lastIndexOf(' ', 77)
-  return (wb === -1 ? trimmed.slice(0, 77) : trimmed.slice(0, wb)).trimEnd() + '…'
+  const boldMatch = /<b\b[^>]*>([\s\S]*?)<\/b>/i.exec(html)
+  const source = boldMatch ? boldMatch[1] : html
+  const text = stripHtml(source).trim()
+  // If we used the full body (no bold tag found), still strip the label
+  // sentence prefix — e.g., "Bound the loop. Cap tool calls…" → "Cap tool…"
+  let working = text
+  if (!boldMatch) {
+    const labelEnd = text.indexOf('. ')
+    if (labelEnd !== -1 && labelEnd < 40) working = text.slice(labelEnd + 2)
+  }
+  if (working.length <= 90) return working
+  const wb = working.lastIndexOf(' ', 87)
+  return (wb === -1 ? working.slice(0, 87) : working.slice(0, wb)).trimEnd() + '…'
 }
 
 /**
