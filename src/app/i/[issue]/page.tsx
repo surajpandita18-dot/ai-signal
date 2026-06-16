@@ -113,13 +113,25 @@ export default async function Page({
   //   pending; see supabase/migrations/20260612000001_add_decoder.sql)
   // - tldr.target: rows seeded before the navigator shipped don't carry per-
   //   row anchor targets; the JSON has them now.
-  // Once the DB carries both, this block becomes a no-op.
+  // - job_signal.interview deep fields (framework_name, counters, traps,
+  //   sample_answer_html, etc.): rows seeded before the prep-brief rubric
+  //   was authored only carry the teaser shape. The JobSignal teaser uses
+  //   framework_name, and /interviews/<slug> needs all the deep fields.
+  // Once an ops step copies the JSON into the DB row, this becomes a no-op.
   const decoderMissing = !content.decoder
   const tldrTargetsMissing =
     Array.isArray(content.tldr) &&
     content.tldr.length > 0 &&
     !content.tldr.some((r) => r.target)
-  if (decoderMissing || tldrTargetsMissing) {
+  const interview = content.job_signal?.interview as
+    | (typeof content.job_signal.interview & {
+        framework_name?: string
+        counters?: unknown[]
+      })
+    | undefined
+  const interviewBriefMissing =
+    !!interview && !interview.framework_name && !interview.counters?.length
+  if (decoderMissing || tldrTargetsMissing || interviewBriefMissing) {
     try {
       const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)
       const seed = JSON.parse(await readFile(file, 'utf8')) as IssueContent
@@ -127,6 +139,18 @@ export default async function Page({
       if (decoderMissing && seed.decoder) patch.decoder = seed.decoder
       if (tldrTargetsMissing && seed.tldr?.some((r) => r.target)) {
         patch.tldr = seed.tldr
+      }
+      if (interviewBriefMissing && seed.job_signal?.interview) {
+        const seedInterview = seed.job_signal.interview as typeof seed.job_signal.interview & {
+          framework_name?: string
+          counters?: unknown[]
+        }
+        if (seedInterview.framework_name || seedInterview.counters?.length) {
+          patch.job_signal = {
+            ...content.job_signal,
+            interview: seed.job_signal.interview,
+          }
+        }
       }
       if (Object.keys(patch).length > 0) {
         content = { ...content, ...patch }

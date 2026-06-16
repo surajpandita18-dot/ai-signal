@@ -77,7 +77,36 @@ async function loadIssue(slug: string): Promise<IssueRow | null> {
     .eq('slug', slug)
     .eq('status', 'published')
     .single()
-  if (data) return data
+
+  // Same pattern as the issue page's decoder + tldr.target fallbacks: when
+  // the DB row exists but is missing the deep interview brief fields (the
+  // Supabase row was seeded before the rubric-aligned prep brief was
+  // authored), patch the interview object from the seed JSON so the page
+  // renders the full brief instead of the "coming soon" fallback. Once an
+  // ops step copies job_signal from the JSON into the DB row, this becomes
+  // a no-op.
+  if (data) {
+    const interview = data.job_signal?.interview as Interview | undefined
+    const briefMissing =
+      !interview?.framework_name && !interview?.counters?.length
+    if (briefMissing) {
+      try {
+        const file = path.join(process.cwd(), 'content/issues', `${slug}.json`)
+        const raw = await readFile(file, 'utf8')
+        const seed = JSON.parse(raw) as IssueContent
+        const seedInterview = seed.job_signal?.interview as Interview | undefined
+        if (seedInterview?.framework_name || seedInterview?.counters?.length) {
+          return {
+            ...data,
+            job_signal: { ...data.job_signal, interview: seedInterview },
+          }
+        }
+      } catch {
+        /* no seed = no patch; renders the coming-soon fallback */
+      }
+    }
+    return data
+  }
 
   try {
     const file = path.join(process.cwd(), 'content/issues', `${slug}.json`)

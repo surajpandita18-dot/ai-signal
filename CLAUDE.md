@@ -39,6 +39,12 @@ No section ships below 3 on any axis. Issue average ≥ 4.0.
 
 ---
 
+## Read before shipping: `system/MISTAKES.md`
+
+Suraj has flagged that repeating the same class of mistake burns trust. Before any change to **email templates, content-model schema, cron route, OG image, or parallel-agent worktree setup**, open `/system/MISTAKES.md` and check the relevant category. If a mistake recurs after being logged there, that's a worse failure than the original — fix structurally (add the check) rather than fixing once. When a new mistake surfaces during a session, log it in `system/MISTAKES.md` *before* moving to the next task.
+
+---
+
 ## Rule 1 — Think Before Coding
 
 Don't assume. Don't hide confusion. Surface tradeoffs. State assumptions explicitly. If multiple interpretations exist, present them — don't pick silently. Suraj is non-technical; silent assumptions cost the most. Ask in plain English (or Hinglish if conversation is in it).
