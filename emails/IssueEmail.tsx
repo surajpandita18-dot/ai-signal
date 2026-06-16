@@ -228,10 +228,11 @@ function firstClause(html: string): string {
   return (wb === -1 ? working.slice(0, 87) : working.slice(0, wb)).trimEnd() + '…'
 }
 
-// Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — show the
-// full question, no truncation. Just strip surrounding quotes if present.
-function teaseQuestion(q: string): string {
-  return q.trim().replace(/^["']|["']$/g, '')
+// Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — prefer
+// the hand-curated short `teaser_q` if present, else fall back to full `q`.
+function teaseQuestion(interview: { q: string; teaser_q?: string }): string {
+  const source = interview.teaser_q?.trim() || interview.q
+  return source.trim().replace(/^["']|["']$/g, '')
 }
 
 // ----------------------------------------------------------------------------
@@ -831,7 +832,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 >
                   Interview Q · {job.interview.q_label}
                 </small>
-                {teaseQuestion(job.interview.q)}
+                {teaseQuestion(job.interview)}
               </Text>
               <Section style={{ padding: '12px 10px' }}>
                 {(() => {

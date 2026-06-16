@@ -164,13 +164,12 @@ export default async function InterviewsIndexPage() {
                       {g.cards.map((c) => {
                         const padded = String(c.issue_number).padStart(3, '0')
                         const q = c.interview.q
-                        // Show the full question on the library card too.
-                        // Earlier truncation was flagged by Suraj as "still
-                        // cut"; the question is the centerpiece — strip
-                        // surrounding quotes if present, otherwise pass
-                        // through verbatim. Cards will be taller than they
-                        // were; reader gets the full ask without clicking.
-                        const qDisplay = q.trim().replace(/^["']|["']$/g, '')
+                        // Prefer the hand-curated short `teaser_q` for the
+                        // library card. Full `q` is shown on /interviews/
+                        // <slug>. Falls back to full q if no teaser exists.
+                        const teaserSource =
+                          (c.interview.teaser_q?.trim() || q).trim()
+                        const qDisplay = teaserSource.replace(/^["']|["']$/g, '')
                         // Extract a 1-word "shape" tag from q_label so the
                         // library card scans at a glance. q_label convention:
                         // "<domain> · <shape>" e.g. "RAG · production debug"

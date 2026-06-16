@@ -211,7 +211,8 @@
       "good_vs_great_html": "Naming the step budget and the observability tile gets you competent. What flips the call is the order in which you reach for tools. Strong-hire candidates lead with the reversible-vs-irreversible action split — before the cap, before the dashboard — because that split is the move that maps a numeric threshold to a user-facing promise. Saying \"the cap on watchlist writes is one per turn, period, because that's an irreversible action against the user's account\" in the first ninety seconds tells the interviewer you treat agents as a product surface that makes commitments, not as a workflow that does work. Most candidates eventually get to the split. The hire-bar version starts there.",
       "meta_skill_html": "Treat thresholds as promises to the user, not as parameters to tune — when the number you set determines whether the system can act irreversibly on someone's behalf, the threshold is a product commitment, not a config knob.",
       "tip_html": "Forty-seven tool calls in one turn is the visible part of the failure; the invisible part is that nothing in the system was set up to notice the loop forming. The cap, the irreversible-action split, the three-number tile, and the eval are not four ideas — they're one shape: every irreversible action the agent can take on the user's behalf needs a number attached to it, a place where the number is visible, and a test that catches it when it slips. Ship the cap this week, the split with it, the tile alongside, and write the eval design into the launch doc, not the backlog. The next 47-call session is the one you want to read about in someone else's incident review.",
-      "read_time_min": 8
+      "read_time_min": 8,
+      "teaser_q": "An AI agent at an Indian stock-broking startup made 47 'add to watchlist' API calls for one user query before stopping itself. Walk me through how you'd debug + when to fall back to a human."
     }
   },
   "under_the_hood": {

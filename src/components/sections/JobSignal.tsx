@@ -41,14 +41,14 @@ function firstClause(html: string): string {
 }
 
 /**
- * Show the full interview question on the issue-page teaser. Earlier
- * iterations tried to truncate (130-char cap, then sentence-cut, then
- * 280-char window) — Suraj flagged each version as "still cut". The
- * question is the centerpiece of the teaser; truncating it loses the
- * point. Just strip surrounding quotes (some content carries them).
+ * Show the hand-curated 1-2 sentence `teaser_q` on the issue-page teaser
+ * (and library card via parallel logic). Falls back to the full `q` when
+ * `teaser_q` is absent — so legacy content still renders. The FULL `q`
+ * lives on /interviews/<slug> where the brief earns the space.
  */
-function teaseQuestion(q: string): string {
-  return q.trim().replace(/^["']|["']$/g, '')
+function teaseQuestion(interview: { q: string; teaser_q?: string }): string {
+  const source = interview.teaser_q?.trim() || interview.q
+  return source.trim().replace(/^["']|["']$/g, '')
 }
 
 type JobSignalProps = JobSignalType & { issueSlug: string }
@@ -108,7 +108,7 @@ export default function JobSignal({
       <div className="interview">
         <div className="iv-q">
           <div className="lab">Interview Q · {interview.q_label}</div>
-          <div className="q">{teaseQuestion(interview.q)}</div>
+          <div className="q">{teaseQuestion(interview)}</div>
         </div>
         <div className="iv-a">
           {/* Single framework label — was rendered twice before (oxblood

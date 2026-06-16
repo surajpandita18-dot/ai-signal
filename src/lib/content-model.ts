@@ -109,7 +109,12 @@ export type InterviewTrap = {
 export type Interview = {
   // teaser surface (always required)
   q_label: string                  // "AI PM · regulated stack"
-  q: string                        // the question, verbatim
+  q: string                        // the FULL question (60-90 words for debug-shaped scenarios), shown on /interviews/<slug>
+  // Optional 1-2 sentence hand-written hook for the JobSignal teaser + the
+  // /interviews library card. Editor curates this to capture the scenario
+  // without dumping the whole 80-word question into a card. When absent,
+  // surfaces fall back to the first sentence of `q`.
+  teaser_q?: string
   steps: { n: number; body_html: string }[]   // length 4 — the framework steps
   tip_html: string                 // legacy meta-skill closer; superseded by meta_skill_html when present
 
