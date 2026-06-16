@@ -395,11 +395,23 @@ export default async function Page({
                 <strong>{interview.framework_name}</strong>
               </p>
             ) : null}
-            <ol style={{ paddingLeft: 20 }}>
-              {interview.steps.map((s) => (
+            {/* Each step body is ~70-100 words — heavy on mobile. Give them
+                generous spacing + a hairline divider so each step reads as
+                its own beat, not a run-on list. Bold inside <li> is the
+                step label (visible eyebrow per step). */}
+            <ol style={{ paddingLeft: 22, listStyleType: 'decimal' }}>
+              {interview.steps.map((s, i) => (
                 <li
                   key={s.n}
-                  style={{ marginBottom: 10 }}
+                  style={{
+                    marginBottom: 22,
+                    paddingBottom: i < interview.steps.length - 1 ? 18 : 0,
+                    borderBottom:
+                      i < interview.steps.length - 1
+                        ? '1px solid var(--hair)'
+                        : 'none',
+                    lineHeight: 1.7,
+                  }}
                   dangerouslySetInnerHTML={{ __html: s.body_html }}
                 />
               ))}
