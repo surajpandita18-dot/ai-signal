@@ -109,7 +109,13 @@ export type InterviewTrap = {
 export type Interview = {
   // teaser surface (always required)
   q_label: string                  // "AI PM · regulated stack"
-  q: string                        // the FULL question (60-90 words for debug-shaped scenarios), shown on /interviews/<slug>
+  q: string                        // the FULL question, plain text fallback
+  // Optional structured HTML version of the question for the brief page
+  // hero. Renders the question as setup paragraph + trigger paragraph (with
+  // <ul><li> when the trigger has parenthesized items) + the ask line —
+  // instead of one 75-word run-on. Whitelisted tags: <p>, <ul>, <li>, <em>,
+  // <strong>, <code>. When absent, brief page falls back to plain `q`.
+  q_html?: string
   // Optional 1-2 sentence hand-written hook for the JobSignal teaser + the
   // /interviews library card. Editor curates this to capture the scenario
   // without dumping the whole 80-word question into a card. When absent,

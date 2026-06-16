@@ -208,7 +208,8 @@
       "good_vs_great_html": "The surface-split and the four-step framework get you to a clean hire. What flips the call is naming the disclosure clock <em>before</em> the technical debug: one sentence like \"before we diagnose, I'd page CCO and legal now — depending on what we find we may have a Sec 35A obligation, and I'd rather have the clock running and not need it.\" That tells the interviewer you've shipped in a regulated stack where the technical fix is half the job and the legal posture is the other half. Get there only when asked and you're competent; lead with it and you're the one the team trusts on a real incident.",
       "meta_skill_html": "Holding two conflicting production signals — compliance says broken, engineering says fine — without collapsing either, and reading the gauge that resolves the conflict before reaching for a knob.",
       "read_time_min": 8,
-      "teaser_q": "Your RAG over 12k policy docs has been live three weeks. Compliance flags the assistant citing a circular that doesn't exist. Retrieval dashboard is all green. Where do you look first?"
+      "teaser_q": "Your RAG over 12k policy docs has been live three weeks. Compliance flags the assistant citing a circular that doesn't exist. Retrieval dashboard is all green. Where do you look first?",
+      "q_html": "<p>You're an AI PM at an Indian lender. Your RAG over 12,000 internal policy + RBI circular docs has been live for three weeks.</p><p>Two things land on your desk this morning:</p><ul><li>Compliance flagged a screenshot of the assistant <em>confidently</em> citing a circular that doesn't exist.</li><li>The engineering team's retrieval dashboard is all green — 90ms latency, top-k recall on the eval set at 0.94.</li></ul><p><strong>Walk me through how you'd diagnose this</strong> — what you check first, second, third, and where you expect the failure to actually be.</p>"
     }
   },
   "under_the_hood": {

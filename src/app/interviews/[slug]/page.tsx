@@ -18,6 +18,7 @@ type IssueRow = Database['public']['Tables']['issues']['Row']
  */
 type Interview = BaseInterview & {
   framework_name?: string
+  q_html?: string
   why_they_ask_html?: string
   sample_answer_html?: string
   eval_deep_dive_html?: string
@@ -187,26 +188,53 @@ export default async function Page({
             From {issueLabel}
           </div>
           {/* The question is a paragraph-length scenario (60-80 words), not
-              a short headline — display-weight typography (even at the
-              previous clamp 22-32px) made it dominate the viewport and read
-              as a wall. Treat it as a quoted body block: Newsreader serif at
-              comfortable body size, oxblood left-rule for visual anchor,
-              same content + same h1 semantics for SEO/a11y. */}
+              a short headline. Render the structured `q_html` (setup +
+              trigger + ask, with <ul> for parenthesized items) inside a
+              quoted body block — Newsreader serif, oxblood left-rule,
+              comfortable line-height. Falls back to plain `q` for legacy
+              content. The wrapping h1 is sr-only for SEO/a11y; visible
+              structure comes from the inner blocks. */}
           <h1
+            className="sr-only-h1"
             style={{
-              fontFamily: "'Newsreader', serif",
-              fontSize: 'clamp(17px, 2vw, 20px)',
-              lineHeight: 1.55,
-              fontWeight: 400,
-              letterSpacing: 0,
-              margin: '18px 0 0',
-              padding: '4px 0 4px 16px',
-              borderLeft: '3px solid var(--accent)',
-              color: 'var(--ink)',
+              position: 'absolute',
+              width: 1,
+              height: 1,
+              overflow: 'hidden',
+              clip: 'rect(0 0 0 0)',
             }}
           >
             {interview.q}
           </h1>
+          {interview.q_html ? (
+            <div
+              className="prep-q"
+              style={{
+                fontFamily: "'Newsreader', serif",
+                fontSize: 'clamp(17px, 2vw, 20px)',
+                lineHeight: 1.55,
+                color: 'var(--ink)',
+                margin: '18px 0 0',
+                padding: '6px 0 6px 16px',
+                borderLeft: '3px solid var(--accent)',
+              }}
+              dangerouslySetInnerHTML={{ __html: interview.q_html }}
+            />
+          ) : (
+            <p
+              style={{
+                fontFamily: "'Newsreader', serif",
+                fontSize: 'clamp(17px, 2vw, 20px)',
+                lineHeight: 1.55,
+                color: 'var(--ink)',
+                margin: '18px 0 0',
+                padding: '6px 0 6px 16px',
+                borderLeft: '3px solid var(--accent)',
+              }}
+            >
+              {interview.q}
+            </p>
+          )}
           {interview.framework_name ? (
             <p
               className="sub"
