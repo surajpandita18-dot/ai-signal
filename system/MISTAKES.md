@@ -79,6 +79,22 @@
 - **Lesson:** Before cherry-picking by SHA, `git log --oneline | grep <sha>` (or check `git branch --contains <sha>`) to confirm the commit isn't already in the current branch's history.
 - **Check:** Standard cherry-pick pre-flight: list commits to be picked, filter out the ones already in `git log`, only pick the remainder.
 
+## Content / editorial
+
+### 2026-06-14 · Same structural template across all 3 interview tip_html — "framework (works for any X)" formula
+- **What:** Three issues' `job_signal.interview.tip_html` were structurally identical: opening `<b>The framework (works for any "..." question):</b>` → 4-step framework → `<b>The trap:</b>` → `<b>Winners</b>` → closing `<em>Save this — it answers any X question. The meta-skill it tests at any AI lab interview: can you…</em>`. Only the topic words varied. Same pattern leaked into `meta_skill_html` ("the same shape works for any X, Y, Z, where…").
+- **Why:** Wrote brief 001 first, then briefs 002 and 003 silently copied the rhetorical scaffolding. Cross-issue formula check happens at editorial review, not at writing time — and I skipped editorial review because rubric scoring focused on per-brief axes, not cross-brief similarity.
+- **Lesson:** CLAUDE.md explicitly bans "lens take, Rep, or tip that would fit the last 4 issues unchanged" — the same applies to interview briefs. After writing any cross-issue editorial field, diff against the last 2-3 issues' equivalent field and check that the RHETORICAL SHAPE differs, not just the topic words.
+- **FIXED:** commit `7dc1314` rewrote all 3 tip_html to distinct shapes, plus 001 + 003 meta_skill_html.
+- **Check:** Add a `scripts/audit-cross-issue-similarity.mjs` that diffs each editorial field across the last 3 issues and flags >60% structural overlap. **TODO.**
+
+### 2026-06-14 · Oversize h1 on /interviews/<slug> — display weight applied to long-form question
+- **What:** The /interviews/[slug] page wrapped the interview question (a 30-80 word production scenario) in `<h1>` inside `<section className="hero">`. The .issue .hero h1 CSS rule applies `clamp(38px, 6vw, 70px)` display weight — appropriate for short headlines, catastrophic for long sentences. Result: 8+ wrapped lines on mobile, unreadable as a heading, missed in QA because the visual harness doesn't flag "h1 is technically big but reads as wallpaper".
+- **Why:** Reused the issue page's hero structure for a different content type without re-thinking the typography. Display-weight h1 ≠ long-form question.
+- **Lesson:** When reusing a CSS class scoped to "short brand headlines", verify the new content shape is also short. If it isn't, override the size or pick a different class. The semantic h1 is right; the visual treatment isn't.
+- **FIXED:** commit `7dc1314` overrode the h1 fontSize to `clamp(22px, 3.4vw, 32px)`.
+- **Check:** Visual hierarchy audit pass — for any new route, take a Playwright screenshot at 390px mobile and verify no single block (heading or paragraph) consumes >30% of viewport height. **TODO:** add this check to `scripts/qa-flows.mjs`.
+
 ## External fetches
 
 ### 2026-06-14 · WebFetch on Substack archives returned empty
