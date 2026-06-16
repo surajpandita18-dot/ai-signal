@@ -97,11 +97,29 @@ for (const [vpLabel, viewport] of VIEWPORTS) {
               if (out.filter((f) => f.kind === 'horizontal-overflow').length >= 3) break
             }
           }
-          // 2. Bloat — a single text-bearing block whose height > P0_BLOAT_PCT of viewport on mobile.
-          //    Tablet and desktop are taller so we skip there.
+          // 2. Bloat — a single text-bearing block whose height > P0_BLOAT_PCT
+          //    of viewport on mobile. Editorial ledes (`.lede`, `.sub`, the
+          //    long-form sample-answer body) are EXPECTED to be substantial;
+          //    they're the heart of the read. Skip them. The real bloat we want
+          //    to catch is TEASER cards (`.q` interview teaser, etc.) that
+          //    accidentally render full long-form content.
           if (isMobile) {
-            const blocks = Array.from(document.querySelectorAll('h1, h2, h3, p, blockquote, .q, li'))
+            const skipParentClasses = ['lede', 'sub', 'one-thing', 'so_what', 'finding', 'fix', 'sample', 'sample-answer', 'hero']
+            // h1 deliberately excluded — page-level title is supposed to be
+            // visually dominant. Bloat check targets card-like / teaser-like
+            // elements where compactness is the design intent.
+            const blocks = Array.from(document.querySelectorAll('h2, h3, .q, blockquote'))
             for (const el of blocks) {
+              // Skip if the element or any ancestor carries a "this is meant
+              // to be substantial" class.
+              let skip = false
+              let cur = el
+              while (cur && cur !== document.body) {
+                const cls = (cur.className && typeof cur.className === 'string') ? cur.className : ''
+                if (skipParentClasses.some((c) => cls.split(/\s+/).includes(c))) { skip = true; break }
+                cur = cur.parentElement
+              }
+              if (skip) continue
               const r = el.getBoundingClientRect()
               const t = (el.textContent || '').trim()
               if (!t || t.length < 30) continue
@@ -109,7 +127,7 @@ for (const [vpLabel, viewport] of VIEWPORTS) {
                 out.push({
                   level: 'P0',
                   kind: 'bloat',
-                  detail: `<${el.tagName.toLowerCase()}> height=${Math.round(r.height)}px (${Math.round((r.height / vpH) * 100)}% of viewport) — "${t.slice(0, 80)}…"`,
+                  detail: `<${el.tagName.toLowerCase()}.${el.className || ''}> height=${Math.round(r.height)}px (${Math.round((r.height / vpH) * 100)}% of viewport) — "${t.slice(0, 80)}…"`,
                 })
                 if (out.filter((f) => f.kind === 'bloat').length >= 3) break
               }
@@ -130,12 +148,33 @@ for (const [vpLabel, viewport] of VIEWPORTS) {
               if (out.filter((f) => f.kind === 'small-text').length >= 3) break
             }
           }
-          // 4. Tap targets on mobile — buttons + links should be ≥ 36px tall.
+          // 4. Tap targets on mobile — STANDALONE buttons/CTAs should be ≥ 36px.
+          //    Skip inline text links inside paragraphs / spans — those are
+          //    legitimately small because they're inline text, not tap targets.
+          //    Apply only to: <button>, [role=button], standalone <a> NOT
+          //    inside a paragraph (i.e. a direct child of nav / section / li /
+          //    div without surrounding text run).
           if (isMobile) {
-            const tappables = Array.from(document.querySelectorAll('a, button, [role="button"]'))
+            const tappables = Array.from(
+              document.querySelectorAll('button, [role="button"], a'),
+            )
             for (const el of tappables) {
               const r = el.getBoundingClientRect()
               if (r.width === 0 || r.height === 0) continue
+              // Skip inline text links — those whose direct parent is a <p>,
+              // <span>, <small>, <em>, <strong>, <i>, <b>, or paragraph-content
+              // element. They're text decoration, not interactive surfaces.
+              if (el.tagName === 'A') {
+                const parent = el.parentElement
+                if (parent) {
+                  const pTag = parent.tagName.toLowerCase()
+                  if (['p', 'span', 'small', 'em', 'strong', 'i', 'b', 'h1', 'h2', 'h3', 'h4'].includes(pTag)) continue
+                  // Also skip if it has only inline text siblings (i.e. it's
+                  // floating in a text run inside a container div).
+                  const cs = getComputedStyle(el)
+                  if (cs.display === 'inline' && (parent.textContent || '').replace(el.textContent || '', '').trim().length > 0) continue
+                }
+              }
               if (r.height < P0_MIN_TAP) {
                 out.push({
                   level: 'P0',

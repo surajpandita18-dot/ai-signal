@@ -60,26 +60,41 @@ export default function SiteFooter() {
         aria-label="Footer"
         style={{
           display: 'flex',
-          gap: 22,
+          gap: 14,
           flexWrap: 'wrap',
           justifyContent: 'flex-end',
           textTransform: 'uppercase',
         }}
       >
-        <Link href="/about" className="site-footer__link" style={{ color: 'var(--grey)' }}>
+        {/* Each footer link has vertical padding so the clickable area reaches
+            the 36px tap-target floor on mobile, even though the rendered text
+            is 12px / ~18px tall. Visual spacing controlled by the nav `gap`. */}
+        <Link
+          href="/about"
+          className="site-footer__link"
+          style={{ color: 'var(--grey)', padding: '10px 4px' }}
+        >
           About
         </Link>
-        <Link href="/archive" className="site-footer__link" style={{ color: 'var(--grey)' }}>
+        <Link
+          href="/archive"
+          className="site-footer__link"
+          style={{ color: 'var(--grey)', padding: '10px 4px' }}
+        >
           Archive
         </Link>
-        <Link href="/interviews" className="site-footer__link" style={{ color: 'var(--grey)' }}>
+        <Link
+          href="/interviews"
+          className="site-footer__link"
+          style={{ color: 'var(--grey)', padding: '10px 4px' }}
+        >
           Interviews
         </Link>
         <a
           href="mailto:hello@aibasically.co"
           aria-label="Email feedback to hello@aibasically.co"
           className="site-footer__link"
-          style={{ color: 'var(--accent)' }}
+          style={{ color: 'var(--accent)', padding: '10px 4px' }}
         >
           Feedback
         </a>
@@ -89,7 +104,7 @@ export default function SiteFooter() {
           rel="noopener noreferrer"
           aria-label="Suraj Pandita on LinkedIn (opens in new tab)"
           className="site-footer__link"
-          style={{ color: 'var(--grey)' }}
+          style={{ color: 'var(--grey)', padding: '10px 4px' }}
         >
           LinkedIn
         </a>
