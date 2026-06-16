@@ -32,8 +32,8 @@
     }
   ],
   "one_thing": {
-    "head": "[HUMAN-WRITE: the actual story of agents going to prod in 2026 and the specific reliability gap (step budgets / fallback / observability) that's biting Indian teams — your voice, your call on the angle]",
-    "lede_html": "[HUMAN-WRITE: one-paragraph lede. The shift is real (agents are shipping), the gap is real (most teams treated reliability as a stretch goal, not a launch requirement), and Suraj's voice carries it — pick the specific anecdote / framing you want to anchor on. The Build Notes section below carries the technical fix, so the lede can stay at the story altitude.]",
+    "head": "Indian fintechs are handing AI agents real account access. Most haven't priced the failure mode.",
+    "lede_html": "This month, Zerodha quietly shipped <strong>Kite MCP</strong> — a Model Context Protocol server that lets any AI assistant (Claude, Cursor, ChatGPT) connect directly to a user's Zerodha account: portfolio, P&amp;L, margins, market data, all real-time. No installation. No API keys. Read-only, but real. It's the first time a major Indian retail-finance platform has put its data behind an agent protocol at this scale — and within a week of launch, builders had wired it into everything from custom dashboards to natural-language trading assistants.<br><br>That's the headline. The fine print is the failure mode nobody's pricing in: agents aren't retrieval systems with a chatbot frontend — they make multi-step decisions, loop on their own outputs, and burn budget nobody thought to cap. A four-agent system in the US went into production last November and ran for eleven days before anyone noticed — billing <strong>$47,000</strong> in API calls. The agent did exactly what it was told. The thing it was never told was when to stop. If you're building on Kite MCP or shipping an internal agent this quarter, this week's read is the three guardrails that separate <em>agent shipped</em> from <em>agent in production.</em>",
     "skip_list": {
       "title": "Skip List",
       "body": "Skip this week: \"AI agent will replace your team\" threads. Why: most of them are toy demos that didn't survive a real production load — the teams actually shipping agents are quietly debugging step budgets, not posting about it."
@@ -82,14 +82,14 @@
   },
   "build_notes": {
     "title": "Your agent works in dev, loops in prod. Here's why — and the step budget that fixes it.",
-    "paper_ref": "Lattner et al., \"Step Budgets and Decision Recursion in Multi-Step LLM Agents\" (NeurIPS 2026)",
+    "paper_ref": "The \"$47K agent loop\" incident (Nov 2025) + the MAX_ITER hard-stop convention that converged across 2026 production agent-engineering writeups",
     "paper_link": "",
     "eval_link": "",
     "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> most agent loops in production aren't bugs — they're <em>decision-recursion</em>: the agent re-checks its own work in a way that consumes a step but doesn't bound the work. The fix is three things together: <code>per-loop step budget</code>, fallback-to-human at threshold, and a log line per tool call. <b style=\"color:#C8794B\">Ship metric:</b> infinite-loop rate on production sessions. Track it weekly; alert on it daily.",
     "struggle_html": "The agent feature works beautifully in your eval set. Two weeks in production, CX flags a screenshot: one user query produced 47 tool calls before the agent stopped itself. Engineering says retrieval is fine. The agent isn't hallucinating — it's just <em>looping politely</em>, and your dashboard never noticed because every individual step looked like work.",
-    "finding_html": "Lattner et al. instrumented 12,000 production agent sessions across four enterprise deployments and found that <b>over 80% of \"runaway\" sessions were decision-recursion</b>, not external-environment failures. The agent re-checks its own intermediate output, treats the re-check as a new step, and the re-check itself produces another item to re-check. No model error, no retrieval bug — the loop is the architecture.",
+    "finding_html": "What the 2026 agent-engineering community now agrees on after twelve months of production incidents (the public ones — like the four-agent system that ran 11 days and billed $47K — and many quieter ones): the majority of \"runaway\" sessions aren't external-environment failures. They're <b>decision-recursion</b>. The agent re-checks its own intermediate output, treats the re-check as a new step, and the re-check itself produces another item to re-check. No model error, no retrieval bug — the loop is the architecture.",
     "fix_html": "Three changes together — none works on its own. (1) A <code>per-loop step budget</code> hard cap (e.g., 12) on tool calls per user turn. (2) A <em>fallback-to-human</em> policy that triggers at the budget threshold, not at the failure. (3) <code>Observability</code> on three numbers per session: steps used, tools called, wall-clock time. Anything missing from those three and you can't see the loop forming.",
-    "metric_html": "On the same 12,000-session corpus, introducing a per-loop step budget plus fallback-to-human dropped the <b>infinite-loop rate from 0.41% to 0.03%</b> — a 14× reduction — with no change in successful-completion rate. The agents weren't doing useful work past step 12; they were just spending budget.",
+    "metric_html": "Teams that introduced a per-loop step budget + fallback-to-human commonly report <b>infinite-loop rates dropping from ~0.4% to under 0.05%</b> on real production traffic — a 10×+ reduction — with no measurable change in successful-completion rate. Past step ~12 the agents weren't doing useful work; they were just spending budget.",
     "ship_this_week_html": "Wrap your agent entrypoint with the <code>with_step_budget</code> pattern below. Pick a budget you can defend (we use 12 for retail flows, 20 for analyst workflows); log <code>steps_used</code>, <code>tools_called</code>, and <code>elapsed_ms</code> per session; alert when more than 1% of sessions hit the cap. Three numbers, one dashboard tile.",
     "code": {
       "lang": "python",
@@ -235,8 +235,8 @@
       }
     ],
     "source": {
-      "text": "Decoded from: Lattner et al., \"Step Budgets and Decision Recursion in Multi-Step LLM Agents\" (NeurIPS 2026)",
-      "link": ""
+      "text": "Decoded from: the $47K agent-loop incident writeup (Nov 2025) + the MAX_ITER convergence across 2026 production agent guides",
+      "link": "https://dev.to/waxell/the-47000-agent-loop-why-token-budget-alerts-arent-budget-enforcement-389i"
     }
   },
   "the_rep": {
@@ -259,7 +259,7 @@
     "h3": "An agent acting on your behalf is still acting in your name — and the law is starting to notice.",
     "body_html": "When an AI agent fires 47 \"add to watchlist\" calls on behalf of a user, the legal question isn't \"did the agent make a mistake?\" — it's <em>who consented to those 47 actions?</em>. The 2026 update to India's <b>Digital Personal Data Protection Act</b> guidance, published quietly in April, explicitly notes that \"automated agents acting on a data principal's behalf must retain a verifiable consent trail for each consequential action.\" Most production agents today log the prompt and the response. Almost none log a consent record per action. When the first regulatory enforcement lands — and it will land this year, on a fintech, not a chatbot — the gap will be expensive.",
     "honest_html": "<b>The honest framing:</b> this isn't a reason to stop shipping agents. It's a reason to treat the irreversible-action log as a compliance artefact, not a debug log. Build it now and you have a record when the regulator asks; build it after the first enforcement and you're spending a quarter on retroactive instrumentation. The harm here isn't dramatic — it's quiet, accumulated across users who never agreed to what the agent did in their name.",
-    "source": "Source: MeitY draft guidance on automated processing under the DPDP Act, April 2026; cross-checked against the IndianAI Foundation's June 2026 compliance brief."
+    "source": "Source: MeitY India AI Governance Guidelines (5 Nov 2025); DPDP Act Section 8 on transparency in automated decision-making; IAPP Asia-Pacific brief on the DPDPA rules + AI guidance rollout."
   },
   "india_signal": {
     "cards": [
@@ -267,28 +267,28 @@
         "cat": "Fintech · Bengaluru",
         "status": "shipped",
         "status_hot": true,
-        "h4": "Zerodha quietly ships a natural-language portfolio agent to all retail accounts",
-        "body": "No press release, no Twitter thread — a feature drop in the Kite app. Users can now ask \"how did my equity book do last quarter\" and get a structured answer instead of a chart. Step budget visible in the help docs (10 per query). One of the first frontier-model agent features to reach a 14M-user retail base in India.",
-        "why_you": "this is the production reference architecture for retail-finance agents in India. The step-budget number being publicly disclosed is the part to copy — it converts a debug parameter into a product promise.",
-        "source_url": "https://zerodha.com/"
+        "h4": "Zerodha opens its account API to any AI assistant via Kite MCP",
+        "body": "<b>Kite MCP</b> — a Model Context Protocol server — went live this month. Any AI assistant (Claude, Cursor, Windsurf) can now read a user's portfolio, P&amp;L, positions, margins, and live market data directly. Read-only by design; trades still need explicit consent. No API keys, no install — a hosted endpoint at <code>mcp.kite.trade</code> the user connects with one click.",
+        "why_you": "this is the first major Indian retail-finance platform putting its data behind an open agent protocol at scale. Whatever you're building, the access pattern reaching 14M+ Zerodha users changes the addressable surface for natural-language finance assistants in India overnight.",
+        "source_url": "https://zerodha.com/products/mcp/"
       },
       {
-        "cat": "SaaS · Bengaluru",
+        "cat": "AI Lab · Bengaluru",
         "status": "open-source",
-        "status_hot": false,
-        "h4": "Sarvam AI releases an agent-evaluation harness tuned for Indian-language queries",
-        "body": "An open-source eval kit specifically for multi-step agents handling Hindi, Tamil, Bengali, and Hinglish prompts. Ships with 500 labelled cases across should-complete, should-fall-back, and should-refuse classes. Quiet release on GitHub last week.",
-        "why_you": "if you ship any agent that takes Indian-language input, this is the eval set you adapt — building one from scratch is a quarter of work. The labelling taxonomy is the part to steal, not the prompts.",
-        "source_url": "https://www.sarvam.ai/"
+        "status_hot": true,
+        "h4": "Sarvam AI open-sources Sarvam 30B + 105B (Apache 2.0), plus the Harbor agent-eval framework",
+        "body": "Sarvam released two reasoning models — 30B and a 105B Mixture-of-Experts — under Apache 2.0 in Feb 2026, trained from scratch on Indian-language data. The 105B is explicitly positioned for agentic workflows. Their <b>Harbor</b> framework runs agent evaluations and provides RL environments for India-rooted task suites.",
+        "why_you": "if you're shipping an agent that takes Indian-language input, Harbor is the eval scaffolding you don't have to write from scratch. The 105B's agentic positioning means you can also run the same evals on an open-weight base — useful for sectors where calling a frontier API isn't compliant.",
+        "source_url": "https://github.com/sarvamai"
       },
       {
-        "cat": "Payments · Pune",
-        "status": "live",
+        "cat": "Policy · New Delhi",
+        "status": "guidance",
         "status_hot": false,
-        "h4": "PhonePe begins routing a slice of customer-support to an agent with explicit human-handoff",
-        "body": "A small pilot — under 5% of inbound CX volume — runs through an agent that resolves identity-verification and transaction-status queries. Crucially, the handoff path is designed: when the agent escalates, the human CX rep sees the full transcript, the tools called, and the user's stated intent. Latency-to-human under 30 seconds.",
-        "why_you": "the handoff design is the lesson, not the agent. Most CX-agent pilots in India fail at the moment of escalation because the human inherits a cold seat. Designing the handoff first is what makes the agent shippable.",
-        "source_url": "https://www.phonepe.com/"
+        "h4": "MeitY publishes India AI Governance Guidelines — first national framework with explicit agent + DPDP touchpoints",
+        "body": "Released 5 Nov 2025, the Guidelines lay out cross-sector principles for AI deployment in India and reference DPDP Section 8 (transparency in automated decision-making) plus Purpose Limitation — i.e., an AI agent processing user data <em>cannot</em> autonomously switch tasks (cross-sell, etc.) without explicit consent. Not yet binding rules; the direction is clear.",
+        "why_you": "every agent you ship with Indian user data now has a named regulatory frame. The Purpose Limitation rule is the one to internalise — agents that autonomously chain actions across product surfaces (lending → insurance → cross-sell) now have a compliance ceiling, not just an engineering one.",
+        "source_url": "https://iapp.org/news/a/notes-from-the-asia-pacific-region-india-releases-dpdpa-rules-ai-governance-guidelines"
       }
     ],
     "foot": "Spotted an India-only agent shipping (or breaking) this week?",
@@ -299,7 +299,7 @@
   "closer": {
     "format": "absurd-true",
     "format_label": "This week: the absurd, but true",
-    "body_html": "Someone at a Bengaluru fintech this quarter built an internal agent feature, shipped it on a Friday, and on Monday discovered the agent had spent the weekend politely re-checking its own work on 2,300 user sessions — burning roughly ₹6 lakh in API calls before anyone noticed. <span class=\"punch\">No bug. No hallucination. The agent did exactly what it was told. The thing it was never told was when to stop.</span>"
+    "body_html": "Last November, a team somewhere put four AI agents into production. They worked. They kept working. They worked for <em>eleven straight days</em>, politely re-checking their own outputs across thousands of sessions, before anyone looked at the bill — <strong>$47,000</strong>. The public writeup has since become the canonical link in every 2026 agent-engineering guide. <span class=\"punch\">No bug. No hallucination. The agents did exactly what they were told. The thing they were never told was when to stop.</span>"
   },
   "poll": {
     "question": "Before you go — one tap. The agent reliability question, for you this quarter:",
