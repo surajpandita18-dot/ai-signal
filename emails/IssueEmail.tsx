@@ -365,6 +365,25 @@ export default function IssueEmail({ content, siteUrl }: Props) {
     <Html lang="en">
       <Head>
         <title>{`AI, Basically. — Issue ${content.slug}`}</title>
+        {/* Force light scheme. Without these meta + CSS hints, Gmail mobile,
+            iOS Mail, and Outlook dark mode auto-invert the cream paper
+            background — text goes near-white on near-white and the whole
+            email reads as a blank rectangle. The combination below covers
+            Apple Mail (color-scheme), Outlook 2019+ (supported-color-schemes),
+            and Gmail (the [data-ogsc] selectors below). Re-test in
+            litmus/postmark if you change this. */}
+        <meta name="color-scheme" content="light only" />
+        <meta name="supported-color-schemes" content="light only" />
+        <style>{`
+          :root { color-scheme: only light; supported-color-schemes: only light; }
+          /* Gmail dark-mode container override */
+          [data-ogsc] body, [data-ogsb] body,
+          [data-ogsc] table, [data-ogsb] table {
+            background-color: #F4F1E8 !important;
+          }
+          [data-ogsc] .aib-ink, [data-ogsb] .aib-ink { color: #191712 !important; }
+          [data-ogsc] .aib-grey, [data-ogsb] .aib-grey { color: #6F6A60 !important; }
+        `}</style>
       </Head>
       <Preview>{previewText}</Preview>
       <Body style={bodyStyle}>
