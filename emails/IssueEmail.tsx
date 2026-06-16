@@ -228,18 +228,10 @@ function firstClause(html: string): string {
   return (wb === -1 ? working.slice(0, 87) : working.slice(0, wb)).trimEnd() + '…'
 }
 
-// Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — show ~280
-// chars of scenario setup, cut at last sentence boundary that fits. The
-// question verb lives at the destination /interviews/<slug>.
+// Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — show the
+// full question, no truncation. Just strip surrounding quotes if present.
 function teaseQuestion(q: string): string {
-  const text = q.trim().replace(/^["']|["']$/g, '')
-  const MAX = 280
-  if (text.length <= MAX) return text
-  const slice = text.slice(0, MAX)
-  const lastPeriod = slice.lastIndexOf('. ')
-  if (lastPeriod >= 100) return text.slice(0, lastPeriod + 1) + ' …'
-  const wb = slice.lastIndexOf(' ')
-  return (wb === -1 ? slice : slice.slice(0, wb)).trimEnd() + '…'
+  return q.trim().replace(/^["']|["']$/g, '')
 }
 
 // ----------------------------------------------------------------------------
