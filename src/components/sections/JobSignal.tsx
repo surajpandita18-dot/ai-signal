@@ -23,26 +23,18 @@ function stripHtml(html: string): string {
 
 // Reduce a step's body to its load-bearing clause for the teaser card.
 //
-// Step body convention (verified across issues 001-004): each step opens
-// with the framework verb-phrase as a label sentence ("Bound the loop."),
-// followed by a <b>...</b> clause carrying the actual detail, then optional
-// commentary. The teaser already shows the framework name above; we need
-// the BOLD clause, not the label-sentence echo. Without this, the 5 numbered
-// steps end up identical to the framework name above them — zero new info.
-//
-// Strategy: extract the first <b>...</b> content. Fall back to first
-// sentence if no bold tag. Cap at 90 chars with word-boundary truncation.
+// Convention across issues 001-004: each step body opens with the
+// framework verb-phrase as a label sentence ("Bound the loop." /
+// "Split the surface."), followed by the actual teaching clause. The
+// framework name is already shown above the numbered steps, so echoing
+// the label again is zero info. Some issues wrap the label in <b>, some
+// wrap the detail in <b> — don't trust the bold tag. Just strip ALL HTML
+// then drop the leading label sentence.
 function firstClause(html: string): string {
-  const boldMatch = /<b\b[^>]*>([\s\S]*?)<\/b>/i.exec(html)
-  const source = boldMatch ? boldMatch[1] : html
-  const text = stripHtml(source).trim()
-  // If we used the full body (no bold tag found), still strip the label
-  // sentence prefix — e.g., "Bound the loop. Cap tool calls…" → "Cap tool…"
+  const text = stripHtml(html).trim()
   let working = text
-  if (!boldMatch) {
-    const labelEnd = text.indexOf('. ')
-    if (labelEnd !== -1 && labelEnd < 40) working = text.slice(labelEnd + 2)
-  }
+  const labelEnd = text.indexOf('. ')
+  if (labelEnd !== -1 && labelEnd < 50) working = text.slice(labelEnd + 2)
   if (working.length <= 90) return working
   const wb = working.lastIndexOf(' ', 87)
   return (wb === -1 ? working.slice(0, 87) : working.slice(0, wb)).trimEnd() + '…'

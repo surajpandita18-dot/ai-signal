@@ -213,20 +213,16 @@ function stripWhyCare(s: string): string {
     .trim()
 }
 
-// Mirror of src/components/sections/JobSignal.tsx#firstClause — extracts the
-// load-bearing <b> clause from a step body. The label sentence above the bold
-// just echoes the framework name (which the teaser already shows above the
-// numbered steps); without this extraction, all 5 steps render identical to
-// the framework name. Cap at 90 chars with word-boundary truncation.
+// Mirror of src/components/sections/JobSignal.tsx#firstClause — strip
+// HTML then drop the leading label sentence (the framework verb-phrase
+// that's already shown above the numbered steps). Two different <b>
+// conventions across issues — don't trust the bold tag, just strip it
+// all. Cap at 90 chars with word-boundary truncation.
 function firstClause(html: string): string {
-  const boldMatch = /<b\b[^>]*>([\s\S]*?)<\/b>/i.exec(html)
-  const source = boldMatch ? boldMatch[1] : html
-  const text = stripTags(source).replace(/\s+/g, ' ').trim()
+  const text = stripTags(html).replace(/\s+/g, ' ').trim()
   let working = text
-  if (!boldMatch) {
-    const labelEnd = text.indexOf('. ')
-    if (labelEnd !== -1 && labelEnd < 40) working = text.slice(labelEnd + 2)
-  }
+  const labelEnd = text.indexOf('. ')
+  if (labelEnd !== -1 && labelEnd < 50) working = text.slice(labelEnd + 2)
   if (working.length <= 90) return working
   const wb = working.lastIndexOf(' ', 87)
   return (wb === -1 ? working.slice(0, 87) : working.slice(0, wb)).trimEnd() + '…'
