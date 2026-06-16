@@ -135,7 +135,7 @@
       "note_html": "Next week's rung builds on this one. We climb together, one issue at a time. <b>Proof beats certificates.</b>"
     },
     "interview": {
-      "q_label": "Question of the week · RAG production debug",
+      "q_label": "RAG · production debug",
       "q": "\"You're an AI PM at an Indian lender. Your RAG over 12,000 internal policy + RBI circular docs has been live for three weeks. Two things land on your desk this morning: (1) compliance flagged a screenshot of the assistant confidently citing a circular that doesn't exist; (2) the engineering team's retrieval dashboard is all green — 90ms latency, top-k recall on the eval set at 0.94. Walk me through how you'd diagnose this — what you check first, second, third, and where you expect the failure to actually be.\"",
       "steps": [
         {

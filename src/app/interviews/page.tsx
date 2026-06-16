@@ -1,6 +1,8 @@
+import { readFile } from 'node:fs/promises'
+import path from 'node:path'
 import Link from 'next/link'
 import { createServerSupabaseClient } from '@/lib/supabase-server'
-import type { Interview as BaseInterview } from '@/lib/content-model'
+import type { IssueContent, Interview as BaseInterview } from '@/lib/content-model'
 import type { Database } from '../../../db/types/database'
 
 /**
@@ -37,19 +39,48 @@ export default async function InterviewsIndexPage() {
 
   const rows: InterviewRow[] = data ?? []
 
+  // JSON fallback for the deep brief fields. Mirror the pattern in
+  // src/app/i/[issue]/page.tsx + src/app/interviews/[slug]/page.tsx: when the
+  // Supabase row was seeded before the prep-brief rewrite, the interview only
+  // carries the teaser shape (q, q_label, steps, tip_html) — the deep brief
+  // (debug-shaped question, framework_name, etc.) lives in content/issues/
+  // <slug>.json. Without this fallback, library cards show stale text while
+  // the brief pages they link to show fresh content. Once an ops step
+  // copies job_signal from JSON into the DB rows, this becomes a no-op.
+  const interviewFromSeed = async (slug: string): Promise<Interview | null> => {
+    try {
+      const file = path.join(process.cwd(), 'content/issues', `${slug}.json`)
+      const raw = await readFile(file, 'utf8')
+      const parsed = JSON.parse(raw) as IssueContent
+      return (parsed.job_signal?.interview as Interview | undefined) ?? null
+    } catch {
+      return null
+    }
+  }
+
   // Defensively skip rows where the interview teaser is missing or empty —
   // legacy issues from before the prep-brief contract may not carry one.
-  const cards: Card[] = rows.flatMap((r) => {
-    const interview = r.job_signal?.interview as Interview | undefined
-    if (!interview || !interview.q || !interview.q.trim()) return []
-    return [{
-      slug: r.slug,
-      issue_number: r.issue_number,
-      date_display: r.date_display,
-      published_at: r.published_at,
-      interview,
-    }]
-  })
+  const cards: Card[] = (
+    await Promise.all(
+      rows.map(async (r) => {
+        let interview = r.job_signal?.interview as Interview | undefined
+        const briefMissing =
+          !interview?.framework_name && !interview?.q?.toLowerCase().includes('walk me through')
+        if (briefMissing) {
+          const seed = await interviewFromSeed(r.slug)
+          if (seed && (seed.framework_name || seed.q)) interview = seed
+        }
+        if (!interview || !interview.q || !interview.q.trim()) return null
+        return {
+          slug: r.slug,
+          issue_number: r.issue_number,
+          date_display: r.date_display,
+          published_at: r.published_at,
+          interview,
+        } as Card
+      }),
+    )
+  ).filter((c): c is Card => c !== null)
 
   // Mirror /archive: group adjacent cards by the publication month of the
   // underlying issue. While everything is in one month, suppress headers.

@@ -172,7 +172,19 @@ export default async function Page({
 
         <section className="hero">
           <div className="eyebrow">
-            {interview.q_label} · From {issueLabel}
+            {interview.q_label}
+          </div>
+          <div
+            style={{
+              fontFamily: "'Archivo Narrow', sans-serif",
+              fontSize: 12,
+              letterSpacing: '.08em',
+              textTransform: 'uppercase',
+              color: 'var(--grey)',
+              marginTop: 4,
+            }}
+          >
+            From {issueLabel}
           </div>
           {/* Override the .issue .hero h1 clamp(38px,6vw,70px) display size:
               questions here are 30-80 word scenarios, not short headlines, so
@@ -199,6 +211,100 @@ export default async function Page({
             </p>
           ) : null}
         </section>
+
+        {hasDeep ? (
+          <nav
+            aria-label="In this brief"
+            style={{
+              borderTop: '1px solid var(--hair)',
+              borderBottom: '1px solid var(--hair)',
+              padding: '14px 0',
+              margin: '4px 0 0',
+              fontFamily: "'Archivo Narrow', sans-serif",
+            }}
+          >
+            <div
+              style={{
+                fontSize: 11,
+                letterSpacing: '.1em',
+                textTransform: 'uppercase',
+                color: 'var(--grey)',
+                marginBottom: 8,
+              }}
+            >
+              In this brief
+            </div>
+            <ol
+              style={{
+                listStyle: 'none',
+                padding: 0,
+                margin: 0,
+                display: 'grid',
+                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
+                gap: '4px 18px',
+                fontSize: 13.5,
+                lineHeight: 1.5,
+              }}
+            >
+              {interview.why_they_ask_html ? (
+                <li>
+                  <a href="#prep-why" style={{ color: 'var(--ink)' }}>
+                    1 · Why they ask
+                  </a>
+                </li>
+              ) : null}
+              {interview.steps?.length ? (
+                <li>
+                  <a href="#prep-framework" style={{ color: 'var(--ink)' }}>
+                    2 · The framework
+                  </a>
+                </li>
+              ) : null}
+              {interview.sample_answer_html ? (
+                <li>
+                  <a href="#prep-sample" style={{ color: 'var(--ink)' }}>
+                    3 · Sample answer
+                  </a>
+                </li>
+              ) : null}
+              {interview.eval_deep_dive_html ? (
+                <li>
+                  <a href="#prep-eval" style={{ color: 'var(--accent)' }}>
+                    4 · The eval, in detail
+                  </a>
+                </li>
+              ) : null}
+              {interview.depth_guide_html ? (
+                <li>
+                  <a href="#prep-depth" style={{ color: 'var(--ink)' }}>
+                    5 · Depth on first pass
+                  </a>
+                </li>
+              ) : null}
+              {interview.counters?.length ? (
+                <li>
+                  <a href="#prep-counters" style={{ color: 'var(--ink)' }}>
+                    6 · Counter-questions
+                  </a>
+                </li>
+              ) : null}
+              {interview.traps?.length ? (
+                <li>
+                  <a href="#prep-traps" style={{ color: 'var(--ink)' }}>
+                    7 · Traps
+                  </a>
+                </li>
+              ) : null}
+              {interview.good_vs_great_html ? (
+                <li>
+                  <a href="#prep-gvg" style={{ color: 'var(--ink)' }}>
+                    8 · Good vs great
+                  </a>
+                </li>
+              ) : null}
+            </ol>
+          </nav>
+        ) : null}
 
         {!hasDeep ? (
           <section

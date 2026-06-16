@@ -135,7 +135,7 @@
       "note_html": "Last week's rung was evals. This week is quantization. Both stack into the same portfolio. <b>Proof beats certificates.</b>"
     },
     "interview": {
-      "q_label": "Question of the week · production-debug walkthrough",
+      "q_label": "Quantization · production debug",
       "q": "\"Your AI customer-support agent runs a 4-bit quantized 7B model. Benchmarks stayed flat post-rollout (within 0.5 points), latency dropped 38%, costs dropped 60%. Two weeks in, CX escalates: complaints about 'wrong numbers' on tickets that include financial statements or spec tables. Engineering says the model's fine — benchmarks prove it. Walk me through how you'd debug, who you'd push back on, and how you'd decide whether to roll back.\"",
       "steps": [
         {

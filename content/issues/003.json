@@ -135,7 +135,7 @@
       "note_html": "Next week's rung builds on this one. We climb together, one issue at a time. <b>Proof beats certificates.</b>"
     },
     "interview": {
-      "q_label": "Question of the week · production-debug under deadline",
+      "q_label": "Fine-tuning · retention debug",
       "q": "\"Your fine-tuned support model has been retrained monthly for six months. This month's eval: 91%, up from 87% last month. Customer escalations: up 35%, all on query types your team doesn't think about anymore (refund policy nuances, B2B contract terms, ticket-categorization rules from launch). Engineering wants to keep iterating. CX wants you to revert. You have one week to call it. Walk me through how you'd diagnose what's actually happening, decide, and what you'd ship as the fix.\"",
       "steps": [
         {
