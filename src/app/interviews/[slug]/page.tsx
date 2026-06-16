@@ -248,56 +248,56 @@ export default async function Page({
             >
               {interview.why_they_ask_html ? (
                 <li>
-                  <a href="#prep-why" style={{ color: 'var(--ink)' }}>
+                  <a href="#prep-why" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
                     1 · Why they ask
                   </a>
                 </li>
               ) : null}
               {interview.steps?.length ? (
                 <li>
-                  <a href="#prep-framework" style={{ color: 'var(--ink)' }}>
+                  <a href="#prep-framework" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
                     2 · The framework
                   </a>
                 </li>
               ) : null}
               {interview.sample_answer_html ? (
                 <li>
-                  <a href="#prep-sample" style={{ color: 'var(--ink)' }}>
+                  <a href="#prep-sample" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
                     3 · Sample answer
                   </a>
                 </li>
               ) : null}
               {interview.eval_deep_dive_html ? (
                 <li>
-                  <a href="#prep-eval" style={{ color: 'var(--accent)' }}>
+                  <a href="#prep-eval" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--accent)' }}>
                     4 · The eval, in detail
                   </a>
                 </li>
               ) : null}
               {interview.depth_guide_html ? (
                 <li>
-                  <a href="#prep-depth" style={{ color: 'var(--ink)' }}>
+                  <a href="#prep-depth" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
                     5 · Depth on first pass
                   </a>
                 </li>
               ) : null}
               {interview.counters?.length ? (
                 <li>
-                  <a href="#prep-counters" style={{ color: 'var(--ink)' }}>
+                  <a href="#prep-counters" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
                     6 · Counter-questions
                   </a>
                 </li>
               ) : null}
               {interview.traps?.length ? (
                 <li>
-                  <a href="#prep-traps" style={{ color: 'var(--ink)' }}>
+                  <a href="#prep-traps" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
                     7 · Traps
                   </a>
                 </li>
               ) : null}
               {interview.good_vs_great_html ? (
                 <li>
-                  <a href="#prep-gvg" style={{ color: 'var(--ink)' }}>
+                  <a href="#prep-gvg" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
                     8 · Good vs great
                   </a>
                 </li>

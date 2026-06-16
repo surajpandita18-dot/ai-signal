@@ -216,6 +216,8 @@ export default async function InterviewsIndexPage() {
                                     fontSize: 12.5,
                                     letterSpacing: '.04em',
                                     color: 'var(--accent)',
+                                    display: 'inline-block',
+                                    padding: '10px 0',
                                   }}
                                 >
                                   Read the full prep brief &rarr;
