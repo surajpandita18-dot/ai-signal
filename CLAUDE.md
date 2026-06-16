@@ -43,6 +43,16 @@ No section ships below 3 on any axis. Issue average ≥ 4.0.
 
 Suraj has flagged that repeating the same class of mistake burns trust. Before any change to **email templates, content-model schema, cron route, OG image, or parallel-agent worktree setup**, open `/system/MISTAKES.md` and check the relevant category. If a mistake recurs after being logged there, that's a worse failure than the original — fix structurally (add the check) rather than fixing once. When a new mistake surfaces during a session, log it in `system/MISTAKES.md` *before* moving to the next task.
 
+## Standing pre-push check: multi-device readability audit
+
+Smoke + tsc passing ≠ ship-ready. Before any push that changes **content, layout, typography, or a rendered surface (web page or email)**, run these in order:
+
+1. `node scripts/audit-layouts.mjs` — Playwright pass at mobile (390) / tablet (768) / desktop (1400) + email at 360/600/700. Fails on P0 (horizontal overflow, mobile tap-targets <36px, single block consuming >45% of mobile viewport, email overflow). Outputs `/tmp/aib-layout-audit/` screenshots + `/tmp/aib-layout-audit.json`.
+2. `node scripts/audit-layouts-judge.mjs` — Claude visual-judge pass on each screenshot using the brand voice rubric. Returns 0-5 score + issues per surface. Requires `ANTHROPIC_API_KEY`. Fails on any blocker (<3).
+3. Fix every P0 / blocker before pushing. P1 / warnings are nudge-quality and can ship same-cycle.
+
+This rule exists because Suraj has caught multiple visible defects on his phone after smoke+tsc were green (email "all white", interview teaser bloat, oversized h1 on long-form questions, library page reading stale data). See `system/MISTAKES.md` "Readability / layout across devices" for the pattern.
+
 ---
 
 ## Rule 1 — Think Before Coding

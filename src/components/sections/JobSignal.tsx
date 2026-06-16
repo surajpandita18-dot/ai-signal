@@ -35,6 +35,19 @@ function firstClause(html: string): string {
   return trimmed.length > 50 ? trimmed.slice(0, 47).trimEnd() + '…' : trimmed
 }
 
+/**
+ * Teaser for the interview question on the issue page. The full question
+ * (60-80 words for debug-shaped scenarios) lives at /interviews/<slug>;
+ * cramming it inline reads as a wall. We show ~120 chars worth — usually
+ * the scenario setup — and cut at a word boundary. Reader gets the shape,
+ * clicks the CTA below for the full question + brief.
+ */
+function teaseQuestion(q: string, max = 130): string {
+  if (q.length <= max) return q
+  const cut = q.lastIndexOf(' ', max)
+  return (cut === -1 ? q.slice(0, max) : q.slice(0, cut)).trimEnd() + '…'
+}
+
 type JobSignalProps = JobSignalType & { issueSlug: string }
 
 export default function JobSignal({
@@ -92,7 +105,7 @@ export default function JobSignal({
       <div className="interview">
         <div className="iv-q">
           <div className="lab">Interview Q · {interview.q_label}</div>
-          <div className="q">{interview.q}</div>
+          <div className="q">{teaseQuestion(interview.q)}</div>
         </div>
         <div className="iv-a">
           {frameworkName ? (

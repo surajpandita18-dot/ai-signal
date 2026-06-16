@@ -228,6 +228,16 @@ function firstClause(html: string): string {
   return trimmed.length > 50 ? trimmed.slice(0, 47).trimEnd() + '…' : trimmed
 }
 
+// Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — keeps the
+// email's interview teaser tight (debug-shaped questions can run 60-90 words;
+// dumping the full text into the email reads as a wall). Reader gets the
+// shape, clicks through to /interviews/<slug> for the full question + brief.
+function teaseQuestion(q: string, max = 130): string {
+  if (q.length <= max) return q
+  const cut = q.lastIndexOf(' ', max)
+  return (cut === -1 ? q.slice(0, max) : q.slice(0, cut)).trimEnd() + '…'
+}
+
 // ----------------------------------------------------------------------------
 // Component
 // ----------------------------------------------------------------------------
@@ -825,7 +835,7 @@ export default function IssueEmail({ content, siteUrl }: Props) {
                 >
                   Interview Q · {job.interview.q_label}
                 </small>
-                {job.interview.q}
+                {teaseQuestion(job.interview.q)}
               </Text>
               <Section style={{ padding: '12px 10px' }}>
                 {(() => {

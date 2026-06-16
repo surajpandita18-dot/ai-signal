@@ -111,6 +111,23 @@
 
 ---
 
+## Readability / layout across devices
+
+### 2026-06-14 · Interview teaser dumped the full 60-word debug question on the issue page
+- **What:** After rewriting the interview Q to a debug-shaped 60-90 word scenario, the JobSignal teaser on `/i/<slug>` rendered the FULL question inline. Suraj read it on mobile and called it "bloated" — a wall of body text that crushed the surrounding section rhythm. The full question lives on `/interviews/<slug>`; the teaser only needs to convey shape.
+- **Why:** I changed the question SIZE without re-checking how it renders in the teaser surface that still rendered it whole. Same root pattern as the "/interviews/<slug> h1 too big for long-form question" mistake one section up — content shape changed, didn't re-test every surface that displays it.
+- **Lesson:** Whenever a content field gets longer/shorter, audit every surface that displays it. List the surfaces explicitly: issue page teaser, library card, /interviews/<slug> hero, email twin, OG image. Truncate where the surface is supposed to be a teaser, not a substitute for the full content.
+- **FIXED 2026-06-14:** commit covering this round added `teaseQuestion(q, 130)` helper that truncates at a word boundary; applied to both `src/components/sections/JobSignal.tsx` and `emails/IssueEmail.tsx`. Full question still renders verbatim on `/interviews/<slug>`.
+
+### 2026-06-14 · No multi-device readability check before pushes — pattern, not one-off
+- **What:** Across multiple rounds (h1 oversize, teaser bloat, email all-white, library showing stale data), I shipped content/code changes and Suraj caught the visible defect on his phone or in his inbox. The harness existed (smoke + audit-email) but didn't audit visual layout at multiple viewports, didn't catch typography failures, didn't simulate dark mode.
+- **Why:** Existing harnesses test correctness (200 OK, no overflow violations, anchor resolution) but not READING EXPERIENCE. The reader's actual surface — mobile screen at 390px, email in Gmail dark mode, brief page on tablet — was never the test target.
+- **Lesson:** "Smoke passes" ≠ "ship-ready." Every content or layout-touching change must run a multi-device readability audit before push.
+- **FIXED 2026-06-14:** Two new scripts:
+  - `scripts/audit-layouts.mjs` — Playwright screenshots every key route (landing, archive, about, /i/*, /interviews, /interviews/*) at mobile/tablet/desktop + email HTML at 360/600/700px. Runs deterministic in-page checks: horizontal overflow, single-block bloat (>45% of viewport on mobile), font-size floor, mobile tap-target ≥36px, heading-hierarchy gaps. Exits non-zero on P0.
+  - `scripts/audit-layouts-judge.mjs` — feeds each screenshot to Claude Opus 4.7 as a visual judge with the brand voice rubric; returns 0-5 score + issues list per viewport×route. Cost ~$0.30/run. Exits non-zero on any blocker (<3).
+- **Standing rule (added to CLAUDE.md):** Before any push that changes content / layout / typography, run `node scripts/audit-layouts.mjs` and (when API key is available) `node scripts/audit-layouts-judge.mjs`. Fix P0 / blocker outputs first. Do not push past a P0.
+
 ## When to read this file
 
 - Before any change to: email templates, content-model schema, cron route, OG image, parallel-agent worktree setup
