@@ -14,6 +14,8 @@ import type { Database } from '../../../db/types/database'
  */
 type Interview = BaseInterview & {
   framework_name?: string
+  teaser_q?: string
+  q_html?: string
 }
 
 type InterviewRow = Pick<
@@ -64,8 +66,13 @@ export default async function InterviewsIndexPage() {
     await Promise.all(
       rows.map(async (r) => {
         let interview = r.job_signal?.interview as Interview | undefined
+        // Hydrate from JSON when ANY field added after the DB row was
+        // seeded is missing — covers debug-shape q, framework_name,
+        // teaser_q, q_html.
         const briefMissing =
-          !interview?.framework_name && !interview?.q?.toLowerCase().includes('walk me through')
+          !interview?.framework_name ||
+          !interview?.q?.toLowerCase().includes('walk me through') ||
+          !interview?.teaser_q
         if (briefMissing) {
           const seed = await interviewFromSeed(r.slug)
           if (seed && (seed.framework_name || seed.q)) interview = seed

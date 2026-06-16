@@ -127,10 +127,19 @@ export default async function Page({
     | (typeof content.job_signal.interview & {
         framework_name?: string
         counters?: unknown[]
+        teaser_q?: string
+        q_html?: string
       })
     | undefined
+  // Hydrate from JSON when ANY brief field is missing on the DB row — covers
+  // every field added after the row was seeded (framework_name/counters from
+  // round 3, teaser_q + q_html from this round, etc.).
   const interviewBriefMissing =
-    !!interview && !interview.framework_name && !interview.counters?.length
+    !!interview &&
+    (!interview.framework_name ||
+      !interview.counters?.length ||
+      !interview.q_html ||
+      !interview.teaser_q)
   if (decoderMissing || tldrTargetsMissing || interviewBriefMissing) {
     try {
       const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)

@@ -89,15 +89,23 @@ async function loadIssue(slug: string): Promise<IssueRow | null> {
   // a no-op.
   if (data) {
     const interview = data.job_signal?.interview as Interview | undefined
+    // Hydrate from seed JSON when ANY of the new fields are missing — DB
+    // rows seeded before each field landed only carry the older shape. This
+    // covers framework_name/counters (early shape), eval_deep_dive_html,
+    // q_html, teaser_q (each added at different times). Once an ops step
+    // copies job_signal from JSON into the DB row, this becomes a no-op.
     const briefMissing =
-      !interview?.framework_name && !interview?.counters?.length
+      !interview?.framework_name ||
+      !interview?.counters?.length ||
+      !interview?.q_html ||
+      !interview?.teaser_q
     if (briefMissing) {
       try {
         const file = path.join(process.cwd(), 'content/issues', `${slug}.json`)
         const raw = await readFile(file, 'utf8')
         const seed = JSON.parse(raw) as IssueContent
         const seedInterview = seed.job_signal?.interview as Interview | undefined
-        if (seedInterview?.framework_name || seedInterview?.counters?.length) {
+        if (seedInterview?.framework_name || seedInterview?.counters?.length || seedInterview?.q_html) {
           return {
             ...data,
             job_signal: { ...data.job_signal, interview: seedInterview },
