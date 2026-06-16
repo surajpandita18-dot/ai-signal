@@ -41,6 +41,13 @@
 - **Lesson:** From the first parallel-agent session, ensure `.claude/` is in `.gitignore`. Don't wait for the pollution to show up in `git status`.
 - **RESOLVED 2026-06-14:** `.gitignore` now has `.claude/`. Pattern fixed for this repo.
 
+### 2026-06-14 · `/scripts/` blanket-ignored — 23 production scripts hidden from git
+- **What:** `.gitignore` had `/scripts/` with comment "QA artefacts" — intended for QA output artefacts. But the rule swept up every file in `/scripts/`, meaning `smoke.mjs`, `rubric.mjs`, `audit-email.cjs`, `new-issue.mjs`, `qa-flows.mjs` — 23 production-critical files — were never tracked. Anyone cloning the repo couldn't run any harness.
+- **Why:** Earlier author conflated "QA artefact outputs" with "the directory containing QA scripts". An ignore-rule on a *whole* directory needs to be deliberate; the comment didn't match the rule's effect.
+- **Lesson:** Same shape as the `.claude/worktrees` submodule pollution — the lesson is `git check-ignore` against any file you THINK should be tracked, periodically. **General rule:** if you add a directory-level ignore, add a `# IGNORED CONTENT: list of file patterns expected here` line in the gitignore comment, so future readers can audit intent vs effect.
+- **FIXED 2026-06-14:** commit `2885f4a` — removed the `/scripts/` line; added all 23 scripts to git. QA outputs land in `/tmp/aib-*` and `/tmp/email-*` which are already outside the repo, so no replacement ignore needed.
+- **Check:** Periodically `git ls-files | wc -l` vs `find . -type f -not -path '*/node_modules/*' -not -path '*/.next/*' -not -path '*/.git/*' | wc -l` and investigate any large delta.
+
 ### 2026-06-14 · Parallel content writers both committed directly to main
 - **What:** Two content-writer agents launched in parallel via `isolation: "worktree"` both committed to `main` instead of their worktree branches (cwd confusion). One self-corrected by resetting main; the resulting state was fragile.
 - **Lesson:** Tighter agent brief: "your commit MUST go on your worktree branch; verify with `git branch --show-current` before committing; never `git checkout main` from inside a worktree."
