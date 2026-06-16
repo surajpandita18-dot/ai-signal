@@ -232,14 +232,18 @@ function firstClause(html: string): string {
   return (wb === -1 ? working.slice(0, 87) : working.slice(0, wb)).trimEnd() + '…'
 }
 
-// Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — keeps the
-// email's interview teaser tight (debug-shaped questions can run 60-90 words;
-// dumping the full text into the email reads as a wall). Reader gets the
-// shape, clicks through to /interviews/<slug> for the full question + brief.
-function teaseQuestion(q: string, max = 130): string {
-  if (q.length <= max) return q
-  const cut = q.lastIndexOf(' ', max)
-  return (cut === -1 ? q.slice(0, max) : q.slice(0, cut)).trimEnd() + '…'
+// Mirror of src/components/sections/JobSignal.tsx#teaseQuestion — show ~280
+// chars of scenario setup, cut at last sentence boundary that fits. The
+// question verb lives at the destination /interviews/<slug>.
+function teaseQuestion(q: string): string {
+  const text = q.trim().replace(/^["']|["']$/g, '')
+  const MAX = 280
+  if (text.length <= MAX) return text
+  const slice = text.slice(0, MAX)
+  const lastPeriod = slice.lastIndexOf('. ')
+  if (lastPeriod >= 100) return text.slice(0, lastPeriod + 1) + ' …'
+  const wb = slice.lastIndexOf(' ')
+  return (wb === -1 ? slice : slice.slice(0, wb)).trimEnd() + '…'
 }
 
 // ----------------------------------------------------------------------------

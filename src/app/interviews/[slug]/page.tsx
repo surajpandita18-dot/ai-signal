@@ -186,18 +186,23 @@ export default async function Page({
           >
             From {issueLabel}
           </div>
-          {/* Override the .issue .hero h1 clamp(38px,6vw,70px) display size:
-              questions here are 30-80 word scenarios, not short headlines, so
-              display-weight typography pushes them to 8+ wrapped lines on
-              mobile. Keep the semantic h1 for SEO/a11y but scale it to
-              long-form-friendly. */}
+          {/* The question is a paragraph-length scenario (60-80 words), not
+              a short headline — display-weight typography (even at the
+              previous clamp 22-32px) made it dominate the viewport and read
+              as a wall. Treat it as a quoted body block: Newsreader serif at
+              comfortable body size, oxblood left-rule for visual anchor,
+              same content + same h1 semantics for SEO/a11y. */}
           <h1
             style={{
-              fontSize: 'clamp(22px, 3.4vw, 32px)',
-              lineHeight: 1.3,
-              letterSpacing: '-0.015em',
-              marginTop: 14,
-              fontWeight: 500,
+              fontFamily: "'Newsreader', serif",
+              fontSize: 'clamp(17px, 2vw, 20px)',
+              lineHeight: 1.55,
+              fontWeight: 400,
+              letterSpacing: 0,
+              margin: '18px 0 0',
+              padding: '4px 0 4px 16px',
+              borderLeft: '3px solid var(--accent)',
+              color: 'var(--ink)',
             }}
           >
             {interview.q}
@@ -205,7 +210,7 @@ export default async function Page({
           {interview.framework_name ? (
             <p
               className="sub"
-              style={{ fontSize: 15, lineHeight: 1.5, marginTop: 12 }}
+              style={{ fontSize: 14, lineHeight: 1.5, marginTop: 14 }}
             >
               <strong>Framework:</strong> <em>{interview.framework_name}</em>
             </p>

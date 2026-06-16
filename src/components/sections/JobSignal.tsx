@@ -50,19 +50,31 @@ function firstClause(html: string): string {
 
 /**
  * Teaser for the interview question on the issue page. The full question
- * (60-80 words for debug-shaped scenarios) lives at /interviews/<slug>;
- * cramming it inline reads as a wall. Show JUST the first sentence — that's
- * the scenario setup. The question verb ("walk me through how you'd debug")
- * lives at the destination. Sentence-boundary cut avoids the "CX flags…"
- * mid-sentence chop that the previous 130-char hard-cap caused.
+ * (60-80 words for debug-shaped scenarios) lives at /interviews/<slug>.
+ *
+ * Strategy: show ~2-3 sentences of the scenario setup (target ~280 chars),
+ * cut at the LAST sentence boundary that fits. The question verb itself
+ * ("walk me through how you'd debug") lives at the destination — reader
+ * sees enough to know the scenario type, clicks the CTA for the full ask.
+ *
+ * Earlier attempts that this fixes:
+ *  - hard 130-char cap → cut mid-sentence ("CX flags…")
+ *  - cut at FIRST period → first sentence is often a short scene-setter
+ *    ("You're an AI PM at an Indian lender.") leaving the reader with no
+ *    real context. Suraj flagged this as "abhi bhi cut ho raha hai".
  */
 function teaseQuestion(q: string): string {
   const text = q.trim().replace(/^["']|["']$/g, '')
-  const period = text.indexOf('. ')
-  if (period !== -1 && period < 220) return text.slice(0, period + 1) + ' …'
-  if (text.length <= 180) return text
-  const wb = text.lastIndexOf(' ', 177)
-  return (wb === -1 ? text.slice(0, 177) : text.slice(0, wb)).trimEnd() + '…'
+  const MAX = 280
+  if (text.length <= MAX) return text
+  const slice = text.slice(0, MAX)
+  const lastPeriod = slice.lastIndexOf('. ')
+  // Require ≥100 chars of useful setup so we don't fall back to a tiny
+  // first-sentence cut. If the last sentence boundary in the slice is
+  // earlier than that, prefer the word-boundary cut at MAX.
+  if (lastPeriod >= 100) return text.slice(0, lastPeriod + 1) + ' …'
+  const wb = slice.lastIndexOf(' ')
+  return (wb === -1 ? slice : slice.slice(0, wb)).trimEnd() + '…'
 }
 
 type JobSignalProps = JobSignalType & { issueSlug: string }
