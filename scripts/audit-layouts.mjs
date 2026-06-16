@@ -45,9 +45,11 @@ const ROUTES = [
   ['issue-001', '/i/001'],
   ['issue-002', '/i/002'],
   ['issue-003', '/i/003'],
+  ['issue-004-preview', '/i/004?preview=1'],
   ['interview-001', '/interviews/001'],
   ['interview-002', '/interviews/002'],
   ['interview-003', '/interviews/003'],
+  ['interview-004', '/interviews/004'],
 ]
 
 const VIEWPORTS = [
