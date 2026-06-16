@@ -8,7 +8,7 @@
  *
  * USAGE
  *   node scripts/rubric.mjs <target>
- *     <target> = a URL                e.g. https://ai-signal-eta.vercel.app/i/001
+ *     <target> = a URL                e.g. https://aibasically.co/i/001
  *              | "email:001" | "email:002" | "email:003"
  *              | "email:welcome"
  *              | "all"                (web landing + i/001 + 3 emails + welcome)
@@ -985,8 +985,8 @@ async function main() {
   let reports = []
   if (target === 'all') {
     const targets = [
-      'https://ai-signal-eta.vercel.app/',
-      'https://ai-signal-eta.vercel.app/i/001',
+      'https://aibasically.co/',
+      'https://aibasically.co/i/001',
       'email:001',
       'email:002',
       'email:003',

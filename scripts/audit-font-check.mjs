@@ -4,7 +4,7 @@ import { chromium } from 'playwright'
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 } })
 const page = await ctx.newPage()
-await page.goto('https://ai-signal-eta.vercel.app/i/001?preview=1', { waitUntil: 'networkidle' })
+await page.goto('https://aibasically.co/i/001?preview=1', { waitUntil: 'networkidle' })
 await page.evaluate(() => document.fonts.ready)
 
 const info = await page.evaluate(() => {

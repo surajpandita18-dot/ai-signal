@@ -38,7 +38,7 @@ export function buildInviteUrl(code: string, base?: string): string {
   const root =
     base ??
     process.env.NEXT_PUBLIC_SITE_URL ??
-    'https://ai-signal-eta.vercel.app'
+    'https://aibasically.co'
   // Trim a trailing slash so we don't end up with "//r/".
   const trimmed = root.replace(/\/+$/, '')
   return `${trimmed}/r/${code}`

@@ -8,7 +8,7 @@
 import { chromium } from 'playwright'
 import { writeFileSync, mkdirSync } from 'node:fs'
 
-const BASE = process.env.AUDIT_BASE ?? 'https://ai-signal-eta.vercel.app'
+const BASE = process.env.AUDIT_BASE ?? 'https://aibasically.co'
 const SLUGS = ['001', '002', '003']
 const VIEWPORTS = [
   { name: 'desktop', width: 1400, height: 900, isMobile: false },

@@ -55,7 +55,7 @@ const OVERFLOW_PATH = '/tmp/email-overflow.json'
     const html = await render(
       React.createElement(IssueEmail, {
         content: json,
-        siteUrl: 'https://ai-signal-eta.vercel.app',
+        siteUrl: 'https://aibasically.co',
       }),
     )
     const p = `/tmp/email-${slug}.html`
@@ -66,7 +66,7 @@ const OVERFLOW_PATH = '/tmp/email-overflow.json'
   {
     const html = await render(
       React.createElement(WelcomeEmail, {
-        siteUrl: 'https://ai-signal-eta.vercel.app',
+        siteUrl: 'https://aibasically.co',
       }),
     )
     const p = '/tmp/email-welcome.html'

@@ -3,7 +3,7 @@ import { mkdir } from 'node:fs/promises'
 import { readFileSync, writeFileSync } from 'node:fs'
 
 const OUT = '/tmp/aib-mobile-audit'
-const URL = 'https://ai-signal-eta.vercel.app/i/001?preview=1'
+const URL = 'https://aibasically.co/i/001?preview=1'
 
 await mkdir(OUT, { recursive: true })
 const browser = await chromium.launch()

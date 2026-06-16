@@ -347,7 +347,7 @@ function SectionLabel({
 
 export default function IssueEmail({ content, siteUrl }: Props) {
   const SITE =
-    siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'https://ai-signal-eta.vercel.app'
+    siteUrl ?? process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibasically.co'
 
   // Preview text — the first TLDR is hand-tightened by the editor and is the
   // strongest single sentence in the email. Fall back to the hero sub if the

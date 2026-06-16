@@ -196,7 +196,7 @@ export async function GET(
         >
           <span>Explained like a normal person would.</span>
           <span style={{ color: ACCENT, fontWeight: 600 }}>
-            ai-signal-eta.vercel.app
+            aibasically.co
           </span>
         </div>
       </div>

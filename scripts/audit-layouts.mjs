@@ -34,7 +34,7 @@ import path from 'node:path'
 
 const OUT = '/tmp/aib-layout-audit'
 const REPORT = '/tmp/aib-layout-audit.json'
-const SITE = process.argv[2] || 'https://ai-signal-eta.vercel.app'
+const SITE = process.argv[2] || 'https://aibasically.co'
 
 // Routes to audit. Cover the full reader user-flow surface, not just landing.
 const ROUTES = [
