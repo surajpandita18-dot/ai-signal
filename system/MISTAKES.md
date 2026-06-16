@@ -60,6 +60,32 @@
 - **Lesson:** The user is the final test surface. When the user catches something, the harness has a gap — log the gap here and either close it (add the check) or document why it can't be closed (e.g., need paid Litmus account).
 - **Check pattern:** "if the user catches it, write a test for it." For each entry in this file under a category with "Check:" missing, prioritise building that check.
 
+### 2026-06-14 · Built /interviews/<slug>; never opened the live URL before declaring "plumbing complete"
+- **What:** Wrote three full prep briefs (1450-1600 words each), shipped the plumbing, said "plumbing complete." Suraj opened the live `/interviews/001` and got the "Full prep brief coming soon" fallback because the Supabase row only has the shallow interview shape; my deep brief content lived in JSON only.
+- **Why:** I tested `tsc + smoke pass` and treated that as "user value shipped." Never opened the route in a browser / curl to see what the user would actually see.
+- **Lesson:** "Plumbing complete" is a lie until I curl/screenshot the live route and confirm the actual content renders. Same pattern as the email "all white" mistake one row above — assuming harness pass = real-world value.
+- **FIXED:** commit `aed7cde` — added JSON fallback in both `src/app/i/[issue]/page.tsx` and `src/app/interviews/[slug]/page.tsx`, mirroring the decoder + tldr.target pattern.
+- **Check:** New rule — after any new route or content-rendering change, take a Playwright full-page screenshot of the live URL and visually verify the expected content is present. `scripts/qa-flows.mjs` now exists for this — extend it for any new route.
+
+### 2026-06-14 · Screenshot cache read stale image after deploy
+- **What:** Took Playwright screenshot of `/interviews/001` after the fallback fix; image still showed "coming soon". Almost concluded the fix didn't work. Curling the actual HTML showed the new sections WERE there.
+- **Lesson:** Playwright's `waitUntil: networkidle` doesn't guarantee post-Vercel-deploy freshness. When verifying a just-pushed fix, curl the raw HTML first to confirm content; screenshot is for visual / layout verification only.
+- **Check:** Before screenshotting to verify a deploy, `curl -s URL | grep <distinctive-new-string>` to confirm the deploy is live.
+
+## Git workflow
+
+### 2026-06-14 · Tried to cherry-pick commits that were already on main
+- **What:** Suraj said "apply polish changes". I attempted `git cherry-pick e151e26 0b6a786 c785fc1` — got "cherry-pick already in progress" because 2 of the 3 commits had ALREADY landed on main earlier in the session. Wasted time aborting/skipping/retrying.
+- **Lesson:** Before cherry-picking by SHA, `git log --oneline | grep <sha>` (or check `git branch --contains <sha>`) to confirm the commit isn't already in the current branch's history.
+- **Check:** Standard cherry-pick pre-flight: list commits to be picked, filter out the ones already in `git log`, only pick the remainder.
+
+## External fetches
+
+### 2026-06-14 · WebFetch on Substack archives returned empty
+- **What:** Tried to WebFetch Aakash Gupta and Lenny's Newsletter posts to extract their PM-interview-prep structure. Substack pages are heavily JS-rendered; WebFetch saw only the header + testimonials, no post content. Retried twice before giving up and pivoting to first-principles rubric.
+- **Lesson:** Substack post URLs (and other heavily-JS-rendered editorial sites) usually fail WebFetch. Try once, if empty, pivot. Don't burn 2-3 attempts.
+- **Check:** Known-fail list for WebFetch: Substack post bodies, Medium articles behind metering, Twitter/LinkedIn. If the target is one of these, plan an alternative path (RSS feed, archived versions, first-principles synthesis) before the first fetch.
+
 ---
 
 ## When to read this file
