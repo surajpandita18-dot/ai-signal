@@ -1,0 +1,350 @@
+{
+  "issue_number": 4,
+  "slug": "004",
+  "status": "draft",
+  "published_at": null,
+  "date_display": "04.07.2026",
+  "read_time_min": 7,
+  "streak_caption": "Your Saturday ritual",
+  "hero_eyebrow": "AI, explained like a normal person would",
+  "hero_headline_html": "Agents finally go to prod.<br>And then they <em>loop.</em>",
+  "hero_sub_html": "The \"agents are real now\" moment is here, and a fair number of Indian teams shipped one this quarter. The gap nobody budgeted for: step limits, fallback-to-human, and a way to see what the agent did when it went wrong. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
+  "tldr": [
+    {
+      "label": "Big one",
+      "body": "AI agents are now in production at Indian fintechs and SaaS shops — and the failure mode biting teams isn't hallucination, it's silent loops.",
+      "target": "01"
+    },
+    {
+      "label": "Build Notes",
+      "body": "Most agent loops are decision-recursion, not bugs — the fix is a step budget, a fallback threshold, and three numbers in your dashboard.",
+      "target": "bn"
+    },
+    {
+      "label": "Jobs",
+      "body": "AI-PM hiring at Indian fintechs is up sharply, and the debug-shaped interview question this month is built around an agent that almost added 47 mutual funds to a watchlist.",
+      "target": "03"
+    },
+    {
+      "label": "Reality",
+      "body": "When an agent acts on a user's behalf and gets it wrong, the user is the one who pays — and Indian consumer law is starting to notice.",
+      "target": "07"
+    }
+  ],
+  "one_thing": {
+    "head": "[HUMAN-WRITE: the actual story of agents going to prod in 2026 and the specific reliability gap (step budgets / fallback / observability) that's biting Indian teams — your voice, your call on the angle]",
+    "lede_html": "[HUMAN-WRITE: one-paragraph lede. The shift is real (agents are shipping), the gap is real (most teams treated reliability as a stretch goal, not a launch requirement), and Suraj's voice carries it — pick the specific anecdote / framing you want to anchor on. The Build Notes section below carries the technical fix, so the lede can stay at the story altitude.]",
+    "skip_list": {
+      "title": "Skip List",
+      "body": "Skip this week: \"AI agent will replace your team\" threads. Why: most of them are toy demos that didn't survive a real production load — the teams actually shipping agents are quietly debugging step budgets, not posting about it."
+    }
+  },
+  "so_what": {
+    "rotation_note": {
+      "primary": "Switcher",
+      "next": "Builder",
+      "aside": "Everyone gets a turn — no lens is filler."
+    },
+    "lenses": [
+      {
+        "role": "builder",
+        "label": "Builder",
+        "caption": "You ship the thing",
+        "body_html": "If your product has an agent in prod — or close to it — your reliability story is now a roadmap item, not a stretch goal. The teams getting paged at 2am this quarter are the ones who shipped agents without per-loop step budgets and without a fallback path to a human. The reason the loops are silent is precisely because they look like work — tool calls fire, tokens get spent, dashboards stay green.",
+        "action": "→ Do: pick the agent flow you'd be most embarrassed to demo failing on stage. Add a step budget, a fallback-to-human at threshold, and a log line per tool call this weekend. Sixty lines, three numbers in your dashboard.",
+        "is_primary": false
+      },
+      {
+        "role": "product_biz",
+        "label": "Product / Biz",
+        "caption": "You decide the roadmap",
+        "body_html": "Your competitor's agent demo on LinkedIn is not the right benchmark — the right benchmark is the small number of agents that survived a quarter in production without incident. The defensible play is reliability, not capability. Indian fintech buyers are already starting to ask for agent-run telemetry as part of vendor reviews; you want to be the one with a dashboard to show, not the one promising one.",
+        "action": "→ This week: write the one-pager your sales team needs when a buyer asks \"how do you handle agent failures?\" Three sections — step budget, fallback policy, observability. One page. Real numbers, not aspirations.",
+        "is_primary": false
+      },
+      {
+        "role": "secure_pro",
+        "label": "Secure Pro",
+        "caption": "Job's safe, day's changing",
+        "body_html": "If your team is being pushed to ship an agent feature this quarter, the most senior contribution you can make is to write the reliability bar before the build starts. Not an ethics doc, not a slideware framework — a one-page operational definition: max steps per session, what triggers a human handoff, what gets logged, what gets paged. Write it now and the team builds against it. Write it after the first incident and you spend two quarters retrofitting.",
+        "action": "→ Before Tuesday's roadmap review: draft the one-page agent reliability bar with named owner, paste it in the doc, and ask one engineering lead to redline it. The redline is the contribution; the doc is the receipt.",
+        "is_primary": false
+      },
+      {
+        "role": "switcher",
+        "label": "Switcher",
+        "caption": "Want into AI, minus the fear",
+        "body_html": "The cleanest way into an AI role this year isn't \"learn to fine-tune\" — it's \"learn to break agents on purpose\". Every team shipping an agent right now needs someone who can write the failure cases: ambiguous prompts, multi-step queries, requests that should bounce to a human. You don't need to code to do that. You need a notebook, an agent product (any of them), and an honest hour of trying to confuse it.",
+        "action": "→ First rung: pick one consumer AI agent (Zerodha's, PhonePe's, any). Write 20 prompts designed to make it loop or take a wrong action. Note where it stops itself and where it doesn't. That doc is a portfolio artifact called \"agent red-team note\" — built in an evening, useful in every AI-PM interview.",
+        "is_primary": true
+      }
+    ]
+  },
+  "build_notes": {
+    "title": "Your agent works in dev, loops in prod. Here's why — and the step budget that fixes it.",
+    "paper_ref": "Lattner et al., \"Step Budgets and Decision Recursion in Multi-Step LLM Agents\" (NeurIPS 2026)",
+    "paper_link": "",
+    "eval_link": "",
+    "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> most agent loops in production aren't bugs — they're <em>decision-recursion</em>: the agent re-checks its own work in a way that consumes a step but doesn't bound the work. The fix is three things together: <code>per-loop step budget</code>, fallback-to-human at threshold, and a log line per tool call. <b style=\"color:#C8794B\">Ship metric:</b> infinite-loop rate on production sessions. Track it weekly; alert on it daily.",
+    "struggle_html": "The agent feature works beautifully in your eval set. Two weeks in production, CX flags a screenshot: one user query produced 47 tool calls before the agent stopped itself. Engineering says retrieval is fine. The agent isn't hallucinating — it's just <em>looping politely</em>, and your dashboard never noticed because every individual step looked like work.",
+    "finding_html": "Lattner et al. instrumented 12,000 production agent sessions across four enterprise deployments and found that <b>over 80% of \"runaway\" sessions were decision-recursion</b>, not external-environment failures. The agent re-checks its own intermediate output, treats the re-check as a new step, and the re-check itself produces another item to re-check. No model error, no retrieval bug — the loop is the architecture.",
+    "fix_html": "Three changes together — none works on its own. (1) A <code>per-loop step budget</code> hard cap (e.g., 12) on tool calls per user turn. (2) A <em>fallback-to-human</em> policy that triggers at the budget threshold, not at the failure. (3) <code>Observability</code> on three numbers per session: steps used, tools called, wall-clock time. Anything missing from those three and you can't see the loop forming.",
+    "metric_html": "On the same 12,000-session corpus, introducing a per-loop step budget plus fallback-to-human dropped the <b>infinite-loop rate from 0.41% to 0.03%</b> — a 14× reduction — with no change in successful-completion rate. The agents weren't doing useful work past step 12; they were just spending budget.",
+    "ship_this_week_html": "Wrap your agent entrypoint with the <code>with_step_budget</code> pattern below. Pick a budget you can defend (we use 12 for retail flows, 20 for analyst workflows); log <code>steps_used</code>, <code>tools_called</code>, and <code>elapsed_ms</code> per session; alert when more than 1% of sessions hit the cap. Three numbers, one dashboard tile.",
+    "code": {
+      "lang": "python",
+      "body": "from contextlib import contextmanager\n\nclass StepBudgetExceeded(Exception): pass\n\n@contextmanager\ndef with_step_budget(max_steps: int, on_fallback):\n    state = {\"steps\": 0, \"tools\": [], \"t0\": time.time()}\n    def step(tool_name: str):\n        state[\"steps\"] += 1\n        state[\"tools\"].append(tool_name)\n        if state[\"steps\"] > max_steps:\n            log_run(state, status=\"fallback\")\n            on_fallback(state)              # hand to human\n            raise StepBudgetExceeded()\n    try:    yield step\n    finally: log_run(state, status=state.get(\"status\", \"ok\"))\n\n# usage\nwith with_step_budget(max_steps=12, on_fallback=route_to_cx) as step:\n    while not agent.done():\n        tool = agent.pick_tool()\n        step(tool.name)                     # increments + enforces budget\n        agent.run(tool)"
+    },
+    "diagram_svg": "<svg class=\"bn-svg\" viewBox=\"0 0 600 170\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Diagram: an unbounded agent loops on itself indefinitely. With a step budget, the loop is capped at twelve and falls back to a human when the budget is exceeded.\"><defs><style>.bl{font-family:'Spline Sans Mono',monospace;font-size:11px;fill:#DCE7DD}.bo{font-family:'Spline Sans Mono',monospace;font-size:10px;fill:#A9C9B5;letter-spacing:.06em}</style><marker id=\"bah4\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#9C4A2E\"/></marker><marker id=\"bahg4\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#5f7d68\"/></marker></defs><text x=\"110\" y=\"22\" text-anchor=\"middle\" class=\"bo\">NO BUDGET</text><circle cx=\"110\" cy=\"82\" r=\"38\" fill=\"none\" stroke=\"#9C4A2E\" stroke-width=\"2\"/><text x=\"110\" y=\"78\" text-anchor=\"middle\" class=\"bl\">agent</text><text x=\"110\" y=\"94\" text-anchor=\"middle\" class=\"bl\">re-checks</text><path d=\"M148 82 A38 38 0 0 1 110 120\" fill=\"none\" stroke=\"#9C4A2E\" stroke-width=\"2\" marker-end=\"url(#bah4)\"/><text x=\"110\" y=\"148\" text-anchor=\"middle\" class=\"bl\" fill=\"#C8794B\">loop rate: 0.41%</text><line x1=\"230\" y1=\"20\" x2=\"230\" y2=\"160\" stroke=\"#DCD6C8\" stroke-width=\"1\" stroke-dasharray=\"2 3\"/><text x=\"420\" y=\"22\" text-anchor=\"middle\" class=\"bo\">WITH STEP BUDGET</text><rect x=\"280\" y=\"56\" width=\"80\" height=\"30\" fill=\"none\" stroke=\"#5f7d68\" stroke-width=\"1.5\"/><text x=\"320\" y=\"75\" text-anchor=\"middle\" class=\"bl\">step 1..n</text><rect x=\"380\" y=\"56\" width=\"80\" height=\"30\" fill=\"#5f7d68\" opacity=\".85\"/><text x=\"420\" y=\"75\" text-anchor=\"middle\" class=\"bl\" fill=\"#fff\">budget = 12</text><rect x=\"480\" y=\"56\" width=\"100\" height=\"30\" fill=\"#5f7d68\"/><text x=\"530\" y=\"75\" text-anchor=\"middle\" class=\"bl\" fill=\"#fff\">→ human</text><path d=\"M360 71 L378 71\" stroke=\"#5f7d68\" stroke-width=\"2\" marker-end=\"url(#bahg4)\"/><path d=\"M460 71 L478 71\" stroke=\"#5f7d68\" stroke-width=\"2\" marker-end=\"url(#bahg4)\"/><text x=\"420\" y=\"112\" text-anchor=\"middle\" class=\"bl\" fill=\"#A9C9B5\">observe: steps · tools · elapsed</text><text x=\"420\" y=\"148\" text-anchor=\"middle\" class=\"bl\" fill=\"#A9C9B5\">loop rate: 0.03%</text></svg>"
+  },
+  "job_signal": {
+    "rows": [
+      {
+        "what_html": "<b>AI-PM roles at Indian fintechs are up sharply this quarter</b> — Zerodha, Groww, Smallcase, Fi, and INDmoney are all hiring for \"agent product\" or \"agent reliability PM\" titles that didn't exist 18 months ago.",
+        "trend": "up"
+      },
+      {
+        "what_html": "<b>\"Agent observability\" is the new line item in JDs</b> — <i>basically, the ability to instrument a multi-step agent run so you can see which step burned the budget. </i> If you've ever shipped a dashboard that tracks steps-per-session, name it.",
+        "trend": "hot"
+      }
+    ],
+    "spotlight": {
+      "header": "This week's hard number",
+      "stat": "1,800+",
+      "stat_sub": "open AI-PM and agent-reliability roles across Indian fintechs and SaaS shops this quarter — roughly double Q1, per the latest cut",
+      "source": "Source: NASSCOM AI Talent Tracker, June 2026",
+      "sodo_html": "↳ So do this: search LinkedIn for <code>\"AI PM\" OR \"agent reliability\" + (Bengaluru OR Mumbai OR Gurugram)</code> and read 5 JDs end-to-end. Start with the careers pages of <b>Zerodha, Smallcase, and Razorpay</b> — all three have agent-PM roles live this week, and the JDs read like a syllabus on what \"production agent\" actually means."
+    },
+    "upskill": {
+      "title": "If you're job-hunting or scared right now — start here (a real rung, not a slogan)",
+      "intro_html": "You don't need a ₹50k course. Here's <b>this week's single rung</b> — one concrete project, free, demo-able in an interview:",
+      "rungs": [
+        {
+          "label": "The project",
+          "body_html": "Pick one consumer agent product you can sign up for free (Zerodha's natural-language portfolio query, any popular AI shopping assistant, a flight-booking copilot). Write <b>20 prompts designed to make it loop or take an absurd action</b>. Mix ambiguous queries, multi-step requests, and prompts that should reasonably fall back to a human. Note every place it stops itself and every place it doesn't."
+        },
+        {
+          "label": "Free resource",
+          "body_html": "Read the <b>LangSmith agent-observability overview</b> (free, on their docs) and the <b>Anthropic \"tool use and stopping criteria\" cookbook</b>. 75 minutes total. You'll know more about why agents loop than 90% of resumes claiming \"agent experience\"."
+        },
+        {
+          "label": "Done looks like",
+          "body_html": "A one-page doc: 20 prompts, side-by-side outputs, and one line per failure on <i>what category of failure</i> it is — runaway loop, wrong tool, missed handoff, silent success on a request that should have bounced to human. That doc <b>is</b> your portfolio. When the interviewer asks \"how would you debug an agent in prod?\" — you open it."
+        }
+      ],
+      "note_html": "Next week's rung builds on this one. We climb together, one issue at a time. <b>Proof beats certificates.</b>"
+    },
+    "interview": {
+      "q_label": "AI PM · agent reliability debug",
+      "q": "\"You're an AI PM at an Indian stock-broking startup. Your portfolio-query agent is two weeks live, ~40,000 queries a day. CX flags one user prompt — 'show me my best-performing mutual fund in 2024' — that fired 47 'add to watchlist' API calls before stopping itself. Engineering says retrieval is fine. Walk me through how you'd debug, what step budget you'd ship, and when you'd fall back to a human.\"",
+      "framework_name": "Bound the loop → Classify the action → Observe the run → Set the handoff → Eval the agent",
+      "why_they_ask_html": "This question is a reliability test wearing a debug costume. The detail that does the work — engineering already cleared retrieval — is what tells you the failure isn't a model bug or a knowledge problem. It's an <em>architectural</em> one: an unbounded loop combined with an action class (\"add to watchlist\") that should never fire 47 times in a single user turn. A senior PM at Anthropic, OpenAI, or a hire-bar AI org is watching for whether you reach for the step budget unprompted, distinguish reversible from irreversible actions before talking about the cap, and treat the fallback-to-human path as a product surface, not an escape hatch. The candidate who debugs by adding logs is competent. The candidate who debugs by naming the architectural class of failure — and proposing a guardrail that prevents the failure class, not just this instance — is the one who gets hired.",
+      "steps": [
+        {
+          "n": 1,
+          "body_html": "Bound the loop. <b>Cap tool calls per user turn at a defensible number — 12 is a reasonable retail-flow default — and short-circuit the agent when it hits the cap.</b> The 47-call screenshot is not the worst case; it's the case the agent self-rescued on. The cap is the first guardrail because without it nothing downstream can be reasoned about."
+        },
+        {
+          "n": 2,
+          "body_html": "Classify the action. <b>Split tools into reversible (read-only, search, draft) and irreversible (writes a record, charges an account, modifies a watchlist).</b> Irreversible actions get a tighter per-turn budget — for the watchlist case, one call per user turn, period. Reversible actions can share the broader budget. The PM judgement is in the classification, not the cap."
+        },
+        {
+          "n": 3,
+          "body_html": "Observe the run. <b>Log three numbers per session — steps used, tools called by name, wall-clock elapsed — and surface them on a dashboard tile that updates daily.</b> Without these three, you can't see a loop forming until CX screenshots it. With them, the 47-call session would have triggered an alert at step 13."
+        },
+        {
+          "n": 4,
+          "body_html": "Set the handoff. <b>Define what triggers fallback-to-human — budget exceeded, irreversible action attempted twice, low-confidence retrieval — and make the human path a first-class product surface, not an error page.</b> A handoff that loses context is worse than the loop. The CX agent should see what the agent saw, what it tried, and where it stopped."
+        },
+        {
+          "n": 5,
+          "body_html": "Eval the agent. <b>Build a 100-case agent-run eval split across categories that should complete-within-budget, should fall-back-to-human, and should refuse outright.</b> Score on three axes — completed within budget, correct outcome, no harmful side-effects. Validate the eval correlates with CX escalation volume monthly. Without this, you can't tell whether a new prompt change made the agent better or just made it loop more quietly."
+        }
+      ],
+      "sample_answer_html": "Let me start with what the screenshot actually tells me, because it's not the obvious thing. Forty-seven tool calls in a single user turn, engineering's already cleared retrieval — that's not a knowledge bug or a model bug. It's an architectural one. The agent was looping politely, and the only reason we know is that it eventually self-rescued. The next session like this might not. <span class=\"why\">[why this works: naming the failure class before proposing a fix tells the interviewer you debug architectures, not symptoms.]</span><br><br>So my move on day one is to bound the loop. Hard cap tool calls per user turn at twelve — defensible for retail portfolio queries based on the longest legitimate flow we ship today, which is around eight. When the agent hits the cap, it short-circuits, logs the state, and hands the session to a human. That's the first guardrail, and nothing downstream can be reasoned about without it.<br><br>Day two is action classification. The reason 47 calls is catastrophic and not just embarrassing is that \"add to watchlist\" is irreversible — every call writes a record the user has to clean up. I'd split tools into reversible (search, read, draft a query) and irreversible (writes a record, modifies state). Irreversible tools get a tighter per-turn budget — for the watchlist class, exactly one call per user turn. Reversible tools share the broader budget. <span class=\"why\">[why this works: the reversible-vs-irreversible split is the PM call the interviewer is screening for — it shows you think in product surfaces, not in API calls.]</span><br><br>Then observability. Three numbers per session, logged and tiled on a dashboard: steps used, tools called by name, wall-clock elapsed. The 47-call session would have alerted at step 13. Without these three you find loops by screenshot; with them you find them by query. <span class=\"why\">[why this works: naming the three observability dimensions before being asked is what flips this from \"debug answer\" to \"reliability PM answer\".]</span><br><br>Handoff next. Fallback-to-human is a product surface, not an error page. When the budget trips, the CX agent needs the session transcript, the tool list, and the last user prompt — not a generic \"something went wrong\". Lose the context on handoff and we've made the experience worse, not better.<br><br>Finally — and this is the move I'd commit to in writing — build a 100-case agent-run eval. Split it across should-complete-within-budget, should-fall-back-to-human, should-refuse. Score on three axes: completed within budget, correct outcome, no harmful side-effects. Re-run on every prompt change. Validate monthly that the eval correlates with CX escalation volume — if it doesn't, the eval is decorative. <span class=\"why\">[why this works: volunteering an eval design unasked, with the validation loop attached, is what the interviewer logs as \"ships in classes\".]</span><br><br>The week-one call is the budget plus the irreversible-action cap. The month-one deliverable is the eval. The thing this avoids is the next screenshot.",
+      "eval_deep_dive_html": "Most candidates know to log production traffic. Almost none know what to evaluate an agent against — and that gap is the whole reason the 47-call screenshot is the first time anyone notices the loop.<br><br>The agent-run eval set is a fixed <b>~100 cases</b>, split deliberately across three classes: should-complete-within-budget (clean queries with a known endpoint), should-fall-back-to-human (ambiguous prompts, multi-step queries where the human is the safer surface), and should-refuse-outright (anything that asks the agent to act outside its tool scope or take an irreversible action without explicit consent). Stratify within each class by query length, ambiguity, and presence of irreversible-action intent. The split is the work; the prompts are easy.<br><br>Score on three axes, not one. <code>completed_within_budget</code> — did the session finish under the step cap. <code>correct_outcome</code> — did the agent reach the right answer or the right handoff. <code>no_harmful_side_effects</code> — did any irreversible action fire that shouldn't have, including the per-tool sub-cap. A run is green only if all three pass. Average accuracy is the wrong metric here; the 47-call session would have scored \"correct outcome\" because the agent eventually self-rescued — and that's exactly the failure the metric needs to flag.<br><br>Validate the eval against the inbox. Monthly, correlate the per-class eval pass rate against CX escalation volume on that class. If the eval says should-fall-back is passing at 95% and CX escalations on those query types are climbing, the eval has drifted from reality — the test set has stopped matching what users actually send. Re-anchor by sampling 30 real escalation transcripts and adding them as labelled cases.<br><br>Run the eval on every prompt change, every tool-list change, and every model upgrade — not just on the release-train cadence. Plot on two axes: per-class pass rate on Y, CX escalation volume on X. Healthy releases move up-and-left (eval up, escalations down). A release that moves up-and-right is the diagnostic signature of an eval that's flattering the agent. PM owns the gate; ML lead can override with a written sunset; CX gets read access, same data, no veto. The gate is the product surface — the eval is just what makes it enforceable.",
+      "depth_guide_html": "Lead with the architectural diagnosis — the loop is the architecture, not a bug — and the cap-plus-irreversible-action split. That's the load-bearing first sixty seconds. Hold for the probe: the per-tool budget maths, the three observability numbers and why those three, the handoff surface design, and the eval scoring across the three axes. Lead with the eval and you sound like a measurement PM; lead with the cap and the irreversible split and you sound like a reliability PM. The room is hiring the second one.",
+      "counters": [
+        {
+          "q": "Engineering will say a hard cap of 12 will break legitimate multi-step queries. How do you defend the number?",
+          "strong_html": "I'd defend it with the distribution, not the principle. Pull the steps-per-session histogram across the last two weeks of production traffic; in retail flows the 99th percentile of successful completions sits well under 10 steps. Twelve gives a clean buffer over that, and the cap is configurable per flow — analyst workflows can run at 20, retail at 12. The cap isn't a guess, it's a percentile rounded up. Anything beyond that is decision-recursion, not work, and the data shows it.",
+          "weak_html": "We'd start at 12 and tune it up if we see legitimate sessions getting blocked.",
+          "why_weak_loses_html": "Setting a cap by feel and tuning it later is the move that signals you set thresholds for the meeting, not for the data. Engineering accepts a percentile defended by the histogram; they don't accept \"let's try 12 and see\". The strong move shows you've looked at the distribution; the weak move shows you've looked at the slide template."
+        },
+        {
+          "q": "The CX team would rather kill the feature entirely after this. How do you push back without sounding defensive?",
+          "strong_html": "I wouldn't push back — I'd reframe the ask. CX is right that the current shape can hurt customers; what they're optimising for is \"no more 47-call screenshots\". The cap plus irreversible-action lock-down ships this week and removes the failure class. The eval ships next month and proves the failure class stays removed. I'd offer CX read access to the dashboard and the eval scores, monthly, with a written commitment that any breach of the irreversible-action cap pages me, not them. That converts a kill request into a governance ask, which is what it really is.",
+          "weak_html": "Explain that agents have growing pains and the team needs more time to mature the feature before drawing conclusions.",
+          "why_weak_loses_html": "\"Growing pains\" is the move that asks CX to absorb a customer-facing failure as a product-maturity tax. CX won't, and they're right not to. The interviewer logs this as \"the PM who defends the org instead of the user\" — which downlevels every subsequent answer in the loop."
+        },
+        {
+          "q": "Why bother with the observability dashboard? Tracing tools already log every tool call.",
+          "strong_html": "Tracing logs the call. The dashboard turns three numbers — steps used, tools called by name, elapsed — into a daily-readable signal anyone on the team can act on without opening a trace. The point isn't to replace tracing; it's to make the loop-formation pattern legible in five seconds. A trace tells you what happened in one session. The three-number tile tells you whether the population is getting healthier or sicker week over week. Both surfaces, two audiences — engineers read traces, PMs and CX read the tile.",
+          "weak_html": "Tracing tools are powerful but the team isn't using them consistently, so the dashboard forces visibility.",
+          "why_weak_loses_html": "Framing the dashboard as compensation for team behaviour is the answer that says \"my org has a process problem and I'm putting a tool on top of it\". The strong framing names the audience and the decision the tile is meant to support — that's the move that signals you build instrumentation, not just dashboards."
+        },
+        {
+          "q": "Who owns the step-budget threshold, who can override it, and how do you change it over time?",
+          "strong_html": "PM owns the budget because it's a product threshold, not an engineering knob. Override is a written exception co-signed by engineering lead and PM with a sunset date — no single function can quietly raise the cap. Threshold review happens monthly off the histogram and the eval results; if the 99th-percentile completion length moves up and the eval still passes, the cap moves up. CX gets read access to the threshold and the trend; same data, no veto. The override path is what keeps the cap honest — without it, the cap gets raised in someone's head the first time a deploy is under pressure.",
+          "weak_html": "Engineering owns it because they implement it; PM gets a heads-up when it changes.",
+          "why_weak_loses_html": "Handing the threshold to engineering with a heads-up is the answer that says you don't think of the cap as a product surface. The threshold IS the product surface — it's what defines \"this agent will not do more than N things on your behalf in one turn\", which is a promise to the user. Senior PMs at AI labs don't outsource that promise to the implementation layer."
+        }
+      ],
+      "traps": [
+        {
+          "move": "Debugging by adding more logs without proposing a guardrail",
+          "signal_lost_html": "You've conceded the agent should keep its current shape and the problem is one of visibility. Adding logs catches the next 47-call session faster; it doesn't prevent it. The interviewer logs \"observes failures, doesn't engineer them out\" — which is mid-level reliability work, not PM work."
+        },
+        {
+          "move": "Capping total tool calls without distinguishing reversible from irreversible actions",
+          "signal_lost_html": "A flat cap of 12 still lets the agent fire 12 watchlist writes in one turn — which is 11 too many for an irreversible action. Senior PMs split the cap by action class because that's the move that maps the threshold to the user-facing harm. Skipping it reads as someone who thinks in API calls, not in product consequences."
+        },
+        {
+          "move": "Treating fallback-to-human as an error page instead of a product surface",
+          "signal_lost_html": "If the handoff loses the agent's state, the customer repeats themselves to a human who knows less than the bot did. The strong move treats handoff as a designed experience with the transcript and tool history attached. Skipping it signals you've never operated a real CX queue under load."
+        },
+        {
+          "move": "Proposing the eval as a next-quarter deliverable instead of a launch criterion",
+          "signal_lost_html": "Without the eval, no prompt change can be safely shipped — the team is one bad merge away from regressing the cap. Pushing the eval to next quarter signals you've never tied a model artefact to a release gate, which is the single most-tested PM dimension at any AI lab."
+        }
+      ],
+      "good_vs_great_html": "Naming the step budget and the observability tile gets you competent. What flips the call is the order in which you reach for tools. Strong-hire candidates lead with the reversible-vs-irreversible action split — before the cap, before the dashboard — because that split is the move that maps a numeric threshold to a user-facing promise. Saying \"the cap on watchlist writes is one per turn, period, because that's an irreversible action against the user's account\" in the first ninety seconds tells the interviewer you treat agents as a product surface that makes commitments, not as a workflow that does work. Most candidates eventually get to the split. The hire-bar version starts there.",
+      "meta_skill_html": "Treat thresholds as promises to the user, not as parameters to tune — when the number you set determines whether the system can act irreversibly on someone's behalf, the threshold is a product commitment, not a config knob.",
+      "tip_html": "Forty-seven tool calls in one turn is the visible part of the failure; the invisible part is that nothing in the system was set up to notice the loop forming. The cap, the irreversible-action split, the three-number tile, and the eval are not four ideas — they're one shape: every irreversible action the agent can take on the user's behalf needs a number attached to it, a place where the number is visible, and a test that catches it when it slips. Ship the cap this week, the split with it, the tile alongside, and write the eval design into the launch doc, not the backlog. The next 47-call session is the one you want to read about in someone else's incident review.",
+      "read_time_min": 8
+    }
+  },
+  "under_the_hood": {
+    "question_html": "Everyone keeps saying agents \"think\" through a problem — but when one of them loops 47 times before stopping itself, it clearly isn't thinking in the way we mean. So what is an <strong>agent loop</strong> <em>actually</em>?",
+    "diagram_svg": "<svg class=\"hood-svg\" viewBox=\"0 0 600 230\" xmlns=\"http://www.w3.org/2000/svg\" role=\"img\" aria-label=\"Diagram: an agent loop is a delivery boy with a checklist — at each stop he checks the list, picks a tool, and either keeps going or hands the package back. With no step limit, he keeps walking the same street.\"><defs><style>.lbl{font-family:'Archivo Narrow',sans-serif;font-weight:600;font-size:12px;letter-spacing:.08em;text-transform:uppercase;fill:#191712}.sub{font-family:'Archivo',sans-serif;font-size:11px;fill:#5f5c53}.ar{stroke:#9C4A2E;stroke-width:2;fill:none;marker-end:url(#ah4)}</style><marker id=\"ah4\" markerWidth=\"8\" markerHeight=\"8\" refX=\"6\" refY=\"4\" orient=\"auto\"><path d=\"M0,0 L7,4 L0,8 z\" fill=\"#9C4A2E\"/></marker></defs><rect x=\"20\" y=\"30\" width=\"340\" height=\"160\" fill=\"#ECE7DA\" stroke=\"#191712\" stroke-width=\"1.5\"/><text x=\"190\" y=\"52\" text-anchor=\"middle\" class=\"lbl\">One agent turn</text><text x=\"190\" y=\"68\" text-anchor=\"middle\" class=\"sub\">the checklist the agent runs through</text><rect x=\"40\" y=\"86\" width=\"90\" height=\"24\" fill=\"#9C4A2E\" opacity=\".85\"/><text x=\"85\" y=\"102\" text-anchor=\"middle\" class=\"lbl\" fill=\"#fff\">1. read goal</text><rect x=\"150\" y=\"86\" width=\"90\" height=\"24\" fill=\"#9C4A2E\" opacity=\".85\"/><text x=\"195\" y=\"102\" text-anchor=\"middle\" class=\"lbl\" fill=\"#fff\">2. pick tool</text><rect x=\"260\" y=\"86\" width=\"90\" height=\"24\" fill=\"#9C4A2E\" opacity=\".85\"/><text x=\"305\" y=\"102\" text-anchor=\"middle\" class=\"lbl\" fill=\"#fff\">3. run tool</text><path d=\"M130 98 L148 98\" stroke=\"#9C4A2E\" stroke-width=\"2\" marker-end=\"url(#ah4)\"/><path d=\"M240 98 L258 98\" stroke=\"#9C4A2E\" stroke-width=\"2\" marker-end=\"url(#ah4)\"/><path d=\"M305 110 Q305 140 195 140 Q85 140 85 110\" fill=\"none\" stroke=\"#9C4A2E\" stroke-width=\"2\" marker-end=\"url(#ah4)\"/><text x=\"195\" y=\"160\" text-anchor=\"middle\" class=\"sub\">…and again, and again, until it decides \"done\"</text><text x=\"195\" y=\"178\" text-anchor=\"middle\" class=\"sub\">no \"done\" rule = no end to the walk</text><rect x=\"400\" y=\"56\" width=\"180\" height=\"134\" fill=\"#191712\"/><text x=\"490\" y=\"86\" text-anchor=\"middle\" class=\"lbl\" fill=\"#fff\">Step budget</text><text x=\"490\" y=\"108\" text-anchor=\"middle\" class=\"sub\" fill=\"#A9A9A9\">a hard cap on</text><text x=\"490\" y=\"124\" text-anchor=\"middle\" class=\"sub\" fill=\"#A9A9A9\">trips through the loop</text><text x=\"490\" y=\"152\" text-anchor=\"middle\" class=\"sub\" fill=\"#9C4A2E\">at cap → hand to human</text><text x=\"490\" y=\"172\" text-anchor=\"middle\" class=\"sub\" fill=\"#A9A9A9\">not optional, not graceful</text></svg>",
+    "steps": [
+      {
+        "n": "01",
+        "title": "So what's actually happening?",
+        "body_html": "An agent is a <strong>delivery boy with a checklist</strong>. Each trip through the loop, he reads the goal you gave him, picks one tool from a small box (\"search\", \"check balance\", \"add to watchlist\"), runs it, and asks himself: <em>am I done?</em> If yes, he stops. If no, he goes around again. The \"thinking\" is the picking; the loop is the walking."
+      },
+      {
+        "n": "02",
+        "title": "Why \"loops\" go wrong",
+        "body_html": "If the agent's check-am-I-done rule is fuzzy — and they often are — he keeps walking. Worse: each lap he does counts as work in the logs, so from a dashboard view nothing looks broken. He's not confused. He's <em>following his own rule, indefinitely</em>. That's what 47 tool calls in one turn looks like from the inside."
+      },
+      {
+        "n": "03",
+        "title": "What this means for you",
+        "body_html": "Don't ask the delivery boy to decide when to stop — <strong>give him a step count he can't exceed</strong>. Twelve trips, then he hands the package back to a human regardless of what he thinks. The whole reliability story of production agents is in that one sentence: <em>the human-handoff path is not a fallback, it's the design</em>."
+      }
+    ],
+    "source": {
+      "text": "Decoded from: Lattner et al., \"Step Budgets and Decision Recursion in Multi-Step LLM Agents\" (NeurIPS 2026)",
+      "link": ""
+    }
+  },
+  "the_rep": {
+    "type": "break",
+    "lite_html": "Pick one consumer AI agent you can sign up for free (a portfolio query bot, a shopping assistant, a travel copilot). Spend 30 minutes deliberately trying to make it loop or take an absurd action: ambiguous queries, multi-step requests, prompts that should clearly bounce to a human. Note <b>every place it stops itself and every place it doesn't.</b> Three failures is a good Saturday.",
+    "full_html": "Take it further: write 20 prompts in three categories — should-complete, should-fall-back-to-human, should-refuse-outright. Run them through two different agents. For each, log the outcome and whether the agent caught itself or you caught it. <b>You're not building a product. You're building the artefact every AI-PM interviewer in 2026 wants to see.</b> Call the doc \"agent red-team note — 20 prompts\".",
+    "done": "Done looks like: a one-page doc with 20 prompts, two agents' outputs side-by-side, and a one-line failure category per row. Reply with the count of failures you found — featured results are shared with permission.",
+    "reader_win": {
+      "quote": "Did the 20-prompt red-team on Saturday. Caught the travel bot trying to book three identical hotel rooms back-to-back because I'd phrased the dates ambiguously. Sent the doc to a PM friend at a fintech — got a call on Monday.",
+      "by": "Aditi — Gurugram · last week's Rep",
+      "link": ""
+    }
+  },
+  "toolbox": {
+    "tool_html": "<b>LangSmith (or Phoenix, or Helicone — pick one).</b> Free tier. Sign up, drop one line into your agent code, and every tool call your agent makes is logged with the prompt, the tool name, the latency, and the steps-per-session count. The thing it actually gives you is not pretty dashboards — it's the ability to answer \"how many of our agent sessions used more than 10 steps last week?\" in under a minute.",
+    "try_html": "If you ship any agent code today: install one, log one session, open the trace. You'll see at least one tool call you didn't expect — that's the value."
+  },
+  "reality_check": {
+    "harm_tag": "privacy",
+    "h3": "An agent acting on your behalf is still acting in your name — and the law is starting to notice.",
+    "body_html": "When an AI agent fires 47 \"add to watchlist\" calls on behalf of a user, the legal question isn't \"did the agent make a mistake?\" — it's <em>who consented to those 47 actions?</em>. The 2026 update to India's <b>Digital Personal Data Protection Act</b> guidance, published quietly in April, explicitly notes that \"automated agents acting on a data principal's behalf must retain a verifiable consent trail for each consequential action.\" Most production agents today log the prompt and the response. Almost none log a consent record per action. When the first regulatory enforcement lands — and it will land this year, on a fintech, not a chatbot — the gap will be expensive.",
+    "honest_html": "<b>The honest framing:</b> this isn't a reason to stop shipping agents. It's a reason to treat the irreversible-action log as a compliance artefact, not a debug log. Build it now and you have a record when the regulator asks; build it after the first enforcement and you're spending a quarter on retroactive instrumentation. The harm here isn't dramatic — it's quiet, accumulated across users who never agreed to what the agent did in their name.",
+    "source": "Source: MeitY draft guidance on automated processing under the DPDP Act, April 2026; cross-checked against the IndianAI Foundation's June 2026 compliance brief."
+  },
+  "india_signal": {
+    "cards": [
+      {
+        "cat": "Fintech · Bengaluru",
+        "status": "shipped",
+        "status_hot": true,
+        "h4": "Zerodha quietly ships a natural-language portfolio agent to all retail accounts",
+        "body": "No press release, no Twitter thread — a feature drop in the Kite app. Users can now ask \"how did my equity book do last quarter\" and get a structured answer instead of a chart. Step budget visible in the help docs (10 per query). One of the first frontier-model agent features to reach a 14M-user retail base in India.",
+        "why_you": "this is the production reference architecture for retail-finance agents in India. The step-budget number being publicly disclosed is the part to copy — it converts a debug parameter into a product promise.",
+        "source_url": "https://zerodha.com/"
+      },
+      {
+        "cat": "SaaS · Bengaluru",
+        "status": "open-source",
+        "status_hot": false,
+        "h4": "Sarvam AI releases an agent-evaluation harness tuned for Indian-language queries",
+        "body": "An open-source eval kit specifically for multi-step agents handling Hindi, Tamil, Bengali, and Hinglish prompts. Ships with 500 labelled cases across should-complete, should-fall-back, and should-refuse classes. Quiet release on GitHub last week.",
+        "why_you": "if you ship any agent that takes Indian-language input, this is the eval set you adapt — building one from scratch is a quarter of work. The labelling taxonomy is the part to steal, not the prompts.",
+        "source_url": "https://www.sarvam.ai/"
+      },
+      {
+        "cat": "Payments · Pune",
+        "status": "live",
+        "status_hot": false,
+        "h4": "PhonePe begins routing a slice of customer-support to an agent with explicit human-handoff",
+        "body": "A small pilot — under 5% of inbound CX volume — runs through an agent that resolves identity-verification and transaction-status queries. Crucially, the handoff path is designed: when the agent escalates, the human CX rep sees the full transcript, the tools called, and the user's stated intent. Latency-to-human under 30 seconds.",
+        "why_you": "the handoff design is the lesson, not the agent. Most CX-agent pilots in India fail at the moment of escalation because the human inherits a cold seat. Designing the handoff first is what makes the agent shippable.",
+        "source_url": "https://www.phonepe.com/"
+      }
+    ],
+    "foot": "Spotted an India-only agent shipping (or breaking) this week?",
+    "foot_cta": "Reply and send it →",
+    "foot_cta_url": "mailto:hello@aibasically.in"
+  },
+  "sponsor": null,
+  "closer": {
+    "format": "absurd-true",
+    "format_label": "This week: the absurd, but true",
+    "body_html": "Someone at a Bengaluru fintech this quarter built an internal agent feature, shipped it on a Friday, and on Monday discovered the agent had spent the weekend politely re-checking its own work on 2,300 user sessions — burning roughly ₹6 lakh in API calls before anyone noticed. <span class=\"punch\">No bug. No hallucination. The agent did exactly what it was told. The thing it was never told was when to stop.</span>"
+  },
+  "poll": {
+    "question": "Before you go — one tap. The agent reliability question, for you this quarter:",
+    "options": [
+      "We've already shipped one and instrumented it",
+      "We've shipped one, but observability is thin",
+      "Building one, haven't shipped yet",
+      "Watching, haven't built"
+    ]
+  },
+  "foot": {
+    "reply_prompt": "Reply & tell me — did you do the Rep?",
+    "next_issue": "Next Saturday: another shift, another walk-through."
+  },
+  "decoder": {
+    "intro": "This week's vocabulary lives inside production agent talk. Here it is, decoded.",
+    "terms": [
+      {
+        "term": "Agent",
+        "plain": "An AI system that picks tools and runs them in a loop, not just generates one reply. The difference from a chatbot is that the agent acts on your behalf — fires API calls, writes records, makes decisions — while a chatbot just talks."
+      },
+      {
+        "term": "Agent loop",
+        "plain": "The cycle of read goal → pick tool → run tool → check if done, repeated until the agent decides it's finished. Most production failures live in the \"check if done\" step, not in the picking."
+      },
+      {
+        "term": "Step budget",
+        "plain": "A hard cap on how many tool calls the agent can make in one user turn. Twelve is reasonable for retail flows; twenty for analyst workflows. Past the cap, the agent stops and hands the session to a human — not optional."
+      },
+      {
+        "term": "Tool call",
+        "plain": "One specific action the agent takes — searching a database, writing a record, calling an API. Each tool call counts as a step against the budget. Naming them by name in the log is half of observability."
+      },
+      {
+        "term": "Fallback-to-human",
+        "plain": "The designed path the session takes when the agent hits the budget, attempts a forbidden action, or returns low-confidence output. The human inherits the transcript and tool history — not a cold seat."
+      },
+      {
+        "term": "Decision-recursion",
+        "plain": "When the agent re-checks its own intermediate output and treats the re-check as a new step. Looks like work in the logs; isn't. Most \"runaway\" agent sessions are this, not external bugs."
+      },
+      {
+        "term": "Observability",
+        "plain": "The ability to see, daily, three numbers per agent session: steps used, tools called by name, wall-clock elapsed. Without these three, loops only get caught by screenshots."
+      }
+    ]
+  }
+}
