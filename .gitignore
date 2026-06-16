@@ -63,8 +63,11 @@ CLAUDE.md.backup-*
 /.claude/intelligence/
 /docs/
 
-# QA artefacts
-/scripts/
+# QA artefact OUTPUTS (the scripts themselves are tracked; their outputs land
+# in /tmp/aib-* and /tmp/email-* — those don't need ignoring since they're
+# outside the repo). The earlier `/scripts/` blanket ignore was wrong — it
+# made smoke.mjs, rubric.mjs, audit-email.cjs, new-issue.mjs, etc. invisible
+# to anyone cloning the repo. See system/MISTAKES.md "Git / repo hygiene".
 
 # claude code worktrees + local memory
 .claude/
