@@ -9,7 +9,7 @@ import type { Database } from '../../../../db/types/database'
 type IssueRow = Database['public']['Tables']['issues']['Row']
 
 const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibasically.co'
+  process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibasically-eta.vercel.app'
 
 export async function generateMetadata({
   params,

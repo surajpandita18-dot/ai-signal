@@ -2,7 +2,7 @@ import { chromium } from 'playwright'
 import { writeFile, mkdir } from 'node:fs/promises'
 
 const OUT = '/tmp/aib-audit'
-const PROD = 'https://aibasically.co'
+const PROD = 'https://aibasically-eta.vercel.app'
 
 const URLS = [
   ['landing', '/'],

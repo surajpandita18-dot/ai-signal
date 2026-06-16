@@ -42,7 +42,7 @@ export default function WelcomeEmail({
   siteUrl,
   unsubscribeToken,
 }: WelcomeEmailProps) {
-  const site = siteUrl ?? 'https://aibasically.co'
+  const site = siteUrl ?? 'https://aibasically-eta.vercel.app'
   const unsubLink = `${site}/u/${unsubscribeToken ?? 'UNSUB_TOKEN'}`
 
   return (

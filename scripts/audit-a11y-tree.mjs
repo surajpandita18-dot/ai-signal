@@ -3,7 +3,7 @@ import { chromium } from 'playwright'
 const browser = await chromium.launch()
 const ctx = await browser.newContext({ viewport: { width: 1400, height: 900 } })
 const page = await ctx.newPage()
-await page.goto('https://aibasically.co/i/001?preview=1', { waitUntil: 'networkidle' })
+await page.goto('https://aibasically-eta.vercel.app/i/001?preview=1', { waitUntil: 'networkidle' })
 await page.evaluate(() => document.fonts.ready)
 
 // Build a screen-reader-like tree of important roles & headings.

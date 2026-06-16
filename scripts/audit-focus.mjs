@@ -1,6 +1,6 @@
 import { chromium } from 'playwright'
 
-const PROD = 'https://aibasically.co'
+const PROD = 'https://aibasically-eta.vercel.app'
 const URLS = [
   ['landing', '/'],
   ['about', '/about'],

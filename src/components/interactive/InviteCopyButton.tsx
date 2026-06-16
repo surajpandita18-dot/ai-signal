@@ -7,7 +7,7 @@ type Props = {
   inviteUrl?: string
 }
 
-const DEFAULT_SITE = 'https://aibasically.co'
+const DEFAULT_SITE = 'https://aibasically-eta.vercel.app'
 
 /**
  * "Copy your invite link" button. Prefers `inviteUrl` if given, else

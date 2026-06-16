@@ -2,7 +2,7 @@ import { chromium } from 'playwright'
 import { mkdir } from 'node:fs/promises'
 
 const OUT = '/tmp/aib-flows'
-const SITE = 'https://aibasically.co'
+const SITE = 'https://aibasically-eta.vercel.app'
 
 const TARGETS = [
   ['landing', '/'],

@@ -95,7 +95,7 @@ export async function POST(req: Request) {
   // Welcome email — best-effort, errors are logged but don't fail subscribe.
   try {
     const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibasically.co'
+      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibasically-eta.vercel.app'
     await sendIssueEmail({
       to: [email],
       subject: 'You’re in. First issue Saturday 08:00 IST.',

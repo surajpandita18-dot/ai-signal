@@ -3,7 +3,7 @@
 // Regex-based DOM scrape — no jsdom dep so this stays cheap.
 // Run: node scripts/smoke.mjs [base-url]
 
-const BASE = process.argv[2] ?? 'https://aibasically.co'
+const BASE = process.argv[2] ?? 'https://aibasically-eta.vercel.app'
 
 const ROUTES = [
   '/', '/about', '/archive',

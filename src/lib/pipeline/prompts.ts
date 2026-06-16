@@ -589,7 +589,7 @@ PASSING EXAMPLE (shape only):
   ],
   "foot":"Three places. Three sectors. One pattern: India’s AI signal is getting concrete.",
   "foot_cta":"Browse the India tracker",
-  "foot_cta_url":"https://aibasically.co/india"
+  "foot_cta_url":"https://aibasically-eta.vercel.app/india"
 }
 
 FAILING EXAMPLE + WHY:

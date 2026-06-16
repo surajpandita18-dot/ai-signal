@@ -118,7 +118,7 @@ export async function GET(req: Request) {
     }
 
     const siteUrl =
-      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibasically.co'
+      process.env.NEXT_PUBLIC_SITE_URL ?? 'https://aibasically-eta.vercel.app'
 
     // ── Render once. Per-recipient swaps happen on the HTML string. ────
     const baseHtml = await render(

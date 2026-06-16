@@ -2,7 +2,7 @@ import { chromium } from 'playwright'
 import { mkdir } from 'node:fs/promises'
 
 const OUT = '/tmp/aib-qa'
-const URL = 'https://aibasically.co/'
+const URL = 'https://aibasically-eta.vercel.app/'
 
 await mkdir(OUT, { recursive: true })
 const browser = await chromium.launch()
