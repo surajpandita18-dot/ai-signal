@@ -8,7 +8,7 @@
   "streak_caption": "Your Saturday ritual",
   "hero_eyebrow": "AI, explained like a normal person would",
   "hero_headline_html": "Agents finally go to prod.<br>And then they <em>loop.</em>",
-  "hero_sub_html": "The \"agents are real now\" moment is here, and a fair number of Indian teams shipped one this quarter. The gap nobody budgeted for: step limits, fallback-to-human, and a way to see what the agent did when it went wrong. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
+  "hero_sub_html": "The \"agents are real now\" moment is here, and a fair number of Indian teams shipped one this quarter.<br><br>The gap nobody budgeted for: step limits, fallback-to-human, and a way to see what the agent did when it went wrong. <strong>Skim it in 5, or go deep in 12 — your call.</strong>",
   "tldr": [
     {
       "label": "Big one",
@@ -83,7 +83,7 @@
   "build_notes": {
     "title": "Your agent works in dev, loops in prod. Here's why — and the step budget that fixes it.",
     "paper_ref": "The \"$47K agent loop\" incident (Nov 2025) + the MAX_ITER hard-stop convention that converged across 2026 production agent-engineering writeups",
-    "paper_link": "",
+    "paper_link": "https://dev.to/waxell/the-47000-agent-loop-why-token-budget-alerts-arent-budget-enforcement-389i",
     "eval_link": "",
     "skim_html": "<b style=\"color:#fff\">The 20-second version:</b> most agent loops in production aren't bugs — they're <em>decision-recursion</em>: the agent re-checks its own work in a way that consumes a step but doesn't bound the work. The fix is three things together: <code>per-loop step budget</code>, fallback-to-human at threshold, and a log line per tool call. <b style=\"color:#C8794B\">Ship metric:</b> infinite-loop rate on production sessions. Track it weekly; alert on it daily.",
     "struggle_html": "The agent feature works beautifully in your eval set. Two weeks in production, CX flags a screenshot: one user query produced 47 tool calls before the agent stopped itself. Engineering says retrieval is fine. The agent isn't hallucinating — it's just <em>looping politely</em>, and your dashboard never noticed because every individual step looked like work.",

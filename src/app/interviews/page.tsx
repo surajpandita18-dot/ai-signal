@@ -172,20 +172,53 @@ export default async function InterviewsIndexPage() {
                           qDisplay =
                             (wb === -1 ? q.slice(0, 157) : q.slice(0, wb)).trimEnd() + '…'
                         }
+                        // Extract a 1-word "shape" tag from q_label so the
+                        // library card scans at a glance. q_label convention:
+                        // "<domain> · <shape>" e.g. "RAG · production debug"
+                        // → shape = "DEBUG". Falls back to no tag if q_label
+                        // doesn't split, so future shape conventions don't
+                        // break the render.
+                        const lastSeg = c.interview.q_label.split('·').pop()?.trim() ?? ''
+                        const shapeTag = lastSeg.split(/\s+/).pop()?.toUpperCase() ?? ''
                         return (
                           <li key={c.slug} className="jobrow">
                             <div className="what">
                               <div
                                 style={{
-                                  fontFamily: "'Archivo Narrow', sans-serif",
-                                  fontSize: 11.5,
-                                  letterSpacing: '.08em',
-                                  textTransform: 'uppercase',
-                                  color: 'var(--accent)',
+                                  display: 'flex',
+                                  alignItems: 'baseline',
+                                  gap: 8,
                                   marginBottom: 6,
+                                  flexWrap: 'wrap',
                                 }}
                               >
-                                {c.interview.q_label}
+                                {shapeTag && (
+                                  <span
+                                    style={{
+                                      fontFamily: "'Archivo Narrow', sans-serif",
+                                      fontSize: 11,
+                                      fontWeight: 700,
+                                      letterSpacing: '.1em',
+                                      padding: '2px 7px',
+                                      background: 'var(--ink)',
+                                      color: '#fff',
+                                      borderRadius: 2,
+                                    }}
+                                  >
+                                    {shapeTag}
+                                  </span>
+                                )}
+                                <span
+                                  style={{
+                                    fontFamily: "'Archivo Narrow', sans-serif",
+                                    fontSize: 11.5,
+                                    letterSpacing: '.08em',
+                                    textTransform: 'uppercase',
+                                    color: 'var(--accent)',
+                                  }}
+                                >
+                                  {c.interview.q_label}
+                                </span>
                               </div>
                               <Link href={`/interviews/${c.slug}`}>{qDisplay}</Link>
                               {c.interview.framework_name && (
