@@ -164,9 +164,14 @@ export default async function InterviewsIndexPage() {
                       {g.cards.map((c) => {
                         const padded = String(c.issue_number).padStart(3, '0')
                         const q = c.interview.q
-                        const qDisplay = q.length > 160
-                          ? q.slice(0, 157).trimEnd() + '…'
-                          : q
+                        // Word-boundary truncation so the ellipsis lands on
+                        // a clean break instead of mid-word.
+                        let qDisplay = q
+                        if (q.length > 160) {
+                          const wb = q.lastIndexOf(' ', 157)
+                          qDisplay =
+                            (wb === -1 ? q.slice(0, 157) : q.slice(0, wb)).trimEnd() + '…'
+                        }
                         return (
                           <li key={c.slug} className="jobrow">
                             <div className="what">

@@ -21,31 +21,41 @@ function stripHtml(html: string): string {
     .trim()
 }
 
-// Reduce a step's body to its first clause for the teaser card.
-// Splits on ":" (most steps lead with a label) or the first comma; caps at 50.
+// Reduce a step's body to its first clause for the teaser card. Splits on
+// the first ":" (most steps lead with a label like "Bound the loop. Cap…").
+// Falls back to first sentence (.) — never cuts at a comma any more because
+// step bodies often have natural commas mid-clause that mangle the meaning
+// ("split tools into reversible,..." reads worse than the full first sentence).
+// Cap at 80 chars with word-boundary truncation.
 function firstClause(html: string): string {
   const text = stripHtml(html)
   const colon = text.indexOf(':')
-  const comma = text.indexOf(',')
+  const period = text.indexOf('. ')
   let cut = -1
-  if (colon !== -1) cut = colon
-  else if (comma !== -1) cut = comma
+  if (colon !== -1 && (period === -1 || colon < period)) cut = colon
+  else if (period !== -1) cut = period
   const clause = cut === -1 ? text : text.slice(0, cut)
   const trimmed = clause.trim()
-  return trimmed.length > 50 ? trimmed.slice(0, 47).trimEnd() + '…' : trimmed
+  if (trimmed.length <= 80) return trimmed
+  const wb = trimmed.lastIndexOf(' ', 77)
+  return (wb === -1 ? trimmed.slice(0, 77) : trimmed.slice(0, wb)).trimEnd() + '…'
 }
 
 /**
  * Teaser for the interview question on the issue page. The full question
  * (60-80 words for debug-shaped scenarios) lives at /interviews/<slug>;
- * cramming it inline reads as a wall. We show ~120 chars worth — usually
- * the scenario setup — and cut at a word boundary. Reader gets the shape,
- * clicks the CTA below for the full question + brief.
+ * cramming it inline reads as a wall. Show JUST the first sentence — that's
+ * the scenario setup. The question verb ("walk me through how you'd debug")
+ * lives at the destination. Sentence-boundary cut avoids the "CX flags…"
+ * mid-sentence chop that the previous 130-char hard-cap caused.
  */
-function teaseQuestion(q: string, max = 130): string {
-  if (q.length <= max) return q
-  const cut = q.lastIndexOf(' ', max)
-  return (cut === -1 ? q.slice(0, max) : q.slice(0, cut)).trimEnd() + '…'
+function teaseQuestion(q: string): string {
+  const text = q.trim().replace(/^["']|["']$/g, '')
+  const period = text.indexOf('. ')
+  if (period !== -1 && period < 220) return text.slice(0, period + 1) + ' …'
+  if (text.length <= 180) return text
+  const wb = text.lastIndexOf(' ', 177)
+  return (wb === -1 ? text.slice(0, 177) : text.slice(0, wb)).trimEnd() + '…'
 }
 
 type JobSignalProps = JobSignalType & { issueSlug: string }
@@ -108,21 +118,11 @@ export default function JobSignal({
           <div className="q">{teaseQuestion(interview.q)}</div>
         </div>
         <div className="iv-a">
-          {frameworkName ? (
-            <div
-              style={{
-                fontFamily: "'Archivo Narrow', sans-serif",
-                fontWeight: 600,
-                fontSize: 11,
-                letterSpacing: '.12em',
-                textTransform: 'uppercase',
-                color: 'var(--accent)',
-                marginBottom: 8,
-              }}
-            >
-              Framework · {frameworkName}
-            </div>
-          ) : null}
+          {/* Single framework label — was rendered twice before (oxblood
+              "FRAMEWORK · {name}" eyebrow AND a grey "THE FRAMEWORK IN 4
+              STEPS" header). Combined into one line: grey eyebrow with the
+              actual step count from data (was hardcoded to "4"), and the
+              named framework on its own line when present. */}
           <div
             style={{
               fontFamily: "'Archivo Narrow', sans-serif",
@@ -131,11 +131,25 @@ export default function JobSignal({
               letterSpacing: '.06em',
               textTransform: 'uppercase',
               color: 'var(--grey)',
-              marginBottom: 4,
+              marginBottom: frameworkName ? 4 : 6,
             }}
           >
-            The framework in 4 steps
+            {`The framework in ${interview.steps.length} steps`}
           </div>
+          {frameworkName ? (
+            <div
+              style={{
+                fontFamily: "'Newsreader', serif",
+                fontStyle: 'italic',
+                fontSize: 14,
+                lineHeight: 1.4,
+                color: 'var(--accent)',
+                marginBottom: 10,
+              }}
+            >
+              {frameworkName}
+            </div>
+          ) : null}
           {interview.steps.map((step) => (
             <div key={step.n} className="step">
               <b>{step.n}.</b>

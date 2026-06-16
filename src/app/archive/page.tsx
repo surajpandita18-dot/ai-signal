@@ -109,9 +109,19 @@ export default async function ArchivePage() {
                         const previewRaw = Array.isArray(it.tldr) && it.tldr[0]?.body
                           ? it.tldr[0].body
                           : ''
-                        const preview = previewRaw.length > 140
-                          ? previewRaw.slice(0, 137).trimEnd() + '…'
-                          : previewRaw
+                        // Word-boundary truncation — the previous hard-cap
+                        // at 137 chars cut mid-word ("silent lo...") on
+                        // longer TLDR rows. Find the last space before the
+                        // cap so the ellipsis lands cleanly.
+                        let preview = previewRaw
+                        if (previewRaw.length > 140) {
+                          const wb = previewRaw.lastIndexOf(' ', 137)
+                          preview =
+                            (wb === -1
+                              ? previewRaw.slice(0, 137)
+                              : previewRaw.slice(0, wb)
+                            ).trimEnd() + '…'
+                        }
                         return (
                           <li key={it.slug} className="jobrow">
                             <div className="what">
