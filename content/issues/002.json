@@ -296,8 +296,8 @@
   "sponsor": null,
   "closer": {
     "format": "absurd-true",
-    "format_label": "This week: the absurd-but-true one",
-    "body_html": "Every Indian AI startup this year will sign a multi-year compute commitment for a model that will not be the same model in six weeks, running on a chip whose successor is already taped out, billed by a vendor whose pricing page they cannot negotiate. The board will call this <em>strategic infrastructure</em>. The CFO will put it under capex. The deck will use the word <em>sovereign</em> at least once. <span class=\"punch\">Then everyone will go back to building the house on a platform that was advertised, in the brochure, as a moving train.</span>"
+    "format_label": "This week: the wild-fact one",
+    "body_html": "Did you know <em>quantization</em> wasn't invented by ML engineers — it was invented by Max Planck in December 1900, when he assumed light came in discrete packets instead of continuous waves to fix a broken equation. He didn't believe it was real. He called it <em>an act of desperation</em> in a letter to a friend, a mathematical trick he hoped someone would replace with a cleaner answer. <span class=\"punch\">Every INT4 model you've quantized to fit on a single H100 is a hundred-and-twenty-six-year-old act of desperation, still doing the work nobody found a cleaner answer for.</span>"
   },
   "poll": {
     "question": "Before you go — one tap:",
