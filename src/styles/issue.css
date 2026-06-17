@@ -575,3 +575,32 @@ html{scroll-behavior:smooth}
 .issue .prep-q li{margin:0 0 4px;line-height:1.5}
 .issue .prep-q li:last-child{margin-bottom:0}
 .issue .prep-q strong{font-weight:600;color:var(--ink)}
+
+/* Landing-page additions — cadence ribbon + latest-issue card.
+   Both are intentionally restrained; the pulse + hover lift are the only
+   moving parts on the page. Global prefers-reduced-motion rule kills them. */
+.issue .cad-sat{
+  animation: cad-pulse 2.4s ease-in-out infinite;
+}
+@keyframes cad-pulse{
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.4); opacity: 0.7; }
+}
+.issue .latest-card .lc-inner{
+  cursor: pointer;
+}
+.issue .latest-card:hover .lc-inner{
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--ink);
+}
+.issue .latest-card:focus-visible .lc-inner{
+  transform: translate(-2px, -2px);
+  box-shadow: 6px 6px 0 var(--accent);
+}
+@media (prefers-reduced-motion: reduce){
+  .issue .cad-sat{ animation: none; }
+  .issue .latest-card:hover .lc-inner,
+  .issue .latest-card:focus-visible .lc-inner{
+    transform: none;
+  }
+}
