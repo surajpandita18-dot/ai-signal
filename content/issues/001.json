@@ -296,8 +296,8 @@
   "sponsor": null,
   "closer": {
     "format": "dark-joke",
-    "format_label": "This week: the dark one",
-    "body_html": "In June 2023, a New York lawyer with thirty years at the bar filed a brief citing six federal cases. Three of them did not exist. Before filing, he had asked the chatbot whether the cases were real. It said yes, and produced excerpts. He read the excerpts. He filed the brief. Judge Castel fined him five thousand dollars. The chatbot was not fined. <span class=\"punch\">It was promoted to a paid tier and given a longer context window.</span>"
+    "format_label": "This week: the wild-fact one",
+    "body_html": "Did you know the word <em>audit</em> comes from the Latin <em>audire</em> — to hear. Roman officials checked the imperial accounts by having scribes read them aloud; if the numbers didn't match what was heard, the steward was in trouble. Two thousand years later, the bank examiner still asks the same question: tell me what you heard. <span class=\"punch\">When your RAG system can't show what it retrieved, what it cited, and what it answered — etymologically, you don't have an audit. You have a guess that was written down.</span>"
   },
   "poll": {
     "question": "Before you go — one tap:",
