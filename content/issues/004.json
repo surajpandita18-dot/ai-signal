@@ -300,8 +300,8 @@
   "sponsor": null,
   "closer": {
     "format": "absurd-true",
-    "format_label": "This week: the absurd, but true",
-    "body_html": "We have built software that can act on a stranger's bank account, given it the ability to decide what to do next, and forgotten to tell it when to stop. We have then written eleven blog posts about how the future of work is autonomous agents. The first production safety feature most teams ship is a counter. <span class=\"punch\">We invented a thing that can spend our money on our behalf, and the load-bearing engineering between it and the customer is the number twelve.</span>"
+    "format_label": "This week: the wild-fact one",
+    "body_html": "Did you know the worst runaway-loop in software cost $440 million in forty-five minutes. August 1, 2012: Knight Capital pushed a release that accidentally reactivated dead code, which started buying high and selling low across 154 NYSE stocks the moment the market opened. By 9:45 AM the loss exceeded the firm's previous year's profit. <span class=\"punch\">There was no kill switch — the fix was a human, eventually, finding the right server to unplug. Which is, give or take, where most agent stacks still live.</span>"
   },
   "poll": {
     "question": "Before you go — one tap. The agent reliability question, for you this quarter:",
