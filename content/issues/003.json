@@ -297,7 +297,7 @@
   "closer": {
     "format": "provocation",
     "format_label": "This week: the provocation",
-    "body_html": "We hand out the word <em>frontier</em> when a model crosses a benchmark written in someone else's language, by someone else's exam board, for someone else's user. <span class=\"punch\">A model isn't frontier for India until an autorickshaw driver in Indore can argue with it in his own Hindi — switch to Marathi for a number, back to Hindi for a joke — and feel heard the whole way through. Until that day, \"state-of-the-art\" is just American AI passing American exams in a language none of our users were typing in to begin with.</span>"
+    "body_html": "We taught the model six languages and it forgot the first one. We stretched the context window so it could read longer prompts; it started skipping the middle. We retrained it every month to keep it current; it quietly lost what it knew at launch. Claude 4.8 finally speaks Hinglish the way Bengaluru actually types. <span class=\"punch\">It just won't remember what you told it in the first sentence by the time you get to the fourth.</span>"
   },
   "poll": {
     "question": "Before you go — one tap:",
