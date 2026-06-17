@@ -340,5 +340,13 @@
         "plain": "Following the rules a regulator wrote down. Different from doing the right thing in spirit; this is the paperwork version."
       }
     ]
+  },
+  "rabbit_hole": {
+    "title": "Lost in the Middle: How Language Models Use Long Contexts",
+    "by": "Liu et al. (Stanford / Berkeley / Samaya AI)",
+    "url": "https://arxiv.org/abs/2307.03172",
+    "kind": "paper",
+    "time_min": 25,
+    "why_html": "The original paper for the lost-in-the-middle effect that this week's Build Notes cites. Read it once and you stop guessing why your RAG silently ignores the retrieved chunk in position 4 of 7. The U-shaped attention curve is the kind of result you remember at 2am the next time prod hallucinates."
   }
 }

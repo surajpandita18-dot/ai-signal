@@ -57,6 +57,7 @@ import RealityCheck from '@/components/sections/RealityCheck'
 import IndiaSignal from '@/components/sections/IndiaSignal'
 import Sponsor from '@/components/sections/Sponsor'
 import Decoder from '@/components/sections/Decoder'
+import RabbitHole from '@/components/sections/RabbitHole'
 import Closer from '@/components/sections/Closer'
 import Referral from '@/components/sections/Referral'
 import Poll from '@/components/sections/Poll'
@@ -140,7 +141,10 @@ export default async function Page({
       !interview.counters?.length ||
       !interview.q_html ||
       !interview.teaser_q)
-  if (decoderMissing || tldrTargetsMissing || interviewBriefMissing) {
+  // Hydrate rabbit_hole from JSON when DB row lacks it (the field landed
+  // after the row was seeded; same pattern as decoder/tldr.target/interview).
+  const rabbitHoleMissing = !(content as IssueRow & { rabbit_hole?: unknown }).rabbit_hole
+  if (decoderMissing || tldrTargetsMissing || interviewBriefMissing || rabbitHoleMissing) {
     try {
       const file = path.join(process.cwd(), 'content/issues', `${issue}.json`)
       const seed = JSON.parse(await readFile(file, 'utf8')) as IssueContent
@@ -160,6 +164,10 @@ export default async function Page({
             interview: seed.job_signal.interview,
           }
         }
+      }
+      const seedRabbit = (seed as IssueContent & { rabbit_hole?: unknown }).rabbit_hole
+      if (rabbitHoleMissing && seedRabbit) {
+        ;(patch as Record<string, unknown>).rabbit_hole = seedRabbit
       }
       if (Object.keys(patch).length > 0) {
         content = { ...content, ...patch }
@@ -250,6 +258,7 @@ export default async function Page({
         </Section>
         <Sponsor data={content.sponsor} />
         <Decoder data={content.decoder ?? null} />
+        <RabbitHole data={(content as IssueRow & { rabbit_hole?: unknown }).rabbit_hole as Parameters<typeof RabbitHole>[0]['data']} />
       </div>
 
       <Closer {...content.closer} />

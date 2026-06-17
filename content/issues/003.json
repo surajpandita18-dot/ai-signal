@@ -344,5 +344,13 @@
         "plain": "A standardized test set for Indian-language AI. The benchmark community's way of asking whether a model actually works in Hindi, Tamil, Bengali, and friends."
       }
     ]
+  },
+  "rabbit_hole": {
+    "title": "Understanding Catastrophic Forgetting in Sequential Fine-Tuning",
+    "by": "Kotha et al. (NeurIPS-style framing)",
+    "url": "https://arxiv.org/abs/2308.08747",
+    "kind": "paper",
+    "time_min": 20,
+    "why_html": "The reading that anchors the Build Notes finding — sequential fine-tuning quietly erases prior behaviour because the same weights get overwritten each cycle. The LoRA-merging adjacents in the references are where the real production patterns live; chase those next."
   }
 }

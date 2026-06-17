@@ -264,7 +264,27 @@ export type IssueContent = {
   // closing units
   sponsor: Sponsor
   decoder?: Decoder         // optional jargon explainer; closed-fold on web, open in email
+  rabbit_hole?: RabbitHole  // optional weekend deeper read curated per issue
   closer: Closer
   poll: Poll
   foot: Foot
+}
+
+/**
+ * Weekend Rabbit Hole — one curated resource per issue that pairs with the
+ * week's One Thing for the reader who wants to dig deeper. Optional;
+ * absent ⇒ section is skipped. Compounds into a library asset over time —
+ * by week 26, /interviews-style index of these creates a real moat.
+ *
+ * `kind` is intentionally constrained to keep the visual treatment uniform.
+ */
+export type RabbitHoleKind = 'paper' | 'blog' | 'video' | 'repo' | 'podcast' | 'thread'
+
+export type RabbitHole = {
+  title: string            // verbatim title of the resource
+  by: string               // author / publisher / channel
+  url: string              // canonical link
+  kind: RabbitHoleKind     // visual badge driver
+  time_min: number         // estimated read/watch time
+  why_html: string         // 1-2 sentences on why this pairs with the issue
 }

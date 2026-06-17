@@ -340,5 +340,13 @@
         "plain": "Building the parts that decide things on your own soil. Means India makes the models, owns the training data, and controls the off-switch."
       }
     ]
+  },
+  "rabbit_hole": {
+    "title": "LLM.int8(): 8-bit Matrix Multiplication for Transformers at Scale",
+    "by": "Tim Dettmers et al.",
+    "url": "https://arxiv.org/abs/2208.07339",
+    "kind": "paper",
+    "time_min": 30,
+    "why_html": "The Dettmers paper that explains why quantization breaks on outlier activations — the exact mechanism behind this week's Build Notes. Worth reading even if you don't plan to write a custom kernel; the discovery story is a clinic in how a real production bug gets named and tamed."
   }
 }

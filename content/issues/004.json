@@ -348,5 +348,13 @@
         "plain": "The ability to see, daily, three numbers per agent session: steps used, tools called by name, wall-clock elapsed. Without these three, loops only get caught by screenshots."
       }
     ]
+  },
+  "rabbit_hole": {
+    "title": "The $47,000 Agent Loop: Why Token Budget Alerts Aren't Budget Enforcement",
+    "by": "Waxell (dev.to)",
+    "url": "https://dev.to/waxell/the-47000-agent-loop-why-token-budget-alerts-arent-budget-enforcement-389i",
+    "kind": "blog",
+    "time_min": 12,
+    "why_html": "The public post-mortem of the K agent-loop incident this week's Build Notes opens with. Short, specific, named, with code. Read once and you understand why \"alert\" and \"enforce\" are not the same word in agent infra."
   }
 }
