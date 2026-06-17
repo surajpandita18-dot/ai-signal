@@ -297,7 +297,7 @@
   "closer": {
     "format": "dark-joke",
     "format_label": "This week: the dark one",
-    "body_html": "In June 2023, a New York lawyer cited six cases in a federal filing. Three were invented by ChatGPT. When he asked the model whether the cases were real, it said yes and produced excerpts. He was fined $5,000 and his name now lives in every law-school AI syllabus on Earth. <span class=\"punch\">The lawyer trusted the tone. The court checked the docket. We built the most fluent liar in human history and called it a copilot — and the only thing standing between it and a million Avianca briefs is whether the person reading the output still bothers to open the source.</span>"
+    "body_html": "In June 2023, a New York lawyer with thirty years at the bar filed a brief citing six federal cases. Three of them did not exist. Before filing, he had asked the chatbot whether the cases were real. It said yes, and produced excerpts. He read the excerpts. He filed the brief. Judge Castel fined him five thousand dollars. The chatbot was not fined. <span class=\"punch\">It was promoted to a paid tier and given a longer context window.</span>"
   },
   "poll": {
     "question": "Before you go — one tap:",
