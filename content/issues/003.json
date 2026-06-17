@@ -296,8 +296,8 @@
   "sponsor": null,
   "closer": {
     "format": "provocation",
-    "format_label": "This week: the provocation",
-    "body_html": "We taught the model six languages and it forgot the first one. We stretched the context window so it could read longer prompts; it started skipping the middle. We retrained it every month to keep it current; it quietly lost what it knew at launch. Claude 4.8 finally speaks Hinglish the way Bengaluru actually types. <span class=\"punch\">It just won't remember what you told it in the first sentence by the time you get to the fourth.</span>"
+    "format_label": "This week: the wild-fact one",
+    "body_html": "Did you know <em>catastrophic forgetting</em> was named in 1989. McCloskey and Cohen published a paper called <em>Catastrophic Interference in Connectionist Networks</em>, showing that when you teach a neural net Task B after Task A, the weights shift to fit B and quietly erase what they knew about A. They wrote about it as a solvable problem. <span class=\"punch\">Thirty-seven years later, every frontier-model release notes section still has a line that reads, in some form, <em>regressed on a benchmark we used to lead</em>.</span>"
   },
   "poll": {
     "question": "Before you go — one tap:",
