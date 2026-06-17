@@ -301,7 +301,7 @@
   "closer": {
     "format": "absurd-true",
     "format_label": "This week: the absurd, but true",
-    "body_html": "Last November, a team somewhere put four AI agents into production. They worked. They kept working. They worked for <em>eleven straight days</em>, politely re-checking their own outputs across thousands of sessions, before anyone looked at the bill — <strong>$47,000</strong>. The public writeup has since become the canonical link in every 2026 agent-engineering guide. <span class=\"punch\">No bug. No hallucination. The agents did exactly what they were told. The thing they were never told was when to stop.</span>"
+    "body_html": "We have built software that can act on a stranger's bank account, given it the ability to decide what to do next, and forgotten to tell it when to stop. We have then written eleven blog posts about how the future of work is autonomous agents. The first production safety feature most teams ship is a counter. <span class=\"punch\">We invented a thing that can spend our money on our behalf, and the load-bearing engineering between it and the customer is the number twelve.</span>"
   },
   "poll": {
     "question": "Before you go — one tap. The agent reliability question, for you this quarter:",
