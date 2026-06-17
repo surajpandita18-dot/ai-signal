@@ -260,10 +260,25 @@ function scaffoldEditorialPlaceholders(template) {
     }))
   }
 
+  // ── rabbit_hole — one curated weekend resource per issue (compounds into
+  //    the /rabbit-holes library asset). See system/ARTICLE-RUBRIC.md.
+  t.rabbit_hole = {
+    title: TODO('verbatim title of the curated paper / blog / video / repo / podcast'),
+    by: TODO('author or publisher (e.g. "Liu et al. (Stanford)" or "Tim Dettmers")'),
+    url: TODO('canonical URL — real link, not a placeholder'),
+    kind: TODO('"paper" | "blog" | "video" | "repo" | "podcast" | "thread"'),
+    time_min: 0,
+    why_html: TODO_HTML('1-2 sentences: why this pairs with THIS issue\'s One Thing. Specific, not generic.'),
+  }
+
   // ── closer
+  //    Pick ONE intelligent-comedian shape per issue (rotate; see ARTICLE-RUBRIC).
+  //    Norm Macdonald = deadpan anti-joke; Carlin = first-principles "look at
+  //    the normalized practice"; Hedberg = short pattern-flips; Bo Burnham =
+  //    meta-observation about the system.
   t.closer.format = TODO('closer format: "dark-joke" | "absurd-true" | "provocation" (rotate)')
-  t.closer.format_label = TODO('format label (e.g. "This week: the dark one")')
-  t.closer.body_html = TODO_HTML('closer body, ends with <span class="punch">…</span>')
+  t.closer.format_label = TODO('format label (e.g. "This week: the absurd-but-true one")')
+  t.closer.body_html = TODO_HTML('closer body in one of the comedian shapes (Norm/Carlin/Hedberg/Burnham — rotate). End with <span class="punch">…</span>')
 
   // ── poll
   t.poll.question = TODO('poll question')
@@ -336,6 +351,7 @@ async function main() {
   console.log(`       - job_signal.interview (full prep-brief per system/INTERVIEW-RUBRIC.md)`)
   console.log(`       - under_the_hood + the_rep + toolbox + reality_check + india_signal`)
   console.log(`       - decoder (jargon for THIS issue)`)
+  console.log(`       - rabbit_hole (one curated weekend read — REAL link, not placeholder)`)
   console.log(`       - closer + poll`)
   console.log(`  3. Smoke check while drafting: node scripts/smoke.mjs`)
   console.log(`  4. Preview locally: AIB_PREVIEW_FROM_JSON=1 npm run dev → open http://localhost:3000/i/${slug}`)

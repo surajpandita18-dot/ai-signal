@@ -64,7 +64,8 @@ Per issue (verified across 001-004, applied via commits `bc1bc94` + `prep-r7`):
 - `under_the_hood.question_html` — opens with the analogy. ~60-80 words.
 - `under_the_hood.steps[].body_html` — extend the analogy through each step. ~70-90 words each.
 - `reality_check.body_html` — one specific person harmed; concrete consequence. ~150-200 words.
-- `closer.body_html` — restrained absurd-but-true scene, ends on a punch. ~80-100 words.
+- `closer.body_html` — see "Closer shapes" below. Rotate the comedian technique per issue. ~50-110 words.
+- `rabbit_hole` — one curated paper / blog / video / repo / podcast / thread that pairs with this issue's One Thing. REAL link (verify the URL resolves). 1-2 sentence `why_html` that names what THIS resource gives the reader THIS week. Compounds into `/rabbit-holes` library.
 
 **Interview prep brief (separately codified in INTERVIEW-RUBRIC.md):**
 - `q_html` — structured (setup ¶ + trigger ¶ + ask ¶, with `<ul>` for parenthesized items)
@@ -82,6 +83,21 @@ Per issue (verified across 001-004, applied via commits `bc1bc94` + `prep-r7`):
 - `reality_check.harm_tag`, `h3`, `honest_html`, `source`
 
 ---
+
+## Closer shapes — rotate per issue (4 comedian techniques)
+
+The closer is the punch the reader screenshots. Pick ONE intelligent-comedian shape per issue and rotate across the next 4 — never use the same shape two issues in a row. These are STRUCTURAL moves, not voice imitations; the brand voice (calm confidence) stays.
+
+| Shape | Move | Sample punchline cadence |
+|---|---|---|
+| **Norm Macdonald deadpan anti-joke** | Setup deadpan, factual, lingers on absurd detail without commentary. The "joke" subverts the expected moral. Restraint is the comedy. | "It was promoted to a paid tier and given a longer context window." |
+| **George Carlin first-principles strip** | Name a normalized industry practice. Strip the framing one clause at a time. Reveal what the bare action actually is. | "...the platform that was advertised, in the brochure, as a moving train." |
+| **Mitch Hedberg short pattern-flips** | 2-3 single-sentence flips stacked. Second half subverts the assumed shape of the first. Tight enough to screenshot each line. | "It just won't remember what you told it in the first sentence by the time you get to the fourth." |
+| **Bo Burnham meta-system observation** | Step back from the artifact, name what its existence implies about us. Slightly horrified, intelligent. | "...the load-bearing engineering between it and the customer is the number twelve." |
+
+Sample issue rotation: 001=Norm, 002=Carlin, 003=Hedberg, 004=Burnham, 005=Norm again (rotate the cycle). No two consecutive issues share a shape.
+
+Voice constraints still apply: no edgelord, no cynicism for its own sake, no "everyone is stupid" punchlines. The dark observation earns its place by being TRUE, not by being shocking.
 
 ## Voice rules (override CLAUDE.md if conflict)
 

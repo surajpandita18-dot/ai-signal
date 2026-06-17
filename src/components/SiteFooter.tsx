@@ -90,6 +90,13 @@ export default function SiteFooter() {
         >
           Interviews
         </Link>
+        <Link
+          href="/rabbit-holes"
+          className="site-footer__link"
+          style={{ color: 'var(--grey)', padding: '10px 4px' }}
+        >
+          Rabbit Holes
+        </Link>
         <a
           href="mailto:hello@aibasically.co"
           aria-label="Email feedback to hello@aibasically.co"
