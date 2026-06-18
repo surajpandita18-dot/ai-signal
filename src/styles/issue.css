@@ -604,3 +604,58 @@ html{scroll-behavior:smooth}
     transform: none;
   }
 }
+
+/* ─── micro-interactions on the article page ────────────────────────────
+   Restraint above all: no entrance animations, no big movements, nothing
+   that says "look at me". Just three quiet hover/focus affordances that
+   make the page feel alive when a finger or mouse touches it.
+
+   1. Section numbers ("01"–"08") lean toward you on hover. The number is
+      already the most quotable visual element on the page; the hover hint
+      tells the reader it's a real anchor, not decoration.
+   2. TLDR rows nudge a few pixels right on hover, so the eye knows the row
+      is going to take you somewhere. Pairs with the existing background tint.
+   3. The .punch span in the closer breathes once on first view (via the
+      reading-progress trigger; pure CSS animation, fires only on entry).
+
+   All wrapped in prefers-reduced-motion so movement-sensitive readers
+   get a zero-motion page.
+*/
+
+.issue .sec .label .n{
+  transition: color .18s ease, transform .25s cubic-bezier(.4,0,.2,1);
+  transform-origin: left bottom;
+  will-change: transform;
+}
+.issue .sec:hover .label .n,
+.issue .sec:focus-within .label .n{
+  color: var(--clay);
+  transform: translateY(-2px) scale(1.03);
+}
+
+.issue .tldr li a{
+  display: block;
+  transition: background .15s ease, transform .2s cubic-bezier(.4,0,.2,1);
+}
+.issue .tldr li a:hover,
+.issue .tldr li a:focus-visible{
+  transform: translateX(3px);
+}
+
+.issue .closer-band .joke .punch{
+  display: inline;
+  animation: punch-breathe 1.6s ease-out 0.4s 1 both;
+}
+@keyframes punch-breathe{
+  0%   { opacity: 0.55; letter-spacing: -.005em; }
+  40%  { opacity: 1;    letter-spacing: 0; }
+  100% { opacity: 1;    letter-spacing: 0; }
+}
+
+@media (prefers-reduced-motion: reduce){
+  .issue .sec:hover .label .n,
+  .issue .sec:focus-within .label .n{ transform: none; }
+  .issue .tldr li a:hover,
+  .issue .tldr li a:focus-visible{ transform: none; }
+  .issue .closer-band .joke .punch{ animation: none; opacity: 1; }
+}
