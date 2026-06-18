@@ -186,22 +186,43 @@ export default async function RabbitHolesIndexPage() {
                                   {c.rabbit.time_min} min · {c.rabbit.by}
                                 </span>
                               </div>
-                              <a
-                                href={c.rabbit.url}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                style={{
-                                  fontFamily: "'Fraunces', serif",
-                                  fontSize: 'clamp(17px, 2.2vw, 20px)',
-                                  fontWeight: 500,
-                                  lineHeight: 1.3,
-                                  letterSpacing: '-0.01em',
-                                  color: 'var(--ink)',
-                                  textDecoration: 'none',
-                                }}
-                              >
-                                {c.rabbit.title}
-                              </a>
+                              {/* Title links to our dedicated digest page
+                                  when one exists; falls through to the
+                                  original URL only for legacy single-link
+                                  rabbit holes without a digest. */}
+                              {c.rabbit.digest ? (
+                                <Link
+                                  href={`/rabbit-holes/${c.slug}`}
+                                  style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(17px, 2.2vw, 20px)',
+                                    fontWeight: 500,
+                                    lineHeight: 1.3,
+                                    letterSpacing: '-0.01em',
+                                    color: 'var(--ink)',
+                                    textDecoration: 'none',
+                                  }}
+                                >
+                                  {c.rabbit.title}
+                                </Link>
+                              ) : (
+                                <a
+                                  href={c.rabbit.url}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  style={{
+                                    fontFamily: "'Fraunces', serif",
+                                    fontSize: 'clamp(17px, 2.2vw, 20px)',
+                                    fontWeight: 500,
+                                    lineHeight: 1.3,
+                                    letterSpacing: '-0.01em',
+                                    color: 'var(--ink)',
+                                    textDecoration: 'none',
+                                  }}
+                                >
+                                  {c.rabbit.title}
+                                </a>
+                              )}
                               <div
                                 style={{
                                   marginTop: 6,
@@ -220,8 +241,10 @@ export default async function RabbitHolesIndexPage() {
                                 }}
                               />
                               {c.rabbit.digest && (
-                                <div
+                                <Link
+                                  href={`/rabbit-holes/${c.slug}`}
                                   style={{
+                                    display: 'inline-block',
                                     marginTop: 6,
                                     fontFamily: "'Archivo Narrow', sans-serif",
                                     fontSize: 11,
@@ -229,10 +252,11 @@ export default async function RabbitHolesIndexPage() {
                                     letterSpacing: '.1em',
                                     textTransform: 'uppercase',
                                     color: 'var(--accent)',
+                                    textDecoration: 'none',
                                   }}
                                 >
-                                  ◆ Our 90-second take inside the issue
-                                </div>
+                                  ◆ Read the 90-second digest &rarr;
+                                </Link>
                               )}
                               <div
                                 style={{

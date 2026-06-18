@@ -258,7 +258,10 @@ export default async function Page({
         </Section>
         <Sponsor data={content.sponsor} />
         <Decoder data={content.decoder ?? null} />
-        <RabbitHole data={(content as IssueRow & { rabbit_hole?: unknown }).rabbit_hole as Parameters<typeof RabbitHole>[0]['data']} />
+        <RabbitHole
+          data={(content as IssueRow & { rabbit_hole?: unknown }).rabbit_hole as Parameters<typeof RabbitHole>[0]['data']}
+          issueSlug={issue}
+        />
       </div>
 
       <Closer {...content.closer} />

@@ -1,25 +1,32 @@
+import Link from 'next/link'
 import type { RabbitHole as RabbitHoleType } from '@/lib/content-model'
 
-type Props = { data: RabbitHoleType | null | undefined }
+type Props = {
+  data: RabbitHoleType | null | undefined
+  issueSlug: string
+}
 
 /**
- * Weekend Rabbit Hole — one curated resource per issue. Sits in the
- * editorial-infrastructure tier (visually consistent with Sponsor / Decoder —
- * not part of the 01-08 spine, unnumbered, restrained). Compounds into a
- * library asset week-over-week.
+ * Weekend Rabbit Hole — inline teaser in the issue. Two render modes:
+ *  - With `digest`: small teaser card (badge + title + one-liner) that
+ *    sends the reader to /rabbit-holes/<slug> for the full Feynman
+ *    explanation (analogy + diagram + mechanism + key insight + original
+ *    paper link). Mirrors how JobSignal teases the prep brief that lives
+ *    on /interviews/<slug>.
+ *  - No `digest`: legacy single-link card straight to the resource.
  *
- * Two render modes:
- *  - No `digest`: card is a single big link straight to the resource (legacy).
- *  - With `digest`: we render OUR Feynman-style explanation (analogy →
- *    mechanism → optional diagram → key insight), with the original link
- *    landing at the END as "Read the original →". For dense papers that
- *    most readers won't open cold; the digest is the on-ramp.
+ * The dedicated page is the canonical home of the digest; this inline is
+ * the issue-page entrypoint. Keeps the issue page lighter and gives the
+ * digest its own sharable URL.
  */
-export default function RabbitHole({ data }: Props) {
+export default function RabbitHole({ data, issueSlug }: Props) {
   if (!data) return null
   const kindLabel = data.kind.toUpperCase()
 
-  if (data.digest) return <DigestCard data={data} kindLabel={kindLabel} />
+  if (data.digest)
+    return (
+      <DigestTeaser data={data} kindLabel={kindLabel} issueSlug={issueSlug} />
+    )
 
   return (
     <div className="sec" id="rabbit">
@@ -88,12 +95,14 @@ export default function RabbitHole({ data }: Props) {
   )
 }
 
-function DigestCard({
+function DigestTeaser({
   data,
   kindLabel,
+  issueSlug,
 }: {
   data: RabbitHoleType
   kindLabel: string
+  issueSlug: string
 }) {
   const d = data.digest!
   return (
@@ -101,8 +110,8 @@ function DigestCard({
       <div className="label">
         <span className="nm-lab">Weekend Rabbit Hole</span>
         <span className="hint">
-          The week&rsquo;s paper, explained ourselves. Original is heavy;
-          this is your 90-second on-ramp.
+          The week&rsquo;s paper, explained ourselves. The full digest
+          (analogy, diagram, key insight) lives on its own page.
         </span>
       </div>
       <article
@@ -116,7 +125,7 @@ function DigestCard({
         <Meta kindLabel={kindLabel} time={data.time_min} by={data.by} />
         <h3
           style={{
-            margin: '4px 0 10px',
+            margin: '4px 0 12px',
             fontFamily: "'Fraunces', serif",
             fontSize: 'clamp(19px, 2.6vw, 24px)',
             fontWeight: 500,
@@ -128,7 +137,7 @@ function DigestCard({
           {data.title}
         </h3>
 
-        {/* one-liner: the answer up front */}
+        {/* one-liner: the hook */}
         <div
           style={{
             fontFamily: "'Newsreader', serif",
@@ -139,77 +148,43 @@ function DigestCard({
             padding: '10px 14px',
             borderLeft: '3px solid var(--accent)',
             background: '#fff8',
-            margin: '6px 0 18px',
+            margin: '4px 0 14px',
           }}
           dangerouslySetInnerHTML={{ __html: d.one_liner_html }}
         />
 
-        {/* analogy — the load-bearing explanation */}
-        <DigestBlock label="The picture" body_html={d.analogy_html} />
-
-        {/* optional diagram between the analogy and the mechanism */}
-        {d.diagram_svg && (
-          <div
-            style={{
-              margin: '14px 0 18px',
-              padding: 12,
-              background: '#fff',
-              border: '1px solid var(--hair)',
-            }}
-            dangerouslySetInnerHTML={{ __html: d.diagram_svg }}
-          />
-        )}
-
-        {/* mechanism — the actual thing */}
-        <DigestBlock label="What's actually happening" body_html={d.mechanism_html} />
-
-        {/* key insight — what you carry back to work */}
-        <div
+        {/* Single CTA — same shape as the interview teaser's
+            "Read the full prep brief →" footer. */}
+        <Link
+          href={`/rabbit-holes/${issueSlug}`}
           style={{
-            marginTop: 18,
-            padding: '12px 14px',
-            background: 'var(--ink)',
-            color: '#F4F1E8',
-            fontFamily: "'Newsreader', serif",
-            fontSize: 15,
+            display: 'block',
+            marginTop: 6,
+            paddingTop: 12,
+            borderTop: '1px solid var(--hair)',
+            fontFamily: "'Spline Sans Mono', monospace",
+            fontSize: 12.5,
+            color: 'var(--accent)',
+            textDecoration: 'none',
             lineHeight: 1.5,
           }}
-          dangerouslySetInnerHTML={{ __html: d.key_insight_html }}
-        />
-
-        {/* original link at the END — direct, no further commentary */}
-        <a
-          href={data.url}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="rabbit-original-link"
-          style={{
-            display: 'inline-block',
-            marginTop: 18,
-            fontFamily: "'Archivo Narrow', sans-serif",
-            fontSize: 12.5,
-            letterSpacing: '.06em',
-            textTransform: 'uppercase',
-            color: 'var(--accent)',
-            fontWeight: 700,
-            textDecoration: 'none',
-            borderBottom: '1px solid var(--accent)',
-            paddingBottom: 2,
-          }}
         >
-          Read the original {data.kind === 'paper' ? 'paper' : data.kind} &rarr;
-        </a>
-        <div
-          style={{
-            marginTop: 4,
-            fontFamily: "'Archivo Narrow', sans-serif",
-            fontSize: 11,
-            letterSpacing: '.04em',
-            color: 'var(--grey)',
-          }}
-        >
-          {data.time_min} min · {data.by}
-        </div>
+          <span style={{ fontWeight: 700 }}>
+            &rarr; Read the full 90-second digest
+          </span>
+          <span
+            style={{
+              display: 'block',
+              marginTop: 2,
+              color: 'var(--grey)',
+              fontSize: 11,
+              letterSpacing: '.02em',
+            }}
+          >
+            Analogy · diagram · mechanism · key insight · original{' '}
+            {data.kind} link at the end
+          </span>
+        </Link>
       </article>
     </div>
   )
@@ -253,41 +228,6 @@ function Meta({
       <span>{time} min</span>
       <span style={{ color: 'var(--accent)' }}>·</span>
       <span>{by}</span>
-    </div>
-  )
-}
-
-function DigestBlock({
-  label,
-  body_html,
-}: {
-  label: string
-  body_html: string
-}) {
-  return (
-    <div style={{ marginTop: 6 }}>
-      <div
-        style={{
-          fontFamily: "'Archivo Narrow', sans-serif",
-          fontSize: 11,
-          fontWeight: 700,
-          letterSpacing: '.12em',
-          textTransform: 'uppercase',
-          color: 'var(--accent)',
-          marginBottom: 6,
-        }}
-      >
-        {label}
-      </div>
-      <div
-        style={{
-          fontFamily: "'Newsreader', serif",
-          fontSize: 16,
-          lineHeight: 1.6,
-          color: 'var(--ink)',
-        }}
-        dangerouslySetInnerHTML={{ __html: body_html }}
-      />
     </div>
   )
 }
