@@ -182,6 +182,7 @@ function DigestCard({
           href={data.url}
           target="_blank"
           rel="noopener noreferrer"
+          className="rabbit-original-link"
           style={{
             display: 'inline-block',
             marginTop: 18,

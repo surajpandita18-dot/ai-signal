@@ -115,7 +115,15 @@ export default async function RabbitHolesIndexPage() {
             <span className="hint">Open. No gate.</span>
           </div>
           <div>
-            {cards.length === 0 && <p className="lede">No rabbit holes yet.</p>}
+            {cards.length === 0 && (
+              <p className="lede">
+                Library starts Saturday with Issue 001 — the first weekend read
+                pairs with the One Thing in your inbox.{' '}
+                <a href="/#subscribe" style={{ color: 'var(--accent)' }}>
+                  Subscribe to catch it &rarr;
+                </a>
+              </p>
+            )}
             {cards.length > 0 && (
               <>
                 {groups.map((g, gi) => (
