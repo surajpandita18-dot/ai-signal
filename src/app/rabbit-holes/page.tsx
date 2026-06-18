@@ -202,8 +202,30 @@ export default async function RabbitHolesIndexPage() {
                                   lineHeight: 1.55,
                                   color: 'var(--grey)',
                                 }}
-                                dangerouslySetInnerHTML={{ __html: c.rabbit.why_html }}
+                                // When we have a digest, the why_html is just a
+                                // pointer to the on-page take; show the digest
+                                // one-liner here instead — it's the actual hook.
+                                dangerouslySetInnerHTML={{
+                                  __html:
+                                    c.rabbit.digest?.one_liner_html ??
+                                    c.rabbit.why_html,
+                                }}
                               />
+                              {c.rabbit.digest && (
+                                <div
+                                  style={{
+                                    marginTop: 6,
+                                    fontFamily: "'Archivo Narrow', sans-serif",
+                                    fontSize: 11,
+                                    fontWeight: 700,
+                                    letterSpacing: '.1em',
+                                    textTransform: 'uppercase',
+                                    color: 'var(--accent)',
+                                  }}
+                                >
+                                  ◆ Our 90-second take inside the issue
+                                </div>
+                              )}
                               <div
                                 style={{
                                   marginTop: 6,

@@ -287,4 +287,30 @@ export type RabbitHole = {
   kind: RabbitHoleKind     // visual badge driver
   time_min: number         // estimated read/watch time
   why_html: string         // 1-2 sentences on why this pairs with the issue
+  /**
+   * Optional Feynman-style digest. When present, we render OUR explanation
+   * inline (analogy → mechanism → key insight → image) and the original link
+   * goes at the END as "Read the original →". When absent, the card is
+   * a single big link straight to the resource.
+   *
+   * Suraj's brief: "paper link de do aap end mein but tum khud se explain
+   * karo — original kitna heavy likha hota hai." We pre-digest the dense
+   * papers so a Saturday reader can decide if they want to spend 25 minutes
+   * on the original after 90 seconds with our take.
+   */
+  digest?: RabbitHoleDigest
+}
+
+export type RabbitHoleDigest = {
+  /** ONE-line plain-English answer to "what does this paper actually say?" */
+  one_liner_html: string
+  /** Feynman analogy that does the load-bearing explanation (~80-120 words) */
+  analogy_html: string
+  /** How the analogy maps to the actual mechanism (~80-120 words) */
+  mechanism_html: string
+  /** Optional inline SVG diagram. Same constraint as BuildNotes — viewBox
+   *  set, stroke-based, paper-colour aware. Keep markup hand-tunable. */
+  diagram_svg?: string
+  /** The single line the reader carries back to work. Bold-able. */
+  key_insight_html: string
 }
