@@ -237,68 +237,116 @@ export default async function Page({
           ) : null}
         </section>
 
-        {/* Table of contents — only when there's a full digest */}
-        {digest ? (
-          <nav
-            aria-label="In this digest"
-            style={{
-              borderTop: '1px solid var(--hair)',
-              borderBottom: '1px solid var(--hair)',
-              padding: '14px 0',
-              margin: '4px 0 0',
-              fontFamily: "'Archivo Narrow', sans-serif",
-            }}
-          >
-            <div
-              style={{
-                fontSize: 11,
-                letterSpacing: '.1em',
-                textTransform: 'uppercase',
-                color: 'var(--grey)',
-                marginBottom: 8,
-              }}
-            >
-              In this digest
-            </div>
-            <ol
-              style={{
-                listStyle: 'none',
-                padding: 0,
-                margin: 0,
-                display: 'grid',
-                gridTemplateColumns: 'repeat(auto-fit, minmax(180px, 1fr))',
-                gap: '4px 18px',
-                fontSize: 13.5,
-                lineHeight: 1.5,
-              }}
-            >
-              <li>
-                <a href="#rh-picture" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
-                  1 · The picture
-                </a>
-              </li>
-              <li>
-                <a href="#rh-mechanism" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
-                  2 · What&rsquo;s actually happening
-                </a>
-              </li>
-              <li>
-                <a href="#rh-insight" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--ink)' }}>
-                  3 · Carry this back
-                </a>
-              </li>
-              <li>
-                <a href="#rh-original" style={{ display: 'inline-block', padding: '8px 0', color: 'var(--accent)' }}>
-                  4 · Read the original
-                </a>
-              </li>
-            </ol>
-          </nav>
-        ) : null}
+        {/* Table of contents — only when there's a full digest. Pulls in
+            optional extended sections; renumber dynamically so the reader's
+            "1 · …, 2 · …" matches what they actually land on. */}
+        {digest
+          ? (() => {
+              const items: { href: string; label: string }[] = []
+              if (digest.context_html)
+                items.push({ href: '#rh-context', label: 'Why this matters' })
+              items.push({ href: '#rh-picture', label: 'The picture' })
+              items.push({
+                href: '#rh-mechanism',
+                label: "What's actually happening",
+              })
+              if (digest.example_html)
+                items.push({ href: '#rh-example', label: 'A worked example' })
+              if (digest.surprises_html)
+                items.push({
+                  href: '#rh-surprises',
+                  label: 'What surprised the authors',
+                })
+              if (digest.monday_html)
+                items.push({
+                  href: '#rh-monday',
+                  label: 'What it means Monday',
+                })
+              if (digest.limits_html)
+                items.push({
+                  href: '#rh-limits',
+                  label: "What it doesn't solve",
+                })
+              items.push({ href: '#rh-insight', label: 'Carry this back' })
+              items.push({ href: '#rh-original', label: 'Read the original' })
+              return (
+                <nav
+                  aria-label="In this digest"
+                  style={{
+                    borderTop: '1px solid var(--hair)',
+                    borderBottom: '1px solid var(--hair)',
+                    padding: '14px 0',
+                    margin: '4px 0 0',
+                    fontFamily: "'Archivo Narrow', sans-serif",
+                  }}
+                >
+                  <div
+                    style={{
+                      fontSize: 11,
+                      letterSpacing: '.1em',
+                      textTransform: 'uppercase',
+                      color: 'var(--grey)',
+                      marginBottom: 8,
+                    }}
+                  >
+                    In this digest · {rabbit.time_min} min read
+                  </div>
+                  <ol
+                    style={{
+                      listStyle: 'none',
+                      padding: 0,
+                      margin: 0,
+                      display: 'grid',
+                      gridTemplateColumns:
+                        'repeat(auto-fit, minmax(180px, 1fr))',
+                      gap: '4px 18px',
+                      fontSize: 13.5,
+                      lineHeight: 1.5,
+                    }}
+                  >
+                    {items.map((it, i) => (
+                      <li key={it.href}>
+                        <a
+                          href={it.href}
+                          style={{
+                            display: 'inline-block',
+                            padding: '8px 0',
+                            color:
+                              it.href === '#rh-original'
+                                ? 'var(--accent)'
+                                : 'var(--ink)',
+                          }}
+                        >
+                          {i + 1} · {it.label}
+                        </a>
+                      </li>
+                    ))}
+                  </ol>
+                </nav>
+              )
+            })()
+          : null}
 
         {/* Digest body */}
         {digest ? (
           <>
+            {digest.context_html ? (
+              <section className="sec" aria-labelledby="rh-context">
+                <div className="label">
+                  <h2 id="rh-context" className="nm-lab">
+                    Why this matters
+                  </h2>
+                  <span className="hint">
+                    What was broken in the world before this paper.
+                  </span>
+                </div>
+                <div
+                  className="lede"
+                  dangerouslySetInnerHTML={{ __html: digest.context_html }}
+                />
+              </section>
+            ) : null}
+
             <section className="sec" aria-labelledby="rh-picture">
               <div className="label">
                 <h2 id="rh-picture" className="nm-lab">
@@ -324,6 +372,31 @@ export default async function Page({
                   />
                 </figure>
               ) : null}
+              {digest.second_analogy_html ? (
+                <div
+                  className="lede"
+                  style={{ marginTop: 18 }}
+                  dangerouslySetInnerHTML={{
+                    __html: digest.second_analogy_html,
+                  }}
+                />
+              ) : null}
+              {digest.second_diagram_svg ? (
+                <figure
+                  style={{
+                    margin: '18px 0 0',
+                    padding: 14,
+                    background: '#fff',
+                    border: '1px solid var(--hair)',
+                  }}
+                >
+                  <div
+                    dangerouslySetInnerHTML={{
+                      __html: digest.second_diagram_svg,
+                    }}
+                  />
+                </figure>
+              ) : null}
             </section>
 
             <section className="sec" aria-labelledby="rh-mechanism">
@@ -340,6 +413,74 @@ export default async function Page({
                 dangerouslySetInnerHTML={{ __html: digest.mechanism_html }}
               />
             </section>
+
+            {digest.example_html ? (
+              <section className="sec" aria-labelledby="rh-example">
+                <div className="label">
+                  <h2 id="rh-example" className="nm-lab">
+                    A worked example
+                  </h2>
+                  <span className="hint">
+                    One concrete case from the paper, with the actual numbers.
+                  </span>
+                </div>
+                <div
+                  className="lede"
+                  dangerouslySetInnerHTML={{ __html: digest.example_html }}
+                />
+              </section>
+            ) : null}
+
+            {digest.surprises_html ? (
+              <section className="sec" aria-labelledby="rh-surprises">
+                <div className="label">
+                  <h2 id="rh-surprises" className="nm-lab">
+                    What surprised the authors
+                  </h2>
+                  <span className="hint">
+                    The result the hypothesis didn&rsquo;t predict.
+                  </span>
+                </div>
+                <div
+                  className="lede"
+                  dangerouslySetInnerHTML={{ __html: digest.surprises_html }}
+                />
+              </section>
+            ) : null}
+
+            {digest.monday_html ? (
+              <section className="sec" aria-labelledby="rh-monday">
+                <div className="label">
+                  <h2 id="rh-monday" className="nm-lab">
+                    What it means Monday
+                  </h2>
+                  <span className="hint">
+                    The concrete change to how you work this week.
+                  </span>
+                </div>
+                <div
+                  className="lede"
+                  dangerouslySetInnerHTML={{ __html: digest.monday_html }}
+                />
+              </section>
+            ) : null}
+
+            {digest.limits_html ? (
+              <section className="sec" aria-labelledby="rh-limits">
+                <div className="label">
+                  <h2 id="rh-limits" className="nm-lab">
+                    What it doesn&rsquo;t solve
+                  </h2>
+                  <span className="hint">
+                    Honest limits. The paper isn&rsquo;t a finish line.
+                  </span>
+                </div>
+                <div
+                  className="lede"
+                  dangerouslySetInnerHTML={{ __html: digest.limits_html }}
+                />
+              </section>
+            ) : null}
 
             <section className="sec" aria-labelledby="rh-insight">
               <div className="label">

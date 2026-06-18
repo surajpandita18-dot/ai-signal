@@ -313,4 +313,36 @@ export type RabbitHoleDigest = {
   diagram_svg?: string
   /** The single line the reader carries back to work. Bold-able. */
   key_insight_html: string
+
+  /* ─── extended fields (Saturday-read depth) ─────────────────────────────
+     A real rabbit hole replaces the original paper. The short-form fields
+     above are the spine; these extend it into a 1200-1800 word digest
+     reader can finish on a Saturday with coffee and not need the arxiv PDF.
+     All optional — older digests render as the short form gracefully. */
+
+  /** ~150 words. Why this paper matters and what was broken before it.
+   *  The "set the stage" beat — the world before the result. */
+  context_html?: string
+  /** Optional second analogy or secondary diagram block. Use when one
+   *  analogy doesn't cover both halves of the mechanism (e.g. the
+   *  problem-side + the solution-side need different pictures). */
+  second_analogy_html?: string
+  /** Optional second diagram, paired with second_analogy_html. */
+  second_diagram_svg?: string
+  /** ~200 words. ONE concrete worked example from the paper — actual
+   *  numbers, specific prompts, real failure modes. The thing a sceptic
+   *  is allowed to remember. */
+  example_html?: string
+  /** ~150 words. What surprised even the authors — the unexpected finding
+   *  in the experiment grid that didn't fit their hypothesis. */
+  surprises_html?: string
+  /** ~200 words. Practical implications. What changes about how the
+   *  reader works Monday morning if they internalise this. */
+  monday_html?: string
+  /** ~100 words. Honest limits. What the paper does NOT solve.
+   *  Restraint signal — we're not selling, we're explaining. */
+  limits_html?: string
+  /** Optional: 1-3 line "if you liked this, read next" pointer. Title +
+   *  url + 1-line why. Compounds the library across weeks. */
+  next_read?: { title: string; by: string; url: string; why_html: string }
 }
