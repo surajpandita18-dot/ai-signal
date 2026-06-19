@@ -354,49 +354,59 @@ export default async function Page({
                 </h2>
                 <span className="hint">The analogy that does the work.</span>
               </div>
-              <div
-                className="lede"
-                dangerouslySetInnerHTML={{ __html: digest.analogy_html }}
-              />
-              {digest.diagram_svg ? (
-                <figure
-                  style={{
-                    margin: '18px 0 0',
-                    padding: 14,
-                    background: '#fff',
-                    border: '1px solid var(--hair)',
-                  }}
-                >
-                  <div
-                    dangerouslySetInnerHTML={{ __html: digest.diagram_svg }}
-                  />
-                </figure>
-              ) : null}
-              {digest.second_analogy_html ? (
+              {/* Single wrapper so the .sec 2-col grid (200px label · 1fr
+                  body) sees exactly two children. Without this wrapper, the
+                  figure would auto-flow into the narrow 200px label column
+                  on the next row and render as a clipped sliver on desktop. */}
+              <div>
                 <div
                   className="lede"
-                  style={{ marginTop: 18 }}
-                  dangerouslySetInnerHTML={{
-                    __html: digest.second_analogy_html,
-                  }}
+                  dangerouslySetInnerHTML={{ __html: digest.analogy_html }}
                 />
-              ) : null}
-              {digest.second_diagram_svg ? (
-                <figure
-                  style={{
-                    margin: '18px 0 0',
-                    padding: 14,
-                    background: '#fff',
-                    border: '1px solid var(--hair)',
-                  }}
-                >
+                {digest.diagram_svg ? (
+                  <figure
+                    style={{
+                      margin: '18px 0 0',
+                      padding: 14,
+                      background: '#fff',
+                      border: '1px solid var(--hair)',
+                      maxWidth: '100%',
+                      overflow: 'auto',
+                    }}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{ __html: digest.diagram_svg }}
+                    />
+                  </figure>
+                ) : null}
+                {digest.second_analogy_html ? (
                   <div
+                    className="lede"
+                    style={{ marginTop: 18 }}
                     dangerouslySetInnerHTML={{
-                      __html: digest.second_diagram_svg,
+                      __html: digest.second_analogy_html,
                     }}
                   />
-                </figure>
-              ) : null}
+                ) : null}
+                {digest.second_diagram_svg ? (
+                  <figure
+                    style={{
+                      margin: '18px 0 0',
+                      padding: 14,
+                      background: '#fff',
+                      border: '1px solid var(--hair)',
+                      maxWidth: '100%',
+                      overflow: 'auto',
+                    }}
+                  >
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html: digest.second_diagram_svg,
+                      }}
+                    />
+                  </figure>
+                ) : null}
+              </div>
             </section>
 
             <section className="sec" aria-labelledby="rh-mechanism">
