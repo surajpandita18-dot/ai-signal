@@ -1,0 +1,68 @@
+[
+ {
+  "file": "01_earthrise.jpg",
+  "title": "Earthrise: Luna Surface and Earth Seen from Apollo 8 Spacecraft",
+  "creator": "NASA Goddard Photo and Video",
+  "creator_url": "https://www.flickr.com/photos/24662369@N07",
+  "license": "by",
+  "license_version": "2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "foreign_landing_url": "https://www.flickr.com/photos/24662369@N07/32513153548",
+  "provider": "flickr"
+ },
+ {
+  "file": "02_apollo8_crew.jpg",
+  "title": "Apollo 8 Crew",
+  "creator": "NASA Goddard Photo and Video",
+  "creator_url": "https://www.flickr.com/photos/24662369@N07",
+  "license": "by",
+  "license_version": "2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "foreign_landing_url": "https://www.flickr.com/photos/24662369@N07/46334205072",
+  "provider": "flickr"
+ },
+ {
+  "file": "04_blue_marble.jpg",
+  "title": "The Blue Marble from Apollo 17",
+  "creator": "NASA Goddard Photo and Video",
+  "creator_url": "https://www.flickr.com/photos/24662369@N07",
+  "license": "by",
+  "license_version": "2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "foreign_landing_url": "https://www.flickr.com/photos/24662369@N07/8245351490",
+  "provider": "flickr"
+ },
+ {
+  "file": "05_hurricane_earl_iss.jpg",
+  "title": "Hurricane Earl from Space",
+  "creator": "NASA Goddard Photo and Video",
+  "creator_url": "https://www.flickr.com/photos/24662369@N07",
+  "license": "by",
+  "license_version": "2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "foreign_landing_url": "https://www.flickr.com/photos/24662369@N07/4951444122",
+  "provider": "flickr"
+ },
+ {
+  "file": "07_day_earth_smiled.jpg",
+  "title": "Saturn - The Day The Earth Smiled",
+  "creator": "Kevin M. Gill",
+  "creator_url": "https://www.flickr.com/photos/53460575@N03",
+  "license": "by",
+  "license_version": "2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "foreign_landing_url": "https://www.flickr.com/photos/53460575@N03/26642487895",
+  "provider": "flickr"
+ },
+ {
+  "file": "08_belgium_night_iss.jpg",
+  "title": "Belgium",
+  "creator": "NASA Goddard Photo and Video",
+  "creator_url": "https://www.flickr.com/photos/24662369@N07",
+  "license": "by",
+  "license_version": "2.0",
+  "license_url": "https://creativecommons.org/licenses/by/2.0/",
+  "foreign_landing_url": "https://www.flickr.com/photos/24662369@N07/14377596966",
+  "provider": "flickr"
+ }
+]
