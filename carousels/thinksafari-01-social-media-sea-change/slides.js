@@ -13,8 +13,8 @@ const css = `
 .h{font:400 80px/1.02 IS;letter-spacing:-.012em;text-wrap:balance}
 .q{font:italic 400 60px/1.1 IS;text-wrap:balance}
 .b{font:400 33px/1.45 DS;letter-spacing:-.003em;text-wrap:pretty}
-.cap{font:400 18px/1.35 DS;letter-spacing:.005em}
-.foot{left:84px;right:84px;bottom:56px;display:flex;justify-content:space-between;font:400 18px DS;letter-spacing:.01em}
+.cap{font:400 22px/1.35 DS;letter-spacing:.003em}
+.foot{left:84px;right:84px;bottom:56px;display:flex;justify-content:space-between;font:400 20px DS;letter-spacing:.01em}
 img{display:block;position:absolute}
 `;
 const foot = (i, col) => `<div class="a foot" style="color:${col}"><span>ThinkSafari · The Social Media Sea Change</span><span>${i} / 8</span></div>`;
@@ -63,10 +63,10 @@ const S = [
    <div class="b" style="margin-top:26px;color:#C9C6C0">The book on the train. Small talk in a slow pharmacy queue. The errand you keep putting off. Life, quietly happening off-screen.</div></div>
   ${foot(7, C.dkGrey)}`],
  // 8 — the ending
- [C.white, `<div class="a m b" style="top:150px;color:${C.grey};max-width:830px">When she left Instagram, her first worry was embarrassingly simple: how would people know she’d gone skiing? That she had friends?</div>
-  <div class="a m" style="top:380px"><div class="q" style="font-size:96px;line-height:1.02;color:${C.ink}">“‘People’ may not know, but I do.”</div></div>
-  <img src="file://${P}/08_skier.jpg" style="left:0;top:600px;width:1080px;height:630px;object-fit:cover;object-position:50% 55%">
-    <div class="a cap" style="right:84px;top:1240px;color:${C.grey}">Grand Teton National Park. Photo: NPS (public domain)</div>
+ [C.white, `<div class="a m b" style="top:130px;color:${C.grey};max-width:830px">When she left Instagram, her first worry was embarrassingly simple: how would people know she’d gone skiing? That she had friends?</div>
+  <div class="a m" style="top:350px"><div class="q" style="font-size:96px;line-height:1.02;color:${C.ink}">“‘People’ may not know, but I do.”</div></div>
+  <img src="file://${P}/08_skier.jpg" style="left:0;top:580px;width:1080px;height:606px;object-fit:cover;object-position:50% 55%">
+    <div class="a cap" style="right:84px;top:1198px;color:${C.grey}">Grand Teton National Park. Photo: NPS (public domain)</div>
   ${foot(8, C.grey)}`],
 ];
 (async () => {
