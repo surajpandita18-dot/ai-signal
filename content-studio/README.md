@@ -27,7 +27,8 @@ Reference screenshots: Drive folder `1_0xY0yeNuuGWdN_sY6P518qz_-HLwFDB`.
 
 ![quiet brand](style-system/style-board-2.png)
 
-1. **Signature:** `SURAJ PANDITA · AI PRODUCT MANAGER` small caps on the cover only + oxblood `SP` monogram (`#9C4A2E`). Never bigger than the title.
+1. **Signature:** Suraj approved using his full name, **Suraj Pandita**, on all content (cover byline, end card, captions).
+    `SURAJ PANDITA · AI PRODUCT MANAGER` small caps on the cover only + oxblood `SP` monogram (`#9C4A2E`). Never bigger than the title.
 2. **Footer:** `@thinksafari ———— n` on every slide.
 3. **One "as an AI PM" moment per post** — one slide with something real from his work. Not a label on every slide. Opinion slides are drafts: Suraj approves them.
 4. **Series first, topic second** on every cover.
@@ -59,6 +60,6 @@ Rendered PNGs are not committed (`out/`, `issues/<date>/`); regenerate them. Nee
 |---|---|---|
 | Last 24 hours in AI · Day 02 (26 Nov) | B | folder `1p8c-RR4n9fORIj2J1zpl7mMOj6kp0zIM` |
 | Read for you · Ep 01 · "You'll forget most of what you learn" | D | folder `1aLaQKNN4eY-if_-ajlH4FGZUm58EYZCm` |
-| Stories you never heard · Ep 01 · The Turk (final = v4) | A | folder `1_zydzrKxcWml8g51AT-LUeLA9gWfOEgV` |
+| Stories you never heard · Ep 01 · The Turk (final = v4, **approved by Suraj**) | A | folder `1_zydzrKxcWml8g51AT-LUeLA9gWfOEgV` |
 
 Next up suggested: first style C post (AI PM interview question).
