@@ -1,0 +1,16 @@
+plate,timeline_in,timeline_out,visual,source
+p00_hook,0.0,4.114,hook,match_game.jpg (supplied)
+p01_2016,24.183,28.965,2016,handshake.jpg (supplied)
+p02_lee,28.965,36.75,lee,match_game.jpg (supplied)
+p03_go,38.907,47.398,go,go_board.jpg (supplied)
+p04_game1,51.441,54.059,game1,original graphic
+p05_game2,54.059,55.592,game2,original graphic
+p06_m37title,58.109,60.165,m37title,original graphic
+p07_m37board,60.165,64.259,m37board,Quartz diagram (supplied)
+p08_10k,69.513,76.847,10k,original graphic
+p09_human,87.683,91.95,human,original graphic
+p10_selfplay,91.95,95.974,selfplay,original graphic
+p11_improve,95.974,99.717,improve,original graphic
+p12_final,109.222,111.498,final,original graphic
+p13_m78,111.498,116.164,m78,move78_board.jpg (supplied)
+p14_win,117.607,119.882,win,original graphic

@@ -1,0 +1,47 @@
+clip_id,source_file,source_in,source_out,timeline_in,timeline_out,action,spoken_line_or_beat,reason,asset_refs,approval_status
+A01,Rolltake recording 3.55.20 PM.mov,15.89,20.59,0.0,4.267,keep; 1.10x pitch-preserved; cold open (moved before intro),Imagine karo… Ek machine duniya ke best players mein se ek ke saamne baithi hai.,best take; dead air trimmed,,autonomous
+A02,Rolltake recording 3.55.20 PM.mov,21.14,25.69,4.267,8.4,keep; 1.10x pitch-preserved; cold open (moved before intro),Aur ek aisa move play karti hai jise dekhkar experts ko lagta hai ki shayad isne mistake kar di.,best take; dead air trimmed,,autonomous
+A03,Rolltake recording 3.55.20 PM.mov,28.62,30.81,8.4,13.0,keep; 1.10x pitch-preserved; cold open (moved before intro),But turns out… it was actually brilliant.,best take; dead air trimmed,,autonomous
+A04,Rolltake recording 3.55.20 PM.mov,3.7,5.55,13.0,14.667,keep; 1.10x pitch-preserved,Welcome to Beyond Intelligence.,best take; dead air trimmed,,autonomous
+A05,Rolltake recording 3.55.20 PM.mov,5.83,10.76,14.667,19.133,keep; 1.10x pitch-preserved,Yahan hum AI ki duniya ki aisi stories explore karenge jo shayad aapko technology ko,best take; dead air trimmed,,autonomous
+A06,Rolltake recording 3.55.20 PM.mov,11.1,12.45,19.133,20.367,keep; 1.10x pitch-preserved,dekhne ka nazariya hi badal dein.,best take; dead air trimmed,,autonomous
+A07,Rolltake recording 3.55.20 PM.mov,13.06,15.24,20.367,22.333,keep; 1.10x pitch-preserved,Aur aaj ki story genuinely fascinating hai.,best take; dead air trimmed,,autonomous
+A08,Rolltake recording 3.55.20 PM.mov,30.94,33.08,22.333,24.267,keep; 1.10x pitch-preserved,Let's go back to 2016.,best take; dead air trimmed,,autonomous
+A09,Rolltake recording 3.55.20 PM.mov,33.49,34.65,24.267,25.333,keep; 1.10x pitch-preserved,Google DeepMind ne ek,best take; dead air trimmed,,autonomous
+A10,Rolltake recording 3.55.20 PM.mov,35.06,36.72,25.333,26.833,keep; 1.10x pitch-preserved,AI banayi thi — AlphaGo.,best take; dead air trimmed,,autonomous
+A11,Rolltake recording 3.55.20 PM.mov,37.01,39.45,26.833,29.067,keep; 1.10x pitch-preserved,Aur uska match hua Lee Sedol ke saath.,best take; dead air trimmed,,autonomous
+A12,Rolltake recording 3.55.20 PM.mov,40.1,44.99,29.067,33.5,keep; 1.10x pitch-preserved,Ab Lee Sedol koi normal player nahi the. He had won 18 international titles,best take; dead air trimmed,,autonomous
+A13,Rolltake recording 3.55.20 PM.mov,45.24,48.7,33.5,36.633,keep; 1.10x pitch-preserved,and was considered one of the greatest Go players of his generation.,best take; dead air trimmed,,autonomous
+A14,Rolltake recording 3.55.20 PM.mov,49.48,52.2,36.633,39.1,keep; 1.10x pitch-preserved,"Ab tum soch rahe hoge, ye Go aakhir hai kya?",best take; dead air trimmed,,autonomous
+A15,Rolltake recording 3.55.20 PM.mov,52.85,53.57,39.1,39.767,keep; 1.10x pitch-preserved,"Basically,",best take; dead air trimmed,,autonomous
+A16,Rolltake recording 3.55.20 PM.mov,54.0,57.86,39.767,43.267,keep; 1.10x pitch-preserved,"ek ancient Chinese board game hai. Chess ki tarah strategy involved hoti hai,",best take; dead air trimmed,,autonomous
+A17,Rolltake recording 3.55.20 PM.mov,58.23,62.66,43.267,47.3,keep; 1.10x pitch-preserved,but ismein possibilities itni zyada hain ki computers ke liye ise master karna extremely difficult tha.,best take; dead air trimmed,,autonomous
+A18,Rolltake recording 3.55.20 PM.mov,63.87,64.25,47.3,47.633,keep; 1.10x pitch-preserved,Aur,best take; dead air trimmed,,autonomous
+A19,Rolltake recording 3.55.20 PM.mov,66.41,69.32,47.633,50.267,keep; 1.10x pitch-preserved,experts ko lagta tha ki AI ko is level tak pahunchne mein,best take; dead air trimmed,,autonomous
+A20,Rolltake recording 3.55.20 PM.mov,69.57,71.09,50.267,51.633,keep; 1.10x pitch-preserved,abhi kaafi saal lagenge.,best take; dead air trimmed,,autonomous
+A21,Rolltake recording 3.55.20 PM.mov,71.45,75.69,51.633,55.5,keep; 1.10x pitch-preserved,But AlphaGo ne first game jeet liya. Phir second game bhi.,best take; dead air trimmed,,autonomous
+A22,Rolltake recording 3.55.20 PM.mov,75.98,79.63,55.5,58.833,keep; 1.10x pitch-preserved,And that's where things got really interesting.,best take; dead air trimmed,,autonomous
+A23,Rolltake recording 3.55.20 PM.mov,80.14,83.52,58.833,61.9,keep; 1.10x pitch-preserved,Game ke 37th move par AlphaGo ne ek aisa move play kiya,best take; dead air trimmed,,autonomous
+A24,Rolltake recording 3.55.20 PM.mov,83.66,86.14,61.9,64.167,keep; 1.10x pitch-preserved,jo professional Go players ke liye extremely unusual tha.,best take; dead air trimmed,,autonomous
+A25,Rolltake recording 3.55.20 PM.mov,86.83,91.15,64.167,68.1,keep; 1.10x pitch-preserved,Commentators ko pehle laga ki shayad machine se mistake ho gayi. But it wasn't.,best take; dead air trimmed,,autonomous
+A26,Rolltake recording 3.55.20 PM.mov,91.25,92.95,68.1,69.633,keep; 1.10x pitch-preserved,And here's the crazy part…,best take; dead air trimmed,,autonomous
+A27,Rolltake recording 3.55.20 PM.mov,93.23,101.41,69.633,77.067,keep; 1.10x pitch-preserved,"Google DeepMind ke according, human players ke historical patterns ke basis par is move ke play hone ki probability around 1 in 10,000 thi.",best take; dead air trimmed,,autonomous
+A28,Rolltake recording 3.55.20 PM.mov,101.41,107.47,77.067,82.567,keep; 1.10x pitch-preserved,Lekin AlphaGo ne woh move play kiya. Aur eventually us move ne game jeetne mein important role play kiya.,best take; dead air trimmed,,autonomous
+A29,Rolltake recording 3.55.20 PM.mov,108.24,109.89,82.567,84.067,keep; 1.10x pitch-preserved,Ab naturally question aata hai…,best take; dead air trimmed,,autonomous
+A30,Rolltake recording 3.55.20 PM.mov,111.18,113.48,84.067,86.167,keep; 1.10x pitch-preserved,machine ne aisa socha kaise?,best take; dead air trimmed,,autonomous
+A31,Rolltake recording 3.55.20 PM.mov,113.53,117.56,86.167,89.833,keep; 1.10x pitch-preserved,"So basically, AlphaGo ko pehle thousands of expert human games dikhaaye gaye.",best take; dead air trimmed,,autonomous
+A32,Rolltake recording 3.55.20 PM.mov,119.8,122.22,89.833,92.033,keep; 1.10x pitch-preserved,Un games se patterns learn kiye.,best take; dead air trimmed,,autonomous
+A33,Rolltake recording 3.55.20 PM.mov,122.35,126.79,92.033,96.067,keep; 1.10x pitch-preserved,Phir reinforcement learning use karke woh khud ke against games khelne lagi.,best take; dead air trimmed,,autonomous
+A34,Rolltake recording 3.55.20 PM.mov,127.05,130.95,96.067,99.6,keep; 1.10x pitch-preserved,"Matlab jitna khelti gayi, utna apni strategy improve karti gayi.",best take; dead air trimmed,,autonomous
+A35,Rolltake recording 3.55.20 PM.mov,130.95,132.33,99.6,100.867,keep; 1.10x pitch-preserved,Think about it…,best take; dead air trimmed,,autonomous
+A36,Rolltake recording 3.55.20 PM.mov,135.58,142.37,100.867,107.033,keep; 1.10x pitch-preserved,"Humne machine ko game sikhaya, aur phir usne aise moves discover karne shuru kar diye jo humans ne traditionally consider hi nahi kiye the.",best take; dead air trimmed,,autonomous
+A37,Rolltake recording 3.55.20 PM.mov,142.8,147.81,107.033,111.6,keep; 1.10x pitch-preserved,"But wait, story yahin khatam nahi hoti. AlphaGo eventually match 4–1 se jeet gayi.",best take; dead air trimmed,,autonomous
+A38,Rolltake recording 3.55.20 PM.mov,147.96,152.81,111.6,116.0,keep; 1.10x pitch-preserved,Lekin fourth game mein Lee Sedol ne Move 78 naam ka ek brilliant move play kiya.,best take; dead air trimmed,,autonomous
+A39,Rolltake recording 3.55.20 PM.mov,153.36,157.61,116.0,119.867,keep; 1.10x pitch-preserved,Is baar machine surprise ho gayi. Aur Lee Sedol ne woh game jeet liya.,best take; dead air trimmed,,autonomous
+A40,Rolltake recording 3.55.20 PM.mov,158.84,162.07,119.867,122.8,keep; 1.10x pitch-preserved,"And honestly, mujhe is story ka sabse interesting part ye lagta hai…",best take; dead air trimmed,,autonomous
+A41,Rolltake recording 3.55.20 PM.mov,164.51,166.37,122.8,124.5,keep; 1.10x pitch-preserved,AI ne sirf ek game nahi jeeta.,best take; dead air trimmed,,autonomous
+A42,Rolltake recording 3.55.20 PM.mov,166.37,169.88,124.5,127.7,keep; 1.10x pitch-preserved,Usne humans ko apni understanding of the game rethink karne par majboor kar diya.,best take; dead air trimmed,,autonomous
+A43,Rolltake recording 3.55.20 PM.mov,170.18,172.49,127.7,129.8,keep; 1.10x pitch-preserved,Aur shayad artificial intelligence ka future bhi yahi hai.,best take; dead air trimmed,,autonomous
+A44,Rolltake recording 3.55.20 PM.mov,175.63,183.05,129.8,136.533,keep; 1.10x pitch-preserved,Machines ka humari tarah sochna zaroori nahi hai. Maybe they'll discover ways of solving problems that we humans haven't even imagined yet?,best take; dead air trimmed,,autonomous
+A45,Rolltake recording 3.55.20 PM.mov,183.05,185.06,136.533,138.367,keep; 1.10x pitch-preserved,And that's something worth thinking about.,best take; dead air trimmed,,autonomous
+A46,Rolltake recording 3.55.20 PM.mov,185.67,188.8,138.367,141.2,keep; 1.10x pitch-preserved,This was Beyond Intelligence. See you in the next one.,best take; dead air trimmed,,autonomous
