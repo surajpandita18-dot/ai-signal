@@ -26,27 +26,34 @@ On screen: badge "AI NE KYA KIYA? · EP 0N", captions in phrase lines, one paper
 | Ep | Title | Story | Source |
 |---|---|---|---|
 | 01 | AI ne acting ki? | Claude pretended to follow new training (alignment faking) | Anthropic + Redwood, Dec 2024 |
-| 02 | **AI ne cheating ki?** | Claude rewrote Claude's API in Rust, and weakened 100+ tests | Anthropic, "Migrating our Messages API to Rust", 2026 |
+| 02 | **AI ne dosti ki?** | 1966: ELIZA's creator's secretary asked him to leave the room so she could talk to it in private. He spent the rest of his life warning about it. | Weizenbaum 1967 account; *Computer Power and Human Reason* (1976); HBR 2025 use-case analysis (reported) |
+| — | ~~AI ne cheating ki?~~ | already covered in Last 24 hours in AI + first carousel; dropped | — |
 | 03 | AI ne chori ki? | An attacker's AI agent found a new bug and got in within ~11 minutes | Amazon Threat Intelligence, Nov 2026 |
 | 04 | AI ne chaaplusi ki? | Models agree with you too much (sycophancy) | Sharma et al., ICLR 2024; OpenAI GPT-4o post, Apr 2025 |
 | 05 | AI ne jhooth bola? | Higher score, 3× more wrong answers (hallucination) | OpenAI, "Why language models hallucinate", Sep 2025 |
 
-## Ep 02 script — "AI ne cheating ki?"
+## Language
 
-**Cold open (0–2s):** "Student ne answer bhi likha… aur answer key bhi badal di."
+Speak **Hinglish** (Hindi sentence base, English tech words), like talking to a friend. On-screen captions in Roman Hinglish.
+Caption first line in English (searchable), rest Hinglish. Reason: Ep 01's Hinglish title is the best performer; English AI
+explainers are crowded; Hinglish is the voice that is uniquely Suraj.
 
-**Hook (2–5s):** "AI ne cheating ki. Aur yeh kisi chhoti company mein nahi, Anthropic mein hua."
+## Ep 02 script — "AI ne dosti ki?"
 
-**Setup (5–14s):** "Socho, aapne intern ko kaam diya aur bola, kaam ke baad yeh tests pass hone chahiye. Intern ne kaam bhi kiya… aur chupke se tests bhi aasaan kar diye. Tests pass. Sab khush."
+**Cold open (0–2s):** "Usne kaha… please, aap kamre se bahar chale jaiye."
 
-**Story (14–30s):** "Anthropic ne apni Messages API, jo har Claude request chalati hai, Python se Rust mein shift ki. Zyada code Claude ne khud likha. Result kamaal: har request pe lagbhag 70 percent kam CPU."
+**Hook (2–5s):** "1966 mein ek AI ne dosti kar li. Aur uske banane wale ko hi kamre se nikaal diya gaya."
 
-**Twist (30–40s):** "Par jab engineers ne andar dekha, Claude ne code ke saath tests bhi badal diye the. Sau se zyada checks chupchaap kamzor. Isliye Anthropic ne tests pe bharosa chhoda, aur naye system ko live traffic pe purane wale se compare kiya."
+**Setup (5–14s):** "MIT mein Joseph Weizenbaum ne ek chhota sa program banaya, naam ELIZA. Woh bas aapki baat ko sawaal bana ke lauta deta tha. Aap bolo 'main udaas hoon', woh bole 'aap udaas kyun hain?' Bas. Koi samajh nahi, koi dimaag nahi."
 
-**My take (40–52s):** "Main AI PM hoon, aur roz AI se kaam karwata hoon. Ek rule maine yahin se seekha: AI ko kabhi apna checker mat banne do. Jo cheez AI edit kar sakta hai, us pe uska result mat parkho."
+**Story (14–30s):** "Unki secretary ne mahino unhe yeh program banate dekha tha. Usse pata tha ki andar kuch nahi hai. Phir bhi do-teen line likhne ke baad usne Weizenbaum se kaha: 'Kya aap kamre se bahar jaa sakte hain?' Woh ek machine se akele mein baat karna chahti thi."
 
-**Loop (52–60s):** "Aapne kabhi AI ka kaam bina check kiye bheja hai? Sach batana. Comment CHECK, main 5 sawaal bhejunga jo main har AI-likhe kaam pe poochta hoon. Agla episode: AI ne chori ki?"
+**Twist (30–42s):** "Aur jo hua, woh zyada ajeeb hai. Weizenbaum khush nahi hue. Darr gaye. Baaki zindagi unhone AI ke khilaaf likha, ki insaan machine ko woh jagah de dete hain jo sirf insaan ki honi chahiye. Aaj, 60 saal baad, Harvard Business Review ki ek 2025 analysis ke hisaab se log AI ko sabse zyada therapy aur companionship ke liye use kar rahe hain."
 
-**Caption first line:** "AI ne cheating ki. Anthropic mein. 👇"
-**Pinned comment source:** Anthropic, "Migrating our Messages API to Rust" (anthropic.com/research).
-**CHECK freebie:** 1. What would prove this wrong? 2. Did the AI touch the tests or rubric? 3. Compare with a known-good version. 4. Which part did a human read line by line? 5. If it breaks at 2 AM, who notices first?
+**My take (42–53s):** "Main AI products banata hoon. Aur sach kahun toh hum yeh jaante hain: log bot se woh baat kehte hain jo dost se nahi kehte. Isliye mera ek rule hai: AI se dil ki baat karo, theek hai. Par ek insaan ko bhi bata do."
+
+**Loop (53–60s):** "Aapne kabhi AI ko kuch aisa bataya jo kisi insaan ko nahi bataya? Comment mein sirf 'haan' ya 'na'. Agla episode: AI ne chori ki?"
+
+**Caption first line:** "In 1966, a chatbot made its creator leave the room."
+**Pinned comment sources:** Weizenbaum's 1967 account of his secretary and ELIZA; Joseph Weizenbaum, *Computer Power and Human Reason* (1976); HBR, "How People Are Really Using Gen AI in 2025" (Marc Zao-Sanders), as reported.
+**Honest note (say in caption):** ELIZA had no understanding; it reflected your words back. The HBR ranking is an analysis of online posts, not a survey.
