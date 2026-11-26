@@ -1,6 +1,6 @@
 # "AI, Andar Se" — face-to-camera VIDEO series (series bible)
 
-**Format decision (Suraj, 26 Nov 2026):** carousels are for **Read for you** (articles). AI topics are **videos**.
+**Formats (Suraj, 26 Nov 2026):** one series name for every AI format. Video = the story (60s, face). Carousel = the same topic, read slowly (style A, The Page). Same badge `AI, ANDAR SE · EP 0N` on both; one episode number per topic. **Read for you** stays a separate carousel series for other people's articles.
 
 **Name:** *AI, Andar Se* — two meanings: what happens *inside* AI (complex ideas made simple), told by someone *inside*
 the industry (a working AI PM). Broad enough for crazy stories, research and complex concepts.
