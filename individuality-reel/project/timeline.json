@@ -1,0 +1,145 @@
+{
+ "segments": [
+  {
+   "id": "F1",
+   "src": "cam",
+   "in": 4.3,
+   "out": 6.7,
+   "t0": 0.0,
+   "t1": 2.4,
+   "text": "Your phone is the reason you have no identity.",
+   "layout": "face"
+  },
+  {
+   "id": "C1",
+   "src": "clean",
+   "in": 13.5,
+   "out": 18.5,
+   "t0": 2.75,
+   "t1": 7.75,
+   "text": "I came across this line in a Substack essay recently, and honestly, it made me pause.",
+   "layout": "broll"
+  },
+  {
+   "id": "F2",
+   "src": "cam",
+   "in": 11.25,
+   "out": 18.4,
+   "t0": 8.0,
+   "t1": 15.15,
+   "text": "Because think about it, when was the last time you discovered something you genuinely liked without Instagram, YouTube or an algorithm recommending it to you?",
+   "layout": "face"
+  },
+  {
+   "id": "C3",
+   "src": "clean",
+   "in": 30.25,
+   "out": 39.4,
+   "t0": 15.45,
+   "t1": 24.6,
+   "text": "Look around. We are watching the same movies, listening to the same music, wearing similar clothes, visiting the same aesthetic cafes, and sometimes even developing the same opinions.",
+   "layout": "broll"
+  },
+  {
+   "id": "F3",
+   "src": "cam",
+   "in": 27.7,
+   "out": 30.3,
+   "t0": 24.9,
+   "t1": 27.5,
+   "text": "And somehow, we still think we are expressing our individuality.",
+   "layout": "face"
+  },
+  {
+   "id": "F4",
+   "src": "cam",
+   "in": 30.75,
+   "out": 32.68,
+   "t0": 27.85,
+   "t1": 29.78,
+   "text": "But here is where it gets interesting.",
+   "layout": "face"
+  },
+  {
+   "id": "C4",
+   "src": "clean",
+   "in": 47.5,
+   "out": 52.75,
+   "t0": 30.03,
+   "t1": 35.28,
+   "text": "If you don't spend enough time getting to know yourself, you will end up absorbing everyone else's definition of you.",
+   "layout": "broll"
+  },
+  {
+   "id": "F5",
+   "src": "cam",
+   "in": 40.35,
+   "out": 42.45,
+   "t0": 35.78,
+   "t1": 37.88,
+   "text": "And I think there is a much bigger idea behind this.",
+   "layout": "face"
+  },
+  {
+   "id": "C5",
+   "src": "cam",
+   "in": 42.8,
+   "out": 53.45,
+   "t0": 38.13,
+   "t1": 48.78,
+   "text": "There is a concept in philosophy called the Culture Industry, introduced by Theodor Adorno and Max Horkheimer. They argued that mass-produced entertainment could make culture increasingly standardised.",
+   "layout": "broll"
+  },
+  {
+   "id": "F6",
+   "src": "cam",
+   "in": 53.57,
+   "out": 55.15,
+   "t0": 49.08,
+   "t1": 50.66,
+   "text": "Now think about what algorithms do.",
+   "layout": "face"
+  },
+  {
+   "id": "C6",
+   "src": "clean",
+   "in": 67.45,
+   "out": 76.55,
+   "t0": 50.91,
+   "t1": 60.01,
+   "text": "You like something once, and suddenly you are surrounded by more of the same. Your preferences become predictable, your feed becomes familiar, and slowly, discovering something outside the bubble starts feeling unusual.",
+   "layout": "broll"
+  },
+  {
+   "id": "F7",
+   "src": "cam",
+   "in": 68.18,
+   "out": 72.85,
+   "t0": 60.41,
+   "t1": 65.08,
+   "text": "But can we really blame algorithms or capitalism? After all, we also choose to consume what they offer.",
+   "layout": "face"
+  },
+  {
+   "id": "C7",
+   "src": "clean",
+   "in": 81.98,
+   "out": 86.35,
+   "t0": 65.38,
+   "t1": 69.75,
+   "text": "Maybe the real problem is that we have lost the habit of exploring without being told what to explore.",
+   "layout": "broll"
+  },
+  {
+   "id": "F8",
+   "src": "cam",
+   "in": 77.53,
+   "out": 87.65,
+   "t0": 70.3,
+   "t1": 80.42,
+   "text": "And perhaps the most important question isn't whether the internet is changing our identity. It's this: if you stepped away from everyone else's opinions for a while, would you still know what you actually like?",
+   "layout": "face"
+  }
+ ],
+ "dur": 80.42
+}
