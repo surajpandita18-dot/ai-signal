@@ -1,5 +1,7 @@
 # Change log — Individuality_ReferenceStyle_v1 / v2 (from Final_v2)
 
+**v3:** clearer voice (lighter noise reduction, less low-mid mud, more presence; ~5 dB better presence-to-mud), subtitles 30% bigger (Inter Bold 60) with the spoken word highlighted yellow (your request — the reference has no highlight). Camera audio kept for exact lip sync; the separate clean take (Golds_Gym_5 = 01_CLEAN_VOICE_AUDIO) is a different performance and can't be synced exactly.
+
 **v2:** the typed citation card is replaced with your real Substack screenshot (title, subtitle, JC, 15 Nov 2025), cropped above the meme. Everything else is identical to v1.
 
 ## What changed
