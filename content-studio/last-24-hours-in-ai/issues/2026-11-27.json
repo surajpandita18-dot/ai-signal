@@ -1,0 +1,185 @@
+{
+ "day": 3,
+ "date": "Fri 27 Nov 2026",
+ "handle": "@thinksafari",
+ "author": {
+  "name": "Suraj Pandita",
+  "initials": "SP",
+  "role": "AI Product Manager"
+ },
+ "cover": {
+  "today": "Data centres in orbit, an AI writes six maths papers, and India launches its own Chariot&#8209;1."
+ },
+ "summary": [
+  {
+   "cat": "News",
+   "date": "25 Nov",
+   "text": "SpaceX cleared for up to 1M data-centre satellites."
+  },
+  {
+   "cat": "News",
+   "date": "25 Nov",
+   "text": "Google’s AI posts six maths papers in a day. Unchecked."
+  },
+  {
+   "cat": "Models",
+   "date": "26 Nov",
+   "text": "OpenAI tests running prompts inside sealed chips."
+  },
+  {
+   "cat": "India",
+   "date": "26 Nov",
+   "text": "MeitY launches Chariot&#8209;1: Indian LLM + speech in 10 languages."
+  }
+ ],
+ "summaryNote": "No big AI funding round in the last 24 hours · back tomorrow",
+ "slides": [
+  {
+   "type": "news",
+   "k": "News",
+   "d": "25 Nov, US",
+   "t": "data centres in orbit",
+   "aka": "aka. the FCC said yes to SpaceX’s Starmind",
+   "il": {
+    "type": "svg",
+    "svg": "<svg width=\"900\" height=\"310\" viewBox=\"0 0 900 310\"><ellipse cx=\"450\" cy=\"150\" rx=\"330\" ry=\"95\" fill=\"none\" stroke=\"#1A1916\" stroke-width=\"2\" stroke-dasharray=\"3 8\"/><circle cx=\"780.0\" cy=\"150.0\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"779.2\" cy=\"156.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"776.8\" cy=\"163.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"772.8\" cy=\"169.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"767.2\" cy=\"176.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"760.1\" cy=\"182.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"751.5\" cy=\"188.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"741.4\" cy=\"194.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"729.9\" cy=\"200.3\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"717.0\" cy=\"205.8\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"702.8\" cy=\"211.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"687.4\" cy=\"216.0\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"670.8\" cy=\"220.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"653.2\" cy=\"224.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"634.5\" cy=\"228.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"615.0\" cy=\"232.3\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"594.7\" cy=\"235.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"573.6\" cy=\"238.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"552.0\" cy=\"240.4\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"529.8\" cy=\"242.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"507.3\" cy=\"243.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"484.5\" cy=\"244.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"461.5\" cy=\"244.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"438.5\" cy=\"244.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"415.5\" cy=\"244.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"392.7\" cy=\"243.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"370.2\" cy=\"242.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"348.0\" cy=\"240.4\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"326.4\" cy=\"238.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"305.3\" cy=\"235.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"285.0\" cy=\"232.3\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"265.5\" cy=\"228.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"246.8\" cy=\"224.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"229.2\" cy=\"220.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"212.6\" cy=\"216.0\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"197.2\" cy=\"211.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"183.0\" cy=\"205.8\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"170.1\" cy=\"200.3\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"158.6\" cy=\"194.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"148.5\" cy=\"188.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"139.9\" cy=\"182.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"132.8\" cy=\"176.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"127.2\" cy=\"169.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"123.2\" cy=\"163.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"120.8\" cy=\"156.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"120.0\" cy=\"150.0\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"120.8\" cy=\"143.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"123.2\" cy=\"136.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"127.2\" cy=\"130.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"132.8\" cy=\"123.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"139.9\" cy=\"117.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"148.5\" cy=\"111.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"158.6\" cy=\"105.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"170.1\" cy=\"99.7\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"183.0\" cy=\"94.2\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"197.2\" cy=\"88.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"212.6\" cy=\"84.0\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"229.2\" cy=\"79.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"246.8\" cy=\"75.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"265.5\" cy=\"71.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"285.0\" cy=\"67.7\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"305.3\" cy=\"64.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"326.4\" cy=\"61.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"348.0\" cy=\"59.6\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"370.2\" cy=\"57.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"392.7\" cy=\"56.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"415.5\" cy=\"55.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"438.5\" cy=\"55.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"461.5\" cy=\"55.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"484.5\" cy=\"55.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"507.3\" cy=\"56.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"529.8\" cy=\"57.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"552.0\" cy=\"59.6\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"573.6\" cy=\"61.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"594.7\" cy=\"64.6\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"615.0\" cy=\"67.7\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"634.5\" cy=\"71.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"653.2\" cy=\"75.1\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"670.8\" cy=\"79.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"687.4\" cy=\"84.0\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"702.8\" cy=\"88.9\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"717.0\" cy=\"94.2\" r=\"8\" fill=\"#E07B4F\"/><circle cx=\"729.9\" cy=\"99.7\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"741.4\" cy=\"105.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"751.5\" cy=\"111.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"760.1\" cy=\"117.5\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"767.2\" cy=\"123.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"772.8\" cy=\"130.2\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"776.8\" cy=\"136.8\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"779.2\" cy=\"143.4\" r=\"5\" fill=\"#F3CDB8\"/><circle cx=\"450\" cy=\"150\" r=\"62\" fill=\"#FAF2E9\" stroke=\"#1A1916\" stroke-width=\"3.4\"/><text x=\"450\" y=\"158\" text-anchor=\"middle\" font-family=\"I\" font-weight=\"800\" font-size=\"24\" fill=\"#1A1916\">EARTH</text><text x=\"450\" y=\"295\" text-anchor=\"middle\" font-family=\"I\" font-weight=\"700\" font-size=\"20\" fill=\"#1A1916\">UP TO 1,000,000 SATELLITES · EACH ONE A SMALL DATA CENTRE</text></svg>"
+   },
+   "p": "The US regulator approved SpaceX’s plan for up to one million satellites that work as data centres in space. The first must be running by November 2027. Amazon and astronomers opposed it.",
+   "india": "Why it matters: AI needs so much power and cooling that companies are now looking at space. The FCC itself says it hasn’t judged whether this is technically or economically viable.",
+   "src": "FCC order via CNBC, GeekWire, Via Satellite · 25 Nov 2026"
+  },
+  {
+   "type": "news",
+   "k": "News",
+   "d": "25 Nov, US",
+   "t": "six papers, one day",
+   "aka": "aka. google’s AI says it cracked a 1992 maths goal",
+   "il": {
+    "type": "flow",
+    "nodes": [
+     {
+      "t": "1 prompt",
+      "s": "FROM A HUMAN",
+      "label": "START"
+     },
+     {
+      "t": "Gemini 4",
+      "s": "COGENTIC SYSTEM",
+      "accent": true,
+      "label": "WRITES"
+     },
+     {
+      "t": "6 papers",
+      "s": "ON GITHUB",
+      "label": "OUTPUT"
+     },
+     {
+      "t": "Checked?",
+      "s": "NOT YET",
+      "dashed": true,
+      "label": "PEER REVIEW"
+     }
+    ]
+   },
+   "p": "Google’s Cogentic system posted six maths papers in a day, including a claimed fast way to split any big number into its factors. Reports say a human gave only the first prompt.",
+   "india": "Honest note: none of the six is peer-reviewed and no expert has confirmed the proofs yet. Even if right, it doesn’t break the encryption your bank uses.",
+   "src": "Google Research GitHub, via ai-tldr, Emergent, productwatch · claims unverified"
+  },
+  {
+   "type": "news",
+   "k": "Models, simply",
+   "d": "26 Nov",
+   "t": "a sealed room for prompts",
+   "aka": "aka. openai’s “private inference”, explained",
+   "il": {
+    "type": "flow",
+    "nodes": [
+     {
+      "t": "Your prompt",
+      "s": "BANK, CLINIC",
+      "label": "IN"
+     },
+     {
+      "t": "Sealed chip",
+      "s": "LOCKED",
+      "accent": true,
+      "label": "MODEL RUNS HERE"
+     },
+     {
+      "t": "Answer",
+      "s": "BACK TO YOU",
+      "label": "OUT"
+     }
+    ]
+   },
+   "p": "Think of a locked exam hall where even the landlord can’t peek. OpenAI is testing this for business customers: prompts are processed inside sealed-off chips, with checks the customer can verify.",
+   "india": "In India: the DPDP Act, 2023 makes companies answer for personal data. A model that can’t read your data is far easier to say yes to.",
+   "src": "OpenAI (alpha test, small group of business customers), via The Next Web, MLQ · 26 Nov"
+  },
+  {
+   "type": "news",
+   "k": "India",
+   "d": "26 Nov",
+   "t": "india’s own chariot&#8209;1",
+   "aka": "aka. built from scratch, under the IndiaAI Mission",
+   "il": {
+    "type": "dots",
+    "n": 11,
+    "cols": 11,
+    "gap": 64,
+    "r": 16,
+    "hollow": true,
+    "lit": [
+     1,
+     4,
+     6,
+     9
+    ],
+    "left": "11B PARAMETERS · ONLY ~4B WORK ON EACH WORD (SAME TRICK AS DAY 02)"
+   },
+   "p": "MeitY launched Chariot-1 at Bharat Mandapam: an 11-billion-parameter language model and a voice model that speaks English and 10 Indian languages, both pre-trained in India by Chariot AI.",
+   "india": "In India: the voice model scored over 97% on a pronunciation test, the Ministry says. That’s its own claim, not an independent one.",
+   "src": "PIB release; Tribune/ANI; DD News · 26 Nov 2026"
+  },
+  {
+   "type": "picture",
+   "t": "where AI lives next",
+   "aka": "aka. what connects today’s stories",
+   "il": {
+    "type": "ladder",
+    "steps": [
+     [
+      "YOUR LAPTOP",
+      "SMALL MODELS"
+     ],
+     [
+      "BIG CLOUD",
+      "TODAY’S DEFAULT"
+     ],
+     [
+      "SEALED CHIP",
+      "OPENAI TEST"
+     ],
+     [
+      "ORBIT",
+      "SPACEX, 2027+"
+     ]
+    ],
+    "hot": 2
+   },
+   "p": "The race isn’t only for smarter models now. It’s for where they run: who can see your data, and where the power comes from.",
+   "src": "Ladder is my framing"
+  },
+  {
+   "type": "take",
+   "k": "My take · as an AI PM",
+   "t": "in india, the trust question decides the deal",
+   "sub": "why private inference + indian models matter more than benchmarks",
+   "p": [
+    "when i pitch an ai feature to an indian bank or hospital, the first question is never “how smart is it?” it’s “where does our data go, and who can see it?”",
+    "today two answers got better at once: a big lab testing sealed chips, and a home-grown model trained here.",
+    "for indian ai startups, i’d sell <b>where it runs</b> before <b>what it scores</b>. a slightly weaker model your customer can audit will win more deals than a smarter one they can’t."
+   ]
+  }
+ ]
+}
