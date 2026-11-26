@@ -1,0 +1,375 @@
+{
+ "segs": [
+  {
+   "src_s": 15.89,
+   "src_e": 20.59,
+   "text": "Imagine karo\u2026 Ek machine duniya ke best players mein se ek ke saamne baithi hai.",
+   "frames": 128,
+   "out_s": 0.0,
+   "out_e": 4.26667
+  },
+  {
+   "src_s": 21.14,
+   "src_e": 25.69,
+   "text": "Aur ek aisa move play karti hai jise dekhkar experts ko lagta hai ki shayad isne mistake kar di.",
+   "frames": 124,
+   "out_s": 4.26667,
+   "out_e": 8.4
+  },
+  {
+   "src_s": 28.62,
+   "src_e": 30.81,
+   "text": "But turns out\u2026 it was actually brilliant.",
+   "frames": 60,
+   "out_s": 8.4,
+   "out_e": 10.4
+  },
+  {
+   "src_s": 3.7,
+   "src_e": 5.55,
+   "text": "Welcome to Beyond Intelligence.",
+   "frames": 50,
+   "out_s": 10.4,
+   "out_e": 12.06667
+  },
+  {
+   "src_s": 5.83,
+   "src_e": 10.76,
+   "text": "Yahan hum AI ki duniya ki aisi stories explore karenge jo shayad aapko technology ko",
+   "frames": 134,
+   "out_s": 12.06667,
+   "out_e": 16.53333
+  },
+  {
+   "src_s": 11.1,
+   "src_e": 12.45,
+   "text": "dekhne ka nazariya hi badal dein.",
+   "frames": 37,
+   "out_s": 16.53333,
+   "out_e": 17.76667
+  },
+  {
+   "src_s": 13.06,
+   "src_e": 15.24,
+   "text": "Aur aaj ki story genuinely fascinating hai.",
+   "frames": 59,
+   "out_s": 17.76667,
+   "out_e": 19.73333
+  },
+  {
+   "src_s": 30.94,
+   "src_e": 33.08,
+   "text": "Let's go back to 2016.",
+   "frames": 58,
+   "out_s": 19.73333,
+   "out_e": 21.66667
+  },
+  {
+   "src_s": 33.49,
+   "src_e": 34.65,
+   "text": "Google DeepMind ne ek",
+   "frames": 32,
+   "out_s": 21.66667,
+   "out_e": 22.73333
+  },
+  {
+   "src_s": 35.06,
+   "src_e": 36.72,
+   "text": "AI banayi thi \u2014 AlphaGo.",
+   "frames": 45,
+   "out_s": 22.73333,
+   "out_e": 24.23333
+  },
+  {
+   "src_s": 37.01,
+   "src_e": 39.45,
+   "text": "Aur uska match hua Lee Sedol ke saath.",
+   "frames": 67,
+   "out_s": 24.23333,
+   "out_e": 26.46667
+  },
+  {
+   "src_s": 40.1,
+   "src_e": 44.99,
+   "text": "Ab Lee Sedol koi normal player nahi the. He had won 18 international titles",
+   "frames": 133,
+   "out_s": 26.46667,
+   "out_e": 30.9
+  },
+  {
+   "src_s": 45.24,
+   "src_e": 48.7,
+   "text": "and was considered one of the greatest Go players of his generation.",
+   "frames": 94,
+   "out_s": 30.9,
+   "out_e": 34.03333
+  },
+  {
+   "src_s": 49.48,
+   "src_e": 52.2,
+   "text": "Ab tum soch rahe hoge, ye Go aakhir hai kya?",
+   "frames": 74,
+   "out_s": 34.03333,
+   "out_e": 36.5
+  },
+  {
+   "src_s": 52.85,
+   "src_e": 53.57,
+   "text": "Basically,",
+   "frames": 20,
+   "out_s": 36.5,
+   "out_e": 37.16667
+  },
+  {
+   "src_s": 54.0,
+   "src_e": 57.86,
+   "text": "ek ancient Chinese board game hai. Chess ki tarah strategy involved hoti hai,",
+   "frames": 105,
+   "out_s": 37.16667,
+   "out_e": 40.66667
+  },
+  {
+   "src_s": 58.23,
+   "src_e": 62.66,
+   "text": "but ismein possibilities itni zyada hain ki computers ke liye ise master karna extremely difficult tha.",
+   "frames": 121,
+   "out_s": 40.66667,
+   "out_e": 44.7
+  },
+  {
+   "src_s": 63.87,
+   "src_e": 64.25,
+   "text": "Aur",
+   "frames": 10,
+   "out_s": 44.7,
+   "out_e": 45.03333
+  },
+  {
+   "src_s": 66.41,
+   "src_e": 69.32,
+   "text": "experts ko lagta tha ki AI ko is level tak pahunchne mein",
+   "frames": 79,
+   "out_s": 45.03333,
+   "out_e": 47.66667
+  },
+  {
+   "src_s": 69.57,
+   "src_e": 71.09,
+   "text": "abhi kaafi saal lagenge.",
+   "frames": 41,
+   "out_s": 47.66667,
+   "out_e": 49.03333
+  },
+  {
+   "src_s": 71.45,
+   "src_e": 75.69,
+   "text": "But AlphaGo ne first game jeet liya. Phir second game bhi.",
+   "frames": 116,
+   "out_s": 49.03333,
+   "out_e": 52.9
+  },
+  {
+   "src_s": 75.98,
+   "src_e": 79.63,
+   "text": "And that's where things got really interesting.",
+   "frames": 100,
+   "out_s": 52.9,
+   "out_e": 56.23333
+  },
+  {
+   "src_s": 80.14,
+   "src_e": 83.52,
+   "text": "Game ke 37th move par AlphaGo ne ek aisa move play kiya",
+   "frames": 92,
+   "out_s": 56.23333,
+   "out_e": 59.3
+  },
+  {
+   "src_s": 83.66,
+   "src_e": 86.14,
+   "text": "jo professional Go players ke liye extremely unusual tha.",
+   "frames": 68,
+   "out_s": 59.3,
+   "out_e": 61.56667
+  },
+  {
+   "src_s": 86.83,
+   "src_e": 91.15,
+   "text": "Commentators ko pehle laga ki shayad machine se mistake ho gayi. But it wasn't.",
+   "frames": 118,
+   "out_s": 61.56667,
+   "out_e": 65.5
+  },
+  {
+   "src_s": 91.25,
+   "src_e": 92.95,
+   "text": "And here's the crazy part\u2026",
+   "frames": 46,
+   "out_s": 65.5,
+   "out_e": 67.03333
+  },
+  {
+   "src_s": 93.23,
+   "src_e": 101.41,
+   "text": "Google DeepMind ke according, human players ke historical patterns ke basis par is move ke play hone ki probability around 1 in 10,000 thi.",
+   "frames": 223,
+   "out_s": 67.03333,
+   "out_e": 74.46667
+  },
+  {
+   "src_s": 101.41,
+   "src_e": 107.47,
+   "text": "Lekin AlphaGo ne woh move play kiya. Aur eventually us move ne game jeetne mein important role play kiya.",
+   "frames": 165,
+   "out_s": 74.46667,
+   "out_e": 79.96667
+  },
+  {
+   "src_s": 108.24,
+   "src_e": 109.89,
+   "text": "Ab naturally question aata hai\u2026",
+   "frames": 45,
+   "out_s": 79.96667,
+   "out_e": 81.46667
+  },
+  {
+   "src_s": 111.18,
+   "src_e": 113.48,
+   "text": "machine ne aisa socha kaise?",
+   "frames": 63,
+   "out_s": 81.46667,
+   "out_e": 83.56667
+  },
+  {
+   "src_s": 113.53,
+   "src_e": 117.56,
+   "text": "So basically, AlphaGo ko pehle thousands of expert human games dikhaaye gaye.",
+   "frames": 110,
+   "out_s": 83.56667,
+   "out_e": 87.23333
+  },
+  {
+   "src_s": 119.8,
+   "src_e": 122.22,
+   "text": "Un games se patterns learn kiye.",
+   "frames": 66,
+   "out_s": 87.23333,
+   "out_e": 89.43333
+  },
+  {
+   "src_s": 122.35,
+   "src_e": 126.79,
+   "text": "Phir reinforcement learning use karke woh khud ke against games khelne lagi.",
+   "frames": 121,
+   "out_s": 89.43333,
+   "out_e": 93.46667
+  },
+  {
+   "src_s": 127.05,
+   "src_e": 130.95,
+   "text": "Matlab jitna khelti gayi, utna apni strategy improve karti gayi.",
+   "frames": 106,
+   "out_s": 93.46667,
+   "out_e": 97.0
+  },
+  {
+   "src_s": 130.95,
+   "src_e": 132.33,
+   "text": "Think about it\u2026",
+   "frames": 38,
+   "out_s": 97.0,
+   "out_e": 98.26667
+  },
+  {
+   "src_s": 135.58,
+   "src_e": 142.37,
+   "text": "Humne machine ko game sikhaya, aur phir usne aise moves discover karne shuru kar diye jo humans ne traditionally consider hi nahi kiye the.",
+   "frames": 185,
+   "out_s": 98.26667,
+   "out_e": 104.43333
+  },
+  {
+   "src_s": 142.8,
+   "src_e": 147.81,
+   "text": "But wait, story yahin khatam nahi hoti. AlphaGo eventually match 4\u20131 se jeet gayi.",
+   "frames": 137,
+   "out_s": 104.43333,
+   "out_e": 109.0
+  },
+  {
+   "src_s": 147.96,
+   "src_e": 152.81,
+   "text": "Lekin fourth game mein Lee Sedol ne Move 78 naam ka ek brilliant move play kiya.",
+   "frames": 132,
+   "out_s": 109.0,
+   "out_e": 113.4
+  },
+  {
+   "src_s": 153.36,
+   "src_e": 157.61,
+   "text": "Is baar machine surprise ho gayi. Aur Lee Sedol ne woh game jeet liya.",
+   "frames": 116,
+   "out_s": 113.4,
+   "out_e": 117.26667
+  },
+  {
+   "src_s": 158.84,
+   "src_e": 162.07,
+   "text": "And honestly, mujhe is story ka sabse interesting part ye lagta hai\u2026",
+   "frames": 88,
+   "out_s": 117.26667,
+   "out_e": 120.2
+  },
+  {
+   "src_s": 164.51,
+   "src_e": 166.37,
+   "text": "AI ne sirf ek game nahi jeeta.",
+   "frames": 51,
+   "out_s": 120.2,
+   "out_e": 121.9
+  },
+  {
+   "src_s": 166.37,
+   "src_e": 169.88,
+   "text": "Usne humans ko apni understanding of the game rethink karne par majboor kar diya.",
+   "frames": 96,
+   "out_s": 121.9,
+   "out_e": 125.1
+  },
+  {
+   "src_s": 170.18,
+   "src_e": 172.49,
+   "text": "Aur shayad artificial intelligence ka future bhi yahi hai.",
+   "frames": 63,
+   "out_s": 125.1,
+   "out_e": 127.2
+  },
+  {
+   "src_s": 175.63,
+   "src_e": 183.05,
+   "text": "Machines ka humari tarah sochna zaroori nahi hai. Maybe they'll discover ways of solving problems that we humans haven't even imagined yet?",
+   "frames": 202,
+   "out_s": 127.2,
+   "out_e": 133.93333
+  },
+  {
+   "src_s": 183.05,
+   "src_e": 185.06,
+   "text": "And that's something worth thinking about.",
+   "frames": 55,
+   "out_s": 133.93333,
+   "out_e": 135.76667
+  },
+  {
+   "src_s": 185.67,
+   "src_e": 188.8,
+   "text": "This was Beyond Intelligence. See you in the next one.",
+   "frames": 85,
+   "out_s": 135.76667,
+   "out_e": 138.6
+  }
+ ],
+ "dur": 138.6,
+ "speed": 1.1,
+ "cold_end": 10.4
+}
