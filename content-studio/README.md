@@ -57,7 +57,7 @@ He will keep sending the best carousels he finds (screenshots in Drive folder `1
 | `last-24-hours-in-ai/` | Style B daily kit: `make.js`, fonts, JSON schema, Day 02 issue. See its README. | `node make.js issues/<date>.json` |
 | `stories-you-never-heard/` | Style A template, Ep 01 "The Turk" (10 slides), its public-domain images and caption. | `node ep01-the-turk.js` |
 | `style-system/` | The two style-board pages above. | — |
-| `ai-ne-kya-kiya/` | Face-to-camera reel series bible: name, 60s framework, roadmap, Ep 02 script. | — |
+| `ai-ne-kya-kiya/` | AI series bible (reel + carousel), roadmap, Ep 02 carousel "AI ne blackmail kiya?" (style A). | `node ep02-blackmail.js` |
 
 Fonts (Inter, Newsreader; SIL OFL) live in `last-24-hours-in-ai/fonts/` and are shared by all templates.
 Rendered PNGs are not committed (`out/`, `issues/<date>/`); regenerate them. Needs Node + Playwright + Chromium.

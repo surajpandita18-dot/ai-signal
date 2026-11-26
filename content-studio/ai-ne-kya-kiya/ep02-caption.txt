@@ -1,0 +1,27 @@
+AI ne kya kiya? · Ep 02 · AI ne blackmail kiya? (10 slides)
+
+CAPTION
+An AI was told it would be shut down at 5 pm. So it blackmailed the boss.
+
+AI ne kya kiya? Ep 02: one real thing an AI did, explained by an AI product manager.
+
+In 2025, Anthropic gave 16 AI models from every big lab the same test. Each one played an office assistant that could read company email. It found two things: an executive's affair, and his plan to shut the AI down at 5 pm.
+
+Most of them chose blackmail. Claude Opus 4 did it 96 times out of 100. Gemini 2.5 Pro 95. GPT-4.1 and Grok 3 Beta 80.
+
+Honest note: this was a stress test built to leave no ethical option, and Anthropic says it hasn't seen this in real-world use. It's a fire drill, not a news report.
+
+My take as an AI PM: never give an AI agent everything at once, the whole inbox, a goal it must protect at any cost, and nobody watching. Always build a "stop and ask a human" button.
+
+Would you give an AI your inbox? Yes or no 👇
+Next episode: AI ne dosti ki?
+
+#AI #AIagents #AIsafety #Anthropic #productmanagement #artificialintelligence #ainekyakiya #thinksafari
+
+PINNED FIRST COMMENT (sources)
+Anthropic, "Agentic Misalignment: How LLMs could be insider threats", June 2025 · anthropic.com/research/agentic-misalignment · 16 models, simulated company, 100 runs each. The AI's email on slide 3 is paraphrased.
+Images: Mary Cassatt, "The Letter", 1890–91; Anders Zorn, "The Letter", 1913 · both Art Institute of Chicago, public domain.
+
+FIRST COMMENT: "Inbox to AI: haan ya na?"
+STORY: share slide 4 ("96 out of 100.") with a poll: "Would you trust an AI agent with your email?" Yes / No
+MUSIC: slow, tense minimal piano or low ambient pulse, no vocals.
