@@ -1,0 +1,465 @@
+{
+ "note": "Captions use the approved script spelling. Lines are in v3 timeline order.",
+ "lines": [
+  {
+   "line": "Imagine karo… Ek machine duniya ke best players mein se ek ke saamne baithi hai.",
+   "raw_in": 15.93,
+   "raw_out": 20.43,
+   "v3_in": 0.0,
+   "v3_out": 4.067,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Imagine a machine sitting in front of one of the best players in the world.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Aur ek aisa move play karti hai jise dekhkar experts ko lagta hai ki shayad isne mistake kar di.",
+   "raw_in": 21.18,
+   "raw_out": 25.42,
+   "v3_in": 4.067,
+   "v3_out": 8.2,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "And she plays a move that makes the experts think that she must have mistaken.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "But turns out… it was actually brilliant.",
+   "raw_in": 28.66,
+   "raw_out": 30.2,
+   "v3_in": 8.2,
+   "v3_out": 12.8,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "it turns out it was actually brilliant.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Welcome to Beyond Intelligence.",
+   "raw_in": 3.74,
+   "raw_out": 5.14,
+   "v3_in": 12.8,
+   "v3_out": 14.333,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "Welcome to Beyond Intelligence.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Yahan hum AI ki duniya ki aisi stories explore karenge jo shayad aapko technology ko",
+   "raw_in": 5.87,
+   "raw_out": 10.49,
+   "v3_in": 14.333,
+   "v3_out": 18.733,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "or explore the world's stories which you might be able to...",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "dekhne ka nazariya hi badal dein.",
+   "raw_in": 11.14,
+   "raw_out": 12.29,
+   "v3_in": 18.733,
+   "v3_out": 19.967,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "(speaking in foreign language)",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Aur aaj ki story genuinely fascinating hai.",
+   "raw_in": 13.1,
+   "raw_out": 15.08,
+   "v3_in": 19.967,
+   "v3_out": 21.933,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "and today's story is generally fascinating.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Let's go back to 2016.",
+   "raw_in": 30.98,
+   "raw_out": 32.67,
+   "v3_in": 21.933,
+   "v3_out": 23.667,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "Let's go back to 2016.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Google DeepMind ne ek",
+   "raw_in": 33.53,
+   "raw_out": 34.49,
+   "v3_in": 23.667,
+   "v3_out": 24.733,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Google deep my neck.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "AI banayi thi — AlphaGo.",
+   "raw_in": 35.1,
+   "raw_out": 36.45,
+   "v3_in": 24.733,
+   "v3_out": 26.233,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "I made it as A.I.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Aur uska match hua Lee Sedol ke saath.",
+   "raw_in": 37.05,
+   "raw_out": 39.18,
+   "v3_in": 26.233,
+   "v3_out": 28.467,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "and its match was with Lee Sedol.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Ab Lee Sedol koi normal player nahi the. He had won 18 international titles",
+   "raw_in": 40.14,
+   "raw_out": 44.73,
+   "v3_in": 28.467,
+   "v3_out": 32.433,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "At least at all, he had no normal play. He had won 18 international titles.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "and was considered one of the greatest Go players of his generation.",
+   "raw_in": 45.28,
+   "raw_out": 48.43,
+   "v3_in": 32.433,
+   "v3_out": 35.567,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "was considered one of the greatest go players of his generation.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Ab tum soch rahe hoge, ye Go aakhir hai kya?",
+   "raw_in": 49.52,
+   "raw_out": 51.93,
+   "v3_in": 35.567,
+   "v3_out": 37.9,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "Now you must be thinking, is this a Gowakir?",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Basically,",
+   "raw_in": 52.89,
+   "raw_out": 53.41,
+   "v3_in": 37.9,
+   "v3_out": 38.567,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "basically",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "ek ancient Chinese board game hai. Chess ki tarah strategy involved hoti hai,",
+   "raw_in": 54.04,
+   "raw_out": 57.7,
+   "v3_in": 38.567,
+   "v3_out": 41.7,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "An ancient Chinese board game is involved in the strategy of chess.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "but ismein possibilities itni zyada hain ki computers ke liye ise master karna extremely difficult tha.",
+   "raw_in": 58.27,
+   "raw_out": 62.5,
+   "v3_in": 41.7,
+   "v3_out": 45.733,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "But the possibility is so high that it was extremely difficult to master it for computers.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Aur",
+   "raw_in": 63.91,
+   "raw_out": 64.2,
+   "v3_in": 45.733,
+   "v3_out": 46.067,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "or",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "experts ko lagta tha ki AI ko is level tak pahunchne mein",
+   "raw_in": 66.45,
+   "raw_out": 69.16,
+   "v3_in": 46.067,
+   "v3_out": 48.7,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Experts felt that AI reached to this level",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "abhi kaafi saal lagenge.",
+   "raw_in": 69.61,
+   "raw_out": 70.82,
+   "v3_in": 48.7,
+   "v3_out": 50.067,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "It will take quite a year.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "But AlphaGo ne first game jeet liya. Phir second game bhi.",
+   "raw_in": 71.49,
+   "raw_out": 75.42,
+   "v3_in": 50.067,
+   "v3_out": 53.367,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "But then AlphaGo won the first game, then the second game too.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "And that's where things got really interesting.",
+   "raw_in": 76.02,
+   "raw_out": 78.52,
+   "v3_in": 53.367,
+   "v3_out": 56.7,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "And that's where things got really interesting.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Game ke 37th move par AlphaGo ne ek aisa move play kiya",
+   "raw_in": 80.18,
+   "raw_out": 83.25,
+   "v3_in": 56.7,
+   "v3_out": 59.767,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "on the 37th move of the game, Alfa Gonek played this move",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "jo professional Go players ke liye extremely unusual tha.",
+   "raw_in": 83.7,
+   "raw_out": 86.03,
+   "v3_in": 59.767,
+   "v3_out": 62.033,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "which was extremely unusual for professional cupillettes.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Commentators ko pehle laga ki shayad machine se mistake ho gayi. But it wasn't.",
+   "raw_in": 86.87,
+   "raw_out": 90.69,
+   "v3_in": 62.033,
+   "v3_out": 65.967,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "commentators felt that the machine was mistaken but it wasn't.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "And here's the crazy part…",
+   "raw_in": 91.29,
+   "raw_out": 92.39,
+   "v3_in": 65.967,
+   "v3_out": 67.5,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "And here is the crazy part",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Google DeepMind ke according, human players ke historical patterns ke basis par is move ke play hone ki probability around 1 in 10,000 thi.",
+   "raw_in": 93.27,
+   "raw_out": 100.78,
+   "v3_in": 67.5,
+   "v3_out": 74.6,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "Google DeepMind said that the probability of this Murph on the basis of human players' historical patterns was around 1 in 10,000.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Lekin AlphaGo ne woh move play kiya. Aur eventually us move ne game jeetne mein important role play kiya.",
+   "raw_in": 101.45,
+   "raw_out": 107.35,
+   "v3_in": 74.6,
+   "v3_out": 79.767,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "but AlphaGo played that move and eventually that move won the game as important role played",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Ab naturally question aata hai…",
+   "raw_in": 108.28,
+   "raw_out": 109.73,
+   "v3_in": 79.767,
+   "v3_out": 81.267,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Now naturally, something comes up.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "machine ne aisa socha kaise?",
+   "raw_in": 111.22,
+   "raw_out": 112.92,
+   "v3_in": 81.267,
+   "v3_out": 83.1,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "How did the machine think like this?",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "So basically, AlphaGo ko pehle thousands of expert human games dikhaaye gaye.",
+   "raw_in": 113.57,
+   "raw_out": 117.4,
+   "v3_in": 83.1,
+   "v3_out": 86.767,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "So basically AlphaGoGo first shows thousands of expert human games.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Un games se patterns learn kiye.",
+   "raw_in": 119.84,
+   "raw_out": 121.95,
+   "v3_in": 86.767,
+   "v3_out": 88.7,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "learn patterns from that game.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Phir reinforcement learning use karke woh khud ke against games khelne lagi.",
+   "raw_in": 122.39,
+   "raw_out": 126.63,
+   "v3_in": 88.7,
+   "v3_out": 92.533,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Then, by using reinforcement learning, they started playing games themselves.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Matlab jitna khelti gayi, utna apni strategy improve karti gayi.",
+   "raw_in": 127.09,
+   "raw_out": 130.68,
+   "v3_in": 92.533,
+   "v3_out": 95.8,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "means, the more you play, the more you move your strategy.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Think about it…",
+   "raw_in": 130.99,
+   "raw_out": 131.83,
+   "v3_in": 95.8,
+   "v3_out": 97.067,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Think about it.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Humne machine ko game sikhaya, aur phir usne aise moves discover karne shuru kar diye jo humans ne traditionally consider hi nahi kiye the.",
+   "raw_in": 135.62,
+   "raw_out": 142.1,
+   "v3_in": 97.067,
+   "v3_out": 103.067,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "We taught the machine a game and then he started to discuss such moves which humans had not traditionally considered.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "But wait, story yahin khatam nahi hoti. AlphaGo eventually match 4–1 se jeet gayi.",
+   "raw_in": 142.84,
+   "raw_out": 147.61,
+   "v3_in": 103.067,
+   "v3_out": 107.167,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "But wait, story ain't over yet. Alpha eventually managed to win 4-1.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Lekin fourth game mein Lee Sedol ne Move 78 naam ka ek brilliant move play kiya.",
+   "raw_in": 148.0,
+   "raw_out": 152.85,
+   "v3_in": 107.167,
+   "v3_out": 111.267,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "But in the fourth game, Lee Sedol played a brilliant move of the move 78.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Is baar machine surprise ho gayi. Aur Lee Sedol ne woh game jeet liya.",
+   "raw_in": 153.4,
+   "raw_out": 156.86,
+   "v3_in": 111.267,
+   "v3_out": 114.967,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "This time the machine was surprised and Lee Sedol won the game.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "And honestly, mujhe is story ka sabse interesting part ye lagta hai…",
+   "raw_in": 158.88,
+   "raw_out": 161.91,
+   "v3_in": 114.967,
+   "v3_out": 117.9,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "And honestly, I think the most interesting part of this story is...",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "AI ne sirf ek game nahi jeeta.",
+   "raw_in": 164.5,
+   "raw_out": 166.1,
+   "v3_in": 117.9,
+   "v3_out": 119.6,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "AI not only does not play a game",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Usne humans ko apni understanding of the game rethink karne par majboor kar diya.",
+   "raw_in": 166.41,
+   "raw_out": 169.72,
+   "v3_in": 119.6,
+   "v3_out": 122.8,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "He forced humans to rethink the game's understanding of the game.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Aur shayad artificial intelligence ka future bhi yahi hai.",
+   "raw_in": 170.22,
+   "raw_out": 172.5,
+   "v3_in": 122.8,
+   "v3_out": 124.9,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Maybe the future of artificial intelligence is the same.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "Machines ka humari tarah sochna zaroori nahi hai. Maybe they'll discover ways of solving problems that we humans haven't even imagined yet?",
+   "raw_in": 175.67,
+   "raw_out": 182.5,
+   "v3_in": 124.9,
+   "v3_out": 131.633,
+   "word_timing": "estimated (voiced-frame interpolation)",
+   "asr_english_gloss": "Machines ka humari tera sochna zaluri nahi hai. May be they will discover ways of solving problems that we humans haven't even imagined yet.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "And that's something worth thinking about.",
+   "raw_in": 183.09,
+   "raw_out": 184.55,
+   "v3_in": 131.633,
+   "v3_out": 133.467,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "And that's something worth thinking about.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  },
+  {
+   "line": "This was Beyond Intelligence. See you in the next one.",
+   "raw_in": 185.71,
+   "raw_out": 188.53,
+   "v3_in": 133.467,
+   "v3_out": 136.133,
+   "word_timing": "forced-aligned (pocketsphinx)",
+   "asr_english_gloss": "This was Beyond Intelligence. See you in the next one.",
+   "verification": "Script wording checked against an English ASR gloss of the same audio (meaning match); Hindi words not machine-verifiable letter by letter."
+  }
+ ]
+}

@@ -1,0 +1,46 @@
+PREMIUM REEL EDITOR — INSTALLATION
+
+PACKAGE CONTENTS
+- SKILL.md: main Claude skill instructions
+- references/: hybrid style guide, workflow, captions/audio, QC, toolchain
+- scripts/: non-destructive media preflight and export validation
+- templates/: storyboard, asset log, edit decision list CSV templates
+
+OPTION A — CLAUDE.AI CUSTOM SKILL
+1. Keep this ZIP intact.
+2. In Claude, open Settings and find Capabilities / Skills (the exact label can vary).
+3. Enable code execution if Claude asks for it.
+4. Choose to upload/create a custom Skill and upload this ZIP.
+5. Enable the skill.
+6. Start a chat and ask: "Use premium-reel-editor to inspect these clips and prepare a storyboard."
+Availability depends on Claude plan and account settings.
+
+OPTION B — CLAUDE CODE (PERSONAL INSTALL)
+1. Extract this ZIP.
+2. Copy the extracted `premium-reel-editor` folder into:
+   macOS/Linux: ~/.claude/skills/
+   Windows: %USERPROFILE%\\.claude\\skills\\
+3. Confirm the final path is:
+   ~/.claude/skills/premium-reel-editor/SKILL.md
+4. Restart Claude Code if it does not detect the skill.
+5. Invoke with /premium-reel-editor or describe a Reel editing task.
+
+OPTION C — PROJECT-LOCAL CLAUDE CODE
+Copy the folder into your project's:
+.claude/skills/premium-reel-editor/
+
+OPTIONAL MEDIA TOOLS
+- Python 3.9+
+- FFmpeg + FFprobe
+- Whisper (optional; choose a local or approved transcription route)
+- Node.js + Remotion (optional for code-driven motion graphics)
+- A video editor such as DaVinci Resolve, Premiere Pro, Final Cut Pro, or CapCut
+
+The skill does not bundle FFmpeg, Whisper models, Remotion, paid plugins, fonts, stock footage, or music. It checks for tools before relying on them.
+
+FIRST TEST
+Ask Claude:
+"Use premium-reel-editor. Inspect the media in this folder, run the preflight if FFmpeg is available, and create a storyboard and asset plan. Do not render yet."
+
+PRIVACY AND SAFETY
+Keep private footage local where possible. Ask before uploading footage to third-party services, installing large packages, downloading models, or using paid assets. Review licenses for music, fonts, footage, and plugins.

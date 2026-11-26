@@ -1,0 +1,10 @@
+asset_id,filename_or_url,description,story_beat,creator_or_owner,source_url,license_or_rights,attribution_required,download_date,verification_notes,status
+A01,match_game.jpg,AlphaGo vs Lee Sedol at the board (AlphaGo operator side; Lee Sedol close-up),Cold open; Lee Sedol intro; rethink,Press photo (supplied by creator),supplied,Editorial/press photo — creator to confirm usage rights,Credit if requested,2026-11-26,Real 2016 match photo,used
+A02,handshake.jpg,"Pre-game handshake, DeepMind Challenge Match",2016 context,Press photo (supplied by creator),supplied,Editorial/press photo — creator to confirm,Credit if requested,2026-11-26,Clocks at 2:00:00 = before a game; not used to imply a result,used
+A03,go_board.jpg,Go board with stones on wood,What is Go,Supplied by creator,supplied,Creator to confirm,—,2026-11-26,Generic board; not a match position,used
+A04,move37_diagram.jpg,Game 2 Move 37 diagram,Move 37 reveal + callback,Quartz (qz.com),supplied,Third-party graphic; credited on screen,"Yes — ""Board diagram: Quartz (qz.com)""",2026-11-26,Authentic Game 2 position as published; unaltered,used
+A05,move78_board.jpg,Game 4 board with move 78 at L11,Move 78,Supplied by creator,supplied,Creator to confirm,—,2026-11-26,Move 78 at L11 matches the historical record,used
+A06,"plates/*.png, intro, end card, mascot","Original graphics (scores, 1-in-10,000, learning diagrams, brand)",Throughout,Original (made in code),—,Owned,—,2026-11-26,"Learning diagrams labelled Illustration; 1-in-10,000 tagged DeepMind 2016",used
+A07,bed/sfx (synthesised),"Score, tension layers, stone clicks, chime, blips",Throughout,Original (synthesised),—,Owned,—,2026-11-26,No samples,used
+A08,Inter font,Typeface,Captions + graphics,Rasmus Andersson,—,SIL OFL 1.1,No,2026-11-26,,used
+X01,commons.wikimedia.org search,Archival/CC search for Lee Sedol / AlphaGo,—,Wikimedia,https://commons.wikimedia.org,—,—,2026-11-26,HTTP 429 rate-limited; nothing downloaded,not used
