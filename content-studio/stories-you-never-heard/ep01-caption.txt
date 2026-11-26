@@ -1,0 +1,51 @@
+Stories you never heard · Ep 01 · The Turk (10 slides)
+
+CAPTION
+A machine beat Napoleon at chess. There was a man inside it.
+
+Stories you never heard, Ep 01: the people and ideas behind AI, told by an AI product manager.
+
+In 1770, Wolfgang von Kempelen built “the Turk”, a chess-playing machine. Before every game he opened its doors to show the gears. It toured Europe and America, played Napoleon and Charles Babbage, and Benjamin Franklin saw it in Paris.
+
+For 84 years, until it burned in a Philadelphia fire in 1854, a chess master hidden inside was doing the thinking.
+
+In 2005, Amazon named a product after it: Mechanical Turk, where software sends small tasks to real people. Amazon called it “artificial artificial intelligence”.
+
+In 2024, The Information reported that Amazon’s “Just Walk Out” stores needed a team in India to review about 700 of every 1,000 sales in 2022. Amazon said the team mainly helped train the AI.
+
+Honest twist: the viral 2025 story that Builder.ai’s AI was “secretly 700 Indian engineers” was wrong. The Pragmatic Engineer, which had repeated it, retracted after talking to former staff.
+
+My take as an AI PM: every AI has people inside. That isn’t the scandal. Hiding it is.
+
+Where have you seen “AI” that was really people? 👇
+
+Comment TURK and I’ll DM you 5 questions to ask any “AI-powered” product. Send this to the friend who believes every AI demo.
+
+#artificialintelligence #AIhistory #chess #productmanagement #techindia #AIethics #storiesyouneverheard #thinksafari
+
+PINNED FIRST COMMENT (sources)
+1. The Turk: Britannica, “The Mechanical Turk: AI Marvel or Parlor Trick?”; History.com; Library Company of Philadelphia (fire, 5 July 1854)
+2. Poe’s essay “Maelzel’s Chess-Player”, Southern Literary Messenger, 1836
+3. Amazon Mechanical Turk: Amazon (launched 2005); “artificial artificial intelligence”
+4. Just Walk Out: The Information, April 2024 (via Business Insider, Business Standard); Amazon’s response to Business Insider
+5. Builder.ai: Gergely Orosz, “Builder.ai did not ‘fake AI with 700 engineers’”, The Pragmatic Engineer, 2025
+
+TURK freebie (DM text): 5 questions before you trust an “AI-powered” product
+1. Which steps are done by a model, and which by people?
+2. When the model isn’t sure, who decides, and how fast?
+3. What share of cases does a human check today? And what’s the plan for that number?
+4. Where are those people, and how are they paid and treated?
+5. If the humans stopped tomorrow, what would break?
+
+MUSIC (pick from Instagram’s library, no vocals)
+- Music-box or harpsichord-style instrumental: fits the 1770 mechanical feel. Start at the first full phrase.
+- Slow minimal piano with a soft pulse: start where the pulse comes in.
+- Dark ambient bed (for the reveal on slide 3): start at the build.
+
+POSTING
+Evening IST. First comment: “Real AI or people inside? Name one product.” Share slide 3 (the reveal) to your Story with a poll: “Did you know?” Yes / No.
+
+IMAGE CREDITS (all public domain)
+- Slides 1, 4 & 10: engraving by Karl Gottlieb von Windisch, 1783 (Wikimedia Commons)
+- Slides 1 & 10: W. H. Fox Talbot, “The Chess Players”, c. 1843–47 (Art Institute of Chicago)
+- Slide 7: data chart made for this post
