@@ -34,6 +34,11 @@ Reference screenshots: Drive folder `1_0xY0yeNuuGWdN_sY6P518qz_-HLwFDB`.
 4. **Series first, topic second** on every cover.
 5. **One honest note per post** ("preprint", "reported, not confirmed", "the viral version was wrong"). Every number has a named source.
 
+## Profile grid rule
+
+Instagram's profile grid crops 4:5 posts to 3:4, which cuts about 34px off each side of a 1080px slide. Keep every
+cover title and the series badge at least 70px from the left and right edges, or the title gets cut in the grid.
+
 ## When Suraj sends new reference carousels
 
 He will keep sending the best carousels he finds (screenshots in Drive folder `1_0xY0yeNuuGWdN_sY6P518qz_-HLwFDB`, or in chat). For each batch:
