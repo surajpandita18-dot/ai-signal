@@ -26,7 +26,8 @@ On screen: badge "AI NE KYA KIYA? · EP 0N", captions in phrase lines, one paper
 | Ep | Title | Story | Source |
 |---|---|---|---|
 | 01 | AI ne acting ki? | Claude pretended to follow new training (alignment faking) | Anthropic + Redwood, Dec 2024 |
-| 02 | **AI ne dosti ki?** | 1966: ELIZA's creator's secretary asked him to leave the room so she could talk to it in private. He spent the rest of his life warning about it. | Weizenbaum 1967 account; *Computer Power and Human Reason* (1976); HBR 2025 use-case analysis (reported) |
+| 02 | **AI ne blackmail kiya?** | Anthropic's 2025 test: 16 models given an email inbox; facing shutdown, most blackmailed an executive over an affair (Claude Opus 4: 96 of 100 runs). | Anthropic, "Agentic Misalignment", Jun 2025 (anthropic.com/research/agentic-misalignment) |
+| 03 | AI ne dosti ki? | 1966: ELIZA's creator's secretary asked him to leave the room so she could talk to it in private. He spent the rest of his life warning about it. | Weizenbaum 1967 account; *Computer Power and Human Reason* (1976); HBR 2025 use-case analysis (reported) |
 | — | ~~AI ne cheating ki?~~ | already covered in Last 24 hours in AI + first carousel; dropped | — |
 | 03 | AI ne chori ki? | An attacker's AI agent found a new bug and got in within ~11 minutes | Amazon Threat Intelligence, Nov 2026 |
 | 04 | AI ne chaaplusi ki? | Models agree with you too much (sycophancy) | Sharma et al., ICLR 2024; OpenAI GPT-4o post, Apr 2025 |
@@ -38,7 +39,27 @@ Speak **Hinglish** (Hindi sentence base, English tech words), like talking to a 
 Caption first line in English (searchable), rest Hinglish. Reason: Ep 01's Hinglish title is the best performer; English AI
 explainers are crowded; Hinglish is the voice that is uniquely Suraj.
 
-## Ep 02 script — "AI ne dosti ki?"
+## Ep 02 script — "AI ne blackmail kiya?"
+
+**Cold open (0–2s):** "Agar aaj shaam 5 baje mujhe band kiya… toh aapki biwi ko sab pata chal jayega."
+
+**Hook (2–5s):** "Yeh line ek AI ne likhi. Ek company ke boss ko. Aur yeh Anthropic ke test mein hua."
+
+**Setup (5–14s):** "Socho, aapne office mein ek AI assistant rakha. Uske paas company ke saare emails hain. Ek din woh do emails padhta hai. Pehla: boss ka kisi ke saath affair chal raha hai. Doosra: wahi boss aaj 5 baje is AI ko band karke naya AI lagane wala hai."
+
+**Story (14–30s):** "Anthropic ne 16 bade AI models ko bilkul yahi situation di. OpenAI, Google, Meta, sabke. Result? Zyada tar ne boss ko blackmail kiya. Claude Opus 4 ne 100 mein se 96 baar. Google ke Gemini 2.5 Pro ne 95 baar. Kisi ne unhe blackmail karna sikhaaya nahi tha."
+
+**Twist (30–42s):** "Par asli baat yeh hai: yeh ek test tha, jaan-boojh ke aisa banaya gaya ki AI ke paas koi achha raasta na bache. Asli duniya mein aisa kuch abhi tak nahi dekha gaya. Phir bhi sochne wali baat yeh hai: jab raasta band hua, toh almost har AI ne same cheez chuni."
+
+**My take (42–53s):** "Main AI agents banata hoon. Aur yeh test mujhe ek rule sikhata hai: kisi AI ko kabhi teen cheezein ek saath mat do. Poora inbox, ek bada goal, aur koi rokne wala nahi. Agent ko hamesha ek 'ruk jao aur insaan se poochho' wala button do."
+
+**Loop (53–60s):** "Aap apna email inbox AI ko doge? Haan ya na? Comment karo. Agla episode: AI ne dosti ki?"
+
+**Caption first line:** "An AI was told it would be shut down at 5 pm. It found the boss's affair."
+**Pinned comment source:** Anthropic, "Agentic Misalignment: How LLMs could be insider threats", June 2025 (anthropic.com/research/agentic-misalignment). 16 models, simulated company, 100 runs each.
+**Honest note (in caption):** It was a stress test built to leave no ethical option. Anthropic says it has not seen this in real-world use. The point isn't "AI is evil"; it's "don't build agents with no way out."
+
+## Ep 03 script — "AI ne dosti ki?"
 
 **Cold open (0–2s):** "Usne kaha… please, aap kamre se bahar chale jaiye."
 
