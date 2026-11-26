@@ -22,7 +22,8 @@ run(['-loop', '1', '-framerate', '30', '-i', f"{P}/brand/template-end-card.png",
 # 2. base = intro + aroll (trimmed to the end cue) + end card
 aroll_len = END - 2.6; C = ev['cold_end']
 if not os.path.exists(f"{P}/base.mp4"): run(['-framerate', '30', '-i', f"{P}/intro_frames/f%03d.png", '-i', f"{P}/aroll.mov", '-i', f"{P}/clips/endcard.mp4",
-     '-filter_complex', f"[0]format=yuv420p,setsar=1[a];[1:v]split[x][y];[x]trim=0:{C:.4f},setpts=PTS-STARTPTS,setsar=1[b0];[y]trim={C:.4f}:{aroll_len:.3f},setpts=PTS-STARTPTS,setsar=1[b1];[2]setsar=1[c];[b0][a][b1][c]concat=n=4:v=1:a=0[v]",
+     '-filter_complex', (f"[0]format=yuv420p,setsar=1[a];[1:v]split[x][y];[x]trim=0:{C:.4f},setpts=PTS-STARTPTS,setsar=1[b0];[y]trim={C:.4f}:{aroll_len:.3f},setpts=PTS-STARTPTS,setsar=1[b1];[2]setsar=1[c];[b0][a][b1][c]concat=n=4:v=1:a=0[v]" if C > 0 else
+                       f"[0]format=yuv420p,setsar=1[a];[1:v]trim=0:{aroll_len:.3f},setpts=PTS-STARTPTS,setsar=1[b1];[2]setsar=1[c];[a][b1][c]concat=n=3:v=1:a=0[v]"),
      '-map', '[v]', '-c:v', 'libx264', '-crf', '14', '-preset', 'fast', '-r', '30', f"{P}/base.mp4"])
 
 # 3. overlays

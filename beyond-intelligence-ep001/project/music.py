@@ -111,7 +111,7 @@ def tension(t0, t1, g=1.):
     out *= np.clip((t1 - t0 - tt) / .08, 0, 1)  # hard stop = cut to silence before the payoff
     add(fx, out, t0, g)
 for a_, b_ in SUS: tension(a_, b_, .55)
-add(fx, stone(), 0.02, .45)  # frame-0 pattern interrupt
+add(fx, stone(), ev['sus_cold'][0] + .02, .45)  # frame-0 pattern interrupt
 def blip(f0, f1, d=.09):
     tt = np.arange(int(d * sr)) / sr
     return np.sin(2 * np.pi * np.cumsum(np.linspace(f0, f1, len(tt))) / sr) * np.sin(np.pi * tt / d)
