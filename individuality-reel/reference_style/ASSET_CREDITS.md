@@ -30,8 +30,8 @@ CC BY / BY-SA terms: credit the author, link the licence, note changes (we cropp
 ## Film posters (≈1 s each, brief montage you approved)
 The Truman Show (1998, Paramount Pictures), Her (2013, Warner Bros. Pictures), Interstellar (2014, Paramount / Warner Bros.). © the studios. Used briefly for commentary; not licensed. Low risk on Instagram but not zero — remove them if you want a fully licence-clean cut.
 
-## Text cards (designed, not screenshots)
-- Citation card: "your phone is the reason you have no identity", jc, *the weekly scrapbook* (Substack), 15 Nov 2025 — title and subtitle quoted from the essay.
+## Article and quote
+- v2 uses your own phone screenshot of the essay (top section only). v1 used a typed citation card: "your phone is the reason you have no identity", jc, *the weekly scrapbook* (Substack), 15 Nov 2025 — title and subtitle quoted from the essay.
 - Quote card: Oladimeji Ajegbile, Substack Note, 11 March 2026 — exact wording.
 These are typeset cards, **not** screenshots. A real screenshot wasn't possible here (Substack page styling blocked from this machine); I didn't fake one.
 

@@ -1,4 +1,6 @@
-# Change log — Individuality_ReferenceStyle_v1 (from Final_v2)
+# Change log — Individuality_ReferenceStyle_v1 / v2 (from Final_v2)
+
+**v2:** the typed citation card is replaced with your real Substack screenshot (title, subtitle, JC, 15 Nov 2025), cropped above the meme. Everything else is identical to v1.
 
 ## What changed
 - **Presenter on screen the whole time**, single locked medium shot from the original camera file (native 1080×1920, no zoom, no upscaling), like the reference.
@@ -15,7 +17,7 @@
 
 ## Not solved / limitations
 - **No real film clips.** Movie footage can't be legally sourced here, so I used the 3 posters you approved plus a real cinema-audience photo instead.
-- **The article is shown as a typeset card, not a real Substack screenshot.** I couldn't capture one from this machine, and I didn't fake one. To use a real screenshot, take one on your phone and I'll swap it in.
+- ~~Article shown as a typeset card~~ — fixed in v2 with your real screenshot.
 - **The music is original, made in code.** It is not a licensed track like the reference's. You can swap in a track from Instagram's library when you post (keep it about 20 dB under the voice).
 - The Horkheimer portrait is low resolution (327×380). It looks fine at its small size but is soft.
 - Camera-mic audio is noisier than the separate clean recording. I used it anyway so lip sync stays perfect.
