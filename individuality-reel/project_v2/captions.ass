@@ -1,0 +1,65 @@
+[Script Info]
+ScriptType: v4.00+
+PlayResX: 1080
+PlayResY: 1920
+WrapStyle: 0
+
+[V4+ Styles]
+Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding
+Style: Cap,Inter SemiBold,58,&H00FFFFFF,&H00FFFFFF,&H40000000,&H80000000,0,0,0,0,100,100,0,0,1,3,2,2,90,90,380,1
+
+[Events]
+Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text
+Dialogue: 0,0:00:02.74,0:00:04.25,Cap,,0,0,0,,{\fad(60,40)}I came across this line in a
+Dialogue: 0,0:00:04.25,0:00:06.79,Cap,,0,0,0,,{\fad(60,40)}{\c&H002B41E2&}Substack{\c&H00FFFFFF&} essay recently, and honestly,
+Dialogue: 0,0:00:06.79,0:00:07.94,Cap,,0,0,0,,{\fad(60,40)}it made me pause.
+Dialogue: 0,0:00:08.03,0:00:09.43,Cap,,0,0,0,,{\fad(60,40)}Because think about it,
+Dialogue: 0,0:00:09.43,0:00:10.35,Cap,,0,0,0,,{\fad(60,40)}when was the last time you
+Dialogue: 0,0:00:10.35,0:00:11.29,Cap,,0,0,0,,{\fad(60,40)}discovered something you
+Dialogue: 0,0:00:11.29,0:00:12.88,Cap,,0,0,0,,{\fad(60,40)}{\c&H002B41E2&}genuinely{\c&H00FFFFFF&} liked without Instagram,
+Dialogue: 0,0:00:12.88,0:00:14.29,Cap,,0,0,0,,{\fad(60,40)}YouTube or algorithm
+Dialogue: 0,0:00:14.29,0:00:15.31,Cap,,0,0,0,,{\fad(60,40)}recommending it to you?
+Dialogue: 0,0:00:15.64,0:00:16.52,Cap,,0,0,0,,{\fad(60,40)}Look around.
+Dialogue: 0,0:00:16.54,0:00:17.95,Cap,,0,0,0,,{\fad(60,40)}We are watching the same movies,
+Dialogue: 0,0:00:17.95,0:00:19.33,Cap,,0,0,0,,{\fad(60,40)}listening to the same music,
+Dialogue: 0,0:00:19.33,0:00:20.36,Cap,,0,0,0,,{\fad(60,40)}wearing similar clothes,
+Dialogue: 0,0:00:20.36,0:00:22.35,Cap,,0,0,0,,{\fad(60,40)}visiting the same aesthetic cafés,
+Dialogue: 0,0:00:22.36,0:00:23.59,Cap,,0,0,0,,{\fad(60,40)}and sometimes even developing
+Dialogue: 0,0:00:23.59,0:00:24.76,Cap,,0,0,0,,{\fad(60,40)}the same opinions.
+Dialogue: 0,0:00:24.80,0:00:25.34,Cap,,0,0,0,,{\fad(60,40)}And somehow,
+Dialogue: 0,0:00:25.34,0:00:25.99,Cap,,0,0,0,,{\fad(60,40)}we still think we are
+Dialogue: 0,0:00:25.99,0:00:27.70,Cap,,0,0,0,,{\fad(60,40)}expressing our {\c&H002B41E2&}individuality.{\c&H00FFFFFF&}
+Dialogue: 0,0:00:27.75,0:00:29.77,Cap,,0,0,0,,{\fad(60,40)}But here is where it gets {\c&H002B41E2&}interesting.{\c&H00FFFFFF&}
+Dialogue: 0,0:00:35.68,0:00:36.70,Cap,,0,0,0,,{\fad(60,40)}And I think there is a much
+Dialogue: 0,0:00:36.70,0:00:38.03,Cap,,0,0,0,,{\fad(60,40)}bigger idea behind this.
+Dialogue: 0,0:00:38.03,0:00:39.00,Cap,,0,0,0,,{\fad(60,40)}There is a concept in
+Dialogue: 0,0:00:39.00,0:00:41.03,Cap,,0,0,0,,{\fad(60,40)}philosophy called the {\c&H002B41E2&}Culture{\c&H00FFFFFF&} {\c&H002B41E2&}Industry,{\c&H00FFFFFF&}
+Dialogue: 0,0:00:41.03,0:00:43.26,Cap,,0,0,0,,{\fad(60,40)}introduced by Theodor Adorno
+Dialogue: 0,0:00:43.26,0:00:44.50,Cap,,0,0,0,,{\fad(60,40)}and Max Horkheimer.
+Dialogue: 0,0:00:44.83,0:00:46.21,Cap,,0,0,0,,{\fad(60,40)}They argued that mass-produced
+Dialogue: 0,0:00:46.21,0:00:47.09,Cap,,0,0,0,,{\fad(60,40)}entertainment could make
+Dialogue: 0,0:00:47.09,0:00:48.97,Cap,,0,0,0,,{\fad(60,40)}{\c&H002B41E2&}culture{\c&H00FFFFFF&} increasingly {\c&H002B41E2&}standardised.{\c&H00FFFFFF&}
+Dialogue: 0,0:00:49.12,0:00:50.84,Cap,,0,0,0,,{\fad(60,40)}Now think about what {\c&H002B41E2&}algorithms{\c&H00FFFFFF&} do.
+Dialogue: 0,0:00:50.92,0:00:51.92,Cap,,0,0,0,,{\fad(60,40)}You like something once,
+Dialogue: 0,0:00:51.92,0:00:52.51,Cap,,0,0,0,,{\fad(60,40)}and suddenly you are
+Dialogue: 0,0:00:52.51,0:00:53.94,Cap,,0,0,0,,{\fad(60,40)}surrounded by more of the same.
+Dialogue: 0,0:00:53.94,0:00:55.54,Cap,,0,0,0,,{\fad(60,40)}Your preferences become predictable,
+Dialogue: 0,0:00:55.54,0:00:57.20,Cap,,0,0,0,,{\fad(60,40)}your feed becomes familiar, and slowly,
+Dialogue: 0,0:00:57.20,0:00:58.38,Cap,,0,0,0,,{\fad(60,40)}discovering something outside
+Dialogue: 0,0:00:58.38,0:01:00.03,Cap,,0,0,0,,{\fad(60,40)}the bubble starts feeling {\c&H002B41E2&}unusual.{\c&H00FFFFFF&}
+Dialogue: 0,0:01:00.42,0:01:01.32,Cap,,0,0,0,,{\fad(60,40)}But can we really blame
+Dialogue: 0,0:01:01.32,0:01:02.74,Cap,,0,0,0,,{\fad(60,40)}{\c&H002B41E2&}algorithms{\c&H00FFFFFF&} or {\c&H002B41E2&}capitalism?{\c&H00FFFFFF&}
+Dialogue: 0,0:01:02.74,0:01:03.19,Cap,,0,0,0,,{\fad(60,40)}After all,
+Dialogue: 0,0:01:03.19,0:01:05.27,Cap,,0,0,0,,{\fad(60,40)}we also choose to consume what they offer.
+Dialogue: 0,0:01:05.41,0:01:06.69,Cap,,0,0,0,,{\fad(60,40)}Maybe the real problem is that
+Dialogue: 0,0:01:06.69,0:01:07.61,Cap,,0,0,0,,{\fad(60,40)}we have lost the habit of
+Dialogue: 0,0:01:07.61,0:01:08.76,Cap,,0,0,0,,{\fad(60,40)}exploring without being told
+Dialogue: 0,0:01:08.76,0:01:09.72,Cap,,0,0,0,,{\fad(60,40)}what to {\c&H002B41E2&}explore.{\c&H00FFFFFF&}
+Dialogue: 0,0:01:10.20,0:01:11.34,Cap,,0,0,0,,{\fad(60,40)}And perhaps the most important
+Dialogue: 0,0:01:11.34,0:01:12.40,Cap,,0,0,0,,{\fad(60,40)}question isn't whether the
+Dialogue: 0,0:01:12.40,0:01:14.22,Cap,,0,0,0,,{\fad(60,40)}internet is changing our {\c&H002B41E2&}identity.{\c&H00FFFFFF&}
+Dialogue: 0,0:01:14.27,0:01:15.10,Cap,,0,0,0,,{\fad(60,40)}It's this:
+Dialogue: 0,0:01:15.18,0:01:16.08,Cap,,0,0,0,,{\fad(60,40)}if you stepped away from
+Dialogue: 0,0:01:16.08,0:01:17.59,Cap,,0,0,0,,{\fad(60,40)}everyone else's opinions for a while,
+Dialogue: 0,0:01:17.59,0:01:18.62,Cap,,0,0,0,,{\fad(60,40)}would you still
+Dialogue: 0,0:01:18.90,0:01:20.71,Cap,,0,0,0,,{\fad(60,40)}know what you {\c&H002B41E2&}actually{\c&H00FFFFFF&} like?
