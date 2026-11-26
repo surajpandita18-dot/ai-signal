@@ -34,6 +34,17 @@ Reference screenshots: Drive folder `1_0xY0yeNuuGWdN_sY6P518qz_-HLwFDB`.
 4. **Series first, topic second** on every cover.
 5. **One honest note per post** ("preprint", "reported, not confirmed", "the viral version was wrong"). Every number has a named source.
 
+## When Suraj sends new reference carousels
+
+He will keep sending the best carousels he finds (screenshots in Drive folder `1_0xY0yeNuuGWdN_sY6P518qz_-HLwFDB`, or in chat). For each batch:
+
+1. Look at every screenshot. Note the creator, likes/shares/saves if visible, and what makes it work (hook, layout, type, colour, image source, swipe mechanic, CTA).
+2. Check it against the quiet-brand rules and the "No AI slop" gate. Skip anything built on AI-generated people or fake photos, and say why.
+3. Decide: does it improve an existing style (A–E), or is it a new style F? Name it, and say which topics it fits best and why.
+4. Add a row to `style-system/references.md` (date, creator, what we took, which style, which topics).
+5. If it's a new or changed style, update the table above and re-render the style board.
+6. Tell Suraj in Hinglish, in a few lines: what's good, what we'll take, which topic it fits, and offer one post in that style.
+
 ## What's here
 
 | Folder | What | Run |
