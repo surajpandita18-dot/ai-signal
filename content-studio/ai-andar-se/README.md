@@ -1,11 +1,14 @@
-# "AI ne kya kiya?" — face-to-camera reel series (series bible)
+# "AI, Andar Se" — face-to-camera VIDEO series (series bible)
 
-**Why this name:** Ep 01 "AI ne acting ki?" is the best performer on the profile (1,306 views vs 1–38 for carousels).
-The hook pattern *"AI ne ___ ki?"* is what worked, so the series is named after the pattern. Every episode title is
-"AI ne ___ ki?" — easy to recognise, easy to search, easy to continue.
+**Format decision (Suraj, 26 Nov 2026):** carousels are for **Read for you** (articles). AI topics are **videos**.
 
-**Promise:** one real thing an AI did in a lab, explained in 60 seconds by a working AI PM, with what it means for you.
-**Tagline:** *AI ne kya kiya, aur aapke liye uska matlab kya hai.*
+**Name:** *AI, Andar Se* — two meanings: what happens *inside* AI (complex ideas made simple), told by someone *inside*
+the industry (a working AI PM). Broad enough for crazy stories, research and complex concepts.
+**Tagline:** *AI ke andar ki kahani, ek AI PM se.*
+**Episode titles keep the hook pattern that worked:** a Hinglish question, e.g. "AI ne acting ki?" (Ep 01, best performer, 1,306 views).
+
+Every episode = one crazy/mind-blowing true story or complex idea + a simple analogy + Suraj's take as an AI PM.
+Speak Hinglish; captions Roman Hinglish; caption first line in English.
 
 ## Episode framework (60 seconds, conversational, one friend across the table)
 
@@ -19,7 +22,7 @@ The hook pattern *"AI ne ___ ki?"* is what worked, so the series is named after 
 | 52–60s | **Loop** | Question to comment on + keyword DM + "Agla episode: AI ne ___ ki." | Last line sets up the next episode. |
 
 Cold open: put the twist line (30–40s) as the first 2 seconds, then cut to the hook (see edit playbook in Drive context doc).
-On screen: badge "AI NE KYA KIYA? · EP 0N", captions in phrase lines, one paper card for the source.
+On screen: badge "AI, ANDAR SE · EP 0N", captions in phrase lines, one paper card for the source.
 
 ## Roadmap (verified stories, each with a lab source)
 
