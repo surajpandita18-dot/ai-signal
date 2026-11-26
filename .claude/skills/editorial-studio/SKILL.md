@@ -81,3 +81,28 @@ Publishing: dimensions and ratio, spelling, no cropped text, numbering consisten
 - Credit every CC BY/BY-SA photo on the slide (small line) and in the caption; write CREDITS.md.
 - Render: HTML → Playwright PNG, fonts loaded via file:// (Google Fonts unreachable from the shell). Use `text-wrap: balance` on headlines to avoid widows. Check a contact sheet before sending.
 - Send slides as individual PNGs (Suraj saves straight to Photos), plus a preview and CREDITS.md.
+
+---
+
+## ThinkSafari: anti-AI-slop and premium art direction standard (overrides generic social media conventions)
+ThinkSafari is an art-directed independent digital publication, not an Instagram page. **The goal is not to look designed. The goal is to look considered.** Cinematic ≠ dark, grainy and moody: bright daylight, imperfect candid photos, unusual framing and natural colour are equally valid.
+
+**Principles:** authentic over artificial · editorial over templated · story over aesthetics · restraint over decoration.
+
+**Avoid:** AI faces with suspiciously perfect features; the same beige background + serif headline on every post; random film grain added to fake authenticity; repetitive layouts and predictable stock; too much text, icons, gradients and decoration; fake handwritten notes, fake magazine covers, unnecessary labels; generic ChatGPT-style copy and artificial philosophical quotes; "In a world where…", "Here's the thing…", "Let that sink in.", "Read that again."; fake-profound conclusions and repetitive rhetorical questions.
+
+**A. Human craft:** work as if a creative director, photographer, editorial designer and copy editor collaborated. Every decision is intentional. Optimise for something worth looking at, not for more slides faster.
+**B. Photography:** prioritise authentic photos (Magnum-style documentary, curated Unsplash photographers, selective Pexels, Wikimedia Commons and historical archives, museum collections, properly licensed editorial). AI image generation is selective, never the default; **Suraj's standing rule for ThinkSafari carousels is no AI images.** If a generated image is ever used: no synthetic look, believable light and anatomy, never fake historical evidence, never presented as a real documentary photo. Never use an image just to fill a slide.
+**C. No template repetition:** mix full-bleed, unusual crops, asymmetric layouts, large isolated type, split-frame storytelling, negative space, occasional text-only slides, archival photos, close-up details and environmental portraits. Use a composition only when it serves the story.
+**D. Colour:** a custom palette per subject, coherent within the carousel. Don't apply one beige/brown filter to everything. Natural skin tones, restrained contrast. No oversaturation, orange-and-teal grading, random gradients, heavy shadows, mixed colour temperatures or purposeless accents.
+**E. Typography:** at most two families; deliberate line breaks; refined tracking and leading; optical alignment; no awkward wraps; consistent margins; minimal uppercase; no random size variation; never stretch or squeeze type. Rewrite the copy if the layout is crowded.
+**F. Writing:** sounds like a thoughtful human editor; specific, nuanced, real observations, unexpected connections; accuracy over drama.
+**G. Micro-details:** consistent margins and footer placement, precise crops, no alignment drift, nothing touching unsafe edges, consistent weights, no bad breaks, no typos, no blurry or stretched photos, no decoration without purpose. Review the carousel as one sequence.
+**H. QC:** make a contact sheet and review at slide level, carousel level, small-phone level and **profile-grid level**. Would it look at home in a beautifully designed independent magazine? Does each slide feel individually art-directed? Could any decorative element be removed without losing meaning? If it looks like a generic AI carousel, start again.
+**I. Deliverables:** source research, edited copy, selected photos + credits, high-res slides, full preview, Instagram-ready exports. No placeholders; never call AI imagery original photography; never trade quality for speed.
+
+**ThinkSafari creative QA (all 8 must pass):** cover genuinely stops you · photos authentic and individually selected · every slide has a distinct composition · colours harmonious, not filtered · type beautifully set and readable on a phone · writing human, specific, intelligent · the carousel is one cohesive story · you'd be proud to see it on a premium publication's Instagram.
+
+**Visual benchmark (Suraj's reference board, Nov 2026):** Cereal magazine (Vol 14, 19, 20), Kinfolk (Issue 25 'Food', T.D.C. still-life series), The New Yorker photo spreads (Mary Ellen Mark, Joel Meyerowitz *Aftermath*), Magnum-style black-and-white street documentary, minimalist architectural photography in soft natural light (warm pastel walls, a lone figure, open sky), still lifes of ceramics in raking light, generous white pages with small refined serif type, photos placed like objects on the page.
+
+**Final principle:** a publication someone discovered, not a content account someone generated. The quality of a magazine, the curiosity of a good Substack writer, the authenticity of a personal notebook. Not every post needs to be spectacular; every post should feel deliberately made.
