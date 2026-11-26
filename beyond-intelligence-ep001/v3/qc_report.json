@@ -1,0 +1,352 @@
+{
+ "file": "/tmp/claude-0/-home-user-ai-signal/5976107c-b177-5eb8-bcfe-35877bf990a4/scratchpad/v3/AlphaGo_Final_v3.mp4",
+ "checks": [
+  {
+   "check": "resolution",
+   "status": "PASS",
+   "detail": "1080x1920"
+  },
+  {
+   "check": "video_codec",
+   "status": "PASS",
+   "detail": "h264 High 7565 kbps"
+  },
+  {
+   "check": "frame_rate",
+   "status": "PASS",
+   "detail": "30/1"
+  },
+  {
+   "check": "audio_codec",
+   "status": "PASS",
+   "detail": "aac 252 kbps"
+  },
+  {
+   "check": "av_duration_match",
+   "status": "PASS",
+   "detail": "video 139.233s audio 139.247s"
+  },
+  {
+   "check": "black_frames",
+   "status": "PASS",
+   "detail": "0 segments >=0.25s: []"
+  },
+  {
+   "check": "frozen_frames",
+   "status": "PASS",
+   "detail": "0 holds >=1.2s (plates are designed holds; listed for review): []"
+  },
+  {
+   "check": "long_silences",
+   "status": "PASS",
+   "detail": "0 silences >=1.2s: []"
+  },
+  {
+   "check": "clipping",
+   "status": "PASS",
+   "detail": "max sample peak -1.5 dBFS"
+  },
+  {
+   "check": "loudness",
+   "status": "PASS",
+   "detail": "integrated -13.8 LUFS, true peak -1.3 dBFS"
+  },
+  {
+   "check": "speech_integrity",
+   "status": "PASS (manual review)",
+   "detail": "46 lines compared (source vs final, same recogniser); 12 flagged. Flagged lines were re-transcribed raw vs final with the full-precision model, including neighbouring lines: meaning matched in every case; differences are the recogniser paraphrasing Hindi into English differently between runs. No dropped or repeated words found."
+  }
+ ],
+ "speech_lines": [
+  {
+   "line": "Imagine karo… Ek machine duniya ke best players mein se ek ke saamne baithi hai.",
+   "similarity": 1.0,
+   "final_heard": "imagine a machine sitting in front of one of the best players in the world",
+   "repeated_words": []
+  },
+  {
+   "line": "Aur ek aisa move play karti hai jise dekhkar experts ko lagta hai ki shayad isne mistake kar di.",
+   "similarity": 0.43,
+   "final_heard": "and she plays a move that makes the experts think that she must have made a mistake",
+   "repeated_words": []
+  },
+  {
+   "line": "But turns out… it was actually brilliant.",
+   "similarity": 0.86,
+   "final_heard": "but turns out it was extremely brilliant",
+   "repeated_words": []
+  },
+  {
+   "line": "Welcome to Beyond Intelligence.",
+   "similarity": 1.0,
+   "final_heard": "welcome to beyond intelligence",
+   "repeated_words": []
+  },
+  {
+   "line": "Yahan hum AI ki duniya ki aisi stories explore karenge jo shayad aapko technology ko",
+   "similarity": 0.93,
+   "final_heard": "or explore the stories of the world here which you might be able to",
+   "repeated_words": []
+  },
+  {
+   "line": "dekhne ka nazariya hi badal dein.",
+   "similarity": 0.0,
+   "final_heard": "look at this its a",
+   "repeated_words": []
+  },
+  {
+   "line": "Aur aaj ki story genuinely fascinating hai.",
+   "similarity": 1.0,
+   "final_heard": "and todays story is generally fascinating",
+   "repeated_words": []
+  },
+  {
+   "line": "Let's go back to 2016.",
+   "similarity": 1.0,
+   "final_heard": "lets go back to 2016",
+   "repeated_words": []
+  },
+  {
+   "line": "Google DeepMind ne ek",
+   "similarity": 1.0,
+   "final_heard": "google deep my neck",
+   "repeated_words": []
+  },
+  {
+   "line": "AI banayi thi — AlphaGo.",
+   "similarity": 0.33,
+   "final_heard": "aialpha go",
+   "repeated_words": []
+  },
+  {
+   "line": "Aur uska match hua Lee Sedol ke saath.",
+   "similarity": 0.86,
+   "final_heard": "and his match was with link sedol",
+   "repeated_words": []
+  },
+  {
+   "line": "Ab Lee Sedol koi normal player nahi the. He had won 18 international titles",
+   "similarity": 0.64,
+   "final_heard": "please at all go in normal planning he had won 18 international titles",
+   "repeated_words": []
+  },
+  {
+   "line": "and was considered one of the greatest Go players of his generation.",
+   "similarity": 1.0,
+   "final_heard": "and was considered one of the greatest go players of his generation",
+   "repeated_words": []
+  },
+  {
+   "line": "Ab tum soch rahe hoge, ye Go aakhir hai kya?",
+   "similarity": 0.71,
+   "final_heard": "now you must be thinking is this goa",
+   "repeated_words": []
+  },
+  {
+   "line": "Basically,",
+   "similarity": 1.0,
+   "final_heard": "basically",
+   "repeated_words": []
+  },
+  {
+   "line": "ek ancient Chinese board game hai. Chess ki tarah strategy involved hoti hai,",
+   "similarity": 0.57,
+   "final_heard": "an ancient chinese board game involves strategies like chess",
+   "repeated_words": []
+  },
+  {
+   "line": "but ismein possibilities itni zyada hain ki computers ke liye ise master karna extremely difficult tha.",
+   "similarity": 0.87,
+   "final_heard": "but the possibility is so high that it was extremely difficult to master for computers",
+   "repeated_words": []
+  },
+  {
+   "line": "Aur",
+   "similarity": 1.0,
+   "final_heard": "or",
+   "repeated_words": []
+  },
+  {
+   "line": "experts ko lagta tha ki AI ko is level tak pahunchne mein",
+   "similarity": 0.74,
+   "final_heard": "the experts thought that ai was reaching this level",
+   "repeated_words": []
+  },
+  {
+   "line": "abhi kaafi saal lagenge.",
+   "similarity": 0.15,
+   "final_heard": "its been a long time since we",
+   "repeated_words": []
+  },
+  {
+   "line": "But AlphaGo ne first game jeet liya. Phir second game bhi.",
+   "similarity": 0.96,
+   "final_heard": "but then alpha g won the first game then the second game",
+   "repeated_words": []
+  },
+  {
+   "line": "And that's where things got really interesting.",
+   "similarity": 0.86,
+   "final_heard": "and thats why things got really interesting",
+   "repeated_words": []
+  },
+  {
+   "line": "Game ke 37th move par AlphaGo ne ek aisa move play kiya",
+   "similarity": 0.57,
+   "final_heard": "the 37th move of the game was an alphagonic move",
+   "repeated_words": []
+  },
+  {
+   "line": "jo professional Go players ke liye extremely unusual tha.",
+   "similarity": 1.0,
+   "final_heard": "which was extremely unusual for professional cupillettes",
+   "repeated_words": []
+  },
+  {
+   "line": "Commentators ko pehle laga ki shayad machine se mistake ho gayi. But it wasn't.",
+   "similarity": 0.96,
+   "final_heard": "the commentators first thought that the machine might have mistaken it but it wasnt",
+   "repeated_words": []
+  },
+  {
+   "line": "And here's the crazy part…",
+   "similarity": 1.0,
+   "final_heard": "and here is the crazy part",
+   "repeated_words": []
+  },
+  {
+   "line": "Google DeepMind ke according, human players ke historical patterns ke basis par is move ke play hone ki probability around 1 in 10,000 thi.",
+   "similarity": 0.43,
+   "final_heard": "google deep mind according to human players historical patterns the probability of this morph is around 1 in 10000",
+   "repeated_words": []
+  },
+  {
+   "line": "Lekin AlphaGo ne woh move play kiya. Aur eventually us move ne game jeetne mein important role play kiya.",
+   "similarity": 0.88,
+   "final_heard": "but alphago played that move eventually that move won the game as much as an important role played",
+   "repeated_words": []
+  },
+  {
+   "line": "Ab naturally question aata hai…",
+   "similarity": 0.67,
+   "final_heard": "now naturally cushion comes",
+   "repeated_words": []
+  },
+  {
+   "line": "machine ne aisa socha kaise?",
+   "similarity": 0.71,
+   "final_heard": "how did the machine think like that",
+   "repeated_words": []
+  },
+  {
+   "line": "So basically, AlphaGo ko pehle thousands of expert human games dikhaaye gaye.",
+   "similarity": 0.82,
+   "final_heard": "also basically alphagogo palette thousands of expert human games are shown",
+   "repeated_words": []
+  },
+  {
+   "line": "Un games se patterns learn kiye.",
+   "similarity": 0.73,
+   "final_heard": "learned patterns from those games",
+   "repeated_words": []
+  },
+  {
+   "line": "Phir reinforcement learning use karke woh khud ke against games khelne lagi.",
+   "similarity": 0.95,
+   "final_heard": "then by using reinforcement learning they started playing games against themselves",
+   "repeated_words": []
+  },
+  {
+   "line": "Matlab jitna khelti gayi, utna apni strategy improve karti gayi.",
+   "similarity": 0.73,
+   "final_heard": "meaning the more you play the more your strategy is improved",
+   "repeated_words": []
+  },
+  {
+   "line": "Think about it…",
+   "similarity": 1.0,
+   "final_heard": "think about it",
+   "repeated_words": []
+  },
+  {
+   "line": "Humne machine ko game sikhaya, aur phir usne aise moves discover karne shuru kar diye jo humans ne traditionally consider hi nahi kiye the.",
+   "similarity": 0.77,
+   "final_heard": "we taught this machine a game and then it started to discuss such moves which humans had not traditionally considered",
+   "repeated_words": []
+  },
+  {
+   "line": "But wait, story yahin khatam nahi hoti. AlphaGo eventually match 4–1 se jeet gayi.",
+   "similarity": 0.69,
+   "final_heard": "but wait the story doesnt end here alphacop eventually managed to win the match 41",
+   "repeated_words": []
+  },
+  {
+   "line": "Lekin fourth game mein Lee Sedol ne Move 78 naam ka ek brilliant move play kiya.",
+   "similarity": 0.64,
+   "final_heard": "but in the fourth game lee sedolne moved 78 with a brilliant move",
+   "repeated_words": []
+  },
+  {
+   "line": "Is baar machine surprise ho gayi. Aur Lee Sedol ne woh game jeet liya.",
+   "similarity": 0.8,
+   "final_heard": "this time the machine was surprised and at least adol won the game",
+   "repeated_words": []
+  },
+  {
+   "line": "And honestly, mujhe is story ka sabse interesting part ye lagta hai…",
+   "similarity": 1.0,
+   "final_heard": "and honestly i think the most interesting part of this story is",
+   "repeated_words": []
+  },
+  {
+   "line": "AI ne sirf ek game nahi jeeta.",
+   "similarity": 0.57,
+   "final_heard": "ai does not live in a game",
+   "repeated_words": []
+  },
+  {
+   "line": "Usne humans ko apni understanding of the game rethink karne par majboor kar diya.",
+   "similarity": 0.82,
+   "final_heard": "he forced the humans company to rethink the game",
+   "repeated_words": []
+  },
+  {
+   "line": "Aur shayad artificial intelligence ka future bhi yahi hai.",
+   "similarity": 1.0,
+   "final_heard": "and maybe the future of artificial intelligence is the same",
+   "repeated_words": []
+  },
+  {
+   "line": "Machines ka humari tarah sochna zaroori nahi hai. Maybe they'll discover ways of solving problems that we humans haven't even imagined yet?",
+   "similarity": 0.74,
+   "final_heard": "machines ka hamari tara sochna zaroori nahi hai may be they will discover ways or solving problems that humans havent even imagined yet",
+   "repeated_words": []
+  },
+  {
+   "line": "And that's something worth thinking about.",
+   "similarity": 1.0,
+   "final_heard": "and thats something worth thinking about",
+   "repeated_words": []
+  },
+  {
+   "line": "This was Beyond Intelligence. See you in the next one.",
+   "similarity": 1.0,
+   "final_heard": "this was beyond intelligence see you in the next one",
+   "repeated_words": []
+  }
+ ],
+ "stutter_fix": {
+  "line": "Google DeepMind ke according … around 1 in 10,000 thi.",
+  "raw_gap": "93.62–94.10 s, non-speech (<-40 dBFS)",
+  "cut": "93.72 → 94.06 s raw",
+  "level_at_cut_dbfs": -45,
+  "post_cut_asr": "… had the probability of this move playing around 1 in 10,000.",
+  "status": "PASS"
+ },
+ "visual_review": "Contact sheet at 1 frame/s over the full 139 s reviewed: no overlaps, captions inside safe area, no captions over the sting or end card, frame 0 = hook visual.",
+ "not_verifiable": [
+  "Listening quality (Claude cannot hear): watch once on a phone with sound.",
+  "17 of 46 lines use estimated word timing; captions may lead or lag a word by a fraction of a second.",
+  "Caption spelling follows the approved script; Hindi words are not machine-verifiable letter by letter."
+ ]
+}
