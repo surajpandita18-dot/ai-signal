@@ -188,17 +188,146 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
   return out;
 }
 
+// ---------- v2 slide templates (Nov 2026 redesign) ----------
+// Principles: front-page cover · scoreboard with a Reality Meter · one witty headline + one plain line per story ·
+// big visual (≈45% of slide) · "So what?" sticky note · section colours · "Next →" teaser on every slide · recall quiz close.
+const SEC = { News: '#E07B4F', 'Models, simply': '#4C5FD5', India: '#2F7D4F', Money: '#C9961A', 'The big picture': '#1A1916' };
+const secOf = k => SEC[k] || OR;
+const css2 = `
+.tab{display:inline-flex;align-items:center;gap:12px;padding:9px 18px;border-radius:30px;color:#fff;font-weight:800;font-size:21px;letter-spacing:.12em;text-transform:uppercase}
+.tab small{font-weight:600;opacity:.85;letter-spacing:.08em}
+.wit{font-weight:800;font-size:76px;line-height:1.02;letter-spacing:-.045em;color:${INK};text-wrap:balance}
+.plain{font-weight:500;font-size:33px;line-height:1.38;color:#3E3A34;text-wrap:pretty}
+.panel{border-radius:22px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.note{position:relative;background:#FFE88A;padding:24px 28px 22px;font-weight:600;font-size:27px;line-height:1.38;color:#2A261F;transform:rotate(-1.4deg);box-shadow:0 14px 26px -16px rgba(60,40,0,.45)}
+.note b{display:block;font-weight:800;font-size:18px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;color:#8A6A00}
+.meter{display:flex;align-items:center;gap:14px;font-weight:700;font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:#8A8278}
+.meter i{width:22px;height:22px;border-radius:50%;border:2.5px solid ${INK};display:inline-block}
+.meter i.on{background:${INK}}
+.next{position:absolute;left:84px;right:84px;bottom:64px;display:flex;justify-content:space-between;align-items:center;font-size:21px;color:#8A8278;font-weight:600}
+.next b{color:${INK};font-weight:800}
+.srcl{font-size:18px;color:#9A9288;line-height:1.35}
+.mast2{display:flex;justify-content:space-between;align-items:flex-end;border-bottom:3px solid ${INK};padding-bottom:14px}
+.mast2 .nm{font-family:N;font-weight:700;font-size:52px;letter-spacing:-.02em;line-height:1}
+.mast2 .nm i{font-weight:400;color:${OR}}
+.hl1{font-weight:800;font-size:64px;line-height:1.02;letter-spacing:-.04em;text-wrap:balance}
+`;
+const meter = (n, note) => `<div class="meter">Reality meter ${[1, 2, 3, 4, 5].map(k => `<i class="${k <= n ? 'on' : ''}"></i>`).join('')}<span style="text-transform:none;letter-spacing:0;font-weight:600;font-size:20px;color:#6F675D">${note || ''}</span></div>`;
+
+function buildV2(d) {
+  const N = d.slides.length + 3;
+  const page = (i, inner, opt = {}) => `<!doctype html><html><head><meta charset="utf-8"><style>${css}${css2}</style></head><body><div class="s" style="${opt.bg || ''}">${inner}
+${opt.noTop ? '' : `<div class="top" style="${opt.dark ? 'color:#CFC8BC' : ''}">Last 24 hours <b>in</b> AI · Day ${pad(d.day)} · ${d.author.name}, AI PM · ${i}/${N}</div>`}
+${opt.dark ? '' : grainLight}</div></body></html>`;
+  const teaser = j => { const s = d.slides[j]; if (!s) return `<b>Your 10-second quiz →</b>`; return `Next: <b>${(s.wit || s.t).replace(/<[^>]+>/g, '')}</b> →`; };
+  const stories = d.slides.filter(s => s.type === 'news' || s.type === 'stats');
+  const out = [];
+
+  // 1 · FRONT PAGE
+  out.push(page(1, `
+  <div style="position:absolute;left:70px;right:70px;top:56px">
+   <div class="mast2"><div class="nm">Last 24 hours in AI<i>.</i></div>
+    <div style="text-align:right;font-weight:700;font-size:20px;letter-spacing:.12em;text-transform:uppercase;line-height:1.5">Day ${pad(d.day)} · ${d.date}<br><span style="color:#8A8278">AI, explained like a friend would</span></div></div>
+   <div style="display:flex;justify-content:space-between;font-weight:600;font-size:19px;letter-spacing:.1em;text-transform:uppercase;color:#6F675D;padding:12px 0;border-bottom:1.5px solid ${INK}">
+    <span>by ${d.author.name} · AI PM</span><span>News · Money · Models · India · My take</span></div>
+  </div>
+  <div style="position:absolute;left:70px;right:70px;top:230px">
+   <span class="tab" style="background:${secOf(stories[0].k)}">Top story</span>
+   <div class="hl1" style="margin-top:22px;font-size:${d.cover.size || 92}px">${d.cover.headline || stories[0].wit}</div>
+   <div class="plain" style="margin-top:20px;font-size:31px">${d.cover.dek || stories[0].plain || ''}</div>
+   ${stories[0].il ? `<div class="panel" style="margin-top:26px;height:${d.cover.panelH || 300}px;background:${secOf(stories[0].k)}14;border:2px solid ${secOf(stories[0].k)}33"><div style="width:100%;padding:10px 30px">${ill(stories[0].il)}</div></div>` : ''}
+  </div>
+  <div style="position:absolute;left:70px;right:70px;bottom:150px;display:grid;grid-template-columns:repeat(${Math.min(3, stories.length - 1)},1fr);gap:0;border-top:3px solid ${INK}">
+   ${stories.slice(1, 4).map((s, k) => `<div style="padding:22px ${k < 2 ? '22px' : 0} 0 ${k ? '22px' : 0};${k ? 'border-left:1.5px solid ' + INK : ''}">
+     <div style="font-weight:800;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:${secOf(s.k)}">${s.k}</div>
+     <div style="font-weight:800;font-size:31px;line-height:1.08;letter-spacing:-.02em;margin-top:8px">${s.wit || s.t}</div></div>`).join('')}
+  </div>
+  <div class="next" style="bottom:70px"><span>@thinksafari · a daily series</span><span><b>Swipe for the 60-second version →</b></span></div>`, { noTop: true }));
+
+  // 2 · SCOREBOARD
+  out.push(page(2, `
+  <div style="position:absolute;left:84px;right:84px;top:120px;bottom:130px;display:flex;flex-direction:column;justify-content:center">
+   <div class="t" style="font-size:96px">today’s scoreboard</div>
+   <div class="aka" style="margin:8px 0 30px">aka. ${d.summary.length} stories in 60 seconds, with how real each one is</div>
+   ${d.summary.map((r, k) => { const s = stories[k] || {}; return `<div style="display:grid;grid-template-columns:16px 1fr auto;gap:22px;align-items:center;padding:28px 0;border-top:2px solid #E6DACB;text-align:left">
+     <span style="width:16px;height:76px;border-radius:8px;background:${secOf(s.k || r.cat)}"></span>
+     <span><span style="font-weight:800;font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:${secOf(s.k || r.cat)}">${r.cat} · ${r.date}</span><br><span style="font-weight:700;font-size:34px;letter-spacing:-.012em;line-height:1.2">${r.text}</span></span>
+     <span style="display:flex;gap:6px">${[1, 2, 3, 4, 5].map(q => `<i style="width:16px;height:16px;border-radius:50%;border:2px solid ${INK};display:inline-block;${q <= (s.real || 3) ? 'background:' + INK : ''}"></i>`).join('')}</span></div>`; }).join('')}
+   <div style="display:flex;justify-content:flex-end;gap:10px;align-items:center;margin-top:14px;font-weight:700;font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:#8A8278">reality meter: ● claim only … ●●●●● done & confirmed</div>
+  </div>
+  <div class="next"><span>${d.summaryNote || ''}</span><span>${teaser(0)}</span></div>`));
+
+  // story slides
+  d.slides.forEach((s, j) => {
+    const i = j + 3, col = secOf(s.k);
+    if (s.type === 'news' || s.type === 'stats') {
+      const visual = s.type === 'stats'
+        ? `<div style="display:flex;gap:40px;width:100%;padding:0 40px">${s.stats.map(x => `<div style="flex:1;text-align:left"><div class="t" style="font-size:${x.size || 120}px;color:${col}">${x.v}</div><div style="font-weight:600;font-size:24px;line-height:1.3;margin-top:10px">${x.l}</div></div>`).join('')}</div>`
+        : `<div style="width:100%;padding:20px 30px">${ill(s.il)}</div>`;
+      out.push(page(i, `
+      <div style="position:absolute;left:84px;right:84px;top:118px;text-align:left">
+       <span class="tab" style="background:${col}">${s.k}<small>· ${s.d}</small></span>
+       <div class="wit" style="margin-top:22px;font-size:${s.witSize || 76}px">${s.wit || s.t}</div>
+       <div class="plain" style="margin-top:16px">${s.plain || s.aka}</div>
+       <div class="panel" style="margin-top:26px;height:${s.panelH || 420}px;background:${col}14;border:2px solid ${col}33">${visual}</div>
+       <div style="display:grid;grid-template-columns:1fr;gap:18px;margin-top:28px">
+        <div class="note"><b>So what?</b>${s.sowhat || s.india || ''}</div>
+       </div>
+       <div style="display:flex;justify-content:space-between;align-items:center;margin-top:26px">${meter(s.real || 3, s.realNote)}</div>
+       <div class="srcl" style="margin-top:12px">${s.src}</div>
+      </div>
+      <div class="next"><span>@thinksafari</span><span>${teaser(j + 1)}</span></div>`));
+    } else if (s.type === 'picture') {
+      out.push(page(i, `
+      <div style="position:absolute;left:84px;right:84px;top:130px;text-align:left">
+       <span class="tab" style="background:${INK}">The big picture</span>
+       <div class="wit" style="margin-top:22px;font-size:84px">${s.wit || s.t}</div>
+       <div class="plain" style="margin-top:16px">${s.plain || s.aka}</div>
+       <div style="margin-top:30px;display:flex;justify-content:center">${ill(s.il)}</div>
+       <div class="plain" style="margin-top:20px;font-weight:700;color:${INK}">${s.p}</div>
+       <div class="srcl" style="margin-top:12px">${s.src || ''}</div>
+      </div>
+      <div class="next"><span>@thinksafari</span><span>${teaser(j + 1)}</span></div>`));
+    } else if (s.type === 'take') {
+      out.push(page(i, `<div class="bg"></div>${grainDark}
+      <div class="card">
+       <div class="lab" style="color:${OX};font-size:19px;letter-spacing:.14em;margin-bottom:14px">${s.k}</div>
+       <h2>${s.t}</h2>${s.sub ? `<div class="sub">${s.sub}</div>` : ''}
+       ${s.p.map(x => `<p>${x}</p>`).join('')}
+       <div class="row"><div class="mono" style="width:56px;height:56px;font-size:26px">${d.author.initials}</div><div><div class="nm">${d.author.name} · my take</div><div class="rl">${d.author.role} in India · opinion, not news</div></div></div>
+      </div>`, { dark: true }));
+    }
+  });
+
+  // last · QUIZ + CTA
+  const q = d.quiz || { q: 'Which number was NOT in today’s stories?', options: ['1,000,000', '6', '42'], answer: 'C' };
+  out.push(page(N, `
+  <div style="position:absolute;left:84px;right:84px;top:150px;text-align:left">
+   <span class="tab" style="background:${OR}">Your 10-second quiz</span>
+   <div class="wit" style="margin-top:24px;font-size:80px">${q.q}</div>
+   <div style="display:grid;gap:18px;margin-top:36px">${q.options.map((o, k) => `<div style="display:flex;align-items:center;gap:22px;border:2.5px solid ${INK};border-radius:18px;padding:20px 26px;font-weight:800;font-size:38px">
+     <span style="width:54px;height:54px;border-radius:50%;background:${INK};color:#FAF2E9;display:flex;align-items:center;justify-content:center;font-size:26px">${'ABC'[k]}</span>${o}</div>`).join('')}</div>
+   <div class="plain" style="margin-top:30px">Comment your answer. <b style="color:${OR}">Comment DAILY</b> and I’ll DM you every new episode.</div>
+   <div style="display:flex;align-items:center;gap:18px;margin-top:34px;border-top:2px solid #E6DACB;padding-top:26px">
+    <div class="mono" style="width:66px;height:66px;font-size:30px">${d.author.initials}</div>
+    <div style="font-weight:500;font-size:25px;line-height:1.35;color:#3A362F">I’m <b style="font-weight:800">${d.author.name}</b>, an AI product manager in India. See you tomorrow for Day ${pad(d.day + 1)}.</div></div>
+  </div>
+  <div class="next"><span>@thinksafari · Last 24 hours in AI</span><span>Answer in the caption ↓</span></div>`));
+  return out;
+}
+
 (async () => {
   const file = process.argv[2]; if (!file) { console.error('usage: node make.js issues/<date>.json'); process.exit(1); }
   const d = JSON.parse(fs.readFileSync(file, 'utf8'));
   const out = path.resolve(file.replace(/\.json$/, '')); fs.mkdirSync(out, { recursive: true });
-  const pages = build(d);
+  const pages = d.design === 'v1' ? build(d) : buildV2(d);
   const b = await chromium.launch(); const pg = await b.newPage({ viewport: { width: 1080, height: 1350 } });
   const warn = [], pngs = [];
   for (let i = 0; i < pages.length; i++) {
     const html = path.join(out, `.slide-${i + 1}.html`); fs.writeFileSync(html, pages[i]);
     await pg.goto('file://' + html); await pg.evaluate(() => document.fonts.ready); await pg.waitForTimeout(150);
     const w = await pg.evaluate(() => { const r = []; document.querySelectorAll('.col, .card').forEach(e => { const bb = e.getBoundingClientRect(); if (e.scrollHeight > e.clientHeight + 2) r.push(`content too tall by ${e.scrollHeight - e.clientHeight}px`); if (bb.top < 40 || bb.bottom > 1260) r.push(`block touches edge (${Math.round(bb.top)}–${Math.round(bb.bottom)})`); });
+      const nx = document.querySelector('.next'); if (nx) { const t = nx.getBoundingClientRect().top; document.querySelectorAll('.s > div').forEach(e => { if (e === nx || e.classList.contains('bg')) return; const b = e.getBoundingClientRect(); if (b.height < 1300 && b.bottom > t - 8 && b.top < t) r.push(`block runs into the Next bar (${Math.round(b.bottom)} > ${Math.round(t)})`); }); }
       const src = document.querySelector('.src'), col = document.querySelector('.col'); if (src && col) { const a = col.lastElementChild?.getBoundingClientRect(), s = src.getBoundingClientRect(); if (a && a.bottom > s.top - 10) r.push('text runs into the source line'); } return r; });
     w.forEach(x => warn.push(`slide ${i + 1}: ${x}`));
     const png = path.join(out, `day${pad(d.day)}-${pad(i + 1)}.png`); await pg.screenshot({ path: png }); pngs.push(png); fs.unlinkSync(html);

@@ -8,31 +8,34 @@
   "role": "AI Product Manager"
  },
  "cover": {
-  "today": "Data centres in orbit, an AI writes six maths papers, and India launches its own Chariot&#8209;1."
+  "today": "Data centres in orbit, an AI writes six maths papers, and India launches its own Chariot&#8209;1.",
+  "headline": "The cloud is moving. Literally up.",
+  "dek": "SpaceX just got permission to put up to a million data centres in orbit. Plus three more things that moved in AI.",
+  "size": 88
  },
  "summary": [
   {
    "cat": "News",
-   "date": "25 Nov",
+   "date": "25 Nov US",
    "text": "SpaceX cleared for up to 1M data-centre satellites."
   },
   {
    "cat": "News",
-   "date": "25 Nov",
-   "text": "Google’s AI posts six maths papers in a day. Unchecked."
+   "date": "25 Nov US",
+   "text": "Google’s AI wrote six maths papers in a day. Unchecked."
   },
   {
    "cat": "Models",
    "date": "26 Nov",
-   "text": "OpenAI tests running prompts inside sealed chips."
+   "text": "OpenAI tests prompts that even OpenAI can’t read."
   },
   {
    "cat": "India",
    "date": "26 Nov",
-   "text": "MeitY launches Chariot&#8209;1: Indian LLM + speech in 10 languages."
+   "text": "India launches Chariot&#8209;1: an LLM + voice in 10 Indian languages."
   }
  ],
- "summaryNote": "No big AI funding round in the last 24 hours · back tomorrow",
+ "summaryNote": "No big AI funding round today",
  "slides": [
   {
    "type": "news",
@@ -46,7 +49,12 @@
    },
    "p": "The US regulator approved SpaceX’s plan for up to one million satellites that work as data centres in space. The first must be running by November 2027. Amazon and astronomers opposed it.",
    "india": "Why it matters: AI needs so much power and cooling that companies are now looking at space. The FCC itself says it hasn’t judged whether this is technically or economically viable.",
-   "src": "FCC order via CNBC, GeekWire, Via Satellite · 25 Nov 2026"
+   "src": "FCC order via CNBC, GeekWire, Via Satellite · 25 Nov 2026",
+   "wit": "The cloud is moving. Literally up.",
+   "plain": "The US regulator approved SpaceX’s plan for up to 1 million satellites that work as data centres. The first must run by Nov 2027.",
+   "sowhat": "AI eats so much power that space is now on the table. Even the FCC says it hasn’t judged if this works or pays.",
+   "real": 3,
+   "realNote": "approved, not built"
   },
   {
    "type": "news",
@@ -83,7 +91,12 @@
    },
    "p": "Google’s Cogentic system posted six maths papers in a day, including a claimed fast way to split any big number into its factors. Reports say a human gave only the first prompt.",
    "india": "Honest note: none of the six is peer-reviewed and no expert has confirmed the proofs yet. Even if right, it doesn’t break the encryption your bank uses.",
-   "src": "Google Research GitHub, via ai-tldr, Emergent, productwatch · claims unverified"
+   "src": "Google Research GitHub, via ai-tldr, Emergent, productwatch · claims unverified",
+   "wit": "AI did its homework. Nobody’s graded it.",
+   "plain": "Google’s AI posted six maths papers in one day, including a claimed fast way to split any huge number into its factors.",
+   "sowhat": "If the proofs hold, it’s a big deal for maths. It does not break your bank’s encryption. Experts haven’t checked yet.",
+   "real": 1,
+   "realNote": "claim, not peer-reviewed"
   },
   {
    "type": "news",
@@ -114,7 +127,12 @@
    },
    "p": "Think of a locked exam hall where even the landlord can’t peek. OpenAI is testing this for business customers: prompts are processed inside sealed-off chips, with checks the customer can verify.",
    "india": "In India: the DPDP Act, 2023 makes companies answer for personal data. A model that can’t read your data is far easier to say yes to.",
-   "src": "OpenAI (alpha test, small group of business customers), via The Next Web, MLQ · 26 Nov"
+   "src": "OpenAI (alpha test, small group of business customers), via The Next Web, MLQ · 26 Nov",
+   "wit": "What happens in the chip, stays in the chip.",
+   "plain": "OpenAI is testing “private inference” for businesses: prompts are processed inside sealed chips that even OpenAI can’t look into.",
+   "sowhat": "Indian banks and hospitals answer to the DPDP Act, 2023. An AI that can’t read your data is much easier to say yes to.",
+   "real": 2,
+   "realNote": "alpha test, small group"
   },
   {
    "type": "news",
@@ -126,8 +144,8 @@
     "type": "dots",
     "n": 11,
     "cols": 11,
-    "gap": 64,
-    "r": 16,
+    "gap": 78,
+    "r": 22,
     "hollow": true,
     "lit": [
      1,
@@ -135,11 +153,16 @@
      6,
      9
     ],
-    "left": "11B PARAMETERS · ONLY ~4B WORK ON EACH WORD (SAME TRICK AS DAY 02)"
+    "left": "11B PARAMETERS · ONLY ~4B WORK ON EACH WORD"
    },
    "p": "MeitY launched Chariot-1 at Bharat Mandapam: an 11-billion-parameter language model and a voice model that speaks English and 10 Indian languages, both pre-trained in India by Chariot AI.",
    "india": "In India: the voice model scored over 97% on a pronunciation test, the Ministry says. That’s its own claim, not an independent one.",
-   "src": "PIB release; Tribune/ANI; DD News · 26 Nov 2026"
+   "src": "PIB release; Tribune/ANI; DD News · 26 Nov 2026",
+   "wit": "Made in India. Speaks in eleven.",
+   "plain": "MeitY launched Chariot&#8209;1: an 11-billion-parameter LLM and a voice model for English + 10 Indian languages, trained from scratch in India.",
+   "sowhat": "The voice model scored over 97% on a pronunciation test. That’s the Ministry’s claim; no independent test yet.",
+   "real": 4,
+   "realNote": "launched, scores self-reported"
   },
   {
    "type": "picture",
@@ -168,7 +191,9 @@
     "hot": 2
    },
    "p": "The race isn’t only for smarter models now. It’s for where they run: who can see your data, and where the power comes from.",
-   "src": "Ladder is my framing"
+   "src": "Ladder is my framing",
+   "wit": "AI is looking for a new home.",
+   "plain": "Today’s stories aren’t about smarter models. They’re about where AI runs, and who can see inside."
   },
   {
    "type": "take",
@@ -181,5 +206,14 @@
     "for indian ai startups, i’d sell <b>where it runs</b> before <b>what it scores</b>. a slightly weaker model your customer can audit will win more deals than a smarter one they can’t."
    ]
   }
- ]
+ ],
+ "quiz": {
+  "q": "How many maths papers did Google’s AI post in one day?",
+  "options": [
+   "2",
+   "6",
+   "60"
+  ],
+  "answer": "B"
+ }
 }

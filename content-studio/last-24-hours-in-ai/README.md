@@ -28,6 +28,18 @@ look at `contact-sheet.png` before sending.
 
 Aim for 9–11 slides in total.
 
+## v2 design (27 Nov 2026) — default
+
+Research-led: people often stop after 3–4 slides (Nielsen Norman Group), so the first slides carry the most.
+1. **Front-page cover:** masthead "Last 24 hours in AI.", day + date, byline, the TOP STORY as a witty headline + plain dek + its visual, then 3 more headlines in newspaper columns.
+2. **Scoreboard (slide 2):** every story in one line with a **Reality meter** (●○○○○ claim only … ●●●●● done & confirmed). Honesty as a signature.
+3. **Story slides:** section tab (News coral · Models blue · India green · Money gold) → **witty headline** (`wit`, ≤ 8 words, never misleading) → **one plain line** (`plain`, what actually happened) → **big visual panel** → yellow **"So what?" sticky note** (`sowhat`, names something real) → Reality meter (`real` 1–5 + `realNote`) → source.
+4. **"Next →" teaser** at the bottom of every slide, auto-filled from the next headline.
+5. **Close = 10-second quiz** (`quiz: {q, options[3], answer}`) on a fact from today, answer in the caption. Then Comment DAILY + author line.
+6. Wit rules: puns and twists are welcome in `wit`; facts stay in `plain`, `sowhat` and the source. If the joke needs a caveat, the caveat goes in the meter note.
+
+New JSON fields (v2): `cover.headline`, `cover.dek`, per story `wit`, `plain`, `sowhat`, `real`, `realNote`, `witSize`, `panelH`; top-level `quiz`. Reference: `issues/2026-11-27.json`. Old look: set `"design": "v1"`.
+
 ## JSON schema
 
 ```jsonc
