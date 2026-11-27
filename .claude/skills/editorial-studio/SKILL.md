@@ -135,3 +135,46 @@ Source file: grabfy-DfiIiOKyG8A-1.mp4 (720×1280, 24 fps, 84 s). Talking-head Su
 - **Captions:** small white sans, one short line (3–5 words), centred on the chest, no highlight colour, phrase-by-phrase.
 - **Rhythm:** overlays every ~5–8 s on key nouns; long stretches of just the presenter; the book is lifted toward the camera on the ending lines ("I will send it…").
 - **For ThinkSafari reels:** reproduce this with Suraj's footage: a real Substack screenshot card (from his phone) that slides in each time the essay is cited; **public-domain paintings and archival photos** (Met, AIC, Cleveland open access; Wikimedia) as B-roll with gentle slide/scale-in motion; an opening 3-image collage; small one-line white captions; warm grade; a physical prop where possible. No AI paintings.
+
+---
+
+## THINKSAFARI PROFILE SYSTEM (decided 27 Nov 2026; read this first in every new session)
+Suraj's brief: the profile must never look AI-made. Every reel and carousel lands on the same grid, so **design the grid, not just the post**. Learn from how humans craft magazines, photo essays and films (real photos, real type, real layouts), not from AI aesthetics. Claude may make creative decisions; Suraj can override.
+
+### Current grid audit (`carousels/PROFILE_GRID_2026-11-27.png`)
+Works: real photos, serif and sans discipline, three recognisable worlds, nothing looks generated.
+Fix next: (1) Beyond Intelligence and The Bigger Picture both use black + gold serif and blur together; separate them (below). (2) The reel cover's saturated yellow serif shouts against the quiet grid; use the series system for reel covers too. (3) Too many dark tiles in a row; alternate light and dark.
+
+### One visual world per series (recognisable from the grid without a logo)
+| Series | Cover ground | Type | Accent | Imagery | Signature move |
+|---|---|---|---|---|---|
+| **Last 24 Hours in AI** (daily news) | Cream #F5EBDD | Inter Black lowercase headlines; Newsreader serif for My Take | Burnt orange #C97856 | **No photos**: diagrams, numbers, status ladders | Huge lowercase type; a mood or status bar |
+| **01 Beyond Intelligence** (AI ideas) | Near black #0C0C0D / midnight #0F1420 | Instrument Serif + DM Sans | Antique gold #B4975A, at most one electric-blue mark | **Monochrome archival computing and science** (NASA, IBM, lab photos) | Photo band on top, two-line serif headline with a gold italic second line |
+| **02 The Human Condition** (psychology) | **Daylight colour**: warm white #FAF7F2 | Instrument Serif + DM Sans | Deep olive #4E5B3A | Candid colour street and people photography, natural skin tones | Large photo, small honest caption, generous white |
+| **03 Between the Frames** (cinema) | Black with a **letterbox** (2.39:1 frame) | Serif headline + small subtitle-style sans | Off-white only | Public-domain film stills and posters (pre-1930 or explicitly PD/CC); never modern copyrighted stills | Text set like film subtitles under the frame |
+| **04 Lafzon Ke Darmiyaan** (poetry, language) | Paper ivory #F3EEE3 | Devanagari/Urdu serif (Noto Serif Devanagari, Noto Nastaliq Urdu) + one Latin serif | Ink indigo #2E3A59 | Mostly type; occasional museum painting detail | Big verse with lots of air, the translation small beneath |
+| **05 The Bigger Picture** (history, science) | **Full-bleed photograph**, edge to edge | Serif headline set into the photo's natural dark area | **Signal red #B23A2E**, one word only (Salgado/6Mois reference) | Large archival and documentary photos (NASA, LoC, Met) | One dominant photo per slide, LIFE-magazine feel |
+| **06 The Idea Worth Sharing** (Substack essays) | Cool paper #F4F3F0 | Instrument Serif + DM Sans | Ink only | Inset documentary photos with captions, archival plates, type-only pauses | Photo inset with white margin, like a magazine page |
+| **Reels** (talking head) | Suraj's warm room, natural grade | Cover title in the **series style**, not a random yellow | — | Moving Substack card, paintings and archival photos above the head | Small one-line white captions; cover text kept inside the centre 3:4 |
+
+### Grid rules
+- **Rhythm:** never three dark or three light tiles in a row; alternate photo-led and type-led covers; space reels between carousels.
+- **Grid crop:** the profile shows a centre 3:4 crop of 4:5 posts. Keep the headline and focal point inside it, and check with a 3×3 mock before posting (script pattern: scale to 360×480, crop, 3-across).
+- **Covers:** one focal point, a headline of 3–8 words, readable at a third of a phone width. No logos, emojis or stickers.
+- **Series recognition** comes from ground colour, type and image treatment, never from a badge.
+- **Variety inside consistency:** the same system, but each cover gets a different photo scale, crop or type position.
+
+### Taste library: study before designing (real human-made work)
+Magazines: Cereal, Kinfolk, The New Yorker, NYT Magazine (Jack Davison "Big Lift"), LIFE (Gordon Parks, W. Eugene Smith), Aperture, 6Mois, The Observer New Review, Nataal, It's Nice That features.
+Photographers: Magnum, Sebastião Salgado, Gordon Parks, Diane Arbus, Joel Meyerowitz, Nick Brandt, Raghu Rai, Dayanita Singh, Fan Ho.
+Film: A24 posters and stills, letterbox framing, subtitle typography.
+Indian design to learn from: Raghu Rai and Dayanita Singh photobooks, old Indian film posters and hand-painted signage (inspiration only; don't copy).
+Principles noted: one photo dominates; headline set in the image's negative space; captions as information; huge type as image; a restrained single accent; generous margins; imperfection over polish.
+
+### Design-eye review (every post, before sending)
+Use the `design-eye` subagent (`.claude/agents/design-eye.md`) or follow its checklist yourself: it reviews the contact sheet **and** a grid mock with the last 5 covers, judges as a human magazine art director, and returns concrete fixes.
+
+### Working notes
+- Network: Openverse, Wikimedia (polite, honour 429/Retry-After), Met/AIC/Cleveland open access and Substack's API work from the cloud box; Unsplash, Pexels and LoC are blocked (Suraj chose "use what's available").
+- Tools: `scratchpad/tools/commons.py`, `museum.py`, carousel `fetch.py` (Openverse with backoff). Fonts: @fontsource Instrument Serif, DM Sans, Newsreader; Inter system fonts.
+- Suraj's 10-topic series brief: Topic 1 done (No. 01); topics 2–10 pending: Limits of Analyzing Yourself · People We Know for Five Minutes · Making Friends as an Adult · Forgetting the Past to Be Present · Seen but Not Observed · Is Routine the Best Way to Live? · Falling Out of Love With the World · Why We Pay to Be Scared · Fear as Rehearsal.
