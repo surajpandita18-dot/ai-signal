@@ -178,3 +178,14 @@ Use the `design-eye` subagent (`.claude/agents/design-eye.md`) or follow its che
 - Network: Openverse, Wikimedia (polite, honour 429/Retry-After), Met/AIC/Cleveland open access and Substack's API work from the cloud box; Unsplash, Pexels and LoC are blocked (Suraj chose "use what's available").
 - Tools: `scratchpad/tools/commons.py`, `museum.py`, carousel `fetch.py` (Openverse with backoff). Fonts: @fontsource Instrument Serif, DM Sans, Newsreader; Inter system fonts.
 - Suraj's 10-topic series brief: Topic 1 done (No. 01); topics 2–10 pending: Limits of Analyzing Yourself · People We Know for Five Minutes · Making Friends as an Adult · Forgetting the Past to Be Present · Seen but Not Observed · Is Routine the Best Way to Live? · Falling Out of Love With the World · Why We Pay to Be Scared · Fear as Rehearsal.
+
+### Real profile audit, 28 Nov 2026 (`carousels/PROFILE_REAL_2026-11-28.png`, 3.2K views in 30 days)
+**Performance (views):** reels with Suraj's face: *AI ne acting ki?* 1,335 (pinned) · *The move experts called a mistake* (AlphaGo) 852 · *You'll forget most of what you learn* 258. Carousels: 7, 6, 24, 27, 17. → **Face reels reach roughly 50–100× more people than carousels** at this follower count. Reels are the growth engine; carousels are depth and saves for people who arrive via reels. Plan roughly 2 reels : 1 carousel.
+**Best-looking tile:** *AI ne acting ki?*: dark warm face shot, small tracked label at top ("ANTHROPIC RESEARCH · DEC 2024"), two-line serif headline with a gold italic word, Hinglish. **This is the reel-cover standard** (replaces the bright-yellow serif).
+**Problems seen:**
+1. Too many type systems on one grid: gold serif, yellow all-caps sans, white serif, cream heavy sans, Inter caps, illustrated diagrams. Converge on **Instrument Serif + one sans (DM Sans; Inter Black only for Last 24 Hours)**.
+2. Headlines outside the grid's safe area: "You'll forget most of what you learn", "why AI agrees with you too much" and "cognitive offloading" are clipped at the top or by Instagram's icons. **Cover headlines must sit between 18% and 70% of the height and avoid the top-right 120×120 px (icon zone).**
+3. Line-art illustrations (head-and-circles "cognitive offloading", lightbulb "mirror") read as template clip-art at grid size. Use real photos or one bold number or word instead.
+4. Long all-caps paragraphs on covers (violates the Design Bible); unreadable at thumbnail size.
+5. Rhythm: the top row is three dark tiles. Alternate.
+**Reel cover template (default):** Suraj's face from the actual video (warm, natural); top label in tracked caps (series · source · date); headline 2 lines max, serif, the key word in gold italic; Hinglish allowed; title within the centre 3:4 and clear of icons.
