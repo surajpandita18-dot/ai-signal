@@ -198,7 +198,8 @@ const css2 = `
 .tab small{font-weight:600;opacity:.85;letter-spacing:.08em}
 .wit{font-weight:800;font-size:76px;line-height:1.02;letter-spacing:-.045em;color:${INK};text-wrap:balance}
 .plain{font-weight:500;font-size:33px;line-height:1.38;color:#3E3A34;text-wrap:pretty}
-.panel{border-radius:22px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.panel{position:relative;border-radius:22px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.aside{position:absolute;right:26px;bottom:16px;font-family:N;font-style:italic;font-weight:500;font-size:24px;color:#6F675D}
 .note{position:relative;background:#FFE88A;padding:24px 28px 22px;font-weight:600;font-size:27px;line-height:1.38;color:#2A261F;transform:rotate(-1.4deg);box-shadow:0 14px 26px -16px rgba(60,40,0,.45)}
 .note b{display:block;font-weight:800;font-size:18px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:6px;color:#8A6A00}
 .meter{display:flex;align-items:center;gap:14px;font-weight:700;font-size:18px;letter-spacing:.12em;text-transform:uppercase;color:#8A8278}
@@ -242,13 +243,13 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
      <div style="font-weight:800;font-size:17px;letter-spacing:.14em;text-transform:uppercase;color:${secOf(s.k)}">${s.k}</div>
      <div style="font-weight:800;font-size:31px;line-height:1.08;letter-spacing:-.02em;margin-top:8px">${s.wit || s.t}</div></div>`).join('')}
   </div>
-  <div class="next" style="bottom:70px"><span>@thinksafari · a daily series</span><span><b>Swipe for the 60-second version →</b></span></div>`, { noTop: true }));
+  <div class="next" style="bottom:70px"><span>${d.cover.footer || '@thinksafari · a daily series'}</span><span><b>${d.cover.swipe || 'Swipe for the 60-second version →'}</b></span></div>`, { noTop: true }));
 
   // 2 · SCOREBOARD
   out.push(page(2, `
   <div style="position:absolute;left:84px;right:84px;top:120px;bottom:130px;display:flex;flex-direction:column;justify-content:center">
    <div class="t" style="font-size:96px">today’s scoreboard</div>
-   <div class="aka" style="margin:8px 0 30px">aka. ${d.summary.length} stories in 60 seconds, with how real each one is</div>
+   <div class="aka" style="margin:8px 0 30px">${d.scoreAka || `aka. ${d.summary.length} stories in 60 seconds, with how real each one is`}</div>
    ${d.summary.map((r, k) => { const s = stories[k] || {}; return `<div style="display:grid;grid-template-columns:16px 1fr auto;gap:22px;align-items:center;padding:28px 0;border-top:2px solid #E6DACB;text-align:left">
      <span style="width:16px;height:76px;border-radius:8px;background:${secOf(s.k || r.cat)}"></span>
      <span><span style="font-weight:800;font-size:17px;letter-spacing:.12em;text-transform:uppercase;color:${secOf(s.k || r.cat)}">${r.cat} · ${r.date}</span><br><span style="font-weight:700;font-size:34px;letter-spacing:-.012em;line-height:1.2">${r.text}</span></span>
@@ -269,7 +270,7 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
        <span class="tab" style="background:${col}">${s.k}<small>· ${s.d}</small></span>
        <div class="wit" style="margin-top:22px;font-size:${s.witSize || 76}px">${s.wit || s.t}</div>
        <div class="plain" style="margin-top:16px">${s.plain || s.aka}</div>
-       <div class="panel" style="margin-top:26px;height:${s.panelH || 420}px;background:${col}14;border:2px solid ${col}33">${visual}</div>
+       <div class="panel" style="margin-top:26px;height:${s.panelH || 420}px;background:${col}14;border:2px solid ${col}33">${visual}${s.aside ? `<div class="aside">${s.aside}</div>` : ''}</div>
        <div style="display:grid;grid-template-columns:1fr;gap:18px;margin-top:28px">
         <div class="note"><b>So what?</b>${s.sowhat || s.india || ''}</div>
        </div>
@@ -304,10 +305,10 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
   out.push(page(N, `
   <div style="position:absolute;left:84px;right:84px;top:150px;text-align:left">
    <span class="tab" style="background:${OR}">Your 10-second quiz</span>
-   <div class="wit" style="margin-top:24px;font-size:80px">${q.q}</div>
+   <div class="wit" style="margin-top:24px;font-size:${q.size || 80}px">${q.q}</div>${q.hint ? `<div class="plain" style="margin-top:12px;font-family:N;font-style:italic">${q.hint}</div>` : ''}
    <div style="display:grid;gap:18px;margin-top:36px">${q.options.map((o, k) => `<div style="display:flex;align-items:center;gap:22px;border:2.5px solid ${INK};border-radius:18px;padding:20px 26px;font-weight:800;font-size:38px">
      <span style="width:54px;height:54px;border-radius:50%;background:${INK};color:#FAF2E9;display:flex;align-items:center;justify-content:center;font-size:26px">${'ABC'[k]}</span>${o}</div>`).join('')}</div>
-   <div class="plain" style="margin-top:30px">Comment your answer. <b style="color:${OR}">Comment DAILY</b> and I’ll DM you every new episode.</div>
+   <div class="plain" style="margin-top:30px">${q.cta || 'Comment your answer.'} <b style="color:${OR}">Comment DAILY</b> and I’ll DM you every new episode.</div>
    <div style="display:flex;align-items:center;gap:18px;margin-top:34px;border-top:2px solid #E6DACB;padding-top:26px">
     <div class="mono" style="width:66px;height:66px;font-size:30px">${d.author.initials}</div>
     <div style="font-weight:500;font-size:25px;line-height:1.35;color:#3A362F">I’m <b style="font-weight:800">${d.author.name}</b>, an AI product manager in India. See you tomorrow for Day ${pad(d.day + 1)}.</div></div>

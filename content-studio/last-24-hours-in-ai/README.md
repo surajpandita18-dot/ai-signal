@@ -38,7 +38,9 @@ Research-led: people often stop after 3–4 slides (Nielsen Norman Group), so th
 5. **Close = 10-second quiz** (`quiz: {q, options[3], answer}`) on a fact from today, answer in the caption. Then Comment DAILY + author line.
 6. Wit rules: puns and twists are welcome in `wit`; facts stay in `plain`, `sowhat` and the source. If the joke needs a caveat, the caveat goes in the meter note.
 
-New JSON fields (v2): `cover.headline`, `cover.dek`, per story `wit`, `plain`, `sowhat`, `real`, `realNote`, `witSize`, `panelH`; top-level `quiz`. Reference: `issues/2026-11-27.json`. Old look: set `"design": "v1"`.
+7. **Smart humour, one beat per slide (27 Nov).** Each slide gets at most one joke, in a fixed spot: the `wit` headline, a small italic `aside` in the corner of the visual (e.g. "Not to scale. Neither is the ambition."), a twist at the end of `sowhat`, or the meter note ("approved, not built (yet)"). Best jokes are callbacks to the story ("No peer review, promise" on the quiz) or Indian everyday life (chai, landlord, exam hall). Never punch at a person, never make a fact fuzzier, never use memes or emoji on slides.
+
+New JSON fields (v2): `cover.headline`, `cover.dek`, per story `wit`, `plain`, `sowhat`, `real`, `realNote`, `witSize`, `panelH`, `aside`; top-level `quiz` (+ `hint`, `cta`), `scoreAka`, `cover.swipe`, `cover.footer`. Reference: `issues/2026-11-27.json`. Old look: set `"design": "v1"`.
 
 ## JSON schema
 

@@ -10,8 +10,10 @@
  "cover": {
   "today": "Data centres in orbit, an AI writes six maths papers, and India launches its own Chariot&#8209;1.",
   "headline": "The cloud is moving. Literally up.",
-  "dek": "SpaceX just got permission to put up to a million data centres in orbit. Plus three more things that moved in AI.",
-  "size": 88
+  "dek": "SpaceX just got permission to put up to a million data centres in orbit. Plus three more things that moved while you were asleep.",
+  "size": 88,
+  "footer": "@thinksafari · daily, before your first chai",
+  "swipe": "Swipe. Shorter than your chai →"
  },
  "summary": [
   {
@@ -35,7 +37,7 @@
    "text": "India launches Chariot&#8209;1: an LLM + voice in 10 Indian languages."
   }
  ],
- "summaryNote": "No big AI funding round today",
+ "summaryNote": "No big funding round. VCs slept in.",
  "slides": [
   {
    "type": "news",
@@ -52,9 +54,10 @@
    "src": "FCC order via CNBC, GeekWire, Via Satellite · 25 Nov 2026",
    "wit": "The cloud is moving. Literally up.",
    "plain": "The US regulator approved SpaceX’s plan for up to 1 million satellites that work as data centres. The first must run by Nov 2027.",
-   "sowhat": "AI eats so much power that space is now on the table. Even the FCC says it hasn’t judged if this works or pays.",
+   "sowhat": "AI now eats so much power that companies are scouting real estate in orbit. Even the FCC says it hasn’t checked if this works or pays.",
    "real": 3,
-   "realNote": "approved, not built"
+   "realNote": "approved, not built (yet)",
+   "aside": "Not to scale. Neither is the ambition."
   },
   {
    "type": "news",
@@ -94,9 +97,10 @@
    "src": "Google Research GitHub, via ai-tldr, Emergent, productwatch · claims unverified",
    "wit": "AI did its homework. Nobody’s graded it.",
    "plain": "Google’s AI posted six maths papers in one day, including a claimed fast way to split any huge number into its factors.",
-   "sowhat": "If the proofs hold, it’s a big deal for maths. It does not break your bank’s encryption. Experts haven’t checked yet.",
+   "sowhat": "If the proofs hold, maths has a big day. Your bank PIN does not have a bad one. Experts haven’t checked yet.",
    "real": 1,
-   "realNote": "claim, not peer-reviewed"
+   "realNote": "claim · homework still ungraded",
+   "aside": "Step 4: the bit everyone skips."
   },
   {
    "type": "news",
@@ -130,9 +134,10 @@
    "src": "OpenAI (alpha test, small group of business customers), via The Next Web, MLQ · 26 Nov",
    "wit": "What happens in the chip, stays in the chip.",
    "plain": "OpenAI is testing “private inference” for businesses: prompts are processed inside sealed chips that even OpenAI can’t look into.",
-   "sowhat": "Indian banks and hospitals answer to the DPDP Act, 2023. An AI that can’t read your data is much easier to say yes to.",
+   "sowhat": "Indian banks and hospitals answer to the DPDP Act, 2023. An AI that can’t read your data is an easier yes for the legal team.",
    "real": 2,
-   "realNote": "alpha test, small group"
+   "realNote": "alpha test, small group",
+   "aside": "Even the landlord doesn’t get a key."
   },
   {
    "type": "news",
@@ -160,9 +165,10 @@
    "src": "PIB release; Tribune/ANI; DD News · 26 Nov 2026",
    "wit": "Made in India. Speaks in eleven.",
    "plain": "MeitY launched Chariot&#8209;1: an 11-billion-parameter LLM and a voice model for English + 10 Indian languages, trained from scratch in India.",
-   "sowhat": "The voice model scored over 97% on a pronunciation test. That’s the Ministry’s claim; no independent test yet.",
+   "sowhat": "The voice model scored over 97% on pronunciation, says the Ministry. Sounds great. We’ll wait for a second opinion.",
    "real": 4,
-   "realNote": "launched, scores self-reported"
+   "realNote": "launched · score is self-graded",
+   "aside": "11B parameters, ~4B awake per word. Relatable."
   },
   {
    "type": "picture",
@@ -190,10 +196,10 @@
     ],
     "hot": 2
    },
-   "p": "The race isn’t only for smarter models now. It’s for where they run: who can see your data, and where the power comes from.",
+   "p": "The new race isn’t only “who’s smartest”. It’s “where does it run, who can peek, and who pays the electricity bill”.",
    "src": "Ladder is my framing",
-   "wit": "AI is looking for a new home.",
-   "plain": "Today’s stories aren’t about smarter models. They’re about where AI runs, and who can see inside."
+   "wit": "AI is house-hunting.",
+   "plain": "None of today’s stories is about a smarter model. They’re about where AI lives, and who holds the keys."
   },
   {
    "type": "take",
@@ -214,6 +220,9 @@
    "6",
    "60"
   ],
-  "answer": "B"
- }
+  "answer": "B",
+  "hint": "(Most of us managed zero. In a year.)",
+  "cta": "Comment your answer. No peer review, promise."
+ },
+ "scoreAka": "aka. 4 stories, and how true each one is"
 }
