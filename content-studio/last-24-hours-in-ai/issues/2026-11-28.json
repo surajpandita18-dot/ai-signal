@@ -1,0 +1,216 @@
+{
+ "day": 4,
+ "date": "Sat 28 Nov 2026",
+ "handle": "@thinksafari",
+ "author": {
+  "name": "Suraj Pandita",
+  "initials": "SP",
+  "role": "AI Product Manager"
+ },
+ "cover": {
+  "today": "Nvidia’s top chips turn up in Shanghai, India plans 3,300 GPUs in Pune, and why inference is the real bill.",
+  "headline": "Too big to smuggle. Found anyway.",
+  "size": 88,
+  "dek": "Bloomberg found Nvidia’s top Blackwell rack, which needs a US licence for China, in Shanghai filings. Plus 2 more things that moved in AI.",
+  "footer": "@thinksafari · daily, before your first chai",
+  "swipe": "Swipe. Shorter than your chai →"
+ },
+ "scoreAka": "aka. 3 stories, and how true each one is",
+ "summary": [
+  {
+   "cat": "News",
+   "date": "27 Nov",
+   "text": "Nvidia’s top Blackwell rack shows up in Shanghai filings."
+  },
+  {
+   "cat": "India",
+   "date": "27 Nov",
+   "text": "MeitY: ~3,300 GPUs for Pune, an inference subsidy next."
+  },
+  {
+   "cat": "Models",
+   "date": "explainer",
+   "text": "Training vs inference: where the AI bill really lives."
+  }
+ ],
+ "summaryNote": "US on holiday. No big funding round.",
+ "slides": [
+  {
+   "type": "news",
+   "k": "News",
+   "d": "27 Nov",
+   "t": "blackwell in shanghai",
+   "aka": "aka. bloomberg’s chip trail",
+   "il": {
+    "type": "flow",
+    "nodes": [
+     {
+      "t": "Blackwell",
+      "s": "NEEDS US LICENCE",
+      "label": "MADE"
+     },
+     {
+      "t": "???",
+      "s": "ROUTE UNKNOWN",
+      "dashed": true,
+      "label": "HOW?"
+     },
+     {
+      "t": "Shanghai",
+      "s": "GB300 RACK",
+      "accent": true,
+      "label": "FOUND"
+     }
+    ]
+   },
+   "wit": "Too big to smuggle. Found anyway.",
+   "plain": "Bloomberg found Nvidia’s top rack, a GB300 NVL72, in Chinese loan filings for a Shanghai data centre. How it got there isn’t known.",
+   "aside": "Not pictured: the shipping receipt.",
+   "sowhat": "One rack was pledged as collateral for a 96 million yuan (~$14M) loan. AI chips are now treated like gold bars.",
+   "real": 3,
+   "realNote": "filings seen · route unknown",
+   "src": "Bloomberg, 27 Nov 2026, via The Next Web, Anadolu, Benzinga · Nvidia’s CEO said in May 2025 these systems were too big to smuggle"
+  },
+  {
+   "type": "news",
+   "k": "India",
+   "d": "27 Nov",
+   "t": "gpus for pune",
+   "aka": "aka. meity at tec-verse 2026",
+   "il": {
+    "type": "dots",
+    "n": 33,
+    "cols": 11,
+    "gap": 70,
+    "r": 15,
+    "lit": [
+     0,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12,
+     13,
+     14,
+     15,
+     16,
+     17,
+     18,
+     19,
+     20,
+     21,
+     22,
+     23,
+     24,
+     25,
+     26,
+     27,
+     28,
+     29,
+     30,
+     31,
+     32
+    ],
+    "left": "EACH DOT = 100 GPUs · C-DAC PUNE, ABOUT 3,300"
+   },
+   "wit": "3,300 GPUs. Pune pin code.",
+   "plain": "MeitY Secretary S. Krishnan says C-DAC Pune is setting up about 3,300 GPUs and Bengaluru gets a 30-petaflop machine. Next: a scheme to subsidise inference.",
+   "aside": "Delivery date: not announced.",
+   "sowhat": "IndiaAI support is for training today. Cheaper inference would mean Indian startups pay less each time a user hits&nbsp;‘send’.",
+   "real": 2,
+   "realNote": "plan announced · scheme not out yet",
+   "src": "Remarks at Tec-Verse 2026, reported by NewsBytes and others · 27 Nov · no official MeitY document yet"
+  },
+  {
+   "type": "news",
+   "k": "Models, simply",
+   "d": "explainer",
+   "t": "training vs inference",
+   "aka": "aka. why the india story matters",
+   "il": {
+    "type": "flow",
+    "nodes": [
+     {
+      "t": "Training",
+      "s": "ONCE · HUGE BILL",
+      "label": "SCHOOL"
+     },
+     {
+      "t": "Model",
+      "s": "READY",
+      "accent": true,
+      "label": "GRADUATES"
+     },
+     {
+      "t": "Inference",
+      "s": "EVERY ANSWER",
+      "label": "THE JOB"
+     }
+    ]
+   },
+   "wit": "Training is school. Inference is the job.",
+   "plain": "Training teaches a model once, at huge cost. Inference is every answer it gives after that, and that meter never stops.",
+   "aside": "School fees once. Electricity bill forever.",
+   "sowhat": "That’s why MeitY now talks about inference: a popular Indian app runs its model all day, so that’s where the money goes.",
+   "real": 5,
+   "realNote": "a basic idea, not news",
+   "src": "Explainer · ties to today’s MeitY remarks"
+  },
+  {
+   "type": "picture",
+   "t": "who owns the chips",
+   "aka": "aka. what connects today’s stories",
+   "il": {
+    "type": "ladder",
+    "steps": [
+     [
+      "RENT",
+      "CLOUD GPUs"
+     ],
+     [
+      "BUY",
+      "IF YOU GET A LICENCE"
+     ],
+     [
+      "BUILD AT HOME",
+      "C-DAC PUNE"
+     ]
+    ],
+    "hot": 2
+   },
+   "wit": "Everyone wants their own GPUs.",
+   "plain": "Both of today’s stories are about the same thing: who is allowed to have AI chips, and who builds their own.",
+   "p": "The race isn’t only better models. It’s who controls the chips, and who pays every time a model answers.",
+   "src": "Ladder is my framing"
+  },
+  {
+   "type": "take",
+   "k": "My take · as an AI PM",
+   "t": "the demo is cheap. the meter isn’t.",
+   "sub": "why inference cost decides which indian AI products survive",
+   "p": [
+    "when i build an ai feature, nobody in the demo asks about cost. three months later, finance asks about the monthly inference bill. every chat and every summary keeps the meter running.",
+    "that’s why today’s meity remark matters more than it sounds. if the government helps with inference, indian startups can price for indian wallets.",
+    "my advice to founders: track <b>cost per answer</b> like you track latency. if one use costs more than a user pays you in a day, the feature won’t survive at scale."
+   ]
+  }
+ ],
+ "quiz": {
+  "q": "Roughly how many GPUs is C-DAC Pune setting up?",
+  "options": [
+   "330",
+   "3,300",
+   "33,000"
+  ],
+  "answer": "B",
+  "hint": "(Spoiler: more than your gaming laptop has.)",
+  "cta": "Comment your answer. No export licence needed."
+ }
+}
