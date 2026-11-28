@@ -216,9 +216,10 @@ const css2 = `
 const meter = (n, note) => `<div class="meter">Reality meter ${[1, 2, 3, 4, 5].map(k => `<i class="${k <= n ? 'on' : ''}"></i>`).join('')}<span style="text-transform:none;letter-spacing:0;font-weight:600;font-size:20px;color:#6F675D">${note || ''}</span></div>`;
 
 function buildV2(d) {
+  const SER = d.series || 'Last 24 hours in AI', UNIT = d.unit || 'Day', serHTML = SER.replace(/ in AI$/, ' <b>in</b> AI');
   const N = d.slides.length + 3;
   const page = (i, inner, opt = {}) => `<!doctype html><html><head><meta charset="utf-8"><style>${css}${css2}</style></head><body><div class="s" style="${opt.bg || ''}">${inner}
-${opt.noTop ? '' : `<div class="top" style="${opt.dark ? 'color:#CFC8BC' : ''}">Last 24 hours <b>in</b> AI · Day ${pad(d.day)} · ${d.author.name}, AI PM · ${i}/${N}</div>`}
+${opt.noTop ? '' : `<div class="top" style="${opt.dark ? 'color:#CFC8BC' : ''}">${serHTML} · ${UNIT} ${pad(d.day)} · ${d.author.name}, AI PM · ${i}/${N}</div>`}
 ${opt.dark ? '' : grainLight}</div></body></html>`;
   const teaser = j => { const s = d.slides[j]; if (!s) return `<b>Your 10-second quiz →</b>`; return `Next: <b>${(s.wit || s.t).replace(/<[^>]+>/g, '')}</b> →`; };
   const stories = d.slides.filter(s => s.type === 'news' || s.type === 'stats');
@@ -227,8 +228,8 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
   // 1 · FRONT PAGE
   out.push(page(1, `
   <div style="position:absolute;left:70px;right:70px;top:56px">
-   <div class="mast2"><div class="nm">Last 24 hours in AI<i>.</i></div>
-    <div style="text-align:right;font-weight:700;font-size:20px;letter-spacing:.12em;text-transform:uppercase;line-height:1.5">Day ${pad(d.day)} · ${d.date}<br><span style="color:#8A8278">AI, explained like a friend would</span></div></div>
+   <div class="mast2"><div class="nm">${SER}<i>.</i></div>
+    <div style="text-align:right;font-weight:700;font-size:20px;letter-spacing:.12em;text-transform:uppercase;line-height:1.5">${UNIT} ${pad(d.day)} · ${d.date}<br><span style="color:#8A8278">AI, explained like a friend would</span></div></div>
    <div style="display:flex;justify-content:space-between;font-weight:600;font-size:19px;letter-spacing:.1em;text-transform:uppercase;color:#6F675D;padding:12px 0;border-bottom:1.5px solid ${INK}">
     <span>by ${d.author.name} · AI PM</span><span>News · Money · Models · India · My take</span></div>
   </div>
@@ -248,7 +249,7 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
   // 2 · SCOREBOARD
   out.push(page(2, `
   <div style="position:absolute;left:84px;right:84px;top:120px;bottom:130px;display:flex;flex-direction:column;justify-content:center">
-   <div class="t" style="font-size:96px">today’s scoreboard</div>
+   <div class="t" style="font-size:${d.scoreSize || 96}px">${d.scoreTitle || 'today’s scoreboard'}</div>
    <div class="aka" style="margin:8px 0 30px">${d.scoreAka || `aka. ${d.summary.length} stories in 60 seconds, with how real each one is`}</div>
    ${d.summary.map((r, k) => { const s = stories[k] || {}; return `<div style="display:grid;grid-template-columns:16px 1fr auto;gap:22px;align-items:center;padding:28px 0;border-top:2px solid #E6DACB;text-align:left">
      <span style="width:16px;height:76px;border-radius:8px;background:${secOf(s.k || r.cat)}"></span>
@@ -276,6 +277,20 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
        </div>
        <div style="display:flex;justify-content:space-between;align-items:center;margin-top:26px">${meter(s.real || 3, s.realNote)}</div>
        <div class="srcl" style="margin-top:12px">${s.src}</div>
+      </div>
+      <div class="next"><span>@thinksafari</span><span>${teaser(j + 1)}</span></div>`));
+    } else if (s.type === 'verdict') {
+      const colm = (lab, c, items) => `<div style="flex:1;border:2.5px solid ${INK};border-radius:22px;padding:30px 32px 36px;background:${c}14">
+        <div style="font-weight:800;font-size:22px;letter-spacing:.14em;text-transform:uppercase;color:${c}">${lab}</div>
+        ${items.map(x => `<div style="margin-top:30px;padding-top:28px;border-top:2px solid ${c}33"><div style="font-weight:800;font-size:40px;line-height:1.12;letter-spacing:-.02em">${x.t}</div><div style="font-family:N;font-style:italic;font-size:31px;line-height:1.3;color:#4A453D;margin-top:12px">${x.why}</div></div>`).join('')}</div>`;
+      out.push(page(i, `
+      <div style="position:absolute;left:84px;right:84px;top:130px;text-align:left">
+       <span class="tab" style="background:${INK}">${s.k || 'The verdict'}</span>
+       <div class="wit" style="margin-top:22px;font-size:${s.witSize || 80}px">${s.wit}</div>
+       <div class="plain" style="margin-top:14px">${s.plain || ''}</div>
+       <div style="display:flex;gap:26px;margin-top:34px">${colm('Overhyped', '#C0392B', s.over)}${colm('Underrated', '#2F7D4F', s.under)}</div>
+       ${s.ask ? `<div class="note" style="margin-top:40px"><b>Your call</b>${s.ask}</div>` : ''}
+       <div class="srcl" style="margin-top:18px">${s.src || ''}</div>
       </div>
       <div class="next"><span>@thinksafari</span><span>${teaser(j + 1)}</span></div>`));
     } else if (s.type === 'picture') {
@@ -308,12 +323,12 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
    <div class="wit" style="margin-top:24px;font-size:${q.size || 80}px">${q.q}</div>${q.hint ? `<div class="plain" style="margin-top:12px;font-family:N;font-style:italic">${q.hint}</div>` : ''}
    <div style="display:grid;gap:18px;margin-top:36px">${q.options.map((o, k) => `<div style="display:flex;align-items:center;gap:22px;border:2.5px solid ${INK};border-radius:18px;padding:20px 26px;font-weight:800;font-size:38px">
      <span style="width:54px;height:54px;border-radius:50%;background:${INK};color:#FAF2E9;display:flex;align-items:center;justify-content:center;font-size:26px">${'ABC'[k]}</span>${o}</div>`).join('')}</div>
-   <div class="plain" style="margin-top:30px">${q.cta || 'Comment your answer.'} <b style="color:${OR}">Comment DAILY</b> and I’ll DM you every new episode.</div>
+   <div class="plain" style="margin-top:30px">${q.cta || 'Comment your answer.'} <b style="color:${OR}">Comment ${d.dm || 'DAILY'}</b> and I’ll DM you every new episode.</div>
    <div style="display:flex;align-items:center;gap:18px;margin-top:34px;border-top:2px solid #E6DACB;padding-top:26px">
     <div class="mono" style="width:66px;height:66px;font-size:30px">${d.author.initials}</div>
-    <div style="font-weight:500;font-size:25px;line-height:1.35;color:#3A362F">I’m <b style="font-weight:800">${d.author.name}</b>, an AI product manager in India. See you tomorrow for Day ${pad(d.day + 1)}.</div></div>
+    <div style="font-weight:500;font-size:25px;line-height:1.35;color:#3A362F">I’m <b style="font-weight:800">${d.author.name}</b>, an AI product manager in India. ${d.seeYou || `See you tomorrow for Day ${pad(d.day + 1)}.`}</div></div>
   </div>
-  <div class="next"><span>@thinksafari · Last 24 hours in AI</span><span>Answer in the caption ↓</span></div>`));
+  <div class="next"><span>@thinksafari · ${SER}</span><span>Answer in the caption ↓</span></div>`));
   return out;
 }
 
@@ -331,7 +346,7 @@ ${opt.dark ? '' : grainLight}</div></body></html>`;
       const nx = document.querySelector('.next'); if (nx) { const t = nx.getBoundingClientRect().top; document.querySelectorAll('.s > div').forEach(e => { if (e === nx || e.classList.contains('bg')) return; const b = e.getBoundingClientRect(); if (b.height < 1300 && b.bottom > t - 8 && b.top < t) r.push(`block runs into the Next bar (${Math.round(b.bottom)} > ${Math.round(t)})`); }); }
       const src = document.querySelector('.src'), col = document.querySelector('.col'); if (src && col) { const a = col.lastElementChild?.getBoundingClientRect(), s = src.getBoundingClientRect(); if (a && a.bottom > s.top - 10) r.push('text runs into the source line'); } return r; });
     w.forEach(x => warn.push(`slide ${i + 1}: ${x}`));
-    const png = path.join(out, `day${pad(d.day)}-${pad(i + 1)}.png`); await pg.screenshot({ path: png }); pngs.push(png); fs.unlinkSync(html);
+    const png = path.join(out, `${(d.unit || 'Day').toLowerCase()}${pad(d.day)}-${pad(i + 1)}.png`); await pg.screenshot({ path: png }); pngs.push(png); fs.unlinkSync(html);
   }
   // contact sheet at 1/3 scale for a quick visual check
   const cols = 4, tw = 360, th = 450, rows = Math.ceil(pngs.length / cols);

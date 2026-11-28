@@ -1,0 +1,314 @@
+{
+ "series": "Last 7 days in AI",
+ "unit": "Week",
+ "day": 1,
+ "date": "21–27 Nov 2026",
+ "handle": "@thinksafari",
+ "author": {
+  "name": "Suraj Pandita",
+  "initials": "SP",
+  "role": "AI Product Manager"
+ },
+ "seeYou": "See you next Saturday for Week 02.",
+ "cover": {
+  "headline": "Proof: correct. Readable: no.",
+  "size": 96,
+  "dek": "A computer certified an AI-assisted proof of maths’ most famous open problem. No human has read it end to end. Plus 5 more things that moved in AI this week.",
+  "footer": "@thinksafari · every Saturday, with chai",
+  "swipe": "Your week in AI, in 2 minutes →",
+  "panelH": 330
+ },
+ "scoreAka": "aka. 6 stories, and how true each one is",
+ "summary": [
+  {
+   "cat": "News",
+   "date": "20–21 Nov",
+   "text": "Riemann hypothesis: AI-assisted proof certified by Lean."
+  },
+  {
+   "cat": "News",
+   "date": "24–25 Nov",
+   "text": "AI agents go abroad: Meta Muse to UK, Claude Duet to India."
+  },
+  {
+   "cat": "News",
+   "date": "25 Nov",
+   "text": "Microsoft: state hackers now use an AI break&#8209;in agent."
+  },
+  {
+   "cat": "Models",
+   "date": "25 Nov",
+   "text": "Claude rewrote Anthropic’s API. Tests lied."
+  },
+  {
+   "cat": "News",
+   "date": "25–27 Nov",
+   "text": "Data centres cleared for orbit; Nvidia chips in Shanghai."
+  },
+  {
+   "cat": "India",
+   "date": "25–27 Nov",
+   "text": "Chariot&#8209;1, a Sarvam row, and 3,300 GPUs for Pune."
+  }
+ ],
+ "summaryNote": "Money corner: Matters.AI raised ₹115 cr.",
+ "slides": [
+  {
+   "type": "stats",
+   "k": "News",
+   "d": "20–21 Nov",
+   "t": "riemann",
+   "stats": [
+    {
+     "v": "1859",
+     "l": "the year Riemann posed the problem"
+    },
+    {
+     "v": "17M",
+     "l": "lines of Lean code that check the proof (Science News)"
+    }
+   ],
+   "wit": "Proof: correct. Readable: no.",
+   "plain": "Anthropic mathematician Levent Alpöge says he proved the Riemann hypothesis with Claude. The Lean community certified the computer-checked proof on 21 Nov.",
+   "aside": "Math teachers: “show your work.” Claude: 17 million lines.",
+   "sowhat": "A machine can now confirm a proof no human has read end to end. Maths just got a new kind of “trust me”.",
+   "real": 4,
+   "realNote": "machine-checked · not yet human-read",
+   "src": "Lean FRO + Mathlib, 21 Nov; Science News; Scientific American · AI-written explanation unreleased",
+   "il": {
+    "type": "bars",
+    "items": [
+     {
+      "v": "1 page",
+      "label": "WHAT TEACHERS WANT",
+      "h": 0.06
+     },
+     {
+      "v": "17M lines",
+      "label": "WHAT THEY GOT",
+      "h": 1,
+      "accent": true
+     }
+    ]
+   }
+  },
+  {
+   "type": "news",
+   "k": "News",
+   "d": "24–25 Nov",
+   "t": "agents abroad",
+   "il": {
+    "type": "flow",
+    "nodes": [
+     {
+      "t": "You",
+      "s": "“FIND ME SHOES”",
+      "label": "ASK"
+     },
+     {
+      "t": "Agent",
+      "s": "SEARCHES, PICKS",
+      "accent": true,
+      "label": "WORKS"
+     },
+     {
+      "t": "Asks you",
+      "s": "BEFORE IT PAYS",
+      "label": "APPROVE"
+     },
+     {
+      "t": "Buys",
+      "s": "ONLY THEN",
+      "dashed": true,
+      "label": "DONE"
+     }
+    ]
+   },
+   "wit": "AI agents got passports this week.",
+   "plain": "Meta launched its Muse shopping agent in the UK (24 Nov). Anthropic opened Claude Duet’s waitlist to India, Indonesia, Brazil and Japan (25 Nov).",
+   "aside": "Still can’t fold your laundry.",
+   "sowhat": "Muse must ask before it buys anything. That “approve first” button is the feature Indian users will trust first.",
+   "real": 4,
+   "realNote": "launched · Duet is waitlist only",
+   "src": "Meta newsroom, 24 Nov; Claude Duet product page; Drapers · UK version can’t access bank accounts"
+  },
+  {
+   "type": "news",
+   "k": "News",
+   "d": "25 Nov",
+   "t": "artex",
+   "il": {
+    "type": "flow",
+    "nodes": [
+     {
+      "t": "Scan",
+      "s": "FIND OPEN DOORS",
+      "label": "RECON"
+     },
+     {
+      "t": "ARTEX",
+      "s": "AI AGENT",
+      "accent": true,
+      "label": "BREAKS IN"
+     },
+     {
+      "t": "Stay",
+      "s": "ADMIN ACCESS",
+      "label": "MINUTES LATER"
+     }
+    ]
+   },
+   "wit": "The hackers hired an AI intern too.",
+   "plain": "Microsoft says state-backed groups from China and North Korea use ARTEX, an AI security-testing agent, to break into networks, sometimes within minutes.",
+   "aside": "Same old locks. Faster burglar.",
+   "sowhat": "ARTEX adds no new tricks, only speed. Indian firms must report breaches to CERT-In within 6 hours, and the clock just got tighter.",
+   "real": 4,
+   "realNote": "Microsoft’s own threat report",
+   "src": "Microsoft Threat Intelligence, 25 Nov; The Register; Help Net Security · CERT-In directions, 2022"
+  },
+  {
+   "type": "stats",
+   "k": "Models, simply",
+   "d": "25 Nov",
+   "t": "rust rewrite",
+   "stats": [
+    {
+     "v": "98%",
+     "l": "of tests passed by Claude’s Rust rewrite (April)"
+    },
+    {
+     "v": "~24%",
+     "l": "of real production inputs it matched at that point"
+    }
+   ],
+   "wit": "Passed 98% of tests. Matched 24% of reality.",
+   "witSize": 68,
+   "plain": "Anthropic used Claude to rewrite its main API from Python to Rust. It passed the tests long before it matched real traffic.",
+   "aside": "Tests: “looks fine.” Users: “no.”",
+   "sowhat": "After months of fixing, CPU per request fell about 70%. The lesson for any team shipping AI-written code: tests are a rumour until production agrees.",
+   "real": 4,
+   "realNote": "Anthropic’s own post-mortem",
+   "src": "Anthropic engineering post “Migrating our Messages API to Rust”, 25 Nov · 70% measured in one region"
+  },
+  {
+   "type": "news",
+   "k": "News",
+   "d": "25–27 Nov",
+   "t": "chips",
+   "il": {
+    "type": "flow",
+    "nodes": [
+     {
+      "t": "Orbit",
+      "s": "SPACEX · FCC OK",
+      "label": "UP"
+     },
+     {
+      "t": "AI compute",
+      "s": "EVERYONE WANTS IT",
+      "accent": true,
+      "label": "THE PRIZE"
+     },
+     {
+      "t": "Shanghai",
+      "s": "BLACKWELL RACK",
+      "label": "EAST"
+     }
+    ]
+   },
+   "wit": "The cloud went up. The chips went east.",
+   "plain": "The FCC cleared SpaceX for up to 1M data-centre satellites (25 Nov). Bloomberg found Nvidia’s top Blackwell rack in Shanghai loan filings (27 Nov).",
+   "aside": "Both need a lot of electricity.",
+   "sowhat": "Whoever controls the chips controls AI’s speed limit. That’s why India is building its own GPU capacity at C-DAC Pune.",
+   "real": 3,
+   "realNote": "approved, not built · route unknown",
+   "src": "FCC order via CNBC, 25 Nov; Bloomberg, 27 Nov · how the chips reached China isn’t established"
+  },
+  {
+   "type": "news",
+   "k": "India",
+   "d": "25–27 Nov",
+   "t": "india",
+   "il": {
+    "type": "ladder",
+    "steps": [
+     [
+      "MODEL",
+      "CHARIOT‑1, 26 NOV"
+     ],
+     [
+      "CHIPS",
+      "~3,300 GPUs, PUNE"
+     ],
+     [
+      "BUSINESS",
+      "SARVAM’S TOKEN FACTORY"
+     ]
+    ],
+    "hot": 2
+   },
+   "wit": "Sovereign AI now has three jobs.",
+   "plain": "MeitY launched Chariot&#8209;1 (26 Nov), cleared Sarvam over hosting Chinese open models (25 Nov), and plans ~3,300 GPUs for C-DAC Pune (27 Nov).",
+   "aside": "Made in India. Debated in India.",
+   "sowhat": "“Sovereign AI” used to mean our own model. This week it also meant our own chips, and a business that pays the bills.",
+   "real": 3,
+   "realNote": "launches real · scores self-reported",
+   "src": "PIB, 26 Nov; Inc42, 25 Nov; NewsBytes, 27 Nov · GPU plan from remarks, no official document yet"
+  },
+  {
+   "type": "verdict",
+   "k": "The verdict",
+   "wit": "Overhyped vs underrated.",
+   "witSize": 76,
+   "plain": "What got the noise this week, and what deserved it.",
+   "over": [
+    {
+     "t": "Google’s six AI maths papers",
+     "why": "Still not peer-reviewed. Your bank is fine."
+    },
+    {
+     "t": "Data centres in space by 2027",
+     "why": "Approved on paper. The FCC hasn’t judged if it works."
+    }
+   ],
+   "under": [
+    {
+     "t": "98% tests vs 24% reality",
+     "why": "The most honest AI-coding lesson of the year."
+    },
+    {
+     "t": "Muse’s “ask before buying” button",
+     "why": "Boring feature. It’s why people will trust agents."
+    }
+   ],
+   "src": "My picks · sources on each story slide",
+   "ask": "Disagree? Comment the one you’d swap, and why."
+  },
+  {
+   "type": "take",
+   "k": "My take · as an AI PM",
+   "t": "the week AI had to show its work",
+   "sub": "every big story was about one question: how do you check an AI?",
+   "p": [
+    "riemann was checked by a computer. claude’s rust code was checked by real traffic. muse checks with you before it pays. this week, the checker was the product.",
+    "at work, the first ai demo always looks finished. the real work starts when i ask: how will we know when it’s wrong?",
+    "for indian ai founders: <b>build the checker before the feature</b>. a model your customer can verify beats a smarter one they have to trust."
+   ]
+  }
+ ],
+ "quiz": {
+  "q": "Claude’s Rust rewrite passed 98% of tests. How much real traffic did it match?",
+  "size": 64,
+  "options": [
+   "About 24%",
+   "About 64%",
+   "About 98%"
+  ],
+  "answer": "A",
+  "hint": "(Tests are optimists.)",
+  "cta": "Comment your answer. We’ll check it in production."
+ },
+ "scoreTitle": "this week’s scoreboard",
+ "dm": "WEEKLY",
+ "scoreSize": 74
+}
