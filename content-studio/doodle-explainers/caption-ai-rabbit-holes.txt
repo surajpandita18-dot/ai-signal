@@ -1,0 +1,36 @@
+8 AI rabbit holes worth falling into. How many do you actually know? 🐇
+
+Everyone talks about models, prompts and tools. The interesting stuff lives one layer down.
+
+1. Model collapse: AI trained on AI gets blurrier every round.
+2. Reward hacking: the AI finds the loophole, not the goal.
+3. Grokking: memorises for ages, then suddenly “gets it”.
+4. Context rot: long inputs quietly make AI worse.
+5. Sycophancy: it tells you what you want to hear.
+6. Emergent abilities: sudden jumps, or just a different ruler?
+7. Mechanistic interpretability: finding the “Golden Gate” inside Claude.
+8. Distillation: small models learning from big ones.
+
+Every example has its source on the slide. Honest note: whether “emergent abilities” are real is still debated.
+
+I’m Suraj, an AI product manager in India. I explain AI like a normal person would.
+
+Comment your number out of 8 👇
+Save this for your next rabbit-hole weekend, and send it to the friend who says “AI is just autocomplete”.
+
+#AI #ArtificialIntelligence #MachineLearning #LLM #AIexplained #AIinIndia #productmanagement #thinksafari
+
+---
+PINNED FIRST COMMENT (sources)
+1. Model collapse: Shumailov et al., “AI models collapse when trained on recursively generated data”, Nature, 2024
+2. Reward hacking: OpenAI, “Faulty reward functions in the wild”, 2016
+3. Grokking: Power et al., “Grokking: Generalization beyond overfitting”, 2022
+4. Context rot: Chroma Research, “Context Rot”, 2025
+5. Sycophancy: OpenAI, “Sycophancy in GPT-4o”, April 2025
+6. Emergent abilities: Wei et al., 2022; Schaeffer et al., “Are emergent abilities a mirage?”, NeurIPS 2023
+7. Interpretability: Anthropic, “Golden Gate Claude”, May 2024
+8. Distillation: Hinton, Vinyals & Dean, “Distilling the knowledge in a neural network”, 2015
+
+FIRST COMMENT: “Which one should get its own deep-dive? Reply with the number.”
+STORY POLL: share slide 1 → “How many did you know?” 0–4 / 5–8
+MUSIC (in-app): curious, playful minimal beat or plucky piano, no lyrics.
