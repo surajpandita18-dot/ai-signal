@@ -145,6 +145,10 @@ When non-trivial work begins:
 
 For autonomous Claude Code sessions spawning subagents in parallel: each subagent gets its own scope per `CONTRACT.md` at repo root.
 
+## Instagram reels (@thinksafari)
+
+Separate from the newsletter. Any request for a reel ("isi design mein reel", "blueprint reel") uses the approved house style: read `reels/blueprint/DESIGN.md` first and build from the Remotion template in `reels/blueprint/`. `reels/` is excluded from the Next.js build.
+
 ## What NOT to do
 
 - No Inngest. No daily-cadence anything.

@@ -1,0 +1,19 @@
+{
+  "name": "blueprint-reel",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "estimate": "python3 data/estimate.py",
+    "stills": "node stills.mjs",
+    "render": "node render.mjs"
+  },
+  "dependencies": {
+    "@fontsource/instrument-serif": "5.2.8",
+    "@remotion/bundler": "4.0.547",
+    "@remotion/cli": "4.0.547",
+    "@remotion/renderer": "4.0.547",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "remotion": "4.0.547"
+  }
+}

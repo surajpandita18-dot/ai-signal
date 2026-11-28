@@ -1,0 +1,14 @@
+[
+ {"scene":"hook","text":"Sabko pata chal jaata hai | ki tumhari _post_ | *AI* ne likhi hai."},
+ {"scene":"promise","text":"Toh chalo, *Claude* ko | sikhate hain ki woh bilkul | _tumhari_ _tarah_ likhe."},
+ {"scene":"why","text":"Woh _generic_ isliye lagta hai, | kyunki usne tumhara | likha hua kabhi | _padha_ hi nahi."},
+ {"scene":"folder","text":"Toh ek *folder* banao, | aur usme apni likhi hui | *das* _posts_ daal do."},
+ {"scene":"code","text":"Yeh folder *Claude* _Code_ mein kholo, | aur yeh _prompt_ paste karo."},
+ {"scene":"voice","text":"Woh saari posts padhega | aur ek file banayega: | _voice.md._ | Tumhare _rules._ | Tum kaise *shuru* karte ho, | kaise *khatam* karte ho, | kaun se words tum | kabhi use _nahi_ karte."},
+ {"scene":"keyline","text":"Aur sabse _important_ line yeh hai: | *learn* *my* _rules,_ | *not* *my* _phrases._ | Yeh nahi likhi, | toh woh bas tumhari | purani posts _copy_ karega."},
+ {"scene":"topic","text":"Ab usko ek _topic_ do."},
+ {"scene":"result","text":"Pehle woh likhta tha: | \"In today's _fast-paced_ world.\" | Ab? | \"I quit on a *Tuesday.* | Nobody _noticed._\""},
+ {"scene":"feedback","text":"Kuch bhi _off_ lage, | *seedha* bol do, | aur bolo ki yeh | _fix_ save kar le."},
+ {"scene":"summary","text":"Har post thodi aur | _tumhari_ jaisi lagegi."},
+ {"scene":"cta","text":"Dono _prompts_ caption mein hain. | *Save* kar lo, | aaj raat _try_ karo."}
+]
