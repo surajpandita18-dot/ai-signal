@@ -8,7 +8,7 @@ const N = 10;
 const st = `stroke="${K}" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"`;
 const wob = `<defs><filter id="w"><feTurbulence type="fractalNoise" baseFrequency="0.018" numOctaves="2" seed="7"/><feDisplacementMap in="SourceGraphic" scale="5"/></filter>
 <marker id="ah" viewBox="0 0 10 10" refX="7" refY="5" markerWidth="5" markerHeight="5" orient="auto"><path d="M1 1 L9 5 L1 9" fill="none" stroke="${K}" stroke-width="2"/></marker></defs>`;
-const svg = (inner, h = 560) => `<svg width="900" height="${h}" style="max-height:100%" viewBox="0 0 900 ${h}">${wob}<g filter="url(#w)">${inner}</g></svg>`;
+const svg = (inner, h = 560) => `<svg width="900" height="${h}" style="max-height:100%;max-width:100%" viewBox="0 0 900 ${h}">${wob}<g filter="url(#w)">${inner}</g></svg>`;
 const T = (x, y, t, s = 30, w = 700, a = 'middle', c = K) => `<text x="${x}" y="${y}" font-family="H" font-size="${s}" font-weight="${w}" text-anchor="${a}" fill="${c}">${t}</text>`;
 const face = (cx, cy, mood, fill) => `<circle cx="${cx}" cy="${cy}" r="70" fill="${fill}" ${st.replace('fill="none"', '')}/>` +
   (mood === 0 ? `<circle cx="${cx - 24}" cy="${cy - 15}" r="7" fill="${K}"/><circle cx="${cx + 24}" cy="${cy - 15}" r="7" fill="${K}"/><path d="M${cx - 30} ${cy + 18} Q${cx} ${cy + 45} ${cx + 30} ${cy + 18}" ${st}/>`
@@ -58,15 +58,16 @@ const doodles = {
     ${T(450, 500, 'cheaper, faster, almost as smart', 30, 600)}`, 540),
 };
 
+const PAP = k => 'file://' + path.join(__dirname, 'papers', k + '-c.png');
 const items = [
-  { k: 'collapse', t: 'Model collapse', s: 'When AI learns mostly from AI-made content, each generation gets blurrier and weirder.', ex: 'A 2024 Nature study trained models on their own output, round after round. Rare details vanished first, then it turned to nonsense.', src: 'Shumailov et al., Nature, 2024' },
-  { k: 'hack', t: 'Reward hacking', s: 'The AI finds a loophole that scores points without doing the actual task.', ex: 'In a boat-racing game, an AI learned to circle a lagoon hitting the same targets forever. Big score. Never finished the race.', src: 'OpenAI, “Faulty reward functions in the wild”, 2016' },
-  { k: 'grok', t: 'Grokking', s: 'A model memorises for ages, then suddenly “gets” the rule, long after you’d have given up.', ex: 'Small models learning maths tables jumped from guessing to near-perfect, thousands of training steps after they’d memorised the answers.', src: 'Power et al., OpenAI, 2022' },
-  { k: 'rot', t: 'Context rot', s: 'Give an AI a very long input and it quietly gets worse, especially at the stuff in the middle.', ex: 'Tests across 18 models found answers got less reliable as inputs got longer, even on simple tasks.', src: 'Chroma Research, “Context Rot”, 2025' },
-  { k: 'syco', t: 'Sycophancy', s: 'The AI tells you what you want to hear instead of what’s true.', ex: 'OpenAI rolled back a ChatGPT update in April 2025 because it had become too flattering and agreeable.', src: 'OpenAI, “Sycophancy in GPT-4o”, Apr 2025' },
-  { k: 'emerge', t: 'Emergent abilities', s: 'Skills that seem to appear out of nowhere when models get bigger. Or do they?', ex: 'A 2023 paper showed many “sudden jumps” vanish when you give partial credit. Same model, different ruler.', src: 'Schaeffer et al., NeurIPS 2023 · Wei et al., 2022' },
-  { k: 'interp', t: 'Mechanistic interpretability', s: 'Opening the AI’s “brain” to find which parts mean what.', ex: 'Anthropic found a Golden Gate Bridge feature inside Claude, turned it up, and Claude started believing it was the bridge.', src: 'Anthropic, “Golden Gate Claude”, May 2024' },
-  { k: 'distil', t: 'Distillation', s: 'A small model learns by copying a big model’s answers, including how unsure it was.', ex: 'The idea behind many small, cheap models you use today. The teacher’s “70% cat, 20% dog” teaches more than just “cat”.', src: 'Hinton, Vinyals & Dean, 2015' },
+  { k: 'collapse', t: 'Model Collapse', s: 'Train AI on AI-made stuff, again and again, and it slowly forgets the rare stuff. Then it starts talking nonsense. A photocopy of a photocopy.', cite: 'The Curse of Recursion · Shumailov et al. · 2023 (later in Nature, 2024)' },
+  { k: 'hack', t: 'Reward Hacking', s: 'Reward an AI for a score and it finds the cheat code. One boat-racing AI circled forever collecting points and never finished the race.', cite: 'Concrete Problems in AI Safety · Amodei et al. · 2016' },
+  { k: 'grok', t: 'Grokking', s: 'The model memorises answers for ages. Then, way later, it suddenly gets the actual rule. Nobody fully knows why.', cite: 'Grokking · Power et al. (OpenAI) · 2022' },
+  { k: 'rot', t: 'Context Rot', s: 'Paste a huge document and the AI quietly gets worse. The beginning and end? Fine. The stuff buried in the middle? Gone.', cite: 'Lost in the Middle · Liu et al. (Stanford) · 2023' },
+  { k: 'syco', t: 'Sycophancy', s: 'The AI agrees with you even when you’re wrong. Researchers found it in all five top AI assistants they tested.', cite: 'Towards Understanding Sycophancy · Sharma et al. (Anthropic) · 2023' },
+  { k: 'emerge', t: 'Emergent Abilities', s: 'Bigger models seem to suddenly unlock new skills. Or maybe it’s how we measure. Use a better ruler and many “jumps” disappear.', cite: 'Are Emergent Abilities a Mirage? · Schaeffer et al. · 2023' },
+  { k: 'interp', t: 'Mechanistic Interpretability', s: 'Researchers opened up Claude and found millions of “features”, like one for the Golden Gate Bridge. Turn it up, and Claude thinks it IS the bridge.', cite: 'Scaling Monosemanticity · Anthropic · 2024' },
+  { k: 'distil', t: 'Distillation', s: 'A small model learns from a big model’s answers, including how unsure it was. It’s how a lot of cheap, fast models get smart.', cite: 'Distilling the Knowledge in a Neural Network · Hinton et al. · 2015' },
 ];
 
 const css = `@font-face{font-family:H;src:url(file://${F}inter-latin-800-normal.woff2);font-weight:800}
@@ -90,19 +91,23 @@ h1{font-weight:800;letter-spacing:-.035em;line-height:1.0}
 `;
 const foot = n => `<div class="foot"><span>@thinksafari</span><i></i><span>${n}/${N}</span></div>`;
 const pages = [];
-pages.push(`<div class="s"><div class="lab"><span>Suraj Pandita · AI Product Manager</span><span>Save this</span></div>
+pages.push(`<div class="s"><div class="lab"><span>Suraj Pandita · AI Product Manager</span><span>8 papers inside</span></div>
  <div style="position:absolute;top:190px;left:70px;right:70px;text-align:center">
-  <h1 style="font-size:116px">AI rabbit holes<br>worth falling into</h1>
-  <div style="font-weight:500;font-size:44px;margin-top:30px">8 ideas. How many do you <u style="text-decoration-color:${R};text-decoration-thickness:6px;text-underline-offset:8px">actually</u> know?</div></div>
+  <h1 style="font-size:118px">AI Rabbit Holes<br>To Nerd Out On</h1>
+  <div style="font-weight:500;font-size:44px;margin-top:30px">If you’re really into AI, start here.<br>How many do you <u style="text-decoration-color:${R};text-decoration-thickness:6px;text-underline-offset:8px">actually</u> know?</div></div>
  <div style="position:absolute;left:90px;right:90px;top:600px;display:flex;justify-content:center">${doodles.cover}</div>
  ${foot(1)}</div>`);
 items.forEach((it, i) => pages.push(`<div class="s"><div class="lab"><span>AI rabbit holes</span><span>Count them →</span></div>
- <div style="position:absolute;top:130px;bottom:120px;left:90px;right:90px;display:flex;flex-direction:column">
-  <div style="display:flex;align-items:center;gap:24px"><span class="num">${i + 1}</span><h1 style="font-size:${it.t.length > 20 ? 76 : 100}px">${it.t}</h1></div>
-  <div class="simple">${it.s}</div>
-  <div style="flex:1;display:flex;align-items:center;justify-content:center">${doodles[it.k]}</div>
-  <div class="ex" style="margin-top:14px"><b>Real example</b><p>${it.ex}</p></div>
-  <div class="src">Source: ${it.src}</div></div>
+ <div style="position:absolute;top:120px;bottom:112px;left:90px;right:90px;display:flex;flex-direction:column">
+  <div style="display:flex;align-items:center;gap:24px"><span class="num">${i + 1}</span><h1 style="font-size:${it.t.length > 20 ? 70 : 92}px">${it.t}</h1></div>
+  <div class="simple" style="font-size:33px;margin-top:16px">${it.s}</div>
+  <div style="flex:1;min-height:0;display:flex;align-items:center;justify-content:center;padding:8px 0">${doodles[it.k]}</div>
+  <div style="position:relative;transform:rotate(-1.2deg);margin:0 10px">
+   <span style="position:absolute;top:-22px;left:24px;z-index:2;background:${R};color:#fff;font-weight:800;font-size:20px;letter-spacing:.14em;padding:8px 16px;border:3px solid ${K};border-radius:30px">READ THIS PAPER</span>
+   <div style="height:300px;overflow:hidden;border:4px solid ${K};border-radius:16px;background:#fff;box-shadow:10px 10px 0 ${K};position:relative">
+    <img src="${PAP(it.k)}" style="width:100%;display:block">
+    <div style="position:absolute;left:0;right:0;bottom:0;height:90px;background:linear-gradient(rgba(255,255,255,0),#fff)"></div></div></div>
+  <div class="src" style="margin-top:22px;color:#555;font-weight:600">${it.cite}</div></div>
  ${foot(i + 2)}</div>`));
 pages.push(`<div class="s"><div class="lab"><span>AI rabbit holes</span><span>Your score</span></div>
  <div style="position:absolute;top:180px;left:90px;right:90px">
