@@ -23,6 +23,7 @@ Key metrics: **sends (shares) per reach** and **saves per reach** matter most; t
 | 26 Nov | Carousel | “Maybe life isn’t waiting for something extraordinary” | 13 | 5 | 2 | 0 | 0 | 0 |
 | 28 Nov | Carousel | Last 24 hours in AI · Day 04 (auto-posted, no music) | — too new | | | | | |
 | 28 Nov | Carousel | Last 7 days in AI · Week 01 (doodle, auto-posted, no music) | — too new | | | | | |
+| 28 Nov | Reel | Last 7 days in AI · Week 01 Reel (slides + original piano bed, no voice, 40 s) · instagram.com/reel/DgSLtpOIBIZ | — too new | | | | | |
 
 **What it says so far:** Reels reach 5–50× more people than carousels on this account (Reel median ~200 views vs carousel
 median ~20). The best post by far is a Reel that tells one surprising AI story simply (AlphaGo). Carousels currently barely leave
@@ -34,7 +35,8 @@ carousels rely on followers while Reels reach non-followers.
 | Week | Hypothesis | Change | Result |
 |---|---|---|---|
 | W01 (28 Nov) | Doodle format + source screenshots gets more saves than v2 | Doodle weekly carousel, no music, posted 28 Nov ~4:30 PM IST | pending |
-| W02 (5 Dec) | Same carousel reaches more as a Reel | Also make a 30–45 s Reel version of the weekly (slides + voice or music) — needs Suraj’s OK | pending |
+| W01b (28 Nov) | The weekly reaches more as a Reel | Reel version (slides + music) posted same day; Suraj may delete the W01 carousel | pending |
+| W02 (5 Dec) | Voice Reel beats music-only Reel | Suraj’s voice + soft piano (approved standing flow: voice if sent, else music) | pending |
 | later | Posting time | 8 AM vs 7 PM IST | — |
 | later | Carousel with music (posted by hand) vs without | same format, Suraj adds trending music in-app | — |
 | later | Cover hook | question (“How many did you catch?”) vs claim (“Proof: correct. Readable: no.”) | — |
