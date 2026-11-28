@@ -41,6 +41,7 @@ def frame(png, i, n, week, out):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument('folder'); ap.add_argument('--voice'); ap.add_argument('--per', type=float, default=4.0)
+    ap.add_argument('--cues', help='comma-separated start time (s) of slides 2..N in the voice, e.g. 6.4,17.3,…')
     a = ap.parse_args()
     pngs = sorted(glob.glob(os.path.join(a.folder, 'week*-[0-9][0-9].png')))
     week = int(os.path.basename(pngs[0])[4:6])
@@ -53,8 +54,11 @@ def main():
         f = os.path.join(tmp, f'f{i:02d}.png'); frame(p, i, n, week, f); frames.append(f)
     lst = os.path.join(tmp, 'list.txt')
     with open(lst, 'w') as fh:
-        for f in frames:
-            fh.write(f"file '{f}'\nduration {per:.3f}\n")
+        starts = [0.0] + [float(x) for x in a.cues.split(',')] if a.cues else [i * per for i in range(n)]
+        assert len(starts) == n, f'need {n - 1} cues'
+        for i, f in enumerate(frames):
+            d = (starts[i + 1] if i + 1 < n else total) - starts[i]
+            fh.write(f"file '{f}'\nduration {d:.3f}\n")
         fh.write(f"file '{frames[-1]}'\n")
     out = os.path.join(a.folder, 'reel.mp4')
     vid = ['-f', 'concat', '-safe', '0', '-i', lst]
