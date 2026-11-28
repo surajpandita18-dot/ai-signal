@@ -60,7 +60,7 @@ def main():
     vid = ['-f', 'concat', '-safe', '0', '-i', lst]
     if a.voice:
         cmd = ['ffmpeg', '-y', *vid, '-i', a.voice, '-stream_loop', '-1', '-i', MUSIC, '-filter_complex',
-               f'[1:a]aresample=44100,volume=1.0[v];[2:a]aresample=44100,volume=0.12,atrim=0:{total:.2f}[m];[v][m]amix=inputs=2:duration=longest:normalize=0,afade=t=out:st={total - 1.5:.2f}:d=1.5[a]',
+               f'[1:a]aresample=44100,volume=1.0[v];[2:a]aresample=44100,volume=0.08,atrim=0:{total:.2f}[m];[v][m]amix=inputs=2:duration=longest:normalize=0,afade=t=out:st={total - 1.5:.2f}:d=1.5[a]',
                '-map', '0:v', '-map', '[a]']
     else:
         cmd = ['ffmpeg', '-y', *vid, '-stream_loop', '-1', '-i', MUSIC, '-filter_complex',
