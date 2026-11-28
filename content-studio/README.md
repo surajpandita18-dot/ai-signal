@@ -64,7 +64,7 @@ Rendered PNGs are not committed (`out/`, `issues/<date>/`); regenerate them. Nee
 
 ## Automation and environments
 
-- **Nightly scheduled task** "Last 24 hours in AI · nightly build": 00:07 IST, ready by 1 AM, Suraj schedules the post for 8 AM.
+- **Nightly scheduled task** "Last 24 hours in AI · nightly build": 00:07 IST, ready by 1 AM. Since 28 Nov it also **schedules the Instagram post for 8:00 AM IST** through vidIQ (Suraj's standing approval). Suraj adds the story + poll and the pinned sources comment himself; he can cancel before 8 AM.
   It uploads each episode to a Drive folder `Last 24 hours in AI · Day NN · <date>` and backs up from `last-24-hours-in-ai-kit.zip` on Drive if this repo isn't present.
 - **Images:** archive/museum sites are blocked in the Default cloud environment. Use the **"Reel studio - photos"** environment
   (Wikimedia Commons, Openverse, Flickr, Met, Art Institute of Chicago, Cleveland Museum, Substack, Drive). Only public-domain
