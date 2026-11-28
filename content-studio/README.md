@@ -57,6 +57,9 @@ He will keep sending the best carousels he finds (screenshots in Drive folder `1
 | `last-24-hours-in-ai/` | Style B daily kit: `make.js`, fonts, JSON schema, Day 02 issue. See its README. | `node make.js issues/<date>.json` |
 | `stories-you-never-heard/` | Style A template, Ep 01 "The Turk" (10 slides), its public-domain images and caption. | `node ep01-the-turk.js` |
 | `style-system/` | The two style-board pages above. | — |
+| `performance-log.md` | Instagram numbers per post + the weekly experiment plan. Updated every Saturday by the weekly task. | — |
+| `last-24-hours-in-ai/weekly-doodle.js` | **Current weekly format** (doodle, source screenshots). Daily series stopped 28 Nov 2026. | `node weekly-doodle.js issues/<date>-weekNN.doodle.js` |
+| `doodle-explainers/` | Evergreen doodle explainers (AI Rabbit Holes, with real paper screenshots). | `node ai-rabbit-holes.js` |
 | `ai-andar-se/` | **AI, Andar Se** — AI video series bible: framework, roadmap, scripts. (Also holds an Ep 02 carousel draft; AI topics are videos, carousels are for Read for you.) | — |
 
 Fonts (Inter, Newsreader; SIL OFL) live in `last-24-hours-in-ai/fonts/` and are shared by all templates.
