@@ -13,7 +13,7 @@ from PIL import Image, ImageDraw, ImageFont
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 FONT = os.path.join(HERE, 'fonts')
-MUSIC = os.path.join(HERE, 'music', 'satie-gymnopedie-1-alciatore-PD.ogg')
+MUSIC = os.path.join(HERE, 'music', 'thinksafari-bed-01.m4a')
 
 
 def dur(path):
